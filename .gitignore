@@ -34,4 +34,5 @@ assets/Svvayam Presentation footage*/
 Thumbs.db
 *.db
 *.tmp
+*.mp4
 public/assets/docs/*.pdf
