@@ -9,7 +9,7 @@ import { Modal } from '../components/ui/Modal';
 import { Input } from '../components/ui/Input';
 import { PortalChat } from '../components/portal/PortalChat';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { money, indicativeAmount } from '../lib/utils';
+import { money, indicativeAmount, normalizeToE164, extractSurname, formatProjectName, assetUrl, cn } from '../lib/utils';
 import {
   ShieldCheck,
   Search,
@@ -30,13 +30,15 @@ import {
   Shield
 } from 'lucide-react';
 import { JOURNEY_STAGES } from '../lib/constants';
-import type { ConsultationState, SelectedReference, CustomerRecord } from '../types/consultation';
-import { assetUrl } from '../lib/utils';
-import { cn } from '../lib/utils';
+import type { ConsultationState, SelectedReference, CustomerRecord, CustomerTitle, CustomerProduct } from '../types/consultation';
 
 interface ConsultationRecord {
   id: string;
   client_name: string;
+  project_name?: string;
+  title?: CustomerTitle;
+  surname?: string;
+  product?: CustomerProduct;
   client_phone: string;
   location: string;
   consultant: string;
@@ -56,6 +58,10 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
   {
     id: 'seed-001',
     client_name: 'Mala Sharma',
+    project_name: "Mrs. Sharma's Temple",
+    title: 'Mrs.',
+    surname: 'Sharma',
+    product: 'Temple',
     client_phone: '+91 9845012345',
     location: 'Bengaluru, Indiranagar',
     consultant: 'Svvayam Admin',
@@ -72,8 +78,13 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
       source: 'grid'
     },
     state: {
+      project_name: "Mrs. Sharma's Temple",
       fields: {
         client: 'Mala Sharma',
+        title: 'Mrs.',
+        surname: 'Sharma',
+        product: 'Temple',
+        projectName: "Mrs. Sharma's Temple",
         location: 'Bengaluru, Indiranagar',
         date: '2026-10-06',
         deity: 'Lord Venkateshwara, Radha Krishna',
@@ -94,6 +105,10 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
   {
     id: 'seed-002',
     client_name: 'Dr. Sanjay Reddy',
+    project_name: "Dr. Reddy's Sanctum",
+    title: 'Dr.',
+    surname: 'Reddy',
+    product: 'Sanctum',
     client_phone: '+91 9701020304',
     location: 'Hyderabad, Jubilee Hills',
     consultant: 'Team Svvayam',
@@ -110,8 +125,13 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
       source: 'grid'
     },
     state: {
+      project_name: "Dr. Reddy's Sanctum",
       fields: {
         client: 'Dr. Sanjay Reddy',
+        title: 'Dr.',
+        surname: 'Reddy',
+        product: 'Sanctum',
+        projectName: "Dr. Reddy's Sanctum",
         location: 'Hyderabad, Jubilee Hills',
         date: '2026-10-04',
         deity: 'Shivling and Parvati Devi',
@@ -132,6 +152,10 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
   {
     id: 'seed-003',
     client_name: 'Yuva Balakumaran',
+    project_name: "Mr. Balakumaran's Temple",
+    title: 'Mr.',
+    surname: 'Balakumaran',
+    product: 'Temple',
     client_phone: '+91 9444055667',
     location: 'Chennai, Adyar',
     consultant: 'Svvayam Consultant',
@@ -148,16 +172,21 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
       source: 'grid'
     },
     state: {
+      project_name: "Mr. Balakumaran's Temple",
       fields: {
         client: 'Yuva Balakumaran',
+        title: 'Mr.',
+        surname: 'Balakumaran',
+        product: 'Temple',
+        projectName: "Mr. Balakumaran's Temple",
         location: 'Chennai, Adyar',
         date: '2026-10-02',
-        deity: 'Murugan and Vinayagar',
-        rituals: 'Evening deepam lighting',
+        deity: 'Lord Murugan and Valli Deivanai',
+        rituals: 'Sashti special puja and daily deepam',
         dimensions: '5 ft W × 3 ft D × 8 ft H',
-        scope: 'Teakwood Mandapam with brass gopuram finials',
+        scope: 'Medium Teak Sanctum with carved peacocks and brass pillars',
         estimate: '18 lakh',
-        timeline: '3 months'
+        timeline: '2–3 months'
       },
       selected_reference: {
         data: assetUrl('assets/clients/Dr. Sanjay/3D MODEL/3d_model_01.png'),
@@ -168,6 +197,7 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
     }
   }
 ];
+
 
 export const AdminDashboard: React.FC = () => {
   const { user, profile, isAdmin, isLoading: authLoading } = useAuth();
@@ -199,12 +229,33 @@ export const AdminDashboard: React.FC = () => {
     }
     return false;
   });
+  const [regTitle, setRegTitle] = useState<CustomerTitle>('Mr.');
   const [regName, setRegName] = useState('');
+  const [regSurname, setRegSurname] = useState('');
+  const [regProduct, setRegProduct] = useState<CustomerProduct>('Temple');
+  const [surnameTouched, setSurnameTouched] = useState(false);
   const [regPhone, setRegPhone] = useState('+91');
   const [regLocation, setRegLocation] = useState('');
   const [regConsultationOption, setRegConsultationOption] = useState<'create_new' | 'link_existing'>('create_new');
   const [regLinkedConsultationId, setRegLinkedConsultationId] = useState('');
   const [regSubmitting, setRegSubmitting] = useState(false);
+
+  const regProjectName = useMemo(() => {
+    return formatProjectName(regTitle, regSurname || extractSurname(regName), regProduct);
+  }, [regTitle, regSurname, regName, regProduct]);
+
+  const handleRegNameChange = (val: string) => {
+    setRegName(val);
+    if (!surnameTouched) {
+      setRegSurname(extractSurname(val));
+    }
+  };
+
+  const handleRegSurnameChange = (val: string) => {
+    setSurnameTouched(true);
+    setRegSurname(val);
+  };
+
 
   // Messages inbox state
   const [selectedThreadConsultationId, setSelectedThreadConsultationId] = useState<string | null>(null);
@@ -221,11 +272,6 @@ export const AdminDashboard: React.FC = () => {
     { stage: 6, status: 'not_started' },
     { stage: 7, status: 'not_started' },
   ]);
-
-  // Non-admins who open its URL are immediately redirected away
-  if (!authLoading && !isAdmin) {
-    return <Navigate to="/consult" replace />;
-  }
 
   // Load consultations from Supabase or resilient local state
   const loadConsultations = async () => {
@@ -244,9 +290,19 @@ export const AdminDashboard: React.FC = () => {
                 ? (typeof row.selected_refs[0] === 'object' ? row.selected_refs[0] : null) 
                 : null);
 
+            const clientName = row.fields?.client || row.client_phone || 'Untitled Client';
+            const projName = row.project_name
+              || row.fields?.projectName
+              || row.fields?.project_name
+              || formatProjectName(row.fields?.title || row.title, row.fields?.surname || row.surname || extractSurname(clientName), row.fields?.product || row.product || 'Temple');
+
             return {
               id: row.id,
-              client_name: row.fields?.client || row.client_phone || 'Untitled Client',
+              client_name: clientName,
+              project_name: projName,
+              title: row.title || row.fields?.title,
+              surname: row.surname || row.fields?.surname,
+              product: row.product || row.fields?.product,
               client_phone: row.client_phone || row.fields?.phone || 'Not recorded',
               location: row.fields?.location || 'Pending',
               consultant: row.profiles?.name || 'Svvayam Team',
@@ -260,7 +316,11 @@ export const AdminDashboard: React.FC = () => {
               client_id: row.client_id,
               state: {
                 id: row.id,
-                fields: row.fields,
+                project_name: projName,
+                fields: {
+                  ...row.fields,
+                  projectName: projName
+                },
                 selected_reference: rawRef,
                 selected: row.selected_refs || [],
                 status: row.status,
@@ -398,10 +458,10 @@ export const AdminDashboard: React.FC = () => {
 
     setRegSubmitting(true);
 
-    let formattedPhone = regPhone.trim();
-    if (!formattedPhone.startsWith('+')) {
-      formattedPhone = '+91' + formattedPhone.replace(/^0+/, '');
-    }
+    const formattedPhone = normalizeToE164(regPhone);
+
+    const surnameFinal = regSurname.trim() || extractSurname(regName.trim());
+    const finalProjectName = formatProjectName(regTitle, surnameFinal, regProduct);
 
     // Call Supabase Edge Function if live
     if (isSupabaseConfigured && supabase) {
@@ -410,6 +470,10 @@ export const AdminDashboard: React.FC = () => {
           body: {
             action: 'register',
             name: regName.trim(),
+            title: regTitle,
+            surname: surnameFinal,
+            product: regProduct,
+            project_name: finalProjectName,
             phone: formattedPhone,
             location: regLocation.trim(),
             create_new_consultation: regConsultationOption === 'create_new',
@@ -418,7 +482,7 @@ export const AdminDashboard: React.FC = () => {
         });
 
         if (error) throw error;
-        setToastMsg(`Customer ${regName} registered successfully!`);
+        setToastMsg(`Customer ${regName} registered with project "${finalProjectName}"!`);
         setRegisterModalOpen(false);
         loadConsultations();
         loadCustomers();
@@ -438,6 +502,10 @@ export const AdminDashboard: React.FC = () => {
       const newConsult: ConsultationRecord = {
         id: linkedId,
         client_name: regName.trim(),
+        project_name: finalProjectName,
+        title: regTitle,
+        surname: surnameFinal,
+        product: regProduct,
         client_phone: formattedPhone,
         location: regLocation.trim() || 'Pending location',
         consultant: profile?.name || 'Svvayam Admin',
@@ -446,8 +514,13 @@ export const AdminDashboard: React.FC = () => {
         portal_visible: false,
         internal_notes: 'Created via admin customer registration.',
         state: {
+          project_name: finalProjectName,
           fields: {
             client: regName.trim(),
+            title: regTitle,
+            surname: surnameFinal,
+            product: regProduct,
+            projectName: finalProjectName,
             location: regLocation.trim(),
             date: new Date().toLocaleDateString('en-CA')
           }
@@ -461,6 +534,10 @@ export const AdminDashboard: React.FC = () => {
     const newCustomer: CustomerRecord = {
       id: newCustId,
       name: regName.trim(),
+      title: regTitle,
+      surname: surnameFinal,
+      product: regProduct,
+      project_name: finalProjectName,
       phone: formattedPhone,
       location: regLocation.trim(),
       consultation_id: linkedId,
@@ -473,10 +550,12 @@ export const AdminDashboard: React.FC = () => {
     saveRegisteredCustomers(updatedCustList);
     setCustomers(updatedCustList);
 
-    setToastMsg(`Customer ${regName.trim()} registered successfully with mobile ${formattedPhone}.`);
+    setToastMsg(`Customer ${regName.trim()} registered with project "${finalProjectName}".`);
     setRegSubmitting(false);
     setRegisterModalOpen(false);
     setRegName('');
+    setRegSurname('');
+    setSurnameTouched(false);
     setRegPhone('+91');
     setRegLocation('');
   };
@@ -515,12 +594,15 @@ export const AdminDashboard: React.FC = () => {
       const matchesSearch =
         q === '' ||
         item.client_name.toLowerCase().includes(q) ||
+        (item.project_name && item.project_name.toLowerCase().includes(q)) ||
+        (item.surname && item.surname.toLowerCase().includes(q)) ||
         item.client_phone.toLowerCase().includes(q) ||
         item.location.toLowerCase().includes(q) ||
         item.consultant.toLowerCase().includes(q);
       return matchesStatus && matchesSearch;
     });
   }, [consultations, statusFilter, searchQuery]);
+
 
   const handleOpenConsultation = (record: ConsultationRecord) => {
     if (record.state) {
@@ -543,6 +625,11 @@ export const AdminDashboard: React.FC = () => {
       setToastMsg(`Sync simulation logged: ${result.message || 'Credentials pending.'}`);
     }
   };
+
+  // Non-admins who open its URL are immediately redirected to client view
+  if (!authLoading && !isAdmin) {
+    return <Navigate to="/client" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-white flex flex-col antialiased text-[#0A0A0A]">
@@ -699,7 +786,7 @@ export const AdminDashboard: React.FC = () => {
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-neutral-200 bg-neutral-50 font-medium text-neutral-500 text-[11px] uppercase tracking-wider">
-                    <th className="py-3 px-4">Client Name</th>
+                    <th className="py-3 px-4">Project & Client</th>
                     <th className="py-3 px-4">Mobile Number</th>
                     <th className="py-3 px-4">Location</th>
                     <th className="py-3 px-4">Consultant</th>
@@ -729,8 +816,13 @@ export const AdminDashboard: React.FC = () => {
                       const est = indicativeAmount(item.estimate);
                       return (
                         <tr key={item.id} className="hover:bg-neutral-50/50 transition-colors">
-                          <td className="py-3 px-4 font-medium text-[#0A0A0A]">
-                            {item.client_name}
+                          <td className="py-3 px-4">
+                            <div className="font-semibold text-[#0A0A0A] font-sans">
+                              {item.project_name || item.client_name}
+                            </div>
+                            <div className="text-[11px] text-neutral-500 font-sans">
+                              {item.client_name}
+                            </div>
                           </td>
                           <td className="py-3 px-4 font-mono text-neutral-600">
                             {item.client_phone}
@@ -931,7 +1023,7 @@ export const AdminDashboard: React.FC = () => {
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-neutral-200 bg-neutral-50 font-medium text-neutral-500 text-[11px] uppercase tracking-wider">
-                    <th className="py-3 px-4">Customer Name</th>
+                    <th className="py-3 px-4">Project & Customer</th>
                     <th className="py-3 px-4">Registered Phone</th>
                     <th className="py-3 px-4">Project Location</th>
                     <th className="py-3 px-4">Linked Consultation ID</th>
@@ -944,8 +1036,13 @@ export const AdminDashboard: React.FC = () => {
                     const linkedConsult = consultations.find(c => c.id === cust.consultation_id || c.client_phone.includes(cust.phone.slice(-10)));
                     return (
                       <tr key={cust.id} className="hover:bg-neutral-50/50">
-                        <td className="py-3 px-4 font-medium text-[#0A0A0A]">
-                          {cust.name}
+                        <td className="py-3 px-4">
+                          <div className="font-semibold text-[#0A0A0A]">
+                            {cust.project_name || linkedConsult?.project_name || cust.name}
+                          </div>
+                          <div className="text-[11px] text-neutral-500 font-sans">
+                            {cust.name}
+                          </div>
                         </td>
                         <td className="py-3 px-4 font-mono text-neutral-600">
                           {cust.phone}
@@ -1016,7 +1113,7 @@ export const AdminDashboard: React.FC = () => {
                       )}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold truncate">{c.client_name}</span>
+                        <span className="font-semibold truncate">{c.project_name || c.client_name}</span>
                         <span className={cn(
                           "text-[10px] font-mono",
                           isSelected ? "text-neutral-400" : "text-neutral-500"
@@ -1028,8 +1125,9 @@ export const AdminDashboard: React.FC = () => {
                         "text-[11px] truncate mt-1",
                         isSelected ? "text-neutral-300" : "text-neutral-500"
                       )}>
-                        {c.client_phone} · Consultation {c.id.slice(0, 8)}
+                        {c.client_name} · {c.client_phone}
                       </p>
+
                     </div>
                   );
                 })}
@@ -1058,15 +1156,77 @@ export const AdminDashboard: React.FC = () => {
         maxWidth="md"
       >
         <form onSubmit={handleRegisterCustomer} className="space-y-4 pt-2">
+          {/* Title, Surname, Product & Project Name Preview */}
+          <div className="p-3 bg-neutral-50 rounded-[14px] border border-[#ECECEC] space-y-3 font-sans">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-[#0A0A0A]">Project Naming Format</span>
+              <span className="text-[10px] font-mono text-[#0E2A1C] bg-[#0E2A1C]/10 px-2 py-0.5 rounded-full font-medium">
+                &lt;Title&gt; &lt;Surname&gt;'s &lt;Product&gt;
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block text-[11px] font-medium text-neutral-600 mb-1">Title</label>
+                <select
+                  value={regTitle}
+                  onChange={(e) => setRegTitle(e.target.value as CustomerTitle)}
+                  className="w-full p-2.5 rounded-[10px] border border-[#ECECEC] text-xs bg-white font-sans focus:outline-none focus:ring-1 focus:ring-[#0E2A1C]"
+                >
+                  <option value="Mr.">Mr.</option>
+                  <option value="Mrs.">Mrs.</option>
+                  <option value="Ms.">Ms.</option>
+                  <option value="Dr.">Dr.</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-medium text-neutral-600 mb-1">
+                  Surname <span className="text-neutral-400 font-normal">(exact spelling)</span>
+                </label>
+                <input
+                  type="text"
+                  value={regSurname}
+                  onChange={(e) => handleRegSurnameChange(e.target.value)}
+                  placeholder="e.g. Pal"
+                  className="w-full p-2.5 rounded-[10px] border border-[#ECECEC] text-xs bg-white font-sans focus:outline-none focus:ring-1 focus:ring-[#0E2A1C]"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-medium text-neutral-600 mb-1">Product</label>
+                <select
+                  value={regProduct}
+                  onChange={(e) => setRegProduct(e.target.value as CustomerProduct)}
+                  className="w-full p-2.5 rounded-[10px] border border-[#ECECEC] text-xs bg-white font-sans focus:outline-none focus:ring-1 focus:ring-[#0E2A1C]"
+                >
+                  <option value="Temple">Temple (Default)</option>
+                  <option value="Puja Mandir">Puja Mandir</option>
+                  <option value="Sanctum">Sanctum</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Live Project Name Preview */}
+            <div className="p-2.5 bg-white rounded-[10px] border border-[#ECECEC] flex items-center justify-between">
+              <span className="text-[11px] text-neutral-500 font-sans">Project Name:</span>
+              <strong className="text-xs font-serif font-semibold text-[#0A0A0A] tracking-wide">
+                "{regProjectName}"
+              </strong>
+            </div>
+          </div>
+
           <Input
             label="Customer Full Name"
             type="text"
             value={regName}
-            onChange={(e) => setRegName(e.target.value)}
+            onChange={(e) => handleRegNameChange(e.target.value)}
             placeholder="e.g. Mala Sharma"
             required
             autoFocus
           />
+
 
           <Input
             label="Mobile Number (with country code)"
@@ -1155,13 +1315,19 @@ export const AdminDashboard: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setSelectedRecord(null)}
-          title={`Consultation Details: ${selectedRecord.client_name}`}
-          subtitle={`Location: ${selectedRecord.location} • Status: ${selectedRecord.status}`}
+          title={`Consultation Details: ${selectedRecord.project_name || selectedRecord.client_name}`}
+          subtitle={`Client: ${selectedRecord.client_name} • Location: ${selectedRecord.location} • Status: ${selectedRecord.status}`}
           maxWidth="2xl"
         >
           <div className="space-y-4 text-xs font-sans">
             {/* Top Info & Portal Visibility Toggle */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-b border-neutral-200 pb-3">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 border-b border-neutral-200 pb-3">
+              <div>
+                <span className="font-medium text-neutral-500 block">Project Name</span>
+                <span className="font-semibold text-[#0A0A0A] font-serif text-sm">
+                  {selectedRecord.project_name || selectedRecord.client_name}
+                </span>
+              </div>
               <div>
                 <span className="font-medium text-neutral-500 block">Client Contact</span>
                 <span className="font-mono text-[#0A0A0A]">{selectedRecord.client_phone}</span>

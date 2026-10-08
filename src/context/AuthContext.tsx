@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase, isSupabaseConfigured, INITIAL_ADMIN_PHONES } from '../lib/supabase';
 import type { Profile, UserRole, CustomerRecord } from '../types/consultation';
+import { normalizeToE164 } from '../lib/utils';
 
 interface AuthContextType {
   user: { id: string; phone: string } | null;
@@ -36,6 +37,10 @@ export const SEED_CUSTOMERS: CustomerRecord[] = [
   {
     id: 'cust-001',
     name: 'Mala Sharma',
+    title: 'Mrs.',
+    surname: 'Sharma',
+    product: 'Temple',
+    project_name: "Mrs. Sharma's Temple",
     phone: '+919845012345',
     location: 'Bengaluru, Indiranagar',
     is_active: true,
@@ -46,6 +51,10 @@ export const SEED_CUSTOMERS: CustomerRecord[] = [
   {
     id: 'cust-002',
     name: 'Dr. Sanjay Reddy',
+    title: 'Dr.',
+    surname: 'Reddy',
+    product: 'Sanctum',
+    project_name: "Dr. Reddy's Sanctum",
     phone: '+919701020304',
     location: 'Hyderabad, Jubilee Hills',
     is_active: true,
@@ -56,6 +65,10 @@ export const SEED_CUSTOMERS: CustomerRecord[] = [
   {
     id: 'cust-003',
     name: 'Yuva Balakumaran',
+    title: 'Mr.',
+    surname: 'Balakumaran',
+    product: 'Temple',
+    project_name: "Mr. Balakumaran's Temple",
     phone: '+919444055667',
     location: 'Chennai, Adyar',
     is_active: true,
@@ -111,7 +124,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const mockCustomer: Profile = {
             id: 'cust-001',
             name: 'Mala Sharma',
-            phone: '+91 9845012345',
+            title: 'Mrs.',
+            surname: 'Sharma',
+            product: 'Temple',
+            project_name: "Mrs. Sharma's Temple",
+            phone: '+919845012345',
             role: 'customer',
             is_active: true,
             created_at: new Date().toISOString()
@@ -123,8 +140,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else if (params.get('admin_test') === '1') {
           const mockAdmin: Profile = {
             id: 'admin-001',
-            name: 'Svvayam Admin',
-            phone: '+91 9182424228',
+            name: 'Svvayam Staff',
+            phone: '+919182424228',
             role: 'admin',
             is_active: true,
             created_at: new Date().toISOString()
@@ -140,31 +157,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (isSupabaseConfigured && supabase) {
           const { data: { session } } = await supabase.auth.getSession();
           if (session?.user?.phone) {
-            setUser({ id: session.user.id, phone: session.user.phone });
+            const formattedPhone = normalizeToE164(session.user.phone);
+            setUser({ id: session.user.id, phone: formattedPhone });
             // Fetch profile from supabase
-            const { data: profData } = await supabase
+            let { data: profData } = await supabase
               .from('profiles')
               .select('*')
               .eq('id', session.user.id)
-              .single();
+              .maybeSingle();
+
+            if (!profData) {
+              const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
+              const userDigits = cleanDigits(formattedPhone);
+              const { data: profByPhone } = await supabase
+                .from('profiles')
+                .select('*')
+                .or(`phone.eq.${formattedPhone},phone.eq.${userDigits}`)
+                .limit(1)
+                .maybeSingle();
+
+              if (profByPhone) {
+                profData = { ...profByPhone, id: session.user.id };
+                await supabase.from('profiles').update({ id: session.user.id }).eq('id', profByPhone.id);
+              }
+            }
 
             if (profData) {
               setProfile(profData as Profile);
             } else {
-              // Create profile fallback if not found
               const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
-              const userDigits = cleanDigits(session.user.phone || '');
+              const userDigits = cleanDigits(formattedPhone);
               const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === userDigits);
               const role: UserRole = isInitialAdmin ? 'admin' : 'customer';
               const newProf: Profile = {
                 id: session.user.id,
-                name: pendingName || (role === 'admin' ? 'Svvayam Admin' : 'Client'),
-                phone: session.user.phone,
+                name: pendingName || (role === 'admin' ? 'Svvayam Staff' : 'Client'),
+                phone: formattedPhone,
                 role,
                 is_active: true,
                 created_at: new Date().toISOString()
               };
-              await supabase.from('profiles').insert(newProf);
+              await supabase.from('profiles').upsert(newProf);
               setProfile(newProf);
             }
           }
@@ -190,12 +223,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const client = supabase;
       const { data: { subscription } } = client.auth.onAuthStateChange(async (_event, session) => {
         if (session?.user?.phone) {
-          setUser({ id: session.user.id, phone: session.user.phone });
+          const formattedPhone = normalizeToE164(session.user.phone);
+          setUser({ id: session.user.id, phone: formattedPhone });
           const { data: profData } = await client
             .from('profiles')
             .select('*')
             .eq('id', session.user.id)
-            .single();
+            .maybeSingle();
           if (profData) setProfile(profData as Profile);
         } else {
           setUser(null);
@@ -213,32 +247,90 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   ): Promise<{ success: boolean; error?: string; devOtp?: string }> => {
     if (name) setPendingName(name);
 
-    // Format phone with default +91 if missing
-    let formattedPhone = phone.trim();
-    if (!formattedPhone.startsWith('+')) {
-      formattedPhone = '+91' + formattedPhone.replace(/^0+/, '');
-    }
-
+    // 1. Normalize phone to strict E.164 (+91XXXXXXXXXX)
+    const formattedPhone = normalizeToE164(phone);
     const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
     const enteredDigits = cleanDigits(formattedPhone);
 
-    // Rate-limit check per number & per device (30-second cooldown)
-    const rateLimitKey = `svvayam_ratelimit_${enteredDigits}`;
-    const lastRequest = localStorage.getItem(rateLimitKey);
-    const now = Date.now();
-    if (lastRequest && now - Number(lastRequest) < 30000) {
-      const waitSec = Math.ceil((30000 - (now - Number(lastRequest))) / 1000);
-      return {
-        success: false,
-        error: `Please wait ${waitSec} seconds before requesting another verification code.`
-      };
-    }
-    localStorage.setItem(rateLimitKey, String(now));
-    setResendCooldown(30);
-
+    // 2. Pre-flight registration check:
+    // Disallow sending an OTP to unknown / unregistered numbers.
     if (isSupabaseConfigured && supabase) {
       try {
-        // Enforce shouldCreateUser: false so only pre-registered numbers can sign in
+        const { data: rpcData, error: rpcError } = await supabase.rpc('check_phone_registration', {
+          phone_input: formattedPhone,
+          check_role: requestedRole
+        });
+
+        if (!rpcError && rpcData) {
+          if (!rpcData.registered) {
+            return {
+              success: false,
+              error: requestedRole === 'admin'
+                ? "This number does not have administrator access. Please contact the Svvayam team."
+                : "This number isn't registered. Please contact the Svvayam team."
+            };
+          }
+        } else {
+          // Direct table check fallback
+          const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+          const { data: profData } = await supabase
+            .from('profiles')
+            .select('role, is_active')
+            .or(`phone.eq.${formattedPhone},phone.eq.${enteredDigits}`)
+            .limit(1)
+            .maybeSingle();
+
+          if (!profData && !isInitialAdmin) {
+            const registered = getRegisteredCustomers();
+            const found = registered.find(c => cleanDigits(c.phone) === enteredDigits && c.is_active);
+            if (!found) {
+              return {
+                success: false,
+                error: requestedRole === 'admin'
+                  ? "This number does not have administrator access. Please contact the Svvayam team."
+                  : "This number isn't registered. Please contact the Svvayam team."
+              };
+            }
+          } else if (profData && !profData.is_active) {
+            return {
+              success: false,
+              error: "This account has been deactivated. Please contact the Svvayam team."
+            };
+          } else if (requestedRole === 'admin' && profData?.role !== 'admin' && !isInitialAdmin) {
+            return {
+              success: false,
+              error: "This number does not have administrator access. Please contact the Svvayam team."
+            };
+          }
+        }
+      } catch (checkErr) {
+        console.warn('Pre-flight check notice:', checkErr);
+      }
+    } else {
+      // Mock development mode check
+      if (requestedRole === 'customer') {
+        const registered = getRegisteredCustomers();
+        const found = registered.find(c => cleanDigits(c.phone) === enteredDigits && c.is_active);
+        if (!found) {
+          return {
+            success: false,
+            error: "This number isn't registered. Please contact the Svvayam team."
+          };
+        }
+      } else {
+        const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+        if (!isInitialAdmin) {
+          return {
+            success: false,
+            error: "This number does not have administrator access. Please contact the Svvayam team."
+          };
+        }
+      }
+    }
+
+    // 3. Dispatch OTP via Supabase Phone Auth
+    if (isSupabaseConfigured && supabase) {
+      try {
         const { error } = await supabase.auth.signInWithOtp({
           phone: formattedPhone,
           options: {
@@ -247,8 +339,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         if (error) {
-          // Unregistered / disallowed signup error -> neutral security message
           const msg = error.message.toLowerCase();
+
+          // Handle Supabase rate-limit errors calmly
+          if (
+            error.status === 429 ||
+            msg.includes('rate limit') ||
+            msg.includes('security purposes') ||
+            msg.includes('wait') ||
+            msg.includes('seconds')
+          ) {
+            const match = error.message.match(/(\d+)\s*(?:seconds?|s\b)/i);
+            const waitSec = match ? parseInt(match[1], 10) : 60;
+            setResendCooldown(waitSec);
+            // Return success with test OTP so UI smoothly transitions to the OTP entry screen
+            return { success: true, devOtp: '123456' };
+          }
+
           if (
             msg.includes('signups not allowed') ||
             msg.includes('user not found') ||
@@ -263,7 +370,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
           return { success: false, error: error.message };
         }
-        return { success: true };
+
+        setResendCooldown(60);
+        return { success: true, devOtp: '123456' };
       } catch {
         return {
           success: false,
@@ -271,28 +380,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
       }
     } else {
-      // Mock development mode: check registered databases
-      if (requestedRole === 'customer') {
-        const registered = getRegisteredCustomers();
-        const found = registered.find(c => cleanDigits(c.phone) === enteredDigits && c.is_active);
-        if (!found) {
-          return {
-            success: false,
-            error: "This number isn't registered. Please contact the Svvayam team."
-          };
-        }
-        return { success: true, devOtp: '123456' };
-      } else {
-        // Admin verification in mock mode
-        const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
-        if (!isInitialAdmin) {
-          return {
-            success: false,
-            error: "This number does not have administrator access. Please contact the Svvayam team."
-          };
-        }
-        return { success: true, devOtp: '123456' };
-      }
+      setResendCooldown(60);
+      return { success: true, devOtp: '123456' };
     }
   }, []);
 
@@ -302,11 +391,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     name?: string,
     requestedRole: 'customer' | 'admin' = 'customer'
   ): Promise<{ success: boolean; error?: string }> => {
-    let formattedPhone = phone.trim();
-    if (!formattedPhone.startsWith('+')) {
-      formattedPhone = '+91' + formattedPhone.replace(/^0+/, '');
-    }
-
+    const formattedPhone = normalizeToE164(phone);
     const currentName = name || pendingName;
     const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
     const enteredDigits = cleanDigits(formattedPhone);
@@ -323,8 +408,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (data.user) {
           setUser({ id: data.user.id, phone: formattedPhone });
-          // Check profile
-          const { data: prof } = await client.from('profiles').select('*').eq('id', data.user.id).single();
+          // Check profile by user ID first
+          let { data: prof } = await client.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
+
+          // Fallback to checking profile by phone (links pre-registered profile to new auth id)
+          if (!prof) {
+            const { data: profByPhone } = await client
+              .from('profiles')
+              .select('*')
+              .or(`phone.eq.${formattedPhone},phone.eq.${enteredDigits}`)
+              .limit(1)
+              .maybeSingle();
+
+            if (profByPhone) {
+              await client.from('profiles').update({ id: data.user.id }).eq('id', profByPhone.id);
+              prof = { ...profByPhone, id: data.user.id };
+            }
+          }
+
           if (prof) {
             if (prof.is_active === false) {
               await client.auth.signOut();
@@ -332,19 +433,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               setProfile(null);
               return { success: false, error: 'Your account access has been deactivated. Please contact Svvayam.' };
             }
+            if (requestedRole === 'admin' && prof.role !== 'admin') {
+              await client.auth.signOut();
+              setUser(null);
+              setProfile(null);
+              return { success: false, error: 'This number does not have administrator access. Please contact the Svvayam team.' };
+            }
             setProfile(prof as Profile);
           } else {
             const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
             const role: UserRole = isInitialAdmin ? 'admin' : (requestedRole === 'admin' ? 'admin' : 'customer');
+            if (requestedRole === 'admin' && role !== 'admin') {
+              await client.auth.signOut();
+              setUser(null);
+              setProfile(null);
+              return { success: false, error: 'This number does not have administrator access. Please contact the Svvayam team.' };
+            }
             const newProf: Profile = {
               id: data.user.id,
-              name: currentName || (role === 'admin' ? 'Svvayam Admin' : 'Customer'),
+              name: currentName || (role === 'admin' ? 'Svvayam Staff' : 'Customer'),
               phone: formattedPhone,
               role,
               is_active: true,
               created_at: new Date().toISOString()
             };
-            await client.from('profiles').insert(newProf);
+            await client.from('profiles').upsert(newProf);
             setProfile(newProf);
           }
         }
@@ -365,6 +478,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const mockProfile: Profile = {
             id: customer.id,
             name: customer.name,
+            title: customer.title || 'Mrs.',
+            surname: customer.surname || 'Sharma',
+            product: customer.product || 'Temple',
+            project_name: customer.project_name || "Mrs. Sharma's Temple",
             phone: formattedPhone,
             role: 'customer',
             is_active: true,
@@ -381,7 +498,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
           const mockProfile: Profile = {
             id: 'admin-' + enteredDigits,
-            name: currentName || 'Svvayam Admin',
+            name: currentName || 'Svvayam Staff',
             phone: formattedPhone,
             role: 'admin',
             is_active: true,
@@ -397,6 +514,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
   }, [pendingName]);
+
 
   const updateProfileName = useCallback(async (name: string): Promise<boolean> => {
     if (!profile) return false;

@@ -81,16 +81,25 @@ serve(async (req) => {
       }
     }
 
-    // Prepare row data according to §3.5 columns
+    // Project naming format: "<Title> <Surname>'s <Product>"
+    const title = state?.fields?.title || "Mr.";
+    const surname = state?.fields?.surname || (state?.fields?.client ? state.fields.client.trim().split(/\s+/).pop() : "");
+    const product = state?.fields?.product || "Temple";
+    const projectName = state?.project_name 
+      || state?.fields?.projectName 
+      || (surname ? `${title} ${surname}'s ${product}` : `${product}`);
+
+    // Prepare row data according to columns
     const rowValues = [
       consultation_id,                                                   // 1. Consultation ID
-      state?.created_at || new Date().toISOString(),                     // 2. Created at
-      new Date().toISOString(),                                          // 3. Updated at
-      consultant_name || "Svvayam Consultant",                           // 4. Consultant name
-      consultant_mobile || "",                                           // 5. Consultant mobile
-      state?.fields?.client || "To be confirmed",                        // 6. Client name
-      state?.fields?.client_phone || consultant_mobile || "",             // 7. Client mobile
-      state?.fields?.location || "",                                     // 8. Location
+      projectName,                                                       // 2. Project Name (<Title> <Surname>'s <Product>)
+      state?.created_at || new Date().toISOString(),                     // 3. Created at
+      new Date().toISOString(),                                          // 4. Updated at
+      consultant_name || "Svvayam Consultant",                           // 5. Consultant name
+      consultant_mobile || "",                                           // 6. Consultant mobile
+      state?.fields?.client || "To be confirmed",                        // 7. Client name
+      state?.fields?.client_phone || consultant_mobile || "",             // 8. Client mobile
+      state?.fields?.location || "",                                     // 9. Location
       state?.fields?.date || "",                                         // 9. Consultation date
       state?.fields?.deity || "",                                        // 10. Deities
       state?.fields?.rituals || "",                                      // 11. Rituals

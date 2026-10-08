@@ -5,11 +5,11 @@ import { Logo } from '../components/ui/Logo';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Toast } from '../components/ui/Toast';
-import { ArrowLeft, User, ShieldCheck, Shield } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { ArrowLeft, User, ShieldCheck, Shield, Info } from 'lucide-react';
+import { cn, normalizeToE164 } from '../lib/utils';
 
 export const LoginPage: React.FC = () => {
-  const { user, isAdmin, isCustomer, isLoading, signInWithPhone, verifyOtp } = useAuth();
+  const { user, isAdmin, isCustomer, isLoading, signInWithPhone, verifyOtp, resendCooldown } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -23,6 +23,7 @@ export const LoginPage: React.FC = () => {
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [calmNotice, setCalmNotice] = useState<string | null>(null);
   const [countdown, setCountdown] = useState(0);
 
   // Sync role with query param if it changes
@@ -32,6 +33,13 @@ export const LoginPage: React.FC = () => {
       setActiveRole(r);
     }
   }, [searchParams]);
+
+  // Sync context cooldown to local timer if higher
+  useEffect(() => {
+    if (resendCooldown > countdown) {
+      setCountdown(resendCooldown);
+    }
+  }, [resendCooldown]);
 
   // If already logged in, skip login page and go straight to user's section
   useEffect(() => {
@@ -44,7 +52,7 @@ export const LoginPage: React.FC = () => {
     }
   }, [user, isAdmin, isCustomer, isLoading, navigate, redirectUrl]);
 
-  // Resend cooldown timer
+  // 60-second client-side countdown timer on button
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -56,28 +64,48 @@ export const LoginPage: React.FC = () => {
     setActiveRole(newRole);
     setSearchParams({ role: newRole });
     setError(null);
+    setCalmNotice(null);
     setStep('phone');
     setOtp('');
   };
 
-  const handleSendOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleanPhone = phone.trim();
-    if (cleanPhone.length < 10) {
+  const handleSendOtp = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (loading || countdown > 0) return;
+
+    const normalized = normalizeToE164(phone);
+    setPhone(normalized);
+
+    const digitsOnly = normalized.replace(/\D/g, '');
+    if (digitsOnly.length < 10) {
       setError('Please enter a valid mobile number with country code (e.g. +91 9845012345).');
       return;
     }
 
     setLoading(true);
     setError(null);
-    const res = await signInWithPhone(cleanPhone, undefined, activeRole);
+    setCalmNotice(null);
+
+    const res = await signInWithPhone(normalized, undefined, activeRole);
     setLoading(false);
 
     if (res.success) {
+      // Transition immediately to the OTP entry screen
       setStep('otp');
-      setCountdown(30);
+      setCountdown(60);
+      setCalmNotice('Verification code sent. Enter 123456 in demo mode.');
     } else {
-      setError(res.error || "This number isn't registered. Please contact the Svvayam team.");
+      // Check if the error returned was a rate-limit notice
+      const errLower = (res.error || '').toLowerCase();
+      if (errLower.includes('rate limit') || errLower.includes('wait') || errLower.includes('seconds')) {
+        const match = res.error?.match(/(\d+)\s*(?:seconds?|s\b)/i);
+        const waitSec = match ? parseInt(match[1], 10) : 60;
+        setCountdown(waitSec);
+        setStep('otp');
+        setCalmNotice(`A verification code was requested recently. You can enter it now or resend in ${waitSec}s.`);
+      } else {
+        setError(res.error || "This number isn't registered. Please contact the Svvayam team.");
+      }
     }
   };
 
@@ -90,7 +118,10 @@ export const LoginPage: React.FC = () => {
 
     setLoading(true);
     setError(null);
-    const res = await verifyOtp(phone.trim(), otp.trim(), undefined, activeRole);
+    setCalmNotice(null);
+
+    const normalized = normalizeToE164(phone);
+    const res = await verifyOtp(normalized, otp.trim(), undefined, activeRole);
     setLoading(false);
 
     if (res.success) {
@@ -102,6 +133,16 @@ export const LoginPage: React.FC = () => {
     } else {
       setError(res.error || 'Invalid or expired OTP code.');
     }
+  };
+
+  // Quick fill demo numbers in development
+  const handleFillDemo = (demoPhone: string, role: 'customer' | 'admin') => {
+    setActiveRole(role);
+    setSearchParams({ role });
+    setPhone(demoPhone);
+    setOtp('123456');
+    setError(null);
+    setCalmNotice(null);
   };
 
   return (
@@ -158,6 +199,14 @@ export const LoginPage: React.FC = () => {
           </div>
         )}
 
+        {/* Calm Informational Message */}
+        {calmNotice && (
+          <div className="p-3 bg-emerald-50/80 border border-emerald-200/80 rounded-[12px] flex items-start gap-2 text-xs text-[#0E2A1C] font-sans">
+            <Info className="w-4 h-4 shrink-0 text-[#0E2A1C] mt-0.5" />
+            <div className="flex-1 leading-relaxed">{calmNotice}</div>
+          </div>
+        )}
+
         {error && <Toast type="error" message={error} onClose={() => setError(null)} />}
 
         {step === 'phone' ? (
@@ -181,11 +230,17 @@ export const LoginPage: React.FC = () => {
               type="submit"
               variant="primary"
               size="lg"
-              disabled={loading}
+              disabled={loading || countdown > 0}
               className="w-full relative group overflow-hidden border border-[#FFE500]/30 hover:border-[#FFE500] transition-colors"
             >
               <span className="flex items-center justify-center gap-1.5">
-                <span>{loading ? 'Sending code...' : 'Sign In with OTP'}</span>
+                <span>
+                  {loading
+                    ? 'Sending verification code...'
+                    : countdown > 0
+                    ? `Resend in ${countdown}s`
+                    : 'Sign In with OTP'}
+                </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] group-hover:scale-125 transition-transform" />
               </span>
             </Button>
@@ -226,7 +281,11 @@ export const LoginPage: React.FC = () => {
             <div className="flex items-center justify-between text-xs text-[#5C5C5C] pt-2 font-sans">
               <button
                 type="button"
-                onClick={() => setStep('phone')}
+                onClick={() => {
+                  setStep('phone');
+                  setCalmNotice(null);
+                  setError(null);
+                }}
                 className="flex items-center gap-1 hover:text-[#0A0A0A] cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
@@ -236,7 +295,7 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 disabled={countdown > 0 || loading}
-                onClick={handleSendOtp}
+                onClick={() => handleSendOtp()}
                 className="text-[#0A0A0A] hover:underline disabled:opacity-40 disabled:no-underline cursor-pointer"
               >
                 {countdown > 0 ? `Resend in ${countdown}s` : 'Resend OTP'}
@@ -245,27 +304,46 @@ export const LoginPage: React.FC = () => {
           </form>
         )}
 
-        {/* Development & Verification Credentials */}
-        <div className="p-3 bg-[#FAFAFA] rounded-[14px] border border-[#ECECEC] text-[11px] text-[#5C5C5C] space-y-1.5 font-sans">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 text-[#0A0A0A] font-medium">
-              <Shield className="w-3.5 h-3.5 text-[#0E2A1C]" />
-              <span>Registered Numbers (OTP: 123456)</span>
+        {/* Demo Mode Hint Card - ONLY shown in development / demo mode, hidden in production */}
+        {(import.meta.env.DEV || import.meta.env.VITE_SHOW_DEMO_CARD === 'true') && (
+          <div className="p-3 bg-[#FAFAFA] rounded-[14px] border border-[#ECECEC] text-[11px] text-[#5C5C5C] space-y-2 font-sans">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1 text-[#0A0A0A] font-medium">
+                <Shield className="w-3.5 h-3.5 text-[#0E2A1C]" />
+                <span>Demo mode: Test Credentials</span>
+              </div>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[#FFE500]/25 text-neutral-900 font-semibold">
+                OTP: 123456
+              </span>
             </div>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500]" />
+            <div className="space-y-1 font-mono text-[10px]">
+              <div className="flex items-center justify-between">
+                <span>Customer: <strong className="text-[#0A0A0A]">+91 9845012345</strong> (Mala Sharma)</span>
+                <button
+                  type="button"
+                  onClick={() => handleFillDemo('+919845012345', 'customer')}
+                  className="text-xs text-[#0E2A1C] underline font-sans cursor-pointer hover:text-black"
+                >
+                  Use
+                </button>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Admin: <strong className="text-[#0A0A0A]">+91 9182424228</strong> (Svvayam Staff)</span>
+                <button
+                  type="button"
+                  onClick={() => handleFillDemo('+919182424228', 'admin')}
+                  className="text-xs text-[#0E2A1C] underline font-sans cursor-pointer hover:text-black"
+                >
+                  Use
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="space-y-1 font-mono text-[10px]">
-            <div>
-              Customer: <strong className="text-[#0A0A0A]">+91 9845012345</strong> (Mala Sharma)
-            </div>
-            <div>
-              Admin: <strong className="text-[#0A0A0A]">+91 9182424228</strong> (Svvayam Staff)
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default LoginPage;
+

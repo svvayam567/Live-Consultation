@@ -15,7 +15,7 @@ import {
   REFERENCE_ROW_NAMES,
   REFERENCE_COL_NAMES
 } from '../lib/constants';
-import { assetUrl } from '../lib/utils';
+import { assetUrl, formatProjectName } from '../lib/utils';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { useAuth } from './AuthContext';
 
@@ -191,8 +191,11 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
         // If user is authenticated and Supabase is configured, save to Postgres
         if (isSupabaseConfigured && supabase && user) {
+          const projName = nextState.project_name || nextState.fields.projectName || nextState.fields.project_name || (nextState.fields.surname ? formatProjectName(nextState.fields.title, nextState.fields.surname, nextState.fields.product) : null);
           const payload = {
             created_by: user.id,
+            project_name: projName,
+            client_name: nextState.fields.client || null,
             client_phone: nextState.fields.client ? nextState.fields.client : null,
             fields: nextState.fields,
             selected_reference: nextState.selected_reference,

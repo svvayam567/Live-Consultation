@@ -65,3 +65,71 @@ export function assetUrl(path: string): string {
   const clean = path.startsWith('/') ? path.slice(1) : path;
   return `${import.meta.env.BASE_URL}${clean}`;
 }
+
+/**
+ * Normalizes any phone number input to strict E.164 (+91XXXXXXXXXX) format.
+ * Strips whitespace, parentheses, dashes, leading zeros. Defaults to +91 country code.
+ */
+export function normalizeToE164(phone: string): string {
+  if (!phone) return '+91';
+  const trimmed = phone.trim();
+  const digitsOnly = trimmed.replace(/\D/g, '');
+
+  if (!digitsOnly) return '+91';
+
+  // If already starts with +
+  if (trimmed.startsWith('+')) {
+    return '+' + digitsOnly;
+  }
+
+  // If 12 digits starting with 91 (e.g. 919845012345)
+  if (digitsOnly.length === 12 && digitsOnly.startsWith('91')) {
+    return '+' + digitsOnly;
+  }
+
+  // If 11 digits starting with 0 (e.g. 09845012345)
+  if (digitsOnly.length === 11 && digitsOnly.startsWith('0')) {
+    return '+91' + digitsOnly.slice(1);
+  }
+
+  // If standard 10 digits
+  if (digitsOnly.length === 10) {
+    return '+91' + digitsOnly;
+  }
+
+  // Fallback
+  return '+' + (digitsOnly.startsWith('91') ? digitsOnly : '91' + digitsOnly);
+}
+
+/**
+ * Extract surname / last name from full client name (e.g. "Mala Sharma" -> "Sharma")
+ */
+export function extractSurname(fullName: string): string {
+  if (!fullName) return '';
+  // Remove known titles if present at start
+  const cleaned = fullName.replace(/^(Mr\.|Mrs\.|Ms\.|Dr\.)\s+/i, '').trim();
+  const parts = cleaned.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '';
+  return parts[parts.length - 1];
+}
+
+/**
+ * Standard project naming format: "<Title> <Surname>'s <Product>"
+ * Examples: "Mrs. Pal's Temple", "Mr. Agarwal's Sanctum", "Mrs. Sharma's Temple"
+ */
+export function formatProjectName(
+  title: string | undefined = 'Mr.',
+  surname: string | undefined = '',
+  product: string | undefined = 'Temple'
+): string {
+  const cleanTitle = (title || 'Mr.').trim();
+  const cleanSurname = (surname || '').trim();
+  const cleanProduct = (product || 'Temple').trim();
+
+  if (!cleanSurname) {
+    return cleanProduct;
+  }
+
+  return `${cleanTitle} ${cleanSurname}'s ${cleanProduct}`;
+}
+

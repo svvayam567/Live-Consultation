@@ -1,10 +1,17 @@
 export type UserRole = 'admin' | 'client' | 'customer';
 
+export type CustomerTitle = 'Mr.' | 'Mrs.' | 'Ms.' | 'Dr.';
+export type CustomerProduct = 'Temple' | 'Puja Mandir' | 'Sanctum';
+
 export interface Profile {
   id: string;
   name: string;
   phone: string;
   role: UserRole;
+  title?: CustomerTitle;
+  surname?: string;
+  product?: CustomerProduct;
+  project_name?: string;
   is_active?: boolean;
   created_at: string;
 }
@@ -50,6 +57,11 @@ export interface JourneyAsset {
 export interface ConsultationFields {
   // Step 1: Purpose
   client?: string;
+  title?: CustomerTitle;
+  surname?: string;
+  product?: CustomerProduct;
+  projectName?: string;
+  project_name?: string;
   location?: string;
   date?: string;
 
@@ -83,6 +95,7 @@ export interface ConsultationFields {
 export interface ConsultationState {
   id?: string;
   version: number;
+  project_name?: string;
   fields: ConsultationFields;
   images: ConsultationImage[];
   slide: number;
@@ -137,6 +150,10 @@ export interface PortalMessage {
 export interface CustomerRecord {
   id: string;
   name: string;
+  title?: CustomerTitle;
+  surname?: string;
+  product?: CustomerProduct;
+  project_name?: string;
   phone: string;
   location?: string;
   consultation_id?: string;

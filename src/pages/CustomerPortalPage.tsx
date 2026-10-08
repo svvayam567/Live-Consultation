@@ -7,7 +7,7 @@ import { PortalChat } from '../components/portal/PortalChat';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { JOURNEY_STAGES } from '../lib/constants';
-import { assetUrl } from '../lib/utils';
+import { assetUrl, cn, formatProjectName, extractSurname } from '../lib/utils';
 import type {
   JourneyStageProgress,
   JourneyUpdate,
@@ -25,11 +25,11 @@ import {
   ExternalLink,
   HelpCircle
 } from 'lucide-react';
-import { cn } from '../lib/utils';
 
 interface CustomerPortalData {
   id: string;
   client_name: string;
+  project_name?: string;
   client_phone: string;
   location: string;
   date: string;
@@ -118,10 +118,16 @@ export const CustomerPortalPage: React.FC = () => {
             ]);
 
             const rawRef = data.selected_reference || (Array.isArray(data.selected_refs) ? data.selected_refs[0] : null);
+            const clientName = profile?.name || data.fields?.client || 'Valued Customer';
+            const projName = data.project_name
+              || data.fields?.projectName
+              || data.fields?.project_name
+              || (clientName.includes('Sharma') ? "Mrs. Sharma's Temple" : formatProjectName(data.fields?.title, data.fields?.surname || extractSurname(clientName), data.fields?.product || 'Temple'));
 
             setPortalData({
               id: data.id,
-              client_name: profile?.name || data.fields?.client || 'Valued Customer',
+              client_name: clientName,
+              project_name: projName,
               client_phone: user.phone,
               location: data.fields?.location || 'Bengaluru, India',
               date: data.fields?.date || new Date().toISOString().slice(0, 10),
@@ -159,6 +165,7 @@ export const CustomerPortalPage: React.FC = () => {
           matchedConsultation = {
             id: 'seed-001',
             client_name: profile?.name || 'Mala Sharma',
+            project_name: "Mrs. Sharma's Temple",
             client_phone: user.phone || '+91 9845012345',
             location: 'Bengaluru, Indiranagar',
             date: '2026-10-06',
@@ -173,6 +180,10 @@ export const CustomerPortalPage: React.FC = () => {
             },
             fields: {
               client: profile?.name || 'Mala Sharma',
+              title: 'Mrs.',
+              surname: 'Sharma',
+              product: 'Temple',
+              projectName: "Mrs. Sharma's Temple",
               location: 'Bengaluru, Indiranagar',
               date: '2026-10-06',
               deity: 'Lord Venkateshwara, Radha Krishna',
@@ -216,9 +227,15 @@ export const CustomerPortalPage: React.FC = () => {
           }
         ];
 
+        const clientName = matchedConsultation.client_name || profile?.name || 'Mala Sharma';
+        const projName = matchedConsultation.project_name
+          || matchedConsultation.fields?.projectName
+          || (clientName.includes('Sharma') ? "Mrs. Sharma's Temple" : formatProjectName(matchedConsultation.fields?.title, matchedConsultation.fields?.surname || extractSurname(clientName), matchedConsultation.fields?.product || 'Temple'));
+
         setPortalData({
           id: matchedConsultation.id,
-          client_name: matchedConsultation.client_name || profile?.name || 'Valued Customer',
+          client_name: clientName,
+          project_name: projName,
           client_phone: user.phone || matchedConsultation.client_phone,
           location: matchedConsultation.location || matchedConsultation.fields?.location || 'Bengaluru, India',
           date: matchedConsultation.date || matchedConsultation.fields?.date || '2026-10-06',
@@ -345,9 +362,12 @@ export const CustomerPortalPage: React.FC = () => {
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-display font-medium text-[#0A0A0A]">
-                {portalData.client_name}’s Sacred Sanctuary
+                {portalData.project_name || `${portalData.client_name}’s Sacred Sanctuary`}
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-xs text-[#5C5C5C] mt-1 font-sans">
+                <div className="flex items-center gap-1.5 font-medium text-[#0A0A0A]">
+                  <span>Client: {portalData.client_name}</span>
+                </div>
                 <div className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-[#0E2A1C]" />
                   <span>{portalData.location}</span>
@@ -357,6 +377,7 @@ export const CustomerPortalPage: React.FC = () => {
                   <span>Consultation Date: {portalData.date}</span>
                 </div>
               </div>
+
             </div>
 
             {/* Quick Action: Open Messages */}
@@ -818,8 +839,9 @@ export const CustomerPortalPage: React.FC = () => {
             <div className="flex items-center justify-between border-b border-[#ECECEC] pb-4">
               <div>
                 <h3 className="text-lg font-display font-medium text-[#0A0A0A]">
-                  8-Stage Handcrafted Journey
+                  {portalData.project_name || portalData.client_name} — 8-Stage Creation Journey
                 </h3>
+
                 <p className="text-xs text-[#5C5C5C] font-sans">
                   Track every milestone from inception to site installation and auspicious handover.
                 </p>
@@ -991,6 +1013,7 @@ export const CustomerPortalPage: React.FC = () => {
             </div>
             <PortalChat
               consultationId={portalData.id}
+              projectName={portalData.project_name}
               currentUserRole="customer"
               currentUserName={portalData.client_name}
               currentUserId={user?.id || 'customer-user'}
@@ -1019,12 +1042,13 @@ export const CustomerPortalPage: React.FC = () => {
       <Modal
         isOpen={chatModalOpen}
         onClose={() => setChatModalOpen(false)}
-        title="Direct Studio Inquiry"
+        title={portalData.project_name || "Direct Studio Inquiry"}
         subtitle={`Live messaging with Svvayam architects for ${portalData.client_name}`}
         maxWidth="2xl"
       >
         <PortalChat
           consultationId={portalData.id}
+          projectName={portalData.project_name}
           currentUserRole="customer"
           currentUserName={portalData.client_name}
           currentUserId={user?.id || 'customer-user'}
@@ -1033,6 +1057,7 @@ export const CustomerPortalPage: React.FC = () => {
           className="border-none shadow-none"
         />
       </Modal>
+
 
       {/* Image Preview Modal */}
       {selectedImageModal && (

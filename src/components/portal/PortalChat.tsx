@@ -16,6 +16,7 @@ import { cn } from '../../lib/utils';
 
 export interface PortalChatProps {
   consultationId: string;
+  projectName?: string;
   currentUserRole: 'customer' | 'admin';
   currentUserName: string;
   currentUserId: string;
@@ -29,6 +30,7 @@ const LOCAL_STORAGE_MESSAGES_PREFIX = 'svvayam_messages_v1_';
 
 export const PortalChat: React.FC<PortalChatProps> = ({
   consultationId,
+  projectName,
   currentUserRole,
   currentUserName,
   currentUserId,
@@ -343,8 +345,13 @@ export const PortalChat: React.FC<PortalChatProps> = ({
             <MessageCircle className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-[#0A0A0A]">
-              Direct Message · Svvayam Architecture Guild
+            <h3 className="text-xs font-semibold text-[#0A0A0A] flex items-center gap-2">
+              <span>Direct Message · Svvayam Architecture Guild</span>
+              {projectName && (
+                <span className="text-[10px] font-mono font-medium text-[#0E2A1C] bg-[#0E2A1C]/10 border border-[#0E2A1C]/20 px-2 py-0.5 rounded-full">
+                  {projectName}
+                </span>
+              )}
             </h3>
             <p className="text-[11px] text-[#5C5C5C] font-sans">
               Our team usually replies within one working day (Mon–Sat, 10 AM–7 PM IST)

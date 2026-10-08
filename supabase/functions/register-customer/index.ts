@@ -15,6 +15,10 @@ interface RegisterRequest {
   action?: 'register' | 'deactivate';
   name?: string;
   phone?: string;
+  title?: string;
+  surname?: string;
+  product?: string;
+  project_name?: string;
   location?: string;
   consultation_id?: string;
   create_new_consultation?: boolean;
@@ -101,6 +105,10 @@ serve(async (req) => {
     const rawName = (payload.name || "").trim();
     let rawPhone = (payload.phone || "").trim();
     const location = (payload.location || "").trim();
+    const title = (payload.title || "Mr.").trim();
+    const surname = (payload.surname || (rawName ? rawName.trim().split(/\s+/).pop() : "") || "").trim();
+    const product = (payload.product || "Temple").trim();
+    const projectName = payload.project_name || (surname ? `${title} ${surname}'s ${product}` : product);
 
     if (!rawName || !rawPhone) {
       throw new Error("Customer name and phone number are required.");
@@ -127,7 +135,7 @@ serve(async (req) => {
       const { data: created, error: createErr } = await supabaseAdmin.auth.admin.createUser({
         phone: rawPhone,
         phone_confirm: true,
-        user_metadata: { name: rawName }
+        user_metadata: { name: rawName, project_name: projectName }
       });
 
       if (createErr || !created.user) {
@@ -144,6 +152,10 @@ serve(async (req) => {
         name: rawName,
         phone: rawPhone,
         role: "customer",
+        title,
+        surname,
+        product,
+        project_name: projectName,
         is_active: true
       }, { onConflict: "id" });
 
@@ -160,8 +172,15 @@ serve(async (req) => {
           client_id: customerUserId,
           client_phone: rawPhone,
           created_by: callerUser.id,
+          project_name: projectName,
+          client_name: rawName,
           fields: {
             client: rawName,
+            title,
+            surname,
+            product,
+            projectName,
+            project_name: projectName,
             location: location,
             date: new Date().toLocaleDateString("en-CA"),
           },
@@ -180,7 +199,9 @@ serve(async (req) => {
         .from("consultations")
         .update({
           client_id: customerUserId,
-          client_phone: rawPhone
+          client_phone: rawPhone,
+          project_name: projectName,
+          client_name: rawName
         })
         .eq("id", linkedConsultationId);
 
@@ -195,6 +216,10 @@ serve(async (req) => {
           id: customerUserId,
           name: rawName,
           phone: rawPhone,
+          title,
+          surname,
+          product,
+          project_name: projectName,
           location,
           consultation_id: linkedConsultationId,
           is_active: true

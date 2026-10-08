@@ -107,8 +107,13 @@ export const Step8Proposal: React.FC = () => {
 
           <div className="text-left sm:text-right text-xs space-y-1 font-sans">
             <div className="font-semibold text-[#0A0A0A] text-sm font-sans">
-              {state.fields.client || 'Client Consultation'}
+              {state.project_name || state.fields.projectName || state.fields.project_name || state.fields.client || 'Client Consultation'}
             </div>
+            {state.fields.client && (state.project_name || state.fields.projectName || state.fields.project_name) && (
+              <div className="text-neutral-500 font-medium">
+                Client: {state.fields.client}
+              </div>
+            )}
             <div className="text-[#5C5C5C]">
               Location: {state.fields.location || 'Not specified'}
             </div>
