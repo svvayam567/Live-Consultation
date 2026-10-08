@@ -258,7 +258,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           ) {
             return {
               success: false,
-              error: 'We could not find this number. Please contact Svvayam to get access.'
+              error: "This number isn't registered. Please contact the Svvayam team."
             };
           }
           return { success: false, error: error.message };
@@ -267,7 +267,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch {
         return {
           success: false,
-          error: 'We could not find this number. Please contact Svvayam to get access.'
+          error: "This number isn't registered. Please contact the Svvayam team."
         };
       }
     } else {
@@ -278,7 +278,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!found) {
           return {
             success: false,
-            error: 'We could not find this number. Please contact Svvayam to get access.'
+            error: "This number isn't registered. Please contact the Svvayam team."
           };
         }
         return { success: true, devOtp: '123456' };
@@ -288,7 +288,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!isInitialAdmin) {
           return {
             success: false,
-            error: 'This number is not registered for staff access. Please contact Svvayam administration.'
+            error: "This number does not have administrator access. Please contact the Svvayam team."
           };
         }
         return { success: true, devOtp: '123456' };
@@ -360,7 +360,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const registered = getRegisteredCustomers();
           const customer = registered.find(c => cleanDigits(c.phone) === enteredDigits);
           if (!customer || !customer.is_active) {
-            return { success: false, error: 'We could not find this number. Please contact Svvayam to get access.' };
+            return { success: false, error: "This number isn't registered. Please contact the Svvayam team." };
           }
           const mockProfile: Profile = {
             id: customer.id,
@@ -377,7 +377,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else {
           const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
           if (!isInitialAdmin) {
-            return { success: false, error: 'This number is not authorized for staff access.' };
+            return { success: false, error: "This number does not have administrator access. Please contact the Svvayam team." };
           }
           const mockProfile: Profile = {
             id: 'admin-' + enteredDigits,

@@ -413,7 +413,8 @@ export const CustomerPortalPage: React.FC = () => {
             { id: 'scope', label: 'Scope & Budget' },
             { id: 'proposal', label: 'Proposal' },
             { id: 'journey', label: '8-Stage Journey' },
-            { id: 'updates', label: `Updates ${unreadUpdatesCount > 0 ? `(${unreadUpdatesCount})` : ''}` }
+            { id: 'updates', label: `Updates ${unreadUpdatesCount > 0 ? `(${unreadUpdatesCount})` : ''}` },
+            { id: 'messages', label: 'Message the Team' }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -972,6 +973,31 @@ export const CustomerPortalPage: React.FC = () => {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* SECTION: MESSAGE THE TEAM (DOUBTS & REPLIES)             */}
+        {/* ======================================================== */}
+        {activeSection === 'messages' && (
+          <div className="bg-white rounded-[20px] p-6 sm:p-8 border border-[#ECECEC] shadow-[0_10px_30px_rgba(0,0,0,0.06)] space-y-4">
+            <div className="border-b border-[#ECECEC] pb-4">
+              <h3 className="text-lg font-display font-medium text-[#0A0A0A]">
+                Message the Svvayam Team
+              </h3>
+              <p className="text-xs text-[#5C5C5C] font-sans">
+                Ask questions or clarify doubts regarding your sanctum dimensions, materials, and artisan timeline.
+              </p>
+            </div>
+            <PortalChat
+              consultationId={portalData.id}
+              currentUserRole="customer"
+              currentUserName={portalData.client_name}
+              currentUserId={user?.id || 'customer-user'}
+              prefillContext={messagePrefill}
+              onClearPrefill={() => setMessagePrefill(null)}
+              className="border-none shadow-none"
+            />
           </div>
         )}
       </main>

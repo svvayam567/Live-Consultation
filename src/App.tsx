@@ -23,11 +23,11 @@ const ProtectedAdminRoute: React.FC = () => {
   }
 
   if (!user) {
-    return <Navigate to="/login?role=admin&redirect=/admin" replace />;
+    return <Navigate to="/?role=admin&redirect=/admin" replace />;
   }
 
   if (!isAdmin) {
-    return <Navigate to="/portal" replace />;
+    return <Navigate to="/client" replace />;
   }
 
   return <AdminDashboard />;
@@ -46,38 +46,103 @@ const ProtectedConsultRoute: React.FC = () => {
   }
 
   if (!user) {
-    return <Navigate to="/login?role=admin&redirect=/consult" replace />;
+    return <Navigate to="/?role=admin&redirect=/consult" replace />;
   }
 
   if (!isAdmin) {
-    return <Navigate to="/portal" replace />;
+    return <Navigate to="/client" replace />;
   }
 
   return <ConsultationPage />;
 };
 
-// Guard for Customer Portal
-const ProtectedPortalRoute: React.FC = () => {
+// Guard for Client Section (/client)
+const ProtectedClientRoute: React.FC = () => {
   const { user, isAdmin, isLoading } = useAuth();
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
-        Loading client portal...
+        Loading sanctum portal...
       </div>
     );
   }
 
   if (!user) {
-    return <Navigate to="/login?role=customer&redirect=/portal" replace />;
+    return <Navigate to="/?role=customer&redirect=/client" replace />;
   }
 
-  // If staff/admin opens /portal, redirect to their home
+  // If staff/admin opens /client, redirect to their home
   if (isAdmin) {
     return <Navigate to="/admin" replace />;
   }
 
   return <CustomerPortalPage />;
+};
+
+// Guard for Dedicated Client Explorer Page (Staff only)
+const ProtectedExplorerRoute: React.FC = () => {
+  const { user, isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Loading explorer...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/?role=admin&redirect=/client-explorer" replace />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/client" replace />;
+  }
+
+  return <ClientExplorerPage />;
+};
+
+// Guard for Proposal View Page
+const ProtectedProposalRoute: React.FC = () => {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Loading proposal...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <ProposalViewPage />;
+};
+
+// Guard for Presentations & Architectural Showcase (Staff only)
+const ProtectedShowcaseRoute: React.FC = () => {
+  const { user, isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Loading showcase...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/?role=admin&redirect=/showcase" replace />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/client" replace />;
+  }
+
+  return <LandingPage />;
 };
 
 export const App: React.FC = () => {
@@ -86,29 +151,31 @@ export const App: React.FC = () => {
       <AuthProvider>
         <ConsultationProvider>
           <Routes>
-            {/* Landing Page */}
-            <Route path="/" element={<LandingPage />} />
+            {/* Entry / Default Route: Login Page */}
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/login" element={<Navigate to="/" replace />} />
 
-            {/* Dedicated Client Explorer Page */}
-            <Route path="/client-explorer" element={<ClientExplorerPage />} />
+            {/* Client Section (/client) */}
+            <Route path="/client" element={<ProtectedClientRoute />} />
+            <Route path="/portal" element={<Navigate to="/client" replace />} />
 
-            {/* Authentication (Phone OTP) */}
-            <Route path="/login" element={<LoginPage />} />
+            {/* Admin Console (/admin) */}
+            <Route path="/admin" element={<ProtectedAdminRoute />} />
 
-            {/* Customer Portal (/portal) */}
-            <Route path="/portal" element={<ProtectedPortalRoute />} />
-
-            {/* Live Consultation 8-step flow (Admin/Staff only) */}
+            {/* Live Consultation (Admin only) */}
             <Route path="/consult" element={<ProtectedConsultRoute />} />
             <Route path="/consult/:id" element={<ProtectedConsultRoute />} />
 
-            {/* Public/Customer Proposal View */}
-            <Route path="/proposal/:id" element={<ProposalViewPage />} />
+            {/* Dedicated Client Explorer (Admin only) */}
+            <Route path="/client-explorer" element={<ProtectedExplorerRoute />} />
 
-            {/* Admin Console (Protected) */}
-            <Route path="/admin" element={<ProtectedAdminRoute />} />
+            {/* Architectural Showcase & Presentations (Admin only) */}
+            <Route path="/showcase" element={<ProtectedShowcaseRoute />} />
 
-            {/* Catch-all */}
+            {/* Proposal View */}
+            <Route path="/proposal/:id" element={<ProtectedProposalRoute />} />
+
+            {/* Catch-all: Redirect to Entry Login */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </ConsultationProvider>

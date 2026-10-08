@@ -29,6 +29,7 @@ import {
   Unlock,
   Shield
 } from 'lucide-react';
+import { JOURNEY_STAGES } from '../lib/constants';
 import type { ConsultationState, SelectedReference, CustomerRecord } from '../types/consultation';
 import { assetUrl } from '../lib/utils';
 import { cn } from '../lib/utils';
@@ -208,6 +209,19 @@ export const AdminDashboard: React.FC = () => {
   // Messages inbox state
   const [selectedThreadConsultationId, setSelectedThreadConsultationId] = useState<string | null>(null);
 
+  // Client inspection modal tab and journey controls state
+  const [modalTab, setModalTab] = useState<'details' | 'journey' | 'chat'>('details');
+  const [journeyStages, setJourneyStages] = useState<Array<{ stage: number; status: 'not_started' | 'in_progress' | 'completed' }>>([
+    { stage: 0, status: 'completed' },
+    { stage: 1, status: 'completed' },
+    { stage: 2, status: 'in_progress' },
+    { stage: 3, status: 'not_started' },
+    { stage: 4, status: 'not_started' },
+    { stage: 5, status: 'not_started' },
+    { stage: 6, status: 'not_started' },
+    { stage: 7, status: 'not_started' },
+  ]);
+
   // Non-admins who open its URL are immediately redirected away
   if (!authLoading && !isAdmin) {
     return <Navigate to="/consult" replace />;
@@ -351,8 +365,27 @@ export const AdminDashboard: React.FC = () => {
         console.warn('Internal notes error:', err);
       }
     }
+  };
 
-    setToastMsg('Internal notes saved successfully.');
+  // Update 8-stage journey status for selected client
+  const handleUpdateStageStatus = async (stageIdx: number, newStatus: 'not_started' | 'in_progress' | 'completed') => {
+    setJourneyStages(prev => prev.map(s => s.stage === stageIdx ? { ...s, status: newStatus } : s));
+    setToastMsg(`Stage ${stageIdx + 1} updated to ${newStatus.replace('_', ' ')}`);
+
+    if (isSupabaseConfigured && supabase && selectedRecord) {
+      try {
+        await supabase
+          .from('journey_stage_progress')
+          .upsert({
+            consultation_id: selectedRecord.id,
+            stage: stageIdx,
+            status: newStatus,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'consultation_id,stage' });
+      } catch (err) {
+        console.warn('Journey stage update error:', err);
+      }
+    }
   };
 
   // Handle Register Customer submission
@@ -545,6 +578,20 @@ export const AdminDashboard: React.FC = () => {
               <Button variant="outline" size="sm" className="text-xs">
                 <ArrowLeft className="w-3.5 h-3.5 mr-1" />
                 <span>Live Consultation</span>
+              </Button>
+            </Link>
+
+            <Link to="/client-explorer">
+              <Button variant="outline" size="sm" className="text-xs">
+                <Grid className="w-3.5 h-3.5 mr-1" />
+                <span>Client Explorer</span>
+              </Button>
+            </Link>
+
+            <Link to="/showcase">
+              <Button variant="outline" size="sm" className="text-xs">
+                <Layers className="w-3.5 h-3.5 mr-1" />
+                <span>Showcase & Docs</span>
               </Button>
             </Link>
 
@@ -1141,70 +1188,211 @@ export const AdminDashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Internal Admin Notes (Hidden from customer) */}
-            <div className="p-3.5 rounded-[14px] bg-[#FAFAFA] border border-[#ECECEC] space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-1.5 text-[#0A0A0A] font-semibold text-xs">
-                  <Shield className="w-3.5 h-3.5 text-[#0E2A1C]" />
-                  <span>Internal Notes (Admin & Team Only · Not visible in Customer Portal)</span>
-                </div>
-              </div>
-              <textarea
-                rows={3}
-                defaultValue={selectedRecord.internal_notes || ''}
-                onBlur={(e) => handleSaveInternalNotes(selectedRecord.id, e.target.value)}
-                placeholder="Enter private team notes regarding carving progress, factory dispatch or client preferences..."
-                className="w-full p-2.5 rounded-[10px] border border-[#ECECEC] text-xs font-sans bg-white focus:outline-none focus:ring-2 focus:ring-[#0E2A1C]"
-              />
-              <span className="text-[10px] text-neutral-400 block text-right">
-                Auto-saved upon clicking outside this box.
-              </span>
+            {/* Modal Internal Navigation Tabs */}
+            <div className="flex items-center gap-1.5 bg-[#F1F1F1] p-1 rounded-[12px]">
+              <button
+                type="button"
+                onClick={() => setModalTab('details')}
+                className={cn(
+                  "flex-1 py-1.5 px-3 rounded-[9px] font-medium text-xs transition-all cursor-pointer",
+                  modalTab === 'details'
+                    ? "bg-white text-[#0A0A0A] shadow-xs"
+                    : "text-neutral-500 hover:text-[#0A0A0A]"
+                )}
+              >
+                Details & Scope
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setModalTab('journey')}
+                className={cn(
+                  "flex-1 py-1.5 px-3 rounded-[9px] font-medium text-xs transition-all cursor-pointer",
+                  modalTab === 'journey'
+                    ? "bg-white text-[#0A0A0A] shadow-xs"
+                    : "text-neutral-500 hover:text-[#0A0A0A]"
+                )}
+              >
+                8-Stage Journey (Controls)
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setModalTab('chat')}
+                className={cn(
+                  "flex-1 py-1.5 px-3 rounded-[9px] font-medium text-xs transition-all cursor-pointer",
+                  modalTab === 'chat'
+                    ? "bg-white text-[#0A0A0A] shadow-xs"
+                    : "text-neutral-500 hover:text-[#0A0A0A]"
+                )}
+              >
+                Doubts & Chat Thread
+              </button>
             </div>
 
-            {selectedRecord.state?.fields && (
-              <div className="space-y-3">
-                <div>
-                  <span className="font-medium text-neutral-500 block">Deities & Worship</span>
-                  <p className="text-[#0A0A0A] mt-0.5">{selectedRecord.state.fields.deity || 'Not specified'}</p>
-                  <p className="text-neutral-500 mt-0.5">{selectedRecord.state.fields.rituals}</p>
-                </div>
-
-                <div>
-                  <span className="font-medium text-neutral-500 block">Available Dimensions & Features</span>
-                  <p className="text-[#0A0A0A] mt-0.5">{selectedRecord.state.fields.dimensions || 'Pending confirmation'}</p>
-                  <p className="text-neutral-500 mt-0.5">{selectedRecord.state.fields.features}</p>
-                </div>
-
-                <div>
-                  <span className="font-medium text-neutral-500 block">Recommended Scope & Budget</span>
-                  <p className="text-[#0A0A0A] mt-0.5">{selectedRecord.state.fields.scope}</p>
-                  <div className="mt-1 flex items-center space-x-2">
-                    <span className="font-mono font-semibold text-[#0A0A0A]">Budget: {selectedRecord.state.fields.estimate}</span>
-                  </div>
-                </div>
-
-                {selectedRecord.selected_reference && (
-                  <div>
-                    <span className="font-medium text-neutral-500 block mb-1">Selected Reference</span>
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 border border-[#ECECEC]">
-                      {selectedRecord.selected_reference.data && (
-                        <img
-                          src={selectedRecord.selected_reference.data}
-                          alt={selectedRecord.selected_reference.caption || 'Reference'}
-                          className="w-14 h-14 rounded-lg object-cover border border-neutral-200 shrink-0"
-                        />
-                      )}
-                      <div className="min-w-0">
-                        <p className="text-xs font-medium text-[#0A0A0A] truncate">
-                          {selectedRecord.selected_reference.caption || 'Selected Reference'}
-                        </p>
-                        <p className="text-[10px] text-neutral-500 capitalize mt-0.5">
-                          Source: {selectedRecord.selected_reference.source ? selectedRecord.selected_reference.source.replace('_', ' ') : 'Reference selection'}
-                        </p>
-                      </div>
+            {/* TAB 1: DETAILS & SCOPE */}
+            {modalTab === 'details' && (
+              <div className="space-y-4">
+                {/* Internal Admin Notes (Hidden from customer) */}
+                <div className="p-3.5 rounded-[14px] bg-[#FAFAFA] border border-[#ECECEC] space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1.5 text-[#0A0A0A] font-semibold text-xs">
+                      <Shield className="w-3.5 h-3.5 text-[#0E2A1C]" />
+                      <span>Internal Notes (Admin & Team Only · Not visible in Customer Portal)</span>
                     </div>
                   </div>
+                  <textarea
+                    rows={3}
+                    defaultValue={selectedRecord.internal_notes || ''}
+                    onBlur={(e) => handleSaveInternalNotes(selectedRecord.id, e.target.value)}
+                    placeholder="Enter private team notes regarding carving progress, factory dispatch or client preferences..."
+                    className="w-full p-2.5 rounded-[10px] border border-[#ECECEC] text-xs font-sans bg-white focus:outline-none focus:ring-2 focus:ring-[#0E2A1C]"
+                  />
+                  <span className="text-[10px] text-neutral-400 block text-right">
+                    Auto-saved upon clicking outside this box.
+                  </span>
+                </div>
+
+                {selectedRecord.state?.fields && (
+                  <div className="space-y-3">
+                    <div>
+                      <span className="font-medium text-neutral-500 block">Deities & Worship</span>
+                      <p className="text-[#0A0A0A] mt-0.5">{selectedRecord.state.fields.deity || 'Not specified'}</p>
+                      <p className="text-neutral-500 mt-0.5">{selectedRecord.state.fields.rituals}</p>
+                    </div>
+
+                    <div>
+                      <span className="font-medium text-neutral-500 block">Available Dimensions & Features</span>
+                      <p className="text-[#0A0A0A] mt-0.5">{selectedRecord.state.fields.dimensions || 'Pending confirmation'}</p>
+                      <p className="text-neutral-500 mt-0.5">{selectedRecord.state.fields.features}</p>
+                    </div>
+
+                    <div>
+                      <span className="font-medium text-neutral-500 block">Recommended Scope & Budget</span>
+                      <p className="text-[#0A0A0A] mt-0.5">{selectedRecord.state.fields.scope}</p>
+                      <div className="mt-1 flex items-center space-x-2">
+                        <span className="font-mono font-semibold text-[#0A0A0A]">Budget: {selectedRecord.state.fields.estimate}</span>
+                      </div>
+                    </div>
+
+                    {selectedRecord.selected_reference && (
+                      <div>
+                        <span className="font-medium text-neutral-500 block mb-1">Selected Reference</span>
+                        <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 border border-[#ECECEC]">
+                          {selectedRecord.selected_reference.data && (
+                            <img
+                              src={selectedRecord.selected_reference.data}
+                              alt={selectedRecord.selected_reference.caption || 'Reference'}
+                              className="w-14 h-14 rounded-lg object-cover border border-neutral-200 shrink-0"
+                            />
+                          )}
+                          <div className="min-w-0">
+                            <p className="text-xs font-medium text-[#0A0A0A] truncate">
+                              {selectedRecord.selected_reference.caption || 'Selected Reference'}
+                            </p>
+                            <p className="text-[10px] text-neutral-500 capitalize mt-0.5">
+                              Source: {selectedRecord.selected_reference.source ? selectedRecord.selected_reference.source.replace('_', ' ') : 'Reference selection'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
+              </div>
+            )}
+
+            {/* TAB 2: 8-STAGE JOURNEY STATUS CONTROLS */}
+            {modalTab === 'journey' && (
+              <div className="space-y-3">
+                <div className="pb-1">
+                  <h4 className="text-xs font-semibold text-[#0A0A0A]">
+                    Manage 8-Stage Progress for {selectedRecord.client_name}
+                  </h4>
+                  <p className="text-[11px] text-neutral-500">
+                    Update milestone statuses below. Changes reflect instantly in the client’s portal view.
+                  </p>
+                </div>
+
+                <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+                  {JOURNEY_STAGES.map((stg, idx) => {
+                    const currentStageState = journeyStages.find(s => s.stage === idx)?.status || 'not_started';
+                    return (
+                      <div
+                        key={idx}
+                        className="p-3 rounded-[12px] bg-[#FAFAFA] border border-[#ECECEC] flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                      >
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-[10px] font-bold text-neutral-400">
+                              Stage {idx + 1}
+                            </span>
+                            <span className="font-semibold text-xs text-[#0A0A0A]">
+                              {stg.title}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-[#5C5C5C]">
+                            {stg.description}
+                          </p>
+                        </div>
+
+                        {/* Status Controls */}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => handleUpdateStageStatus(idx, 'not_started')}
+                            className={cn(
+                              "px-2 py-1 rounded-[8px] text-[10px] font-mono transition-all cursor-pointer border",
+                              currentStageState === 'not_started'
+                                ? "bg-neutral-800 text-white border-neutral-800"
+                                : "bg-white text-neutral-500 border-neutral-200 hover:bg-neutral-100"
+                            )}
+                          >
+                            Not Started
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleUpdateStageStatus(idx, 'in_progress')}
+                            className={cn(
+                              "px-2 py-1 rounded-[8px] text-[10px] font-mono transition-all cursor-pointer border",
+                              currentStageState === 'in_progress'
+                                ? "bg-[#0E2A1C] text-white border-[#0E2A1C] shadow-xs"
+                                : "bg-white text-neutral-500 border-neutral-200 hover:bg-neutral-100"
+                            )}
+                          >
+                            In Progress
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleUpdateStageStatus(idx, 'completed')}
+                            className={cn(
+                              "px-2 py-1 rounded-[8px] text-[10px] font-mono transition-all cursor-pointer border",
+                              currentStageState === 'completed'
+                                ? "bg-emerald-950/20 text-[#0E2A1C] border-emerald-800/40 font-bold"
+                                : "bg-white text-neutral-500 border-neutral-200 hover:bg-neutral-100"
+                            )}
+                          >
+                            Completed
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: CLIENT INQUIRIES & REPLIES */}
+            {modalTab === 'chat' && (
+              <div className="space-y-2">
+                <PortalChat
+                  consultationId={selectedRecord.id}
+                  currentUserRole="admin"
+                  currentUserName={profile?.name || "Svvayam Studio"}
+                  currentUserId={user?.id || 'admin-user'}
+                />
               </div>
             )}
 

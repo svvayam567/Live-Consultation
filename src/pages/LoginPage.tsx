@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Logo } from '../components/ui/Logo';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Toast } from '../components/ui/Toast';
-import { ArrowLeft, Shield, User, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, User, ShieldCheck, Shield } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 export const LoginPage: React.FC = () => {
-  const { user, isAdmin, isCustomer, signInWithPhone, verifyOtp } = useAuth();
+  const { user, isAdmin, isCustomer, isLoading, signInWithPhone, verifyOtp } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -18,7 +18,6 @@ export const LoginPage: React.FC = () => {
   const [activeRole, setActiveRole] = useState<'customer' | 'admin'>(initialRole);
   const redirectUrl = searchParams.get('redirect');
 
-  const [name, setName] = useState('');
   const [phone, setPhone] = useState('+91');
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
@@ -34,16 +33,16 @@ export const LoginPage: React.FC = () => {
     }
   }, [searchParams]);
 
-  // If already logged in, redirect based on role
+  // If already logged in, skip login page and go straight to user's section
   useEffect(() => {
-    if (user) {
+    if (user && !isLoading) {
       if (isAdmin) {
         navigate(redirectUrl || '/admin', { replace: true });
       } else {
-        navigate('/portal', { replace: true });
+        navigate(redirectUrl || '/client', { replace: true });
       }
     }
-  }, [user, isAdmin, isCustomer, navigate, redirectUrl]);
+  }, [user, isAdmin, isCustomer, isLoading, navigate, redirectUrl]);
 
   // Resend cooldown timer
   useEffect(() => {
@@ -63,25 +62,22 @@ export const LoginPage: React.FC = () => {
 
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (activeRole === 'admin' && !name.trim()) {
-      // Optional/recommended for staff
-    }
     const cleanPhone = phone.trim();
     if (cleanPhone.length < 10) {
-      setError('Please enter a valid mobile number with country code (e.g. +91 9182424228).');
+      setError('Please enter a valid mobile number with country code (e.g. +91 9845012345).');
       return;
     }
 
     setLoading(true);
     setError(null);
-    const res = await signInWithPhone(cleanPhone, activeRole === 'admin' ? name : undefined, activeRole);
+    const res = await signInWithPhone(cleanPhone, undefined, activeRole);
     setLoading(false);
 
     if (res.success) {
       setStep('otp');
       setCountdown(30);
     } else {
-      setError(res.error || 'Failed to send OTP. Please check the mobile number.');
+      setError(res.error || "This number isn't registered. Please contact the Svvayam team.");
     }
   };
 
@@ -94,14 +90,14 @@ export const LoginPage: React.FC = () => {
 
     setLoading(true);
     setError(null);
-    const res = await verifyOtp(phone.trim(), otp.trim(), activeRole === 'admin' ? name.trim() : undefined, activeRole);
+    const res = await verifyOtp(phone.trim(), otp.trim(), undefined, activeRole);
     setLoading(false);
 
     if (res.success) {
       if (activeRole === 'admin') {
         navigate(redirectUrl || '/admin', { replace: true });
       } else {
-        navigate('/portal', { replace: true });
+        navigate(redirectUrl || '/client', { replace: true });
       }
     } else {
       setError(res.error || 'Invalid or expired OTP code.');
@@ -111,30 +107,19 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col justify-center items-center p-4 antialiased text-[#0A0A0A]">
       <div className="w-full max-w-sm bg-white rounded-[20px] border border-[#ECECEC] shadow-[0_10px_30px_rgba(0,0,0,0.06)] p-7 sm:p-8 space-y-6">
-        {/* Header Branding */}
+        {/* Header: Logo & Brand Copy */}
         <div className="text-center space-y-3">
-          <Link to="/" className="inline-block">
+          <div className="inline-block">
             <Logo className="h-8 object-contain mx-auto" />
-          </Link>
+          </div>
           <div className="space-y-1">
-            <h2 className="text-xl font-display font-semibold text-[#0A0A0A]">
-              {step === 'phone'
-                ? activeRole === 'customer'
-                  ? 'Customer Portal Sign In'
-                  : 'Admin Console Sign In'
-                : 'Enter 6-Digit OTP'}
-            </h2>
-            <p className="text-xs text-[#5C5C5C] max-w-xs mx-auto font-sans">
-              {step === 'phone'
-                ? activeRole === 'customer'
-                  ? 'Access your pooja mandir consultation, journey progress and updates.'
-                  : 'Svvayam staff console for live consultations and project operations.'
-                : `Verification code sent to ${phone}`}
+            <p className="text-xs text-[#5C5C5C] font-sans tracking-wide leading-relaxed">
+              Handcrafted sacred spaces and temple architecture for discerning homes.
             </p>
           </div>
         </div>
 
-        {/* Segmented Role Chooser (No sign up option) */}
+        {/* Two Choices: Customer vs Admin (No sign-up anywhere) */}
         {step === 'phone' && (
           <div className="bg-[#F1F1F1] p-1 rounded-[14px] flex items-center text-xs font-sans">
             <button
@@ -147,6 +132,9 @@ export const LoginPage: React.FC = () => {
                   : "text-[#5C5C5C] hover:text-[#0A0A0A]"
               )}
             >
+              {activeRole === 'customer' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] shadow-[0_0_8px_#FFE500] shrink-0" />
+              )}
               <User className="w-3.5 h-3.5" />
               <span>Customer</span>
             </button>
@@ -161,8 +149,11 @@ export const LoginPage: React.FC = () => {
                   : "text-[#5C5C5C] hover:text-[#0A0A0A]"
               )}
             >
+              {activeRole === 'admin' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] shadow-[0_0_8px_#FFE500] shrink-0" />
+              )}
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Admin / Staff</span>
+              <span>Admin</span>
             </button>
           </div>
         )}
@@ -171,18 +162,8 @@ export const LoginPage: React.FC = () => {
 
         {step === 'phone' ? (
           <form onSubmit={handleSendOtp} className="space-y-4">
-            {activeRole === 'admin' && (
-              <Input
-                label="Staff Name (Optional)"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Svvayam Consultant"
-              />
-            )}
-
             <Input
-              label={activeRole === 'customer' ? "Registered Mobile Number" : "Mobile Number"}
+              label={activeRole === 'customer' ? "Registered Mobile Number" : "Admin Mobile Number"}
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -191,8 +172,8 @@ export const LoginPage: React.FC = () => {
               autoFocus
               helperText={
                 activeRole === 'customer'
-                  ? "Only pre-registered client numbers can sign in. Default is +91."
-                  : "Svvayam administrator or team mobile number."
+                  ? "Only pre-registered numbers can sign in. Default is +91."
+                  : "Restricted to authorized Svvayam administrator accounts."
               }
             />
 
@@ -201,13 +182,22 @@ export const LoginPage: React.FC = () => {
               variant="primary"
               size="lg"
               disabled={loading}
-              className="w-full"
+              className="w-full relative group overflow-hidden border border-[#FFE500]/30 hover:border-[#FFE500] transition-colors"
             >
-              {loading ? 'Sending code...' : 'Send Verification OTP'}
+              <span className="flex items-center justify-center gap-1.5">
+                <span>{loading ? 'Sending code...' : 'Sign In with OTP'}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] group-hover:scale-125 transition-transform" />
+              </span>
             </Button>
           </form>
         ) : (
           <form onSubmit={handleVerifyOtp} className="space-y-4">
+            <div className="text-center pb-1">
+              <span className="text-xs text-[#5C5C5C] font-sans">
+                Enter the 6-digit code sent to <strong className="text-[#0A0A0A] font-mono">{phone}</strong>
+              </span>
+            </div>
+
             <Input
               label="6-Digit Verification Code"
               type="text"
@@ -225,9 +215,12 @@ export const LoginPage: React.FC = () => {
               variant="primary"
               size="lg"
               disabled={loading}
-              className="w-full"
+              className="w-full border border-[#FFE500]/30 hover:border-[#FFE500] transition-colors"
             >
-              {loading ? 'Verifying...' : 'Verify & Continue'}
+              <span className="flex items-center justify-center gap-1.5">
+                <span>{loading ? 'Verifying...' : 'Verify & Continue'}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500]" />
+              </span>
             </Button>
 
             <div className="flex items-center justify-between text-xs text-[#5C5C5C] pt-2 font-sans">
@@ -252,18 +245,21 @@ export const LoginPage: React.FC = () => {
           </form>
         )}
 
-        {/* Development & Testing Credentials Info */}
-        <div className="p-3.5 bg-[#FAFAFA] rounded-[14px] border border-[#ECECEC] text-[11px] text-[#5C5C5C] space-y-1.5 font-sans">
-          <div className="flex items-center gap-1 text-[#0A0A0A] font-medium">
-            <Shield className="w-3.5 h-3.5 text-[#0E2A1C]" />
-            <span>Test Phone Numbers (Fixed OTP: 123456)</span>
+        {/* Development & Verification Credentials */}
+        <div className="p-3 bg-[#FAFAFA] rounded-[14px] border border-[#ECECEC] text-[11px] text-[#5C5C5C] space-y-1.5 font-sans">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1 text-[#0A0A0A] font-medium">
+              <Shield className="w-3.5 h-3.5 text-[#0E2A1C]" />
+              <span>Registered Numbers (OTP: 123456)</span>
+            </div>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500]" />
           </div>
           <div className="space-y-1 font-mono text-[10px]">
             <div>
               Customer: <strong className="text-[#0A0A0A]">+91 9845012345</strong> (Mala Sharma)
             </div>
             <div>
-              Staff: <strong className="text-[#0A0A0A]">+91 9182424228</strong> (Admin)
+              Admin: <strong className="text-[#0A0A0A]">+91 9182424228</strong> (Svvayam Staff)
             </div>
           </div>
         </div>
@@ -271,3 +267,5 @@ export const LoginPage: React.FC = () => {
     </div>
   );
 };
+
+export default LoginPage;

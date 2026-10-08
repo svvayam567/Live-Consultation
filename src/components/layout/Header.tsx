@@ -31,7 +31,7 @@ export const Header: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
           {/* Left: Brand / Logo */}
           <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center group">
+            <Link to={isAdmin ? "/admin" : isCustomer ? "/client" : "/"} className="flex items-center group">
               <Logo className="h-7 sm:h-8 object-contain" />
             </Link>
           </div>
@@ -52,11 +52,11 @@ export const Header: React.FC = () => {
 
                 {isCustomer && !isAdmin && (
                   <Link
-                    to="/portal"
+                    to="/client"
                     className="hidden sm:inline-flex items-center space-x-1.5 text-xs text-[#0A0A0A] hover:underline font-medium"
                   >
                     <Home className="w-3.5 h-3.5 text-[#0E2A1C]" />
-                    <span>My Portal</span>
+                    <span>My Sanctum</span>
                   </Link>
                 )}
 
