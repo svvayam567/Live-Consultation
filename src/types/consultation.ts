@@ -162,6 +162,29 @@ export interface CustomerRecord {
   created_at: string;
 }
 
+export interface ConsultationRecord {
+  id: string;
+  client_name: string;
+  project_name?: string;
+  title?: CustomerTitle;
+  surname?: string;
+  product?: CustomerProduct;
+  client_phone: string;
+  location: string;
+  consultant: string;
+  consultant_phone?: string;
+  status: 'draft' | 'proposal_sent' | 'completed';
+  date?: string;
+  updated_at: string;
+  estimate?: string;
+  selected_reference?: SelectedReference | null;
+  portal_visible?: boolean;
+  internal_notes?: string;
+  client_id?: string;
+  current_step?: number;
+  state?: any;
+}
+
 export interface ClientProjectItem {
   id: string;
   client_name: string;
