@@ -218,13 +218,51 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
           }
         }
 
+        // Also update svvayam_admin_consultations_v1 so unfinished consultations can be resumed from Admin
+        try {
+          const adminConsultationsKey = 'svvayam_admin_consultations_v1';
+          const stored = localStorage.getItem(adminConsultationsKey);
+          const list: any[] = stored ? JSON.parse(stored) : [];
+          const consultId = nextState.id || 'draft-active';
+          const projName = nextState.project_name || nextState.fields.projectName || nextState.fields.project_name || (nextState.fields.surname ? formatProjectName(nextState.fields.title, nextState.fields.surname, nextState.fields.product) : 'Sanctum Project');
+
+          const existingIdx = list.findIndex(c => c.id === consultId);
+          const updatedRecord = {
+            id: consultId,
+            client_name: nextState.fields.client || 'Client',
+            project_name: projName,
+            title: nextState.fields.title,
+            surname: nextState.fields.surname,
+            product: nextState.fields.product,
+            client_phone: nextState.fields.client_phone || nextState.fields.phone || '',
+            location: nextState.fields.location || '',
+            consultant: profile?.name || 'Svvayam Staff',
+            consultant_phone: profile?.phone || '+91 8074257384',
+            status: nextState.status || (nextState.slide === 7 ? 'completed' : 'draft'),
+            date: nextState.fields.date || new Date().toISOString().split('T')[0],
+            portal_visible: true,
+            updated_at: new Date().toISOString(),
+            current_step: nextState.slide + 1,
+            state: nextState
+          };
+
+          if (existingIdx >= 0) {
+            list[existingIdx] = { ...list[existingIdx], ...updatedRecord };
+          } else if (nextState.fields.client) {
+            list.unshift(updatedRecord);
+          }
+          localStorage.setItem(adminConsultationsKey, JSON.stringify(list));
+        } catch {
+          // Ignored
+        }
+
         setSaveStatus('Saved');
       } catch (err) {
         console.warn('Autosave notice:', err);
         setSaveStatus('Offline Saved');
       }
     }, 350);
-  }, [user]);
+  }, [user, profile]);
 
   // Load grid and journey presets on startup if available
   useEffect(() => {

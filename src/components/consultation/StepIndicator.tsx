@@ -78,6 +78,12 @@ export const StepIndicator: React.FC = () => {
   const currentStepTitle = currentStep?.title.split('·')[0].trim() || 'Purpose';
   const currentStepSubtitle = currentStep?.title.split('·')[1]?.trim() || '';
 
+  const projectName =
+    state.fields.projectName ||
+    state.fields.project_name ||
+    state.project_name ||
+    (state.fields.client ? `${state.fields.client}'s Sanctum` : '');
+
   return (
     <div className="w-full sticky top-16 z-30 pt-3 pb-2 px-4 sm:px-8">
       <div className="max-w-5xl mx-auto space-y-2.5">
@@ -91,6 +97,15 @@ export const StepIndicator: React.FC = () => {
             <span className="text-[11px] text-neutral-400">
               {saveStatus}
             </span>
+            {projectName && (
+              <>
+                <span className="hidden sm:inline">·</span>
+                <span className="hidden sm:inline-flex items-center gap-1 font-display font-semibold text-xs text-[#0A0A0A] bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/80 shadow-2xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] border border-[#E5CE00]" />
+                  <span>{projectName}</span>
+                </span>
+              </>
+            )}
           </div>
 
           {/* Floating Dark Pill Toolbar */}
