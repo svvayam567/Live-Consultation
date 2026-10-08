@@ -426,9 +426,9 @@ export const AdminConsultationPage: React.FC = () => {
                       <span
                         className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full border ${
                           client.status === 'completed'
-                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            ? 'bg-neutral-900 text-white border-neutral-900'
                             : client.status === 'proposal_sent'
-                            ? 'bg-amber-50 text-amber-800 border-amber-200'
+                            ? 'bg-neutral-100 text-neutral-800 border-neutral-300'
                             : 'bg-neutral-100 text-[#5C5C5C] border-neutral-200'
                         }`}
                       >
@@ -456,9 +456,9 @@ export const AdminConsultationPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleSelectClient(client)}
-                      className="px-3.5 py-1.5 rounded-full bg-[#0A0A0A] text-white hover:bg-[#FFE500] hover:text-[#0A0A0A] transition-all text-xs font-sans font-medium flex items-center gap-1.5 shadow-xs cursor-pointer group/btn"
+                      className="px-3.5 py-1.5 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800 transition-all text-xs font-sans font-medium flex items-center gap-1.5 shadow-xs cursor-pointer group/btn"
                     >
-                      <Sparkles className="w-3 h-3 group-hover/btn:text-[#0A0A0A]" />
+                      <Sparkles className="w-3 h-3 text-white" />
                       <span>Start Consultation</span>
                     </button>
                   </div>
@@ -489,7 +489,7 @@ export const AdminConsultationPage: React.FC = () => {
           <div className="bg-white/95 border-b border-[#ECECEC] px-4 sm:px-8 py-2.5 backdrop-blur-md">
             <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-sans">
               <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 rounded-full bg-[#FFE500] border border-[#E5CE00] shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#0A0A0A] shrink-0" />
                 <span className="font-semibold text-[#0A0A0A] font-display text-sm tracking-tight truncate">
                   {activeProjectTitle}
                 </span>

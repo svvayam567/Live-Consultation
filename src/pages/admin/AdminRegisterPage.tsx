@@ -491,10 +491,10 @@ export const AdminRegisterPage: React.FC = () => {
           </div>
         )}
 
-        {/* Live Project Name Generated Preview Card (Matches Screenshot Exactly) */}
-        <div className="p-5 rounded-[18px] bg-white border border-[#E5CE00]/50 shadow-xs space-y-2 relative overflow-hidden">
+        {/* Live Project Name Generated Preview Card (Monochrome Black & White) */}
+        <div className="p-5 rounded-[18px] bg-white border border-[#ECECEC] shadow-xs space-y-2 relative overflow-hidden">
           <div className="flex items-center space-x-3 pt-1">
-            <div className="w-8 h-8 rounded-full bg-[#0E2A1C] text-[#FFE500] flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#0A0A0A] text-white flex items-center justify-center shrink-0">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
@@ -723,12 +723,12 @@ export const AdminRegisterPage: React.FC = () => {
                 <span className="flex items-center gap-1.5">
                   {submitting ? (
                     <>
-                      <Loader2 className="w-3.5 h-3.5 text-[#FFE500] animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 text-white animate-spin" />
                       <span>STARTING LIVE CONSULTATION...</span>
                     </>
                   ) : (
                     <>
-                      <Play className="w-3.5 h-3.5 fill-[#FFE500] text-[#FFE500]" />
+                      <Play className="w-3.5 h-3.5 fill-white text-white" />
                       <span>START LIVE CONSULTATION</span>
                     </>
                   )}

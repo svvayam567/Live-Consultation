@@ -64,7 +64,7 @@ export const Step1Purpose: React.FC = () => {
           <div className="p-5 sm:p-6 rounded-[20px] bg-gradient-to-r from-[#0E2A1C]/5 via-[#0E2A1C]/10 to-[#FAFAFA] border border-[#0E2A1C]/20 space-y-4 shadow-xs">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-7 h-7 rounded-full bg-[#0E2A1C] text-[#FFE500] flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-7 h-7 rounded-full bg-[#0A0A0A] text-white flex items-center justify-center shrink-0 shadow-xs">
                   <Sparkles className="w-3.5 h-3.5" />
                 </div>
                 <span className="text-[11px] font-mono text-[#0E2A1C] uppercase tracking-wider font-semibold">
@@ -214,7 +214,7 @@ export const Step1Purpose: React.FC = () => {
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link to="/admin/register">
               <Button variant="primary" size="md" className="text-xs rounded-full px-5 bg-[#0A0A0A] text-white">
-                <UserPlus className="w-3.5 h-3.5 mr-1.5 text-[#FFE500]" />
+                <UserPlus className="w-3.5 h-3.5 mr-1.5 text-white" />
                 <span>Register New Customer</span>
               </Button>
             </Link>

@@ -71,7 +71,7 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
             </div>
           </div>
 
-          {/* Center: Desktop Section Switcher (Monochrome with Bright-Yellow Active State) */}
+          {/* Center: Desktop Section Switcher (Monochrome Black and White Active State) */}
           <nav className="hidden sm:flex items-center space-x-1 bg-[#F5F5F5] p-1 rounded-full border border-[#ECECEC]">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -84,14 +84,14 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
                   className={cn(
                     "flex items-center space-x-1.5 px-4 py-1.5 rounded-full text-xs font-sans transition-all cursor-pointer",
                     isActive
-                      ? "bg-[#FFE500] text-[#0A0A0A] font-semibold shadow-xs border border-[#E5CE00]/50"
+                      ? "bg-[#0A0A0A] text-white font-semibold shadow-xs border border-[#0A0A0A]"
                       : "text-[#5C5C5C] hover:text-[#0A0A0A] hover:bg-white/60 font-medium"
                   )}
                 >
-                  <Icon className={cn("w-3.5 h-3.5", isActive ? "text-[#0A0A0A]" : "text-[#737373]")} />
+                  <Icon className={cn("w-3.5 h-3.5", isActive ? "text-white" : "text-[#737373]")} />
                   <span>{item.label}</span>
                   {isActive && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#0A0A0A] ml-0.5 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white ml-0.5 animate-pulse" />
                   )}
                 </Link>
               );
@@ -132,11 +132,11 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
               className={cn(
                 "flex flex-col items-center justify-center py-1 px-3 rounded-[12px] text-[10px] font-sans transition-all flex-1",
                 isActive
-                  ? "bg-[#FFE500] text-[#0A0A0A] font-bold shadow-xs border border-[#E5CE00]/60"
+                  ? "bg-[#0A0A0A] text-white font-bold shadow-xs border border-[#0A0A0A]"
                   : "text-[#737373] hover:text-[#0A0A0A]"
               )}
             >
-              <Icon className="w-4 h-4 mb-0.5" />
+              <Icon className={cn("w-4 h-4 mb-0.5", isActive ? "text-white" : "")} />
               <span>{item.label}</span>
             </Link>
           );

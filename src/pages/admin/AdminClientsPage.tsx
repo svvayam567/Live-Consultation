@@ -488,7 +488,7 @@ export const AdminClientsPage: React.FC = () => {
                 size="sm"
                 className="text-xs flex items-center gap-1.5 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800"
               >
-                <UserPlus className="w-3.5 h-3.5 text-[#FFE500]" />
+                <UserPlus className="w-3.5 h-3.5 text-white" />
                 <span>Register Customer</span>
               </Button>
             </Link>
@@ -553,7 +553,7 @@ export const AdminClientsPage: React.FC = () => {
             )}
           >
             <span>Direct Inquiries</span>
-            <span className="font-mono text-[10px] bg-[#FFE500]/30 text-neutral-900 px-1.5 py-0.2 rounded-full font-bold">
+            <span className="font-mono text-[10px] bg-neutral-200 text-[#0A0A0A] px-1.5 py-0.2 rounded-full font-bold">
               Live
             </span>
           </button>
@@ -637,7 +637,7 @@ export const AdminClientsPage: React.FC = () => {
                             key={item.id}
                             className={cn(
                               "hover:bg-neutral-50/50 transition-colors",
-                              isHighlighted && "bg-[#FFE500]/10 border-l-4 border-l-[#FFE500]"
+                              isHighlighted && "bg-neutral-100 border-l-4 border-l-[#0A0A0A]"
                             )}
                           >
                             <td className="py-3 px-4">
@@ -730,7 +730,7 @@ export const AdminClientsPage: React.FC = () => {
                                   className="px-2.5 py-1 text-[11px] font-sans font-medium bg-[#0A0A0A] text-white hover:bg-neutral-800 transition-colors cursor-pointer flex items-center gap-1 rounded-md"
                                   title="Start or edit live consultation for this client"
                                 >
-                                  <Sparkles className="w-3 h-3 text-[#FFE500]" />
+                                  <Sparkles className="w-3 h-3 text-white" />
                                   <span>Start Consultation</span>
                                 </button>
 
@@ -787,7 +787,7 @@ export const AdminClientsPage: React.FC = () => {
               </div>
               <Link to="/admin/register">
                 <Button variant="primary" size="sm" className="text-xs bg-[#0A0A0A] text-white">
-                  <UserPlus className="w-3.5 h-3.5 mr-1 text-[#FFE500]" />
+                  <UserPlus className="w-3.5 h-3.5 mr-1 text-white" />
                   <span>Register Customer</span>
                 </Button>
               </Link>
@@ -836,7 +836,7 @@ export const AdminClientsPage: React.FC = () => {
                       }}
                       className="flex-1 py-1.5 px-3 rounded-md bg-[#0A0A0A] text-white hover:bg-neutral-800 text-xs font-sans font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <Sparkles className="w-3 h-3 text-[#FFE500]" />
+                      <Sparkles className="w-3 h-3 text-white" />
                       <span>Start Consultation</span>
                     </button>
 
@@ -947,7 +947,7 @@ export const AdminClientsPage: React.FC = () => {
                 onClick={() => handleStartConsultation(selectedRecord)}
                 className="px-3 py-1.5 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800 text-xs font-medium flex items-center gap-1.5 cursor-pointer"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#FFE500]" />
+                <Sparkles className="w-3.5 h-3.5 text-white" />
                 <span>Start Live Consultation</span>
               </button>
             </div>

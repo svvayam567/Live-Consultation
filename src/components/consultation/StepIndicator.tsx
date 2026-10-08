@@ -100,8 +100,8 @@ export const StepIndicator: React.FC = () => {
             {projectName && (
               <>
                 <span className="hidden sm:inline">·</span>
-                <span className="hidden sm:inline-flex items-center gap-1 font-display font-semibold text-xs text-[#0A0A0A] bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/80 shadow-2xs">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] border border-[#E5CE00]" />
+                <span className="hidden sm:inline-flex items-center gap-1 font-display font-semibold text-xs text-[#0A0A0A] bg-neutral-100 px-2.5 py-0.5 rounded-full border border-neutral-200 shadow-2xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0A0A0A]" />
                   <span>{projectName}</span>
                 </span>
               </>

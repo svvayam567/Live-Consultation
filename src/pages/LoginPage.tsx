@@ -174,7 +174,7 @@ export const LoginPage: React.FC = () => {
               )}
             >
               {activeRole === 'customer' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] shadow-[0_0_8px_#FFE500] shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_white] shrink-0" />
               )}
               <User className="w-3.5 h-3.5" />
               <span>Customer</span>
@@ -191,7 +191,7 @@ export const LoginPage: React.FC = () => {
               )}
             >
               {activeRole === 'admin' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] shadow-[0_0_8px_#FFE500] shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_white] shrink-0" />
               )}
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Admin</span>
@@ -231,7 +231,7 @@ export const LoginPage: React.FC = () => {
               variant="primary"
               size="lg"
               disabled={loading || countdown > 0}
-              className="w-full relative group overflow-hidden border border-[#FFE500]/30 hover:border-[#FFE500] transition-colors"
+              className="w-full relative group overflow-hidden border border-[#0A0A0A] hover:bg-neutral-800 transition-colors"
             >
               <span className="flex items-center justify-center gap-1.5">
                 <span>
@@ -241,7 +241,7 @@ export const LoginPage: React.FC = () => {
                     ? `Resend in ${countdown}s`
                     : 'Sign In with OTP'}
                 </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500] group-hover:scale-125 transition-transform" />
+                <span className="w-1.5 h-1.5 rounded-full bg-white group-hover:scale-125 transition-transform" />
               </span>
             </Button>
           </form>
@@ -270,11 +270,11 @@ export const LoginPage: React.FC = () => {
               variant="primary"
               size="lg"
               disabled={loading}
-              className="w-full border border-[#FFE500]/30 hover:border-[#FFE500] transition-colors"
+              className="w-full border border-[#0A0A0A] hover:bg-neutral-800 transition-colors"
             >
               <span className="flex items-center justify-center gap-1.5">
                 <span>{loading ? 'Verifying...' : 'Verify & Continue'}</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FFE500]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-white" />
               </span>
             </Button>
 
@@ -312,7 +312,7 @@ export const LoginPage: React.FC = () => {
                 <Shield className="w-3.5 h-3.5 text-[#0E2A1C]" />
                 <span>Demo mode: Test Credentials</span>
               </div>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[#FFE500]/25 text-neutral-900 font-semibold">
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-neutral-200 text-[#0A0A0A] font-semibold">
                 OTP: 123456
               </span>
             </div>

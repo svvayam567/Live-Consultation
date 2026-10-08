@@ -766,7 +766,7 @@ export const AdminDashboard: React.FC = () => {
                                 className={cn(
                                   "px-2.5 py-1 text-[11px] font-medium rounded transition-colors cursor-pointer",
                                   item.status !== 'completed'
-                                    ? "bg-[#FFE500] text-[#0A0A0A] hover:bg-[#E5CE00] font-semibold shadow-xs"
+                                    ? "bg-[#0A0A0A] text-white hover:bg-neutral-800 font-semibold shadow-xs"
                                     : "bg-[#0A0A0A] text-white hover:bg-neutral-800"
                                 )}
                                 title={item.status !== 'completed' ? "Resume unfinished consultation draft" : "Open consultation"}
@@ -909,7 +909,7 @@ export const AdminDashboard: React.FC = () => {
                             onClick={() => {
                               navigate(`/consult?client=${cust.id}&phone=${encodeURIComponent(cust.phone)}`);
                             }}
-                            className="px-2.5 py-1 text-[11px] bg-[#0A0A0A] text-white hover:bg-[#FFE500] hover:text-[#0A0A0A] rounded font-medium transition-colors cursor-pointer"
+                            className="px-2.5 py-1 text-[11px] bg-[#0A0A0A] text-white hover:bg-neutral-800 rounded font-medium transition-colors cursor-pointer"
                             title="Start consultation with this customer"
                           >
                             Start consultation
