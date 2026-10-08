@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { Header } from '../components/layout/Header';
 import { Logo } from '../components/ui/Logo';
 import { VisualExploreModal } from '../components/explorer/VisualExploreModal';
@@ -10,8 +11,19 @@ import { ArrowRight, Play, FileText, Globe } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user, isAdmin, isCustomer } = useAuth();
   const [visualModalOpen, setVisualModalOpen] = useState(false);
   const [docsModalOpen, setDocsModalOpen] = useState(false);
+
+  const handleStartConsultation = () => {
+    if (!user) {
+      navigate('/login?role=admin&redirect=/consult');
+    } else if (isAdmin) {
+      navigate('/consult');
+    } else if (isCustomer) {
+      navigate('/portal');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
@@ -46,7 +58,7 @@ export const LandingPage: React.FC = () => {
             <Button
               variant="primary"
               size="lg"
-              onClick={() => navigate('/consult')}
+              onClick={handleStartConsultation}
               className="w-full sm:w-auto px-8"
             >
               <span>Start Live Consultation</span>

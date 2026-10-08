@@ -55,41 +55,41 @@ export const Step5Examples: React.FC = () => {
           13–20 min · Visual direction
         </span>
         <h2 className="text-2xl sm:text-3xl font-medium text-[#0A0A0A] tracking-tight">
-          Choose three references you love
+          Choose the one reference you love
         </h2>
         <p className="text-xs sm:text-sm text-neutral-600 max-w-2xl leading-relaxed">
-          Read left to right for increasing detail; move down for increasing scale. Choose three images that feel closest to what you want. These guide the design; they are not exact replicas.
+          Read left to right for increasing detail; move down for increasing scale. Choose one image that feels closest to what you want. This guides the design; it is not an exact replica.
         </p>
       </div>
 
-      {/* Selected References Strip */}
+      {/* Selected Reference Strip */}
       <div className="p-5 bg-white rounded-[20px] border border-[#ECECEC] shadow-[0_10px_30px_rgba(0,0,0,0.06)] space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center space-x-2">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A] font-sans">
-              Selected References
+              Selected Reference
             </span>
             <Badge
               variant="default"
               size="sm"
             >
-              {totalSelectedCount} / 3 chosen
+              {totalSelectedCount} of 1 selected
             </Badge>
           </div>
 
           <span className="text-xs text-[#5C5C5C]">
-            {totalSelectedCount === 3
-              ? '✓ Exactly 3 references chosen. Ready to proceed to Scope.'
-              : `Choose ${3 - totalSelectedCount} more reference${3 - totalSelectedCount > 1 ? 's' : ''} to unlock Next.`}
+            {totalSelectedCount === 1
+              ? '✓ Exactly 1 reference chosen. Ready to proceed to Scope.'
+              : 'Select one reference to continue.'}
           </span>
         </div>
 
         {selectedReferencesList.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="max-w-md">
             {selectedReferencesList.map((ref, idx) => (
               <div
                 key={idx}
-                className="relative bg-[#FAFAFA] border border-[#ECECEC] rounded-[14px] p-2 flex items-center space-x-3 group transition-all"
+                className="relative bg-[#FAFAFA] border-2 border-[#0E2A1C] ring-2 ring-[#0E2A1C]/20 rounded-[14px] p-2.5 flex items-center space-x-3.5 group transition-all shadow-[0_8px_16px_rgba(0,0,0,0.08)]"
               >
                 <div className="w-16 h-16 bg-white rounded-[10px] overflow-hidden shrink-0 border border-[#ECECEC] flex items-center justify-center">
                   <img
@@ -99,12 +99,15 @@ export const Step5Examples: React.FC = () => {
                   />
                 </div>
                 <div className="flex-1 min-w-0 pr-6">
-                  <span className="text-[10px] uppercase font-semibold text-[#0A0A0A] block truncate font-sans">
-                    {ref.kind || 'Reference'}
+                  <span className="text-[10px] uppercase font-semibold text-[#0E2A1C] block truncate font-sans">
+                    {ref.kind || 'Selected reference'}
                   </span>
-                  <p className="text-xs text-[#5C5C5C] truncate mt-0.5">
+                  <p className="text-xs text-[#0A0A0A] font-medium truncate mt-0.5">
                     {ref.caption}
                   </p>
+                  <span className="text-[10px] text-[#5C5C5C] font-mono mt-0.5 block">
+                    {ref.source === 'client_project' ? 'From Client Projects' : 'From 4×4 Matrix'}
+                  </span>
                 </div>
                 <button
                   type="button"
@@ -119,7 +122,7 @@ export const Step5Examples: React.FC = () => {
           </div>
         ) : (
           <div className="p-4 border border-dashed border-[#ECECEC] rounded-[14px] bg-[#FAFAFA] text-center text-xs text-[#737373]">
-            No visual references selected yet. Pick 3 images from the 4×4 Matrix or Existing Client Projects below.
+            No visual reference selected yet. Pick one image from the 4×4 Matrix or Existing Client Projects below.
           </div>
         )}
       </div>
@@ -185,7 +188,9 @@ export const Step5Examples: React.FC = () => {
                 const rowIndex = Math.floor(slotIdx / 4);
                 const colIndex = slotIdx % 4;
                 const slotData = state.gallery[slotIdx];
-                const isChosen = state.selected.includes(slotIdx);
+                const isChosen =
+                  state.selected_reference?.source === 'grid' &&
+                  state.selected_reference?.slotIndex === slotIdx;
                 const isEditing = setupMode && activeSlot === slotIdx;
 
                 return (
@@ -209,6 +214,13 @@ export const Step5Examples: React.FC = () => {
                           : 'border-[#ECECEC] hover:border-neutral-300 bg-white shadow-2xs'
                       }`}
                     >
+                      {/* Black glossy check marker with forest green outline */}
+                      {isChosen && (
+                        <div className="absolute top-2 right-2 z-10 w-5 h-5 rounded-full bg-gradient-to-b from-[#2A2A2A] to-[#0A0A0A] border-2 border-[#0E2A1C] flex items-center justify-center text-white shadow-md">
+                          <Check className="w-3 h-3 text-white stroke-[2.5]" />
+                        </div>
+                      )}
+
                       {slotData ? (
                         <div className="w-full flex-1 overflow-hidden bg-[#F8F8F8] rounded-[10px] flex items-center justify-center">
                           <img
@@ -227,9 +239,11 @@ export const Step5Examples: React.FC = () => {
                       <div className="pt-1.5 px-1 flex items-center justify-between text-[11px] font-sans">
                         <span className="text-[#0A0A0A] truncate">
                           {isChosen ? (
-                            <span className="font-semibold text-[#0E2A1C] flex items-center gap-1">
-                              <span className="w-2 h-2 rounded-full bg-[#0E2A1C] inline-block" />
-                              <Check className="w-3 h-3 text-[#0E2A1C]" /> Selected
+                            <span className="font-semibold text-[#0E2A1C] flex items-center gap-1.5">
+                              <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-b from-[#2A2A2A] to-[#0A0A0A] border border-[#0E2A1C] flex items-center justify-center">
+                                <Check className="w-2 h-2 text-white stroke-[2.5]" />
+                              </span>
+                              <span>Selected</span>
                             </span>
                           ) : (
                             slotData?.caption || REFERENCE_COL_NAMES[colIndex]
@@ -317,7 +331,7 @@ export const Step5Examples: React.FC = () => {
       {activeTab === 'projects' && (
         <div className="space-y-4">
           <p className="text-xs text-neutral-500">
-            Explore authentic completed Svvayam projects. Click any project to inspect its architectural stages, and click <strong>&quot;Pick as Reference&quot;</strong> to choose up to 3 total items.
+            Explore authentic completed Svvayam projects. Click any project to inspect its architectural stages, and click <strong>&quot;Pick as Reference&quot;</strong> to choose your reference.
           </p>
           <ClientExplorer
             selectionMode={true}

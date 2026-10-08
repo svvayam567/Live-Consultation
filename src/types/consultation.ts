@@ -1,10 +1,11 @@
-export type UserRole = 'admin' | 'client';
+export type UserRole = 'admin' | 'client' | 'customer';
 
 export interface Profile {
   id: string;
   name: string;
   phone: string;
   role: UserRole;
+  is_active?: boolean;
   created_at: string;
 }
 
@@ -87,11 +88,61 @@ export interface ConsultationState {
   slide: number;
   gallery: (GridSlot | null)[];
   journey: (JourneyAsset[] | null)[];
-  selected: number[]; // Grid slot indices (0..15) or encoded project refs
-  selected_projects?: SelectedReference[]; // Extra picked items if from existing client projects
+  selected_reference: SelectedReference | null; // Single selected reference (grid slot or client project)
+  selected?: number[]; // Deprecated: Kept for backwards compatibility with older files
+  selected_projects?: SelectedReference[]; // Deprecated: Kept for backwards compatibility with older files
   status?: 'draft' | 'proposal_sent' | 'completed';
+  client_id?: string;
+  portal_visible?: boolean;
+  internal_notes?: string;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface JourneyStageProgress {
+  stage: number;
+  status: 'not_started' | 'in_progress' | 'completed';
+  start_date?: string;
+  completion_date?: string;
+  notes?: string;
+}
+
+export interface JourneyUpdate {
+  id: string;
+  consultation_id: string;
+  stage?: number;
+  title: string;
+  note: string;
+  media_urls?: string[];
+  created_at: string;
+  is_read?: boolean;
+}
+
+export interface PortalMessage {
+  id: string;
+  consultation_id: string;
+  sender_id: string;
+  sender_role: 'customer' | 'admin' | 'team';
+  sender_name: string;
+  content: string;
+  attachment_url?: string;
+  attachment_name?: string;
+  attachment_type?: string;
+  section_context?: string;
+  is_read: boolean;
+  created_at: string;
+  delivery_status?: 'sent' | 'delivered' | 'read';
+}
+
+export interface CustomerRecord {
+  id: string;
+  name: string;
+  phone: string;
+  location?: string;
+  consultation_id?: string;
+  is_active: boolean;
+  portal_visible?: boolean;
+  created_at: string;
 }
 
 export interface ClientProjectItem {

@@ -167,7 +167,7 @@ export const ClientExplorer: React.FC<ClientExplorerProps> = ({
                       className={cn(
                         "absolute top-3 right-3 p-1.5 rounded-full transition-all cursor-pointer shadow-md",
                         picked
-                          ? "bg-gradient-to-b from-[#2A2A2A] to-[#0E2A1C] text-white ring-1 ring-white/20"
+                          ? "bg-gradient-to-b from-[#2A2A2A] to-[#0A0A0A] text-white border-2 border-[#0E2A1C] ring-2 ring-[#0E2A1C]/20 shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
                           : "bg-white/95 hover:bg-white text-[#0A0A0A] border border-[#ECECEC]"
                       )}
                       title={picked ? 'Remove reference' : 'Pick as reference'}

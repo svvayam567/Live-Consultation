@@ -15,7 +15,7 @@ export const Step1Purpose: React.FC = () => {
           Let’s plan your pooja space
         </h2>
         <p className="text-xs sm:text-sm text-neutral-600 max-w-2xl leading-relaxed">
-          We’ll understand your worship, confirm the space, choose three visual references and recommend a scope and indicative budget.
+          We’ll understand your worship, confirm the space, choose one visual reference and recommend a scope and indicative budget.
         </p>
       </div>
 

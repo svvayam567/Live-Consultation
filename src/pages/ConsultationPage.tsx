@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useConsultation } from '../context/ConsultationContext';
 import { Header } from '../components/layout/Header';
 import { StepIndicator } from '../components/consultation/StepIndicator';
@@ -14,17 +15,35 @@ import { Button } from '../components/ui/Button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 export const ConsultationPage: React.FC = () => {
-  const { currentSlide, nextSlide, prevSlide, totalSelectedCount } = useConsultation();
+  const {
+    currentSlide,
+    nextSlide,
+    prevSlide,
+    totalSelectedCount,
+    setSlide
+  } = useConsultation();
+  const [searchParams] = useSearchParams();
+
+  // Support ?step=1..8 query parameter
+  useEffect(() => {
+    const stepParam = searchParams.get('step');
+    if (stepParam) {
+      const s = parseInt(stepParam, 10);
+      if (!isNaN(s) && s >= 1 && s <= 8) {
+        setSlide(s - 1);
+      }
+    }
+  }, [searchParams, setSlide]);
 
   // Scroll to top when changing slide
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentSlide]);
 
-  // Step 4 (Slide index 4 = Examples) requires exactly 3 selected references
+  // Step 4 (Slide index 4 = Examples) requires exactly 1 selected reference
   const isNextDisabled =
     currentSlide === 7 ||
-    (currentSlide === 4 && totalSelectedCount !== 3);
+    (currentSlide === 4 && totalSelectedCount !== 1);
 
   const renderCurrentStep = () => {
     switch (currentSlide) {
@@ -82,22 +101,30 @@ export const ConsultationPage: React.FC = () => {
             {`Step 0${currentSlide + 1} of 08`}
           </div>
 
-          <Button
-            variant="primary"
-            size="md"
-            onClick={nextSlide}
-            disabled={isNextDisabled}
-            className="text-xs"
-          >
-            <span>
-              {currentSlide === 6
-                ? 'Review proposal'
-                : currentSlide === 7
-                ? 'Proposal finalized'
-                : 'Next'}
-            </span>
-            {currentSlide < 6 && <ArrowRight className="w-3.5 h-3.5 ml-1" />}
-          </Button>
+          <div className="flex items-center gap-3">
+            {currentSlide === 4 && totalSelectedCount !== 1 && (
+              <span className="text-[11px] text-[#737373] hidden sm:inline font-sans">
+                Select one reference to continue
+              </span>
+            )}
+            <Button
+              variant="primary"
+              size="md"
+              onClick={nextSlide}
+              disabled={isNextDisabled}
+              title={currentSlide === 4 && totalSelectedCount !== 1 ? 'Select one reference to continue' : undefined}
+              className="text-xs"
+            >
+              <span>
+                {currentSlide === 6
+                  ? 'Review proposal'
+                  : currentSlide === 7
+                  ? 'Proposal finalized'
+                  : 'Next'}
+              </span>
+              {currentSlide < 6 && <ArrowRight className="w-3.5 h-3.5 ml-1" />}
+            </Button>
+          </div>
         </div>
       </footer>
     </div>

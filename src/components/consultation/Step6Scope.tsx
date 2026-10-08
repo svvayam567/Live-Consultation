@@ -6,42 +6,50 @@ import { indicativeAmount, calculateDesignFee, money } from '../../lib/utils';
 import { Calculator } from 'lucide-react';
 
 export const Step6Scope: React.FC = () => {
-  const { state, updateField, selectedReferencesList } = useConsultation();
+  const { state, updateField, selectedReferencesList, setSlide } = useConsultation();
 
   const numAmount = indicativeAmount(state.fields.estimate);
   const calculatedFee = calculateDesignFee(state.fields.estimate);
 
   return (
     <div className="space-y-8">
-      {/* 3 Selected References Strip on Top */}
+      {/* Approved Single Design Reference with Change Link */}
       {selectedReferencesList.length > 0 && (
         <div className="p-5 bg-white rounded-[20px] border border-[#ECECEC] shadow-[0_10px_30px_rgba(0,0,0,0.06)] space-y-3">
-          <span className="text-[10px] uppercase font-semibold tracking-wider text-[#5C5C5C] font-sans block">
-            Approved Design References (3 Selected)
-          </span>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {selectedReferencesList.map((ref, idx) => (
-              <div
-                key={idx}
-                className="bg-[#FAFAFA] border border-[#ECECEC] rounded-[14px] p-2 flex items-center space-x-3"
-              >
-                <div className="w-14 h-14 bg-white rounded-[10px] overflow-hidden shrink-0 border border-[#ECECEC] flex items-center justify-center">
-                  <img
-                    src={ref.data}
-                    alt={ref.caption}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <span className="text-[10px] font-semibold text-[#0A0A0A] block uppercase font-sans">
-                    Ref {idx + 1}
-                  </span>
-                  <p className="text-xs text-[#5C5C5C] truncate mt-0.5">
-                    {ref.caption}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] uppercase font-semibold tracking-wider text-[#5C5C5C] font-sans block">
+              Approved Design Reference
+            </span>
+            <button
+              type="button"
+              onClick={() => setSlide(4)}
+              className="text-xs font-medium text-[#0A0A0A] hover:text-[#0E2A1C] underline underline-offset-2 transition-colors cursor-pointer flex items-center gap-1"
+            >
+              <span>Change</span>
+            </button>
+          </div>
+
+          <div className="bg-[#FAFAFA] border border-[#ECECEC] rounded-[16px] p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-4">
+            <div className="w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-[12px] overflow-hidden shrink-0 border border-[#ECECEC] flex items-center justify-center p-1 shadow-2xs">
+              <img
+                src={selectedReferencesList[0].data}
+                alt={selectedReferencesList[0].caption}
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="flex-1 min-w-0 text-center sm:text-left space-y-1">
+              <span className="text-[11px] font-semibold text-[#0E2A1C] uppercase tracking-wide font-sans block">
+                {selectedReferencesList[0].kind || 'Visual Reference'}
+              </span>
+              <h4 className="text-sm sm:text-base font-serif font-medium text-[#0A0A0A]">
+                {selectedReferencesList[0].caption}
+              </h4>
+              <p className="text-xs text-[#5C5C5C] font-sans">
+                {selectedReferencesList[0].source === 'client_project'
+                  ? 'Selected from authentic completed client projects'
+                  : 'Selected from 4×4 sacred scale & detail matrix'}
+              </p>
+            </div>
           </div>
         </div>
       )}
@@ -55,7 +63,7 @@ export const Step6Scope: React.FC = () => {
           Define your scope and indicative budget
         </h2>
         <p className="text-xs sm:text-sm text-neutral-600 max-w-2xl leading-relaxed">
-          Use the three selections together with worship needs and available dimensions. We will recommend the appropriate form, detailing and materials; we’ll record an indicative budget and timing together before reviewing your design engagement.
+          Use the selected reference together with worship needs and available dimensions. We will recommend the appropriate form, detailing and materials; we’ll record an indicative budget and timing together before reviewing your design engagement.
         </p>
       </div>
 

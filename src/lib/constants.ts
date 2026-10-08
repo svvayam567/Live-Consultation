@@ -21,7 +21,7 @@ export const CONSULTATION_STEPS: StepDefinition[] = [
     name: 'Purpose',
     title: 'Let’s plan your pooja space',
     time: '0–2 min · Purpose',
-    intro: 'We’ll understand your worship, confirm the space, choose three visual references and recommend a scope and indicative budget.',
+    intro: 'We’ll understand your worship, confirm the space, choose one visual reference and recommend a scope and indicative budget.',
     fields: [
       ['client', 'Client name'],
       ['location', 'Project location'],
@@ -66,16 +66,16 @@ export const CONSULTATION_STEPS: StepDefinition[] = [
   },
   {
     name: 'Examples',
-    title: 'Choose three references you love',
+    title: 'Choose the one reference you love',
     time: '13–20 min · Visual direction',
-    intro: 'Read left to right for increasing detail; move down for increasing scale. Choose three images that feel closest to what you want. These guide the design; they are not exact replicas.',
+    intro: 'Read left to right for increasing detail; move down for increasing scale. Choose one image that feels closest to what you want. This guides the design; it is not an exact replica.',
     grid: true
   },
   {
     name: 'Scope',
     title: 'Define your scope and indicative budget',
     time: '20–25 min · Recommendation',
-    intro: 'Use the three selections together with worship needs and available dimensions. We will recommend the appropriate form, detailing and materials; we’ll record an indicative budget and timing together before reviewing your design engagement.',
+    intro: 'Use the selected reference together with worship needs and available dimensions. We will recommend the appropriate form, detailing and materials; we’ll record an indicative budget and timing together before reviewing your design engagement.',
     fields: [
       ['scope', 'Recommended scope and design direction', 'area'],
       ['materials', 'Proposed materials and finishes'],
@@ -271,6 +271,7 @@ export const INITIAL_CONSULTATION_STATE: ConsultationState = {
   slide: 0,
   gallery: Array(16).fill(null),
   journey: Array(8).fill(null),
+  selected_reference: null,
   selected: [],
   selected_projects: [],
   status: 'draft'

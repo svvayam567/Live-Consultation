@@ -8,6 +8,7 @@ import { LoginPage } from './pages/LoginPage';
 import { ConsultationPage } from './pages/ConsultationPage';
 import { ProposalViewPage } from './pages/ProposalViewPage';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { CustomerPortalPage } from './pages/CustomerPortalPage';
 
 // Guard for Admin Dashboard
 const ProtectedAdminRoute: React.FC = () => {
@@ -15,21 +16,68 @@ const ProtectedAdminRoute: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center text-xs text-neutral-400">
-        Verifying permissions...
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Verifying admin permissions...
       </div>
     );
   }
 
   if (!user) {
-    return <Navigate to="/login?redirect=/admin" replace />;
+    return <Navigate to="/login?role=admin&redirect=/admin" replace />;
   }
 
   if (!isAdmin) {
-    return <Navigate to="/consult" replace />;
+    return <Navigate to="/portal" replace />;
   }
 
   return <AdminDashboard />;
+};
+
+// Guard for Live Consultation flow (staff only)
+const ProtectedConsultRoute: React.FC = () => {
+  const { user, isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Loading consultation...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login?role=admin&redirect=/consult" replace />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/portal" replace />;
+  }
+
+  return <ConsultationPage />;
+};
+
+// Guard for Customer Portal
+const ProtectedPortalRoute: React.FC = () => {
+  const { user, isAdmin, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Loading client portal...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login?role=customer&redirect=/portal" replace />;
+  }
+
+  // If staff/admin opens /portal, redirect to their home
+  if (isAdmin) {
+    return <Navigate to="/admin" replace />;
+  }
+
+  return <CustomerPortalPage />;
 };
 
 export const App: React.FC = () => {
@@ -47,9 +95,12 @@ export const App: React.FC = () => {
             {/* Authentication (Phone OTP) */}
             <Route path="/login" element={<LoginPage />} />
 
-            {/* Live Consultation 8-step flow */}
-            <Route path="/consult" element={<ConsultationPage />} />
-            <Route path="/consult/:id" element={<ConsultationPage />} />
+            {/* Customer Portal (/portal) */}
+            <Route path="/portal" element={<ProtectedPortalRoute />} />
+
+            {/* Live Consultation 8-step flow (Admin/Staff only) */}
+            <Route path="/consult" element={<ProtectedConsultRoute />} />
+            <Route path="/consult/:id" element={<ProtectedConsultRoute />} />
 
             {/* Public/Customer Proposal View */}
             <Route path="/proposal/:id" element={<ProposalViewPage />} />

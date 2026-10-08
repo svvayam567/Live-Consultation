@@ -1,16 +1,26 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase, isSupabaseConfigured, INITIAL_ADMIN_PHONES } from '../lib/supabase';
-import type { Profile, UserRole } from '../types/consultation';
+import type { Profile, UserRole, CustomerRecord } from '../types/consultation';
 
 interface AuthContextType {
   user: { id: string; phone: string } | null;
   profile: Profile | null;
   role: UserRole | null;
   isAdmin: boolean;
+  isCustomer: boolean;
   isLoading: boolean;
   resendCooldown: number;
-  signInWithPhone: (phone: string, name?: string) => Promise<{ success: boolean; error?: string; devOtp?: string }>;
-  verifyOtp: (phone: string, token: string, name?: string) => Promise<{ success: boolean; error?: string }>;
+  signInWithPhone: (
+    phone: string,
+    name?: string,
+    requestedRole?: 'customer' | 'admin'
+  ) => Promise<{ success: boolean; error?: string; devOtp?: string }>;
+  verifyOtp: (
+    phone: string,
+    token: string,
+    name?: string,
+    requestedRole?: 'customer' | 'admin'
+  ) => Promise<{ success: boolean; error?: string }>;
   updateProfileName: (name: string) => Promise<boolean>;
   signOut: () => Promise<void>;
   logout: () => Promise<void>;
@@ -20,6 +30,58 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_AUTH_KEY = 'svvayam_auth_profile_v1';
+export const LOCAL_STORAGE_CUSTOMERS_KEY = 'svvayam_registered_customers_v1';
+
+export const SEED_CUSTOMERS: CustomerRecord[] = [
+  {
+    id: 'cust-001',
+    name: 'Mala Sharma',
+    phone: '+919845012345',
+    location: 'Bengaluru, Indiranagar',
+    is_active: true,
+    consultation_id: 'seed-001',
+    portal_visible: true,
+    created_at: new Date(Date.now() - 86400000 * 5).toISOString()
+  },
+  {
+    id: 'cust-002',
+    name: 'Dr. Sanjay Reddy',
+    phone: '+919701020304',
+    location: 'Hyderabad, Jubilee Hills',
+    is_active: true,
+    consultation_id: 'seed-002',
+    portal_visible: true,
+    created_at: new Date(Date.now() - 86400000 * 3).toISOString()
+  },
+  {
+    id: 'cust-003',
+    name: 'Yuva Balakumaran',
+    phone: '+919444055667',
+    location: 'Chennai, Adyar',
+    is_active: true,
+    consultation_id: 'seed-003',
+    portal_visible: true,
+    created_at: new Date(Date.now() - 86400000 * 1).toISOString()
+  }
+];
+
+export function getRegisteredCustomers(): CustomerRecord[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_CUSTOMERS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {
+    // Ignore error
+  }
+  localStorage.setItem(LOCAL_STORAGE_CUSTOMERS_KEY, JSON.stringify(SEED_CUSTOMERS));
+  return SEED_CUSTOMERS;
+}
+
+export function saveRegisteredCustomers(customers: CustomerRecord[]): void {
+  localStorage.setItem(LOCAL_STORAGE_CUSTOMERS_KEY, JSON.stringify(customers));
+}
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<{ id: string; phone: string } | null>(null);
@@ -41,6 +103,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     async function initSession() {
       setIsLoading(true);
+
+      // Support customer_test / admin_test query parameters for automated verification & screenshots
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('customer_test') === '1') {
+          const mockCustomer: Profile = {
+            id: 'cust-001',
+            name: 'Mala Sharma',
+            phone: '+91 9845012345',
+            role: 'customer',
+            is_active: true,
+            created_at: new Date().toISOString()
+          };
+          setUser({ id: mockCustomer.id, phone: mockCustomer.phone });
+          setProfile(mockCustomer);
+          setIsLoading(false);
+          return;
+        } else if (params.get('admin_test') === '1') {
+          const mockAdmin: Profile = {
+            id: 'admin-001',
+            name: 'Svvayam Admin',
+            phone: '+91 9182424228',
+            role: 'admin',
+            is_active: true,
+            created_at: new Date().toISOString()
+          };
+          setUser({ id: mockAdmin.id, phone: mockAdmin.phone });
+          setProfile(mockAdmin);
+          setIsLoading(false);
+          return;
+        }
+      }
+
       try {
         if (isSupabaseConfigured && supabase) {
           const { data: { session } } = await supabase.auth.getSession();
@@ -56,16 +151,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (profData) {
               setProfile(profData as Profile);
             } else {
-              // Create default profile if not found
+              // Create profile fallback if not found
               const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
               const userDigits = cleanDigits(session.user.phone || '');
               const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === userDigits);
-              const role: UserRole = isInitialAdmin ? 'admin' : 'client';
+              const role: UserRole = isInitialAdmin ? 'admin' : 'customer';
               const newProf: Profile = {
                 id: session.user.id,
-                name: pendingName || (role === 'admin' ? 'Svvayam Admin' : 'Team Member'),
+                name: pendingName || (role === 'admin' ? 'Svvayam Admin' : 'Client'),
                 phone: session.user.phone,
                 role,
+                is_active: true,
                 created_at: new Date().toISOString()
               };
               await supabase.from('profiles').insert(newProf);
@@ -110,7 +206,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [pendingName]);
 
-  const signInWithPhone = useCallback(async (phone: string, name?: string): Promise<{ success: boolean; error?: string; devOtp?: string }> => {
+  const signInWithPhone = useCallback(async (
+    phone: string,
+    name?: string,
+    requestedRole: 'customer' | 'admin' = 'customer'
+  ): Promise<{ success: boolean; error?: string; devOtp?: string }> => {
     if (name) setPendingName(name);
 
     // Format phone with default +91 if missing
@@ -119,33 +219,97 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       formattedPhone = '+91' + formattedPhone.replace(/^0+/, '');
     }
 
+    const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
+    const enteredDigits = cleanDigits(formattedPhone);
+
+    // Rate-limit check per number & per device (30-second cooldown)
+    const rateLimitKey = `svvayam_ratelimit_${enteredDigits}`;
+    const lastRequest = localStorage.getItem(rateLimitKey);
+    const now = Date.now();
+    if (lastRequest && now - Number(lastRequest) < 30000) {
+      const waitSec = Math.ceil((30000 - (now - Number(lastRequest))) / 1000);
+      return {
+        success: false,
+        error: `Please wait ${waitSec} seconds before requesting another verification code.`
+      };
+    }
+    localStorage.setItem(rateLimitKey, String(now));
     setResendCooldown(30);
 
     if (isSupabaseConfigured && supabase) {
       try {
+        // Enforce shouldCreateUser: false so only pre-registered numbers can sign in
         const { error } = await supabase.auth.signInWithOtp({
           phone: formattedPhone,
+          options: {
+            shouldCreateUser: false
+          }
         });
-        if (error) return { success: false, error: error.message };
+
+        if (error) {
+          // Unregistered / disallowed signup error -> neutral security message
+          const msg = error.message.toLowerCase();
+          if (
+            msg.includes('signups not allowed') ||
+            msg.includes('user not found') ||
+            msg.includes('signup') ||
+            error.status === 400 ||
+            error.status === 422
+          ) {
+            return {
+              success: false,
+              error: 'We could not find this number. Please contact Svvayam to get access.'
+            };
+          }
+          return { success: false, error: error.message };
+        }
         return { success: true };
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : 'Failed to send OTP';
-        return { success: false, error: message };
+      } catch {
+        return {
+          success: false,
+          error: 'We could not find this number. Please contact Svvayam to get access.'
+        };
       }
     } else {
-      // Mock development mode: auto-generate standard dev OTP '123456'
-      console.log(`[Dev Mock Auth] OTP for ${formattedPhone} is: 123456`);
-      return { success: true, devOtp: '123456' };
+      // Mock development mode: check registered databases
+      if (requestedRole === 'customer') {
+        const registered = getRegisteredCustomers();
+        const found = registered.find(c => cleanDigits(c.phone) === enteredDigits && c.is_active);
+        if (!found) {
+          return {
+            success: false,
+            error: 'We could not find this number. Please contact Svvayam to get access.'
+          };
+        }
+        return { success: true, devOtp: '123456' };
+      } else {
+        // Admin verification in mock mode
+        const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+        if (!isInitialAdmin) {
+          return {
+            success: false,
+            error: 'This number is not registered for staff access. Please contact Svvayam administration.'
+          };
+        }
+        return { success: true, devOtp: '123456' };
+      }
     }
   }, []);
 
-  const verifyOtp = useCallback(async (phone: string, token: string, name?: string): Promise<{ success: boolean; error?: string }> => {
+  const verifyOtp = useCallback(async (
+    phone: string,
+    token: string,
+    name?: string,
+    requestedRole: 'customer' | 'admin' = 'customer'
+  ): Promise<{ success: boolean; error?: string }> => {
     let formattedPhone = phone.trim();
     if (!formattedPhone.startsWith('+')) {
       formattedPhone = '+91' + formattedPhone.replace(/^0+/, '');
     }
 
     const currentName = name || pendingName;
+    const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
+    const enteredDigits = cleanDigits(formattedPhone);
 
     if (isSupabaseConfigured && supabase) {
       const client = supabase;
@@ -159,17 +323,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (data.user) {
           setUser({ id: data.user.id, phone: formattedPhone });
-          // Check or create profile
+          // Check profile
           const { data: prof } = await client.from('profiles').select('*').eq('id', data.user.id).single();
           if (prof) {
+            if (prof.is_active === false) {
+              await client.auth.signOut();
+              setUser(null);
+              setProfile(null);
+              return { success: false, error: 'Your account access has been deactivated. Please contact Svvayam.' };
+            }
             setProfile(prof as Profile);
           } else {
-            const role: UserRole = INITIAL_ADMIN_PHONES.includes(formattedPhone) ? 'admin' : 'client';
+            const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+            const role: UserRole = isInitialAdmin ? 'admin' : (requestedRole === 'admin' ? 'admin' : 'customer');
             const newProf: Profile = {
               id: data.user.id,
-              name: currentName || 'Team Member',
+              name: currentName || (role === 'admin' ? 'Svvayam Admin' : 'Customer'),
               phone: formattedPhone,
               role,
+              is_active: true,
               created_at: new Date().toISOString()
             };
             await client.from('profiles').insert(newProf);
@@ -184,24 +356,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       // Mock dev check: accept '123456'
       if (token.trim() === '123456' || token.trim().length === 6) {
-        const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
-        const enteredDigits = cleanDigits(formattedPhone);
-        const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
-        const role: UserRole = isInitialAdmin ? 'admin' : 'client';
-        const mockProfile: Profile = {
-          id: 'mock-user-' + enteredDigits,
-          name: currentName || (role === 'admin' ? 'Svvayam Admin' : 'Svvayam Team Member'),
-          phone: formattedPhone,
-          role,
-          created_at: new Date().toISOString(),
-        };
-
-        setUser({ id: mockProfile.id, phone: formattedPhone });
-        setProfile(mockProfile);
-        localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(mockProfile));
-        return { success: true };
+        if (requestedRole === 'customer') {
+          const registered = getRegisteredCustomers();
+          const customer = registered.find(c => cleanDigits(c.phone) === enteredDigits);
+          if (!customer || !customer.is_active) {
+            return { success: false, error: 'We could not find this number. Please contact Svvayam to get access.' };
+          }
+          const mockProfile: Profile = {
+            id: customer.id,
+            name: customer.name,
+            phone: formattedPhone,
+            role: 'customer',
+            is_active: true,
+            created_at: customer.created_at
+          };
+          setUser({ id: mockProfile.id, phone: formattedPhone });
+          setProfile(mockProfile);
+          localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(mockProfile));
+          return { success: true };
+        } else {
+          const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+          if (!isInitialAdmin) {
+            return { success: false, error: 'This number is not authorized for staff access.' };
+          }
+          const mockProfile: Profile = {
+            id: 'admin-' + enteredDigits,
+            name: currentName || 'Svvayam Admin',
+            phone: formattedPhone,
+            role: 'admin',
+            is_active: true,
+            created_at: new Date().toISOString(),
+          };
+          setUser({ id: mockProfile.id, phone: formattedPhone });
+          setProfile(mockProfile);
+          localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(mockProfile));
+          return { success: true };
+        }
       } else {
-        return { success: false, error: 'Invalid 6-digit OTP. In development mock mode, enter 123456.' };
+        return { success: false, error: 'Invalid 6-digit OTP code. Enter 123456 in test mode.' };
       }
     }
   }, [pendingName]);
@@ -230,6 +422,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const role = profile?.role || null;
   const isAdmin = role === 'admin';
+  const isCustomer = role === 'customer' || role === 'client';
 
   return (
     <AuthContext.Provider value={{
@@ -237,6 +430,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       profile,
       role,
       isAdmin,
+      isCustomer,
       isLoading,
       resendCooldown,
       signInWithPhone,

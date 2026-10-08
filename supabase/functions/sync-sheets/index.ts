@@ -63,12 +63,23 @@ serve(async (req) => {
     }
     const designFee = budgetAmount > 0 ? Math.min(100000, budgetAmount * 0.2) : 0;
 
-    // Selected references captions
-    const selectedRefs = (state?.selected_projects || [])
-      .concat(state?.selected || [])
-      .map((r: any) => typeof r === "object" ? r.caption : `Ref slot ${r}`)
-      .slice(0, 3)
-      .join(" | ");
+    // Selected reference: single choice (caption + image link)
+    const singleRef = state?.selected_reference 
+      || (Array.isArray(state?.selected_refs) && state.selected_refs[0])
+      || (Array.isArray(state?.selected_projects) && state.selected_projects[0])
+      || (Array.isArray(state?.selected) && state.selected[0])
+      || null;
+
+    let selectedRefStr = "Pending selection";
+    if (singleRef) {
+      if (typeof singleRef === "object") {
+        const caption = singleRef.caption || "Reference";
+        const link = singleRef.data || singleRef.storage_path || "";
+        selectedRefStr = link ? `${caption} (${link})` : caption;
+      } else {
+        selectedRefStr = `Ref slot ${singleRef}`;
+      }
+    }
 
     // Prepare row data according to §3.5 columns
     const rowValues = [
@@ -92,7 +103,7 @@ serve(async (req) => {
       state?.fields?.budget || "",                                       // 18. Budget range
       state?.fields?.installation || "",                                 // 19. Desired installation
       state?.fields?.decision || "",                                     // 20. Decision timeline
-      selectedRefs || "Pending selection",                               // 21. Selected references
+      selectedRefStr,                                                    // 21. Selected reference (caption + link)
       state?.fields?.scope || "",                                        // 22. Scope
       state?.fields?.materials || "",                                    // 23. Materials
       budgetAmount ? `₹${budgetAmount.toLocaleString('en-IN')}` : rawEstimate, // 24. Indicative budget (₹)

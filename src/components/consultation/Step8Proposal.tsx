@@ -147,33 +147,31 @@ export const Step8Proposal: React.FC = () => {
           })}
         </div>
 
-        {/* Selected Visual References (3 Images) */}
+        {/* Selected Visual Reference (1 Image) */}
         {selectedReferencesList.length > 0 && (
           <section className="space-y-3 pt-4 border-t border-[#ECECEC]">
             <h3 className="text-sm uppercase tracking-wider font-semibold text-[#0A0A0A] font-sans">
               Approved Visual Reference Direction
             </h3>
             <p className="text-xs text-[#5C5C5C]">
-              The 3 selected references guiding scale, architectural proportion, and master craftsmanship:
+              The selected reference guiding scale, architectural proportion, and master craftsmanship:
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-              {selectedReferencesList.map((ref, idx) => (
-                <figure
-                  key={idx}
-                  className="border border-[#ECECEC] bg-[#FAFAFA] rounded-[14px] p-2 space-y-2"
-                >
-                  <div className="w-full h-44 bg-white rounded-[10px] overflow-hidden flex items-center justify-center border border-[#ECECEC]">
-                    <img
-                      src={ref.data}
-                      alt={ref.caption}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <figcaption className="text-xs text-[#0A0A0A] text-center font-sans">
-                    {ref.caption}
-                  </figcaption>
-                </figure>
-              ))}
+            <div className="max-w-md pt-2">
+              <figure className="border border-[#ECECEC] bg-[#FAFAFA] rounded-[16px] p-3 space-y-3">
+                <div className="w-full h-56 bg-white rounded-[12px] overflow-hidden flex items-center justify-center border border-[#ECECEC] p-2">
+                  <img
+                    src={selectedReferencesList[0].data}
+                    alt={selectedReferencesList[0].caption}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <figcaption className="text-xs text-[#0A0A0A] text-center font-sans font-medium">
+                  <span className="text-[10px] uppercase font-mono text-[#5C5C5C] block mb-0.5">
+                    {selectedReferencesList[0].kind || 'Design Reference'}
+                  </span>
+                  {selectedReferencesList[0].caption}
+                </figcaption>
+              </figure>
             </div>
           </section>
         )}

@@ -52,19 +52,110 @@ interface ConsultationContextType {
 
 const ConsultationContext = createContext<ConsultationContextType | undefined>(undefined);
 
+// Helper to normalize consultation state and migrate legacy multi-selection
+function normalizeConsultationState(parsed: any): ConsultationState {
+  const base: ConsultationState = {
+    ...INITIAL_CONSULTATION_STATE,
+    ...parsed,
+    fields: { ...INITIAL_CONSULTATION_STATE.fields, ...(parsed?.fields || {}) }
+  };
+
+  // Convert legacy selected_refs / selected / selected_projects into single selected_reference if not set
+  if (!base.selected_reference) {
+    if (parsed?.selected_reference && typeof parsed.selected_reference === 'object') {
+      base.selected_reference = parsed.selected_reference;
+    } else if (Array.isArray(parsed?.selected_projects) && parsed.selected_projects.length > 0) {
+      base.selected_reference = {
+        ...parsed.selected_projects[0],
+        source: 'client_project'
+      };
+    } else if (Array.isArray(parsed?.selected_refs) && parsed.selected_refs.length > 0) {
+      const first = parsed.selected_refs[0];
+      if (typeof first === 'object' && first !== null) {
+        base.selected_reference = first;
+      } else if (typeof first === 'number' && base.gallery && base.gallery[first]) {
+        const g = base.gallery[first];
+        const r = Math.floor(first / 4);
+        const c = first % 4;
+        base.selected_reference = {
+          data: g?.data || '',
+          kind: 'Selected reference',
+          caption: g?.caption || `${REFERENCE_ROW_NAMES[r]} · ${REFERENCE_COL_NAMES[c]}`,
+          source: 'grid',
+          slotIndex: first
+        };
+      }
+    } else if (Array.isArray(parsed?.selected) && parsed.selected.length > 0 && base.gallery) {
+      const first = parsed.selected[0];
+      const g = base.gallery[first];
+      if (g) {
+        const r = Math.floor(first / 4);
+        const c = first % 4;
+        base.selected_reference = {
+          data: g.data,
+          kind: 'Selected reference',
+          caption: g.caption || `${REFERENCE_ROW_NAMES[r]} · ${REFERENCE_COL_NAMES[c]}`,
+          source: 'grid',
+          slotIndex: first
+        };
+      }
+    }
+  }
+
+  // Synchronize legacy helpers for backward compatibility
+  if (base.selected_reference) {
+    if (base.selected_reference.source === 'grid' && base.selected_reference.slotIndex !== undefined) {
+      base.selected = [base.selected_reference.slotIndex];
+      base.selected_projects = [];
+    } else {
+      base.selected = [];
+      base.selected_projects = [base.selected_reference];
+    }
+  } else {
+    base.selected = [];
+    base.selected_projects = [];
+  }
+
+  return base;
+}
+
 export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, profile } = useAuth();
   const [state, setState] = useState<ConsultationState>(() => {
     try {
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('demo') === '1') {
+          return normalizeConsultationState({
+            ...INITIAL_CONSULTATION_STATE,
+            fields: {
+              client: 'Mala Sharma',
+              location: 'Bengaluru, Indiranagar',
+              date: '2026-10-08',
+              deity: 'Lord Venkateshwara, Radha Krishna',
+              rituals: 'Daily morning aarti and weekly abhishekam',
+              dimensions: '6 ft W × 4 ft D × 9 ft H',
+              features: 'Teak jali doors, brass bells, pooja samagri storage',
+              scope: 'Dedicated Sanctum with Shikhara and teakwood jali doors',
+              materials: 'Burma Teakwood with Makrana marble base',
+              estimate: '15 lakh',
+              timeline: '3–4 months'
+            },
+            selected_reference: {
+              data: assetUrl('assets/clients/Dr. Sanjay/3D MODEL/3d_model_01.png'),
+              caption: 'Dedicated pooja room · Rich detail',
+              kind: 'Selected reference',
+              source: 'grid',
+              slotIndex: 6
+            }
+          });
+        }
+      }
       const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed.fields === 'object') {
-          return {
-            ...INITIAL_CONSULTATION_STATE,
-            ...parsed,
-            fields: { ...INITIAL_CONSULTATION_STATE.fields, ...parsed.fields }
-          };
+          return normalizeConsultationState(parsed);
         }
       }
     } catch {
@@ -104,7 +195,8 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
             created_by: user.id,
             client_phone: nextState.fields.client ? nextState.fields.client : null,
             fields: nextState.fields,
-            selected_refs: nextState.selected,
+            selected_reference: nextState.selected_reference,
+            selected_refs: nextState.selected_reference ? [nextState.selected_reference] : [],
             current_step: nextState.slide,
             status: nextState.status || 'draft',
             updated_at: new Date().toISOString()
@@ -169,9 +261,9 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   }, [state, persistState]);
 
   const nextSlide = useCallback((): boolean => {
-    // Step 5 validation: must have exactly 3 references selected
-    const totalRefs = (state.selected?.length || 0) + (state.selected_projects?.length || 0);
-    if (state.slide === 4 && totalRefs !== 3) {
+    // Step 5 validation: must have exactly 1 reference selected
+    const totalRefs = state.selected_reference ? 1 : 0;
+    if (state.slide === 4 && totalRefs !== 1) {
       return false;
     }
     if (state.slide < 7) {
@@ -179,7 +271,7 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       return true;
     }
     return false;
-  }, [state.slide, state.selected, state.selected_projects, setSlide]);
+  }, [state.slide, state.selected_reference, setSlide]);
 
   const prevSlide = useCallback(() => {
     if (state.slide > 0) {
@@ -216,75 +308,91 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   }, [state, persistState]);
 
-  // Step 5 References handlers (Picking up to 3 total across grid & client projects)
-  const totalSelectedCount = (state.selected?.length || 0) + (state.selected_projects?.length || 0);
+  // Step 5 References handlers (Single reference choice across grid & client projects)
+  const totalSelectedCount = state.selected_reference ? 1 : 0;
 
   const selectReference = useCallback((slotIndex: number): boolean => {
     if (!state.gallery[slotIndex]) return false;
-    const cur = state.selected || [];
-    const exists = cur.includes(slotIndex);
+    const isCurrent =
+      state.selected_reference?.source === 'grid' &&
+      state.selected_reference?.slotIndex === slotIndex;
 
-    if (exists) {
-      // Toggle off
-      const next = cur.filter(i => i !== slotIndex);
-      persistState({ ...state, selected: next });
+    if (isCurrent) {
+      // Toggle off / clear
+      persistState({
+        ...state,
+        selected_reference: null,
+        selected: [],
+        selected_projects: []
+      });
       return true;
     } else {
-      if (totalSelectedCount >= 3) {
-        return false;
-      }
-      const next = [...cur, slotIndex];
-      persistState({ ...state, selected: next });
-      return true;
-    }
-  }, [state, totalSelectedCount, persistState]);
-
-  const selectClientProjectRef = useCallback((ref: SelectedReference): boolean => {
-    const curProj = state.selected_projects || [];
-    const existsIndex = curProj.findIndex(p => p.caption === ref.caption || (p.data && p.data === ref.data));
-
-    if (existsIndex >= 0) {
-      // Toggle off
-      const next = curProj.filter((_, i) => i !== existsIndex);
-      persistState({ ...state, selected_projects: next });
-      return true;
-    } else {
-      if (totalSelectedCount >= 3) {
-        return false;
-      }
-      const next = [...curProj, ref];
-      persistState({ ...state, selected_projects: next });
-      return true;
-    }
-  }, [state, totalSelectedCount, persistState]);
-
-  const removeSelectedReference = useCallback((refCaptionOrSlot: string | number) => {
-    if (typeof refCaptionOrSlot === 'number') {
-      const next = (state.selected || []).filter(s => s !== refCaptionOrSlot);
-      persistState({ ...state, selected: next });
-    } else {
-      const next = (state.selected_projects || []).filter(p => p.caption !== refCaptionOrSlot && p.data !== refCaptionOrSlot);
-      persistState({ ...state, selected_projects: next });
-    }
-  }, [state, persistState]);
-
-  // Compute combined list of 3 selected references
-  const selectedReferencesList: SelectedReference[] = [
-    ...(state.selected || []).map(slotIndex => {
+      // Single choice: selecting replaces previous choice and clears across tabs
       const g = state.gallery[slotIndex];
       const r = Math.floor(slotIndex / 4);
       const c = slotIndex % 4;
-      const defaultCaption = `${REFERENCE_ROW_NAMES[r]} · ${REFERENCE_COL_NAMES[c]}`;
-      return {
+      const newRef: SelectedReference = {
         data: g?.data || '',
         kind: 'Selected reference',
-        caption: g?.caption || defaultCaption,
-        source: 'grid' as const,
+        caption: g?.caption || `${REFERENCE_ROW_NAMES[r]} · ${REFERENCE_COL_NAMES[c]}`,
+        source: 'grid',
         slotIndex
       };
-    }),
-    ...(state.selected_projects || [])
-  ];
+
+      persistState({
+        ...state,
+        selected_reference: newRef,
+        selected: [slotIndex],
+        selected_projects: []
+      });
+      return true;
+    }
+  }, [state, persistState]);
+
+  const selectClientProjectRef = useCallback((ref: SelectedReference): boolean => {
+    const isCurrent =
+      state.selected_reference?.source === 'client_project' &&
+      (state.selected_reference.caption === ref.caption || (state.selected_reference.data && state.selected_reference.data === ref.data));
+
+    if (isCurrent) {
+      // Toggle off / clear
+      persistState({
+        ...state,
+        selected_reference: null,
+        selected: [],
+        selected_projects: []
+      });
+      return true;
+    } else {
+      // Single choice: selecting replaces previous choice and clears across tabs
+      const newRef: SelectedReference = {
+        ...ref,
+        source: 'client_project'
+      };
+
+      persistState({
+        ...state,
+        selected_reference: newRef,
+        selected: [],
+        selected_projects: [newRef]
+      });
+      return true;
+    }
+  }, [state, persistState]);
+
+  const removeSelectedReference = useCallback((_refCaptionOrSlot?: string | number) => {
+    persistState({
+      ...state,
+      selected_reference: null,
+      selected: [],
+      selected_projects: []
+    });
+  }, [state, persistState]);
+
+  // Single selected reference exposed as array for existing components
+  const selectedReferencesList: SelectedReference[] = state.selected_reference
+    ? [state.selected_reference]
+    : [];
 
   const updateGridCell = useCallback((slot: number, data: string, caption?: string) => {
     const galleryCopy = [...(state.gallery || Array(16).fill(null))];
@@ -293,14 +401,29 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       data,
       caption: caption || galleryCopy[slot]?.caption || ''
     };
-    persistState({ ...state, gallery: galleryCopy });
+
+    let updatedRef = state.selected_reference;
+    if (state.selected_reference?.source === 'grid' && state.selected_reference?.slotIndex === slot) {
+      updatedRef = {
+        ...state.selected_reference,
+        data,
+        caption: caption || galleryCopy[slot]?.caption || state.selected_reference.caption
+      };
+    }
+
+    persistState({ ...state, gallery: galleryCopy, selected_reference: updatedRef });
   }, [state, persistState]);
 
   const removeGridCell = useCallback((slot: number) => {
     const galleryCopy = [...(state.gallery || Array(16).fill(null))];
     galleryCopy[slot] = null;
-    const selectedCopy = (state.selected || []).filter(s => s !== slot);
-    persistState({ ...state, gallery: galleryCopy, selected: selectedCopy });
+    const isSelectedSlot = state.selected_reference?.source === 'grid' && state.selected_reference?.slotIndex === slot;
+    persistState({
+      ...state,
+      gallery: galleryCopy,
+      selected_reference: isSelectedSlot ? null : state.selected_reference,
+      selected: isSelectedSlot ? [] : state.selected,
+    });
   }, [state, persistState]);
 
   const loadDemoGrid = useCallback(() => {
@@ -360,9 +483,9 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   const importSession = useCallback((imported: ConsultationState): boolean => {
     if (imported && imported.fields) {
+      const normalized = normalizeConsultationState(imported);
       persistState({
-        ...INITIAL_CONSULTATION_STATE,
-        ...imported,
+        ...normalized,
         gallery: imported.gallery || state.gallery,
         journey: imported.journey || state.journey
       });
