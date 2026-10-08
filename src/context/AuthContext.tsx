@@ -96,6 +96,20 @@ export function saveRegisteredCustomers(customers: CustomerRecord[]): void {
   localStorage.setItem(LOCAL_STORAGE_CUSTOMERS_KEY, JSON.stringify(customers));
 }
 
+export function isNumberInAdminList(phoneStr: string): boolean {
+  if (!phoneStr) return false;
+  const digits = phoneStr.replace(/[^0-9]/g, '');
+  if (!digits) return false;
+  return INITIAL_ADMIN_PHONES.some((adminPhone: string) => {
+    const adminDigits = adminPhone.replace(/[^0-9]/g, '');
+    return (
+      adminDigits === digits ||
+      adminDigits.slice(-10) === digits.slice(-10) ||
+      digits.endsWith(adminDigits.slice(-10))
+    );
+  });
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<{ id: string; phone: string } | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -185,9 +199,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (profData) {
               setProfile(profData as Profile);
             } else {
-              const cleanDigits = (p: string) => p.replace(/[^0-9]/g, '');
-              const userDigits = cleanDigits(formattedPhone);
-              const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === userDigits);
+              const isInitialAdmin = isNumberInAdminList(formattedPhone);
               const role: UserRole = isInitialAdmin ? 'admin' : 'customer';
               const newProf: Profile = {
                 id: session.user.id,
@@ -272,7 +284,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         } else {
           // Direct table check fallback
-          const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+          const isInitialAdmin = isNumberInAdminList(formattedPhone);
           const { data: profData } = await supabase
             .from('profiles')
             .select('role, is_active')
@@ -318,7 +330,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           };
         }
       } else {
-        const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+        const isInitialAdmin = isNumberInAdminList(formattedPhone);
         if (!isInitialAdmin) {
           return {
             success: false,
@@ -441,7 +453,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
             setProfile(prof as Profile);
           } else {
-            const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+            const isInitialAdmin = isNumberInAdminList(formattedPhone);
             const role: UserRole = isInitialAdmin ? 'admin' : (requestedRole === 'admin' ? 'admin' : 'customer');
             if (requestedRole === 'admin' && role !== 'admin') {
               await client.auth.signOut();
@@ -492,7 +504,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(mockProfile));
           return { success: true };
         } else {
-          const isInitialAdmin = INITIAL_ADMIN_PHONES.some((p: string) => cleanDigits(p) === enteredDigits);
+          const isInitialAdmin = isNumberInAdminList(formattedPhone);
           if (!isInitialAdmin) {
             return { success: false, error: "This number does not have administrator access. Please contact the Svvayam team." };
           }

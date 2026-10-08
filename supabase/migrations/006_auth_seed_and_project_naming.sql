@@ -216,6 +216,34 @@ insert into public.profiles (
   project_name = 'Svvayam Central Sanctum',
   is_active = true;
 
+-- Seed Admin Profile (+918074257384)
+insert into public.profiles (
+  name,
+  phone,
+  role,
+  title,
+  surname,
+  product,
+  project_name,
+  is_active
+) values (
+  'Svvayam Admin',
+  '+918074257384',
+  'admin',
+  'Mr.',
+  'Admin',
+  'Sanctum',
+  'Svvayam Central Sanctum',
+  true
+) on conflict (phone) do update set
+  name = 'Svvayam Admin',
+  role = 'admin',
+  title = 'Mr.',
+  surname = 'Admin',
+  product = 'Sanctum',
+  project_name = 'Svvayam Central Sanctum',
+  is_active = true;
+
 -- Seed Demo Consultation for Mala Sharma
 insert into public.consultations (
   project_name,

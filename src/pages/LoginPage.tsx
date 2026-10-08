@@ -328,11 +328,21 @@ export const LoginPage: React.FC = () => {
                 </button>
               </div>
               <div className="flex items-center justify-between">
-                <span>Admin: <strong className="text-[#0A0A0A]">+91 9182424228</strong> (Svvayam Staff)</span>
+                <span>Admin: <strong className="text-[#0A0A0A]">+91 8074257384</strong> (Svvayam Admin)</span>
+                <button
+                  type="button"
+                  onClick={() => handleFillDemo('+918074257384', 'admin')}
+                  className="text-xs text-[#0E2A1C] underline font-sans cursor-pointer hover:text-black"
+                >
+                  Use
+                </button>
+              </div>
+              <div className="flex items-center justify-between text-neutral-500">
+                <span>Staff: <strong className="text-neutral-700">+91 9182424228</strong> (Studio Staff)</span>
                 <button
                   type="button"
                   onClick={() => handleFillDemo('+919182424228', 'admin')}
-                  className="text-xs text-[#0E2A1C] underline font-sans cursor-pointer hover:text-black"
+                  className="text-xs text-neutral-600 underline font-sans cursor-pointer hover:text-black"
                 >
                   Use
                 </button>

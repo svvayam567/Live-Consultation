@@ -20,7 +20,7 @@ export const supabase: SupabaseClient | null = isSupabaseConfigured
     })
   : null;
 
-// Initial admin phones list from env (comma-separated, e.g. "+919182424228")
-export const INITIAL_ADMIN_PHONES = (import.meta.env.VITE_INITIAL_ADMIN_PHONES || '+919182424228')
+// Initial admin phones list from env (comma-separated, e.g. "+918074257384,+919182424228")
+export const INITIAL_ADMIN_PHONES = (import.meta.env.VITE_INITIAL_ADMIN_PHONES || '+918074257384,+919182424228')
   .split(',')
   .map((p: string) => p.replace(/\s+/g, ''));
