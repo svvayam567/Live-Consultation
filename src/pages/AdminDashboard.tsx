@@ -6,10 +6,9 @@ import { Header } from '../components/layout/Header';
 import { Button } from '../components/ui/Button';
 import { Toast } from '../components/ui/Toast';
 import { Modal } from '../components/ui/Modal';
-import { Input } from '../components/ui/Input';
 import { PortalChat } from '../components/portal/PortalChat';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { money, indicativeAmount, normalizeToE164, extractSurname, formatProjectName, assetUrl, cn } from '../lib/utils';
+import { money, indicativeAmount, extractSurname, formatProjectName, assetUrl, cn } from '../lib/utils';
 import {
   ShieldCheck,
   Search,
@@ -17,17 +16,16 @@ import {
   FileSpreadsheet,
   Grid,
   Layers,
-  ArrowLeft,
   ExternalLink,
   Eye,
-  UserPlus,
   Users,
   MessageCircle,
   ToggleLeft,
   ToggleRight,
   Lock,
   Unlock,
-  Shield
+  Shield,
+  Sparkles
 } from 'lucide-react';
 import { JOURNEY_STAGES } from '../lib/constants';
 import type { ConsultationState, SelectedReference, CustomerRecord, CustomerTitle, CustomerProduct } from '../types/consultation';
@@ -222,39 +220,6 @@ export const AdminDashboard: React.FC = () => {
   const [toastMsg, setToastMsg] = useState<string | null>(null);
   const [syncingId, setSyncingId] = useState<string | null>(null);
 
-  // Customer registration state
-  const [registerModalOpen, setRegisterModalOpen] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return new URLSearchParams(window.location.search).get('modal') === 'register';
-    }
-    return false;
-  });
-  const [regTitle, setRegTitle] = useState<CustomerTitle>('Mr.');
-  const [regName, setRegName] = useState('');
-  const [regSurname, setRegSurname] = useState('');
-  const [regProduct, setRegProduct] = useState<CustomerProduct>('Temple');
-  const [surnameTouched, setSurnameTouched] = useState(false);
-  const [regPhone, setRegPhone] = useState('+91');
-  const [regLocation, setRegLocation] = useState('');
-  const [regConsultationOption, setRegConsultationOption] = useState<'create_new' | 'link_existing'>('create_new');
-  const [regLinkedConsultationId, setRegLinkedConsultationId] = useState('');
-  const [regSubmitting, setRegSubmitting] = useState(false);
-
-  const regProjectName = useMemo(() => {
-    return formatProjectName(regTitle, regSurname || extractSurname(regName), regProduct);
-  }, [regTitle, regSurname, regName, regProduct]);
-
-  const handleRegNameChange = (val: string) => {
-    setRegName(val);
-    if (!surnameTouched) {
-      setRegSurname(extractSurname(val));
-    }
-  };
-
-  const handleRegSurnameChange = (val: string) => {
-    setSurnameTouched(true);
-    setRegSurname(val);
-  };
 
 
   // Messages inbox state
@@ -448,117 +413,7 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  // Handle Register Customer submission
-  const handleRegisterCustomer = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!regName.trim() || !regPhone.trim()) {
-      setToastMsg('Please enter customer name and mobile number.');
-      return;
-    }
 
-    setRegSubmitting(true);
-
-    const formattedPhone = normalizeToE164(regPhone);
-
-    const surnameFinal = regSurname.trim() || extractSurname(regName.trim());
-    const finalProjectName = formatProjectName(regTitle, surnameFinal, regProduct);
-
-    // Call Supabase Edge Function if live
-    if (isSupabaseConfigured && supabase) {
-      try {
-        const { error } = await supabase.functions.invoke('register-customer', {
-          body: {
-            action: 'register',
-            name: regName.trim(),
-            title: regTitle,
-            surname: surnameFinal,
-            product: regProduct,
-            project_name: finalProjectName,
-            phone: formattedPhone,
-            location: regLocation.trim(),
-            create_new_consultation: regConsultationOption === 'create_new',
-            consultation_id: regConsultationOption === 'link_existing' ? regLinkedConsultationId : undefined
-          }
-        });
-
-        if (error) throw error;
-        setToastMsg(`Customer ${regName} registered with project "${finalProjectName}"!`);
-        setRegisterModalOpen(false);
-        loadConsultations();
-        loadCustomers();
-        setRegSubmitting(false);
-        return;
-      } catch (err: any) {
-        console.warn('Edge function notice, applying resilient local registration:', err);
-      }
-    }
-
-    // Resilient local registration in dev mode
-    const newCustId = 'cust-' + Date.now().toString().slice(-4);
-    let linkedId = regLinkedConsultationId;
-
-    if (regConsultationOption === 'create_new' || !linkedId) {
-      linkedId = 'draft-' + Date.now().toString().slice(-4);
-      const newConsult: ConsultationRecord = {
-        id: linkedId,
-        client_name: regName.trim(),
-        project_name: finalProjectName,
-        title: regTitle,
-        surname: surnameFinal,
-        product: regProduct,
-        client_phone: formattedPhone,
-        location: regLocation.trim() || 'Pending location',
-        consultant: profile?.name || 'Svvayam Admin',
-        status: 'draft',
-        updated_at: new Date().toISOString(),
-        portal_visible: false,
-        internal_notes: 'Created via admin customer registration.',
-        state: {
-          project_name: finalProjectName,
-          fields: {
-            client: regName.trim(),
-            title: regTitle,
-            surname: surnameFinal,
-            product: regProduct,
-            projectName: finalProjectName,
-            location: regLocation.trim(),
-            date: new Date().toLocaleDateString('en-CA')
-          }
-        }
-      };
-      const updatedConsultations = [newConsult, ...consultations];
-      setConsultations(updatedConsultations);
-      localStorage.setItem('svvayam_admin_consultations_v1', JSON.stringify(updatedConsultations));
-    }
-
-    const newCustomer: CustomerRecord = {
-      id: newCustId,
-      name: regName.trim(),
-      title: regTitle,
-      surname: surnameFinal,
-      product: regProduct,
-      project_name: finalProjectName,
-      phone: formattedPhone,
-      location: regLocation.trim(),
-      consultation_id: linkedId,
-      is_active: true,
-      created_at: new Date().toISOString()
-    };
-
-    const currentCustomers = getRegisteredCustomers();
-    const updatedCustList = [newCustomer, ...currentCustomers.filter(c => c.phone !== formattedPhone)];
-    saveRegisteredCustomers(updatedCustList);
-    setCustomers(updatedCustList);
-
-    setToastMsg(`Customer ${regName.trim()} registered with project "${finalProjectName}".`);
-    setRegSubmitting(false);
-    setRegisterModalOpen(false);
-    setRegName('');
-    setRegSurname('');
-    setSurnameTouched(false);
-    setRegPhone('+91');
-    setRegLocation('');
-  };
 
   // Toggle Customer Active / Deactivated status
   const handleToggleCustomerActive = async (cust: CustomerRecord) => {
@@ -607,8 +462,8 @@ export const AdminDashboard: React.FC = () => {
   const handleOpenConsultation = (record: ConsultationRecord) => {
     if (record.state) {
       importSession(record.state as ConsultationState);
-      navigate('/consult');
     }
+    navigate(`/consult?id=${record.id}`);
   };
 
   const handleViewProposal = (record: ConsultationRecord) => {
@@ -651,20 +506,10 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => setRegisterModalOpen(true)}
-              className="text-xs flex items-center gap-1.5 rounded-full"
-            >
-              <UserPlus className="w-3.5 h-3.5" />
-              <span>Register Customer</span>
-            </Button>
-
             <Link to="/consult">
-              <Button variant="outline" size="sm" className="text-xs">
-                <ArrowLeft className="w-3.5 h-3.5 mr-1" />
-                <span>Live Consultation</span>
+              <Button variant="primary" size="sm" className="text-xs">
+                <Sparkles className="w-3.5 h-3.5 mr-1" />
+                <span>New Consultation</span>
               </Button>
             </Link>
 
@@ -918,10 +763,15 @@ export const AdminDashboard: React.FC = () => {
 
                               <button
                                 onClick={() => handleOpenConsultation(item)}
-                                className="px-2 py-1 bg-[#0A0A0A] text-white hover:bg-neutral-800 text-[11px] cursor-pointer"
-                                title="Load and edit in Live Consultation"
+                                className={cn(
+                                  "px-2.5 py-1 text-[11px] font-medium rounded transition-colors cursor-pointer",
+                                  item.status !== 'completed'
+                                    ? "bg-[#FFE500] text-[#0A0A0A] hover:bg-[#E5CE00] font-semibold shadow-xs"
+                                    : "bg-[#0A0A0A] text-white hover:bg-neutral-800"
+                                )}
+                                title={item.status !== 'completed' ? "Resume unfinished consultation draft" : "Open consultation"}
                               >
-                                Open
+                                {item.status !== 'completed' ? 'Resume' : 'Open'}
                               </button>
                             </div>
                           </td>
@@ -1004,19 +854,9 @@ export const AdminDashboard: React.FC = () => {
                   Registered Customer Accounts
                 </h2>
                 <p className="text-xs text-neutral-500 font-sans">
-                  Only customers registered by an admin can sign in to the Customer Portal. No open sign-ups.
+                  Customer profiles registered for Sanctum projects and Customer Portal access.
                 </p>
               </div>
-
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => setRegisterModalOpen(true)}
-                className="text-xs flex items-center gap-1.5"
-              >
-                <UserPlus className="w-3.5 h-3.5" />
-                <span>Register Customer</span>
-              </Button>
             </div>
 
             <div className="border border-neutral-200 overflow-x-auto rounded-[14px]">
@@ -1064,6 +904,16 @@ export const AdminDashboard: React.FC = () => {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-right space-x-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigate(`/consult?client=${cust.id}&phone=${encodeURIComponent(cust.phone)}`);
+                            }}
+                            className="px-2.5 py-1 text-[11px] bg-[#0A0A0A] text-white hover:bg-[#FFE500] hover:text-[#0A0A0A] rounded font-medium transition-colors cursor-pointer"
+                            title="Start consultation with this customer"
+                          >
+                            Start consultation
+                          </button>
                           <button
                             type="button"
                             onClick={() => handleToggleCustomerActive(cust)}
@@ -1147,168 +997,7 @@ export const AdminDashboard: React.FC = () => {
         )}
       </main>
 
-      {/* Register Customer Modal */}
-      <Modal
-        isOpen={registerModalOpen}
-        onClose={() => setRegisterModalOpen(false)}
-        title="Register New Customer Account"
-        subtitle="Creates a verified phone login for the Customer Portal. Open sign-ups are disabled."
-        maxWidth="md"
-      >
-        <form onSubmit={handleRegisterCustomer} className="space-y-4 pt-2">
-          {/* Title, Surname, Product & Project Name Preview */}
-          <div className="p-3 bg-neutral-50 rounded-[14px] border border-[#ECECEC] space-y-3 font-sans">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#0A0A0A]">Project Naming Format</span>
-              <span className="text-[10px] font-mono text-[#0E2A1C] bg-[#0E2A1C]/10 px-2 py-0.5 rounded-full font-medium">
-                &lt;Title&gt; &lt;Surname&gt;'s &lt;Product&gt;
-              </span>
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              <div>
-                <label className="block text-[11px] font-medium text-neutral-600 mb-1">Title</label>
-                <select
-                  value={regTitle}
-                  onChange={(e) => setRegTitle(e.target.value as CustomerTitle)}
-                  className="w-full p-2.5 rounded-[10px] border border-[#ECECEC] text-xs bg-white font-sans focus:outline-none focus:ring-1 focus:ring-[#0E2A1C]"
-                >
-                  <option value="Mr.">Mr.</option>
-                  <option value="Mrs.">Mrs.</option>
-                  <option value="Ms.">Ms.</option>
-                  <option value="Dr.">Dr.</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-medium text-neutral-600 mb-1">
-                  Surname <span className="text-neutral-400 font-normal">(exact spelling)</span>
-                </label>
-                <input
-                  type="text"
-                  value={regSurname}
-                  onChange={(e) => handleRegSurnameChange(e.target.value)}
-                  placeholder="e.g. Pal"
-                  className="w-full p-2.5 rounded-[10px] border border-[#ECECEC] text-xs bg-white font-sans focus:outline-none focus:ring-1 focus:ring-[#0E2A1C]"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-medium text-neutral-600 mb-1">Product</label>
-                <select
-                  value={regProduct}
-                  onChange={(e) => setRegProduct(e.target.value as CustomerProduct)}
-                  className="w-full p-2.5 rounded-[10px] border border-[#ECECEC] text-xs bg-white font-sans focus:outline-none focus:ring-1 focus:ring-[#0E2A1C]"
-                >
-                  <option value="Temple">Temple (Default)</option>
-                  <option value="Puja Mandir">Puja Mandir</option>
-                  <option value="Sanctum">Sanctum</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Live Project Name Preview */}
-            <div className="p-2.5 bg-white rounded-[10px] border border-[#ECECEC] flex items-center justify-between">
-              <span className="text-[11px] text-neutral-500 font-sans">Project Name:</span>
-              <strong className="text-xs font-serif font-semibold text-[#0A0A0A] tracking-wide">
-                "{regProjectName}"
-              </strong>
-            </div>
-          </div>
-
-          <Input
-            label="Customer Full Name"
-            type="text"
-            value={regName}
-            onChange={(e) => handleRegNameChange(e.target.value)}
-            placeholder="e.g. Mala Sharma"
-            required
-            autoFocus
-          />
-
-
-          <Input
-            label="Mobile Number (with country code)"
-            type="tel"
-            value={regPhone}
-            onChange={(e) => setRegPhone(e.target.value)}
-            placeholder="+91 9845012345"
-            required
-            helperText="Customer will use this phone number to sign in via SMS OTP."
-          />
-
-          <Input
-            label="Project Location"
-            type="text"
-            value={regLocation}
-            onChange={(e) => setRegLocation(e.target.value)}
-            placeholder="e.g. Bengaluru, Indiranagar"
-          />
-
-          <div className="space-y-2 text-xs font-sans">
-            <span className="font-medium text-[#0A0A0A] block">Consultation Association</span>
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="consultOpt"
-                  checked={regConsultationOption === 'create_new'}
-                  onChange={() => setRegConsultationOption('create_new')}
-                  className="accent-[#0A0A0A]"
-                />
-                <span>Create new draft consultation for this customer</span>
-              </label>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="consultOpt"
-                  checked={regConsultationOption === 'link_existing'}
-                  onChange={() => setRegConsultationOption('link_existing')}
-                  className="accent-[#0A0A0A]"
-                />
-                <span>Link to existing consultation record</span>
-              </label>
-            </div>
-
-            {regConsultationOption === 'link_existing' && (
-              <select
-                value={regLinkedConsultationId}
-                onChange={(e) => setRegLinkedConsultationId(e.target.value)}
-                className="w-full mt-2 p-2.5 rounded-[12px] border border-[#ECECEC] text-xs font-sans bg-white focus:outline-none focus:ring-2 focus:ring-[#0E2A1C]"
-              >
-                <option value="">Select consultation...</option>
-                {consultations.map(c => (
-                  <option key={c.id} value={c.id}>
-                    {c.client_name} ({c.location}) — ID: {c.id.slice(0, 8)}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-
-          <div className="pt-3 border-t border-[#ECECEC] flex items-center justify-end gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setRegisterModalOpen(false)}
-            >
-              <span>Cancel</span>
-            </Button>
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="sm"
-              disabled={regSubmitting}
-            >
-              <span>{regSubmitting ? 'Registering...' : 'Register Customer'}</span>
-            </Button>
-          </div>
-        </form>
-      </Modal>
 
       {/* Consultation Inspection Detail Modal */}
       {selectedRecord && (

@@ -6,12 +6,12 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProposalViewPage } from './pages/ProposalViewPage';
 import { CustomerPortalPage } from './pages/CustomerPortalPage';
-import { AdminClientsPage } from './pages/admin/AdminClientsPage';
-import { AdminRegisterPage } from './pages/admin/AdminRegisterPage';
-import { AdminConsultationPage } from './pages/admin/AdminConsultationPage';
+import { AdminDashboard } from './pages/AdminDashboard';
+import { ConsultationPage } from './pages/ConsultationPage';
+import { ClientExplorerPage } from './pages/ClientExplorerPage';
 
-// Guard for Admin Routes (/admin/clients, /admin/register, /admin/consultation)
-const ProtectedAdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Guard for Admin Console (/admin)
+const ProtectedAdminRoute: React.FC = () => {
   const { user, isAdmin, isLoading } = useAuth();
   const location = useLocation();
 
@@ -31,7 +31,79 @@ const ProtectedAdminRoute: React.FC<{ children: React.ReactNode }> = ({ children
     return <Navigate to="/client" replace />;
   }
 
-  return <>{children}</>;
+  return <AdminDashboard />;
+};
+
+// Guard for Live Consultation flow (/consult, /consult/:id)
+const ProtectedConsultRoute: React.FC = () => {
+  const { user, isAdmin, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Loading consultation...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to={`/?role=admin&redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/client" replace />;
+  }
+
+  return <ConsultationPage />;
+};
+
+// Guard for Architectural Showcase (/showcase)
+const ProtectedShowcaseRoute: React.FC = () => {
+  const { user, isAdmin, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Loading showcase...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to={`/?role=admin&redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/client" replace />;
+  }
+
+  return <LandingPage />;
+};
+
+// Guard for Client Explorer (/client-explorer)
+const ProtectedExplorerRoute: React.FC = () => {
+  const { user, isAdmin, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Loading explorer...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to={`/?role=admin&redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/client" replace />;
+  }
+
+  return <ClientExplorerPage />;
 };
 
 // Guard for Client Section (/client)
@@ -50,9 +122,9 @@ const ProtectedClientRoute: React.FC = () => {
     return <Navigate to="/?role=customer&redirect=/client" replace />;
   }
 
-  // If staff/admin opens /client, redirect to their home (/admin/clients)
+  // If staff/admin opens /client, redirect to their home (/admin)
   if (isAdmin) {
-    return <Navigate to="/admin/clients" replace />;
+    return <Navigate to="/admin" replace />;
   }
 
   return <CustomerPortalPage />;
@@ -77,29 +149,6 @@ const ProtectedProposalRoute: React.FC = () => {
   return <ProposalViewPage />;
 };
 
-// Guard for Presentations & Architectural Showcase (Staff only)
-const ProtectedShowcaseRoute: React.FC = () => {
-  const { user, isAdmin, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
-        Loading showcase...
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/?role=admin&redirect=/showcase" replace />;
-  }
-
-  if (!isAdmin) {
-    return <Navigate to="/client" replace />;
-  }
-
-  return <LandingPage />;
-};
-
 export const App: React.FC = () => {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
@@ -110,60 +159,31 @@ export const App: React.FC = () => {
             <Route path="/" element={<LoginPage />} />
             <Route path="/login" element={<Navigate to="/" replace />} />
 
-            {/* Client Section (/client) */}
+            {/* Showcase Page (Admin landing after login) */}
+            <Route path="/showcase" element={<ProtectedShowcaseRoute />} />
+
+            {/* Admin Console (/admin): Consultations table, Customer accounts, Message inbox */}
+            <Route path="/admin" element={<ProtectedAdminRoute />} />
+
+            {/* Live Consultation flow (/consult, /consult/:id) */}
+            <Route path="/consult" element={<ProtectedConsultRoute />} />
+            <Route path="/consult/:id" element={<ProtectedConsultRoute />} />
+
+            {/* Architectural 37 Projects Explorer */}
+            <Route path="/client-explorer" element={<ProtectedExplorerRoute />} />
+
+            {/* Customer Sanctum Portal */}
             <Route path="/client" element={<ProtectedClientRoute />} />
             <Route path="/portal" element={<Navigate to="/client" replace />} />
-
-            {/* 3 Distinct Admin Sections with Dedicated Routes */}
-            {/* 1. Client Explorer (/admin/clients) */}
-            <Route path="/admin" element={<Navigate to="/admin/clients" replace />} />
-            <Route
-              path="/admin/clients"
-              element={
-                <ProtectedAdminRoute>
-                  <AdminClientsPage />
-                </ProtectedAdminRoute>
-              }
-            />
-
-            {/* 2. Register Customer (/admin/register) */}
-            <Route
-              path="/admin/register"
-              element={
-                <ProtectedAdminRoute>
-                  <AdminRegisterPage />
-                </ProtectedAdminRoute>
-              }
-            />
-
-            {/* 3. Live Consultation (/admin/consultation) */}
-            <Route
-              path="/admin/consultation"
-              element={
-                <ProtectedAdminRoute>
-                  <AdminConsultationPage />
-                </ProtectedAdminRoute>
-              }
-            />
-            <Route
-              path="/admin/consultation/:id"
-              element={
-                <ProtectedAdminRoute>
-                  <AdminConsultationPage />
-                </ProtectedAdminRoute>
-              }
-            />
-
-            {/* Legacy & Route Redirections */}
-            <Route path="/client-explorer" element={<Navigate to="/admin/clients" replace />} />
-            <Route path="/consult" element={<Navigate to="/admin/consultation" replace />} />
-            <Route path="/consult/:id" element={<Navigate to="/admin/consultation" replace />} />
 
             {/* Proposal View */}
             <Route path="/proposal/:id" element={<ProtectedProposalRoute />} />
 
-            {/* Architectural Showcase & Presentations (Admin only) */}
-            <Route path="/showcase" element={<ProtectedShowcaseRoute />} />
+            {/* Compatibility Redirects */}
+            <Route path="/admin/clients" element={<Navigate to="/admin" replace />} />
+            <Route path="/admin/register" element={<Navigate to="/consult" replace />} />
+            <Route path="/admin/consultation" element={<Navigate to="/consult" replace />} />
+            <Route path="/admin/consultation/:id" element={<Navigate to="/consult" replace />} />
 
             {/* Catch-all: Redirect to Entry Login */}
             <Route path="*" element={<Navigate to="/" replace />} />

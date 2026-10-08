@@ -45,7 +45,7 @@ export const LoginPage: React.FC = () => {
   useEffect(() => {
     if (user && !isLoading) {
       if (isAdmin) {
-        navigate(redirectUrl || '/admin/clients', { replace: true });
+        navigate(redirectUrl || '/showcase', { replace: true });
       } else {
         navigate(redirectUrl || '/client', { replace: true });
       }
@@ -126,7 +126,7 @@ export const LoginPage: React.FC = () => {
 
     if (res.success) {
       if (activeRole === 'admin') {
-        navigate(redirectUrl || '/admin/clients', { replace: true });
+        navigate(redirectUrl || '/showcase', { replace: true });
       } else {
         navigate(redirectUrl || '/client', { replace: true });
       }

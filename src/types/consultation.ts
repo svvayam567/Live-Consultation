@@ -106,10 +106,22 @@ export interface ConsultationState {
   selected_projects?: SelectedReference[]; // Deprecated: Kept for backwards compatibility with older files
   status?: 'draft' | 'proposal_sent' | 'completed';
   client_id?: string;
+  project_id?: string;
   portal_visible?: boolean;
   internal_notes?: string;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface ProjectRecord {
+  id: string;
+  client_id: string;
+  project_name: string;
+  product_type: CustomerProduct;
+  location?: string;
+  status: 'draft' | 'in_progress' | 'completed' | 'on_hold';
+  created_at: string;
+  updated_at: string;
 }
 
 export interface JourneyStageProgress {
@@ -181,6 +193,7 @@ export interface ConsultationRecord {
   portal_visible?: boolean;
   internal_notes?: string;
   client_id?: string;
+  project_id?: string;
   current_step?: number;
   state?: any;
 }

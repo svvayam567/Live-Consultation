@@ -192,16 +192,19 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         // If user is authenticated and Supabase is configured, save to Postgres
         if (isSupabaseConfigured && supabase && user) {
           const projName = nextState.project_name || nextState.fields.projectName || nextState.fields.project_name || (nextState.fields.surname ? formatProjectName(nextState.fields.title, nextState.fields.surname, nextState.fields.product) : null);
-          const payload = {
+          const computedStatus = nextState.status || (nextState.slide === 7 ? 'completed' : 'draft');
+          const payload: any = {
             created_by: user.id,
+            project_id: nextState.project_id || null,
+            client_id: nextState.client_id || null,
             project_name: projName,
             client_name: nextState.fields.client || null,
-            client_phone: nextState.fields.client ? nextState.fields.client : null,
+            client_phone: nextState.fields.client_phone || nextState.fields.phone || (nextState.fields.client ? nextState.fields.client : null),
             fields: nextState.fields,
             selected_reference: nextState.selected_reference,
             selected_refs: nextState.selected_reference ? [nextState.selected_reference] : [],
-            current_step: nextState.slide,
-            status: nextState.status || 'draft',
+            current_step: nextState.slide + 1,
+            status: computedStatus,
             updated_at: new Date().toISOString()
           };
 
@@ -247,13 +250,19 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   }, []);
 
   const updateField = useCallback((field: keyof ConsultationFields, value: string) => {
-    persistState({
+    const nextFields = {
+      ...state.fields,
+      [field]: value
+    };
+    const nextState: any = {
       ...state,
-      fields: {
-        ...state.fields,
-        [field]: value
-      }
-    });
+      fields: nextFields
+    };
+    if (field === 'client_id') nextState.client_id = value;
+    if (field === 'project_id') nextState.project_id = value;
+    if (field === 'projectName' || field === 'project_name') nextState.project_name = value;
+
+    persistState(nextState);
   }, [state, persistState]);
 
   const setSlide = useCallback((slide: number) => {

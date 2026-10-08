@@ -16,13 +16,38 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 export const ConsultationPage: React.FC = () => {
   const {
+    state,
     currentSlide,
     nextSlide,
     prevSlide,
     totalSelectedCount,
-    setSlide
+    setSlide,
+    importSession
   } = useConsultation();
   const [searchParams] = useSearchParams();
+
+  // Support ?id=... to resume existing consultation
+  useEffect(() => {
+    const idParam = searchParams.get('id');
+    if (idParam && state.id !== idParam) {
+      // Check local storage or seed
+      try {
+        const stored = localStorage.getItem('svvayam_admin_consultations_v1');
+        if (stored) {
+          const list = JSON.parse(stored);
+          const found = list.find((c: any) => c.id === idParam);
+          if (found?.state) {
+            importSession(found.state);
+            if (found.current_step) {
+              setSlide(Math.max(0, Math.min(7, found.current_step - 1)));
+            }
+          }
+        }
+      } catch {
+        // Ignored
+      }
+    }
+  }, [searchParams, state.id, importSession, setSlide]);
 
   // Support ?step=1..8 query parameter
   useEffect(() => {
@@ -40,10 +65,10 @@ export const ConsultationPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentSlide]);
 
-  // Step 4 (Slide index 4 = Examples) requires exactly 1 selected reference
-  const isNextDisabled =
-    currentSlide === 7 ||
-    (currentSlide === 4 && totalSelectedCount !== 1);
+  // Validation: Step 1 requires client & location; Step 5 requires 1 reference
+  const isStep1Incomplete = currentSlide === 0 && (!state.fields.client || !state.fields.location);
+  const isStep5Incomplete = currentSlide === 4 && totalSelectedCount !== 1;
+  const isNextDisabled = currentSlide === 7 || isStep1Incomplete || isStep5Incomplete;
 
   const renderCurrentStep = () => {
     switch (currentSlide) {
@@ -102,7 +127,12 @@ export const ConsultationPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {currentSlide === 4 && totalSelectedCount !== 1 && (
+            {isStep1Incomplete && (
+              <span className="text-[11px] text-[#737373] hidden sm:inline font-sans">
+                Select client & configure project to continue
+              </span>
+            )}
+            {isStep5Incomplete && (
               <span className="text-[11px] text-[#737373] hidden sm:inline font-sans">
                 Select one reference to continue
               </span>
