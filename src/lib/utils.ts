@@ -133,3 +133,18 @@ export function formatProjectName(
   return `${cleanTitle} ${cleanSurname}'s ${cleanProduct}`;
 }
 
+/**
+ * Converts a customer's mobile number to the internal hidden email format.
+ * E.g. "+91 9845012345" or "9845012345" -> "9845012345@svvayam.internal"
+ */
+export function phoneToHiddenEmail(phone: string): string {
+  const digits10 = (phone || '').replace(/\D/g, '').slice(-10);
+  return `${digits10}@svvayam.internal`;
+}
+
+/**
+ * Extract clean 10-digit mobile number string.
+ */
+export function extract10Digits(phone: string): string {
+  return (phone || '').replace(/\D/g, '').slice(-10);
+}

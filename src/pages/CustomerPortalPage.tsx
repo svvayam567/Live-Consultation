@@ -155,6 +155,8 @@ export const CustomerPortalPage: React.FC = () => {
         if (storedConsultations) {
           const list = JSON.parse(storedConsultations);
           matchedConsultation = list.find((c: any) =>
+            c.client_id === user.id ||
+            c.state?.client_id === user.id ||
             (c.client_phone && c.client_phone.replace(/[^0-9]/g, '').includes(cleanPhone.slice(-10))) ||
             (c.client_name && profile?.name && c.client_name.toLowerCase().includes(profile.name.toLowerCase()))
           );

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase, isSupabaseConfigured, INITIAL_ADMIN_PHONES } from '../lib/supabase';
 import type { Profile, UserRole, CustomerRecord } from '../types/consultation';
-import { normalizeToE164 } from '../lib/utils';
+import { normalizeToE164, phoneToHiddenEmail } from '../lib/utils';
 
 interface AuthContextType {
   user: { id: string; phone: string } | null;
@@ -11,6 +11,11 @@ interface AuthContextType {
   isCustomer: boolean;
   isLoading: boolean;
   resendCooldown: number;
+  signInWithPassword: (
+    phone: string,
+    password: string,
+    requestedRole?: 'customer' | 'admin'
+  ) => Promise<{ success: boolean; error?: string }>;
   signInWithPhone: (
     phone: string,
     name?: string,
@@ -564,6 +569,150 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [pendingName]);
 
+  const signInWithPassword = useCallback(async (
+    phone: string,
+    password: string,
+    requestedRole: 'customer' | 'admin' = 'customer'
+  ): Promise<{ success: boolean; error?: string }> => {
+    const cleanDigits = phone.replace(/\D/g, '').slice(-10);
+    const formattedPhone = '+91' + cleanDigits;
+    const hiddenEmail = phoneToHiddenEmail(phone);
+
+    if (cleanDigits.length !== 10) {
+      return { success: false, error: 'Please enter a valid 10-digit mobile number.' };
+    }
+    if (!password || password.trim().length < 6) {
+      return { success: false, error: 'Password must be at least 6 characters.' };
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: hiddenEmail,
+          password: password.trim()
+        });
+
+        if (error) {
+          // If password login fails, check if customer exists in profiles table
+          const { data: profCheck } = await supabase
+            .from('profiles')
+            .select('id, role, is_active')
+            .or(`phone.eq.${formattedPhone},phone.ilike.%${cleanDigits}%`)
+            .limit(1)
+            .maybeSingle();
+
+          if (!profCheck) {
+            return {
+              success: false,
+              error: "This number isn't registered. Please contact the Svvayam team."
+            };
+          }
+
+          if (profCheck.is_active === false) {
+            return {
+              success: false,
+              error: "Your account access has been deactivated. Please contact Svvayam."
+            };
+          }
+
+          return {
+            success: false,
+            error: "Incorrect password. Please verify or ask the Svvayam team to reset your password."
+          };
+        }
+
+        if (data.user) {
+          setUser({ id: data.user.id, phone: formattedPhone });
+
+          let { data: prof } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', data.user.id)
+            .maybeSingle();
+
+          if (!prof) {
+            const { data: profByPhone } = await supabase
+              .from('profiles')
+              .select('*')
+              .or(`phone.eq.${formattedPhone},phone.ilike.%${cleanDigits}%`)
+              .limit(1)
+              .maybeSingle();
+
+            if (profByPhone) {
+              await supabase.from('profiles').update({ id: data.user.id }).eq('id', profByPhone.id);
+              prof = { ...profByPhone, id: data.user.id };
+            }
+          }
+
+          if (prof) {
+            if (prof.is_active === false) {
+              await supabase.auth.signOut();
+              setUser(null);
+              setProfile(null);
+              return { success: false, error: 'Your account access has been deactivated. Please contact Svvayam.' };
+            }
+            if (requestedRole === 'admin' && prof.role !== 'admin') {
+              await supabase.auth.signOut();
+              setUser(null);
+              setProfile(null);
+              return { success: false, error: 'This number does not have administrator access. Please contact the Svvayam team.' };
+            }
+            setProfile(prof as Profile);
+          }
+        }
+
+        return { success: true };
+      } catch (err: any) {
+        return { success: false, error: err?.message || 'Login failed.' };
+      }
+    } else {
+      // Mock / Dev Mode Fallback
+      const registered = getRegisteredCustomers();
+      const customer = registered.find(c => c.phone.replace(/\D/g, '').endsWith(cleanDigits));
+
+      if (requestedRole === 'customer') {
+        if (!customer) {
+          return { success: false, error: "This number isn't registered. Please contact the Svvayam team." };
+        }
+        if (!customer.is_active) {
+          return { success: false, error: "Your account access has been deactivated. Please contact Svvayam." };
+        }
+        const mockProfile: Profile = {
+          id: customer.id,
+          name: customer.name,
+          title: customer.title || 'Mrs.',
+          surname: customer.surname || '',
+          product: customer.product || 'Temple',
+          project_name: customer.project_name || `${customer.name}'s Temple`,
+          phone: formattedPhone,
+          role: 'client',
+          is_active: true,
+          created_at: customer.created_at
+        };
+        setUser({ id: mockProfile.id, phone: formattedPhone });
+        setProfile(mockProfile);
+        localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(mockProfile));
+        return { success: true };
+      } else {
+        const isInitialAdmin = isNumberInAdminList(formattedPhone);
+        if (!isInitialAdmin) {
+          return { success: false, error: "This number does not have administrator access. Please contact the Svvayam team." };
+        }
+        const mockProfile: Profile = {
+          id: 'admin-' + cleanDigits,
+          name: 'Svvayam Admin',
+          phone: formattedPhone,
+          role: 'admin',
+          is_active: true,
+          created_at: new Date().toISOString()
+        };
+        setUser({ id: mockProfile.id, phone: formattedPhone });
+        setProfile(mockProfile);
+        localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(mockProfile));
+        return { success: true };
+      }
+    }
+  }, []);
 
   const updateProfileName = useCallback(async (name: string): Promise<boolean> => {
     if (!profile) return false;
@@ -600,6 +749,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isCustomer,
       isLoading,
       resendCooldown,
+      signInWithPassword,
       signInWithPhone,
       verifyOtp,
       updateProfileName,

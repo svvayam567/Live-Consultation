@@ -10,7 +10,7 @@ import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { extractSurname, formatProjectName, cn } from '../../lib/utils';
 import type { CustomerTitle, CustomerProduct, CustomerRecord } from '../../types/consultation';
 import type { ConsultationRecord } from './AdminClientsPage';
-import { Sparkles, Play, Loader2, AlertCircle } from 'lucide-react';
+import { Sparkles, Play, Loader2, AlertCircle, Eye, EyeOff, ShieldAlert, ArrowRight } from 'lucide-react';
 
 export const AdminRegisterPage: React.FC = () => {
   const { isAdmin, isLoading: authLoading, profile } = useAuth();
@@ -22,6 +22,8 @@ export const AdminRegisterPage: React.FC = () => {
   const [surname, setSurname] = useState('');
   const [surnameTouched, setSurnameTouched] = useState(false);
   const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [product, setProduct] = useState<CustomerProduct>('Temple');
   const [location, setLocation] = useState('');
   const [consultationOption, setConsultationOption] = useState<'create_new' | 'link_existing'>('create_new');
@@ -31,6 +33,7 @@ export const AdminRegisterPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [existingCustomerNotice, setExistingCustomerNotice] = useState<{ id: string; name: string; phone: string; project_name?: string } | null>(null);
 
   // Field-level inline errors
   const [errors, setErrors] = useState<{
@@ -38,6 +41,7 @@ export const AdminRegisterPage: React.FC = () => {
     name?: string;
     surname?: string;
     phone?: string;
+    password?: string;
     product?: string;
     location?: string;
     linkedConsultationId?: string;
@@ -141,7 +145,11 @@ export const AdminRegisterPage: React.FC = () => {
   };
 
   const handlePhoneChange = (val: string) => {
-    setPhone(val);
+    const digits = val.replace(/\D/g, '').slice(0, 10);
+    setPhone(digits);
+    if (existingCustomerNotice) {
+      setExistingCustomerNotice(null);
+    }
     if (errors.phone) {
       setErrors(prev => ({ ...prev, phone: undefined }));
     }
@@ -174,7 +182,13 @@ export const AdminRegisterPage: React.FC = () => {
     if (!phone.trim()) {
       newErrors.phone = 'Mobile number is required';
     } else if (cleanDigits.length !== 10) {
-      newErrors.phone = 'Please enter a valid 10-digit mobile number';
+      newErrors.phone = 'Please enter exactly 10 digits';
+    }
+
+    if (!password.trim()) {
+      newErrors.password = 'Create password is required';
+    } else if (password.trim().length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
     if (!product) {
@@ -197,6 +211,7 @@ export const AdminRegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    setExistingCustomerNotice(null);
 
     // a) Validate all required fields inline
     if (!validateForm()) {
@@ -212,10 +227,9 @@ export const AdminRegisterPage: React.FC = () => {
       const finalProjectName = formatProjectName(title, finalSurname, product);
       const cleanLocation = location.trim();
 
-      // b) Check if mobile number already exists to prevent duplicate customer
+      // b) Check if mobile number already exists (Prevent duplicate customer accounts)
       let existingClient: CustomerRecord | null = null;
 
-      // Check in Supabase profiles
       if (isSupabaseConfigured && supabase) {
         try {
           const { data: profiles } = await supabase
@@ -225,26 +239,13 @@ export const AdminRegisterPage: React.FC = () => {
             .limit(1);
 
           if (profiles && profiles.length > 0) {
-            const p = profiles[0];
-            existingClient = {
-              id: p.id,
-              name: p.name,
-              title: p.title || title,
-              surname: p.surname || finalSurname,
-              product: p.product || product,
-              project_name: p.project_name || finalProjectName,
-              phone: p.phone,
-              location: p.location || cleanLocation,
-              is_active: p.is_active ?? true,
-              created_at: p.created_at
-            };
+            existingClient = profiles[0] as CustomerRecord;
           }
         } catch (err) {
           console.warn('Supabase profile query fallback:', err);
         }
       }
 
-      // Check in local registered customers
       if (!existingClient) {
         const localCustomers = getRegisteredCustomers();
         const matchedLocal = localCustomers.find(c =>
@@ -255,14 +256,66 @@ export const AdminRegisterPage: React.FC = () => {
         }
       }
 
-      const isExisting = Boolean(existingClient);
-      const clientId = existingClient ? existingClient.id : 'cust-' + Date.now().toString().slice(-4);
-      const projectId = 'proj-' + Date.now().toString().slice(-4);
+      // If customer already exists: Show "Customer already exists" and stop without creating duplicate
+      if (existingClient) {
+        setExistingCustomerNotice({
+          id: existingClient.id,
+          name: existingClient.name,
+          phone: existingClient.phone || formattedPhone,
+          project_name: existingClient.project_name
+        });
+        setSubmitting(false);
+        return;
+      }
 
-      // If mobile number is new: create customer profile with role 'customer'
-      if (!isExisting) {
+      // c) Call Edge Function to create Customer Login + Profile (role = 'client') + Project + Consultation
+      let customerUserId: string;
+      let linkedConsultId: string;
+      let createdProjectId: string | null = null;
+
+      if (isSupabaseConfigured && supabase) {
+        const { data: edgeRes, error: edgeErr } = await supabase.functions.invoke('register-customer', {
+          body: {
+            action: 'register',
+            name: name.trim(),
+            phone: formattedPhone,
+            password: password.trim(),
+            title,
+            surname: finalSurname,
+            product,
+            project_name: finalProjectName,
+            location: cleanLocation,
+            create_new_consultation: consultationOption === 'create_new',
+            consultation_id: linkedConsultationId || undefined
+          }
+        });
+
+        if (edgeErr || !edgeRes?.success) {
+          if (edgeRes?.code === 'CUSTOMER_EXISTS' || edgeRes?.error?.includes('already exists')) {
+            setExistingCustomerNotice({
+              id: edgeRes?.customer?.id || 'existing',
+              name: edgeRes?.customer?.name || name.trim(),
+              phone: formattedPhone,
+              project_name: edgeRes?.customer?.project_name
+            });
+            setSubmitting(false);
+            return;
+          }
+          // Account creation failed: Do NOT save half-created customer, show clear error and keep form filled in
+          throw new Error(edgeRes?.error || edgeErr?.message || 'Failed to create customer login. Please try again.');
+        }
+
+        customerUserId = edgeRes.customer.id;
+        linkedConsultId = edgeRes.customer.consultation_id;
+        createdProjectId = edgeRes.customer.project_id || null;
+      } else {
+        // Dev Mock Mode Fallback
+        customerUserId = 'cust-' + Date.now().toString().slice(-4);
+        linkedConsultId = 'draft-' + Date.now().toString().slice(-4);
+        createdProjectId = 'proj-' + Date.now().toString().slice(-4);
+
         const newCustomer: CustomerRecord = {
-          id: clientId,
+          id: customerUserId,
           name: name.trim(),
           title,
           surname: finalSurname,
@@ -274,52 +327,14 @@ export const AdminRegisterPage: React.FC = () => {
           created_at: new Date().toISOString()
         };
 
-        // Save locally
         const currentCustomers = getRegisteredCustomers();
         saveRegisteredCustomers([newCustomer, ...currentCustomers]);
-
-        // Save in Supabase
-        if (isSupabaseConfigured && supabase) {
-          try {
-            await supabase.from('profiles').upsert({
-              id: clientId,
-              name: name.trim(),
-              title,
-              surname: finalSurname,
-              product,
-              project_name: finalProjectName,
-              phone: formattedPhone,
-              role: 'customer',
-              location: cleanLocation,
-              is_active: true
-            });
-          } catch (err) {
-            console.warn('Supabase profile creation note:', err);
-          }
-        }
       }
 
-      // Create new project row attached to this client
-      if (isSupabaseConfigured && supabase) {
-        try {
-          await supabase.from('projects').insert({
-            client_id: clientId,
-            project_name: finalProjectName,
-            product_type: product,
-            location: cleanLocation,
-            status: 'draft'
-          });
-        } catch (err) {
-          console.warn('Supabase project creation note:', err);
-        }
-      }
-
-      // Handle Consultation Creation or Linking
+      // Handle Linking Existing Consultation
       if (consultationOption === 'link_existing' && linkedConsultationId) {
-        // Link Existing Consultation
         let foundExistingConsultation: any = null;
 
-        // Try local storage
         try {
           const stored = localStorage.getItem('svvayam_admin_consultations_v1');
           if (stored) {
@@ -328,15 +343,14 @@ export const AdminRegisterPage: React.FC = () => {
           }
         } catch {}
 
-        // If found in local or Supabase, update and open
         const resumeStep = foundExistingConsultation?.current_step || (foundExistingConsultation?.state?.slide ? foundExistingConsultation.state.slide + 1 : 1);
 
         if (foundExistingConsultation?.state) {
           const updatedState = {
             ...foundExistingConsultation.state,
             project_name: finalProjectName,
-            client_id: clientId,
-            project_id: projectId,
+            client_id: customerUserId,
+            project_id: createdProjectId,
             fields: {
               ...foundExistingConsultation.state.fields,
               client: name.trim(),
@@ -354,26 +368,28 @@ export const AdminRegisterPage: React.FC = () => {
           setSlide(Math.max(0, Math.min(7, resumeStep - 1)));
         }
 
-        // Navigate to consultation at last completed step
-        navigate(`/admin/consultation?id=${linkedConsultationId}&client=${clientId}&step=${resumeStep}`, {
+        navigate(`/admin/consultation?id=${linkedConsultationId}&client=${customerUserId}&step=${resumeStep}`, {
           state: {
-            notice: isExisting
-              ? 'Existing client found, new project created and linked'
-              : 'Consultation linked successfully'
+            newCredentials: {
+              phone: formattedPhone,
+              password: password.trim(),
+              clientName: name.trim(),
+              projectName: finalProjectName
+            }
           }
         });
         return;
       }
 
-      // Default: Create New Consultation
-      const consultId = 'draft-' + Date.now().toString().slice(-4);
+      // Default: Setup New Consultation draft and jump to Step 1
+      const consultId = linkedConsultId || ('draft-' + Date.now().toString().slice(-4));
       const newConsultState: any = {
         version: 1,
         id: consultId,
         slide: 0,
         project_name: finalProjectName,
-        client_id: clientId,
-        project_id: projectId,
+        client_id: customerUserId,
+        project_id: createdProjectId,
         fields: {
           client: name.trim(),
           title,
@@ -397,7 +413,7 @@ export const AdminRegisterPage: React.FC = () => {
         selected_reference: null
       };
 
-      // Save consultation draft in local storage for Admin listing
+      // Save consultation draft in local storage for Admin records
       const newConsultRecord: ConsultationRecord = {
         id: consultId,
         client_name: name.trim(),
@@ -425,34 +441,20 @@ export const AdminRegisterPage: React.FC = () => {
         console.warn('Storage save note:', err);
       }
 
-      // Also save to Supabase consultations
-      if (isSupabaseConfigured && supabase) {
-        try {
-          await supabase.from('consultations').insert({
-            id: consultId,
-            client_id: clientId,
-            project_id: projectId,
-            project_name: finalProjectName,
-            client_name: name.trim(),
-            client_phone: formattedPhone,
-            status: 'draft',
-            fields: newConsultState.fields,
-            current_step: 1,
-            state: newConsultState
-          });
-        } catch (err) {
-          console.warn('Supabase consultation insert note:', err);
-        }
-      }
-
       // Initialize ConsultationContext with this project and jump to Step 1
       importSession(newConsultState);
       setSlide(0);
 
       // Immediately navigate to Live Consultation Step 1
-      navigate(`/admin/consultation?id=${consultId}&client=${clientId}&step=1`, {
+      // Pass one-time newCredentials in router state (never stored in DB or Sheets)
+      navigate(`/admin/consultation?id=${consultId}&client=${customerUserId}&step=1`, {
         state: {
-          notice: isExisting ? 'Existing client found, new project created' : undefined
+          newCredentials: {
+            phone: formattedPhone,
+            password: password.trim(),
+            clientName: name.trim(),
+            projectName: finalProjectName
+          }
         }
       });
     } catch (err: any) {
@@ -484,10 +486,46 @@ export const AdminRegisterPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setErrorMessage(null)}
-              className="text-xs text-rose-600 hover:text-rose-900 font-semibold"
+              className="text-xs text-rose-600 hover:text-rose-900 font-semibold cursor-pointer"
             >
               Dismiss
             </button>
+          </div>
+        )}
+
+        {/* Existing Customer Notice Banner (Prevent Duplicates) */}
+        {existingCustomerNotice && (
+          <div className="p-5 rounded-[18px] bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-3 animate-fadeIn shadow-xs">
+            <div className="flex items-start gap-2.5">
+              <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <h4 className="font-semibold text-sm text-amber-950 font-sans">
+                  Customer already exists with mobile number {existingCustomerNotice.phone}
+                </h4>
+                <p className="text-amber-800 leading-relaxed font-sans">
+                  An account for <strong>{existingCustomerNotice.name}</strong> is already registered. To prevent duplicate accounts, open or continue their consultation instead.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 pt-2 border-t border-amber-200/80">
+              <button
+                type="button"
+                onClick={() => navigate(`/admin/consultation?client=${existingCustomerNotice.id}&step=1`)}
+                className="px-4 py-2 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800 font-semibold text-xs cursor-pointer flex items-center gap-2 shadow-xs transition-colors"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-white" />
+                <span>Open Existing Consultation</span>
+                <ArrowRight className="w-3.5 h-3.5 text-white" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setExistingCustomerNotice(null)}
+                className="px-3.5 py-2 rounded-full border border-amber-300 hover:bg-amber-100 text-amber-900 text-xs font-medium cursor-pointer"
+              >
+                Dismiss
+              </button>
+            </div>
           </div>
         )}
 
@@ -508,7 +546,7 @@ export const AdminRegisterPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Registration Form Card (Matches Screenshot Exactly) */}
+        {/* Registration Form Card */}
         <div className="bg-white rounded-[20px] border border-[#ECECEC] shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-6 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -556,21 +594,78 @@ export const AdminRegisterPage: React.FC = () => {
                   value={surname}
                   onChange={(e) => handleSurnameChange(e.target.value)}
                   placeholder="e.g. Sharma"
-                  helperText="Exact spelling preserved (e.g. Pal)"
+                  helperText="Exact spelling preserved"
                   error={errors.surname}
                 />
               </div>
 
-              {/* Mobile Number */}
+              {/* Mobile Number with Fixed +91 Prefix (10 digits) */}
               <div>
-                <Input
-                  label="Mobile Number"
-                  value={phone}
-                  onChange={(e) => handlePhoneChange(e.target.value)}
-                  placeholder="9845012345"
-                  helperText="+91 default added automatically"
-                  error={errors.phone}
-                />
+                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
+                  Mobile Number
+                </label>
+                <div className="flex rounded-[12px] shadow-xs">
+                  <span className="inline-flex items-center px-3.5 rounded-l-[12px] border border-r-0 border-[#E5E5E5] bg-[#F7F7F7] text-xs font-mono font-semibold text-[#0A0A0A] select-none">
+                    +91
+                  </span>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => handlePhoneChange(e.target.value)}
+                    placeholder="9845012345"
+                    maxLength={10}
+                    className={cn(
+                      "flex-1 px-3.5 py-2.5 rounded-r-[12px] border bg-white text-xs font-mono text-[#0A0A0A] focus:outline-none focus:ring-1",
+                      errors.phone
+                        ? "border-rose-500 focus:ring-rose-500 ring-1 ring-rose-500"
+                        : "border-[#E5E5E5] focus:ring-[#0A0A0A]"
+                    )}
+                  />
+                </div>
+                {errors.phone ? (
+                  <p className="mt-1 text-[11px] text-rose-600 font-sans">{errors.phone}</p>
+                ) : (
+                  <p className="mt-1 text-[11px] text-neutral-400 font-mono">Fixed +91 prefix · Exactly 10 digits</p>
+                )}
+              </div>
+
+              {/* Create Password Field with Show/Hide Toggle */}
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
+                  Create Password (Portal Login)
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (errors.password) {
+                        setErrors(prev => ({ ...prev, password: undefined }));
+                      }
+                    }}
+                    placeholder="Min 6 characters"
+                    className={cn(
+                      "w-full px-3.5 py-2.5 pr-10 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1",
+                      errors.password
+                        ? "border-rose-500 focus:ring-rose-500 ring-1 ring-rose-500"
+                        : "border-[#E5E5E5] focus:ring-[#0A0A0A]"
+                    )}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-[#0A0A0A] cursor-pointer"
+                    title={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {errors.password ? (
+                  <p className="mt-1 text-[11px] text-rose-600 font-sans">{errors.password}</p>
+                ) : (
+                  <p className="mt-1 text-[11px] text-neutral-400 font-mono">Min 6 characters · Shared with customer</p>
+                )}
               </div>
 
               {/* Product Type Dropdown */}
@@ -598,7 +693,7 @@ export const AdminRegisterPage: React.FC = () => {
               </div>
 
               {/* Project Location */}
-              <div className="sm:col-span-3">
+              <div className="sm:col-span-2">
                 <Input
                   label="Project Location"
                   value={location}
@@ -609,7 +704,7 @@ export const AdminRegisterPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Consultation Linking Option (Radio Cards matching screenshot) */}
+            {/* Consultation Linking Option (Radio Cards) */}
             <div className="space-y-3 pt-4 border-t border-[#ECECEC]">
               <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
                 Consultation Lifecycle
@@ -743,3 +838,4 @@ export const AdminRegisterPage: React.FC = () => {
 };
 
 export default AdminRegisterPage;
+

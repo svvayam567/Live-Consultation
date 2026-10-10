@@ -28,7 +28,10 @@ import {
   Phone,
   MapPin,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
+  Copy,
+  Check,
+  CheckCircle2
 } from 'lucide-react';
 
 interface ConsultationClientItem {
@@ -92,6 +95,16 @@ export const AdminConsultationPage: React.FC = () => {
   const [loadingClients, setLoadingClients] = useState(false);
   const [isPickingClient, setIsPickingClient] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(location.state?.notice || null);
+
+  // One-time Customer Credentials confirmation state from registration
+  const [credentialsModal, setCredentialsModal] = useState<{
+    phone: string;
+    password: string;
+    clientName: string;
+    projectName: string;
+  } | null>(location.state?.newCredentials || null);
+  const [showModalPassword, setShowModalPassword] = useState(false);
+  const [copiedCredentials, setCopiedCredentials] = useState(false);
 
   // Read URL parameters
   const clientParam = searchParams.get('client');
@@ -322,6 +335,84 @@ export const AdminConsultationPage: React.FC = () => {
       <AdminNav activeSection="consultation" />
 
       {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg(null)} />}
+
+      {/* One-time Customer Credentials Confirmation Modal (Shown once after registration) */}
+      {credentialsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-[22px] border border-neutral-200 shadow-2xl max-w-md w-full p-6 sm:p-7 space-y-5 text-[#0A0A0A]">
+            <div className="space-y-1.5">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-mono font-medium">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Customer Login Created</span>
+              </div>
+              <h3 className="text-base sm:text-lg font-display font-semibold text-[#0A0A0A] pt-1">
+                Share Login Credentials with Customer
+              </h3>
+              <p className="text-xs text-neutral-500 font-sans leading-relaxed">
+                The customer can now log into their Sanctum Portal using their mobile number and this password.
+              </p>
+            </div>
+
+            <div className="bg-neutral-50 rounded-[14px] border border-neutral-200 p-4 space-y-3 font-mono text-xs">
+              <div>
+                <span className="text-[10px] uppercase text-neutral-400 block font-sans">Customer & Project</span>
+                <span className="font-semibold text-neutral-900 font-sans text-xs">
+                  {credentialsModal.clientName} · {credentialsModal.projectName}
+                </span>
+              </div>
+              <div className="flex items-center justify-between border-t border-neutral-200/80 pt-2.5">
+                <div>
+                  <span className="text-[10px] uppercase text-neutral-400 block font-sans">Mobile Number</span>
+                  <span className="font-semibold text-neutral-900 text-xs">{credentialsModal.phone}</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between border-t border-neutral-200/80 pt-2.5">
+                <div>
+                  <span className="text-[10px] uppercase text-neutral-400 block font-sans">Password</span>
+                  <span className="font-semibold text-neutral-900 text-xs">
+                    {showModalPassword ? credentialsModal.password : '••••••••'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowModalPassword(!showModalPassword)}
+                  className="text-xs font-sans text-neutral-600 hover:text-black underline cursor-pointer"
+                >
+                  {showModalPassword ? 'Hide' : 'Show'}
+                </button>
+              </div>
+            </div>
+
+            <div className="p-3 bg-neutral-100/80 rounded-[12px] border border-neutral-200/60 text-[11px] text-neutral-600 font-sans leading-relaxed">
+              <strong>Notice:</strong> This password is shown once only and is not stored in plain text anywhere in the database or in Google Sheets. Please share it with the customer now.
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  const textToCopy = `Svvayam Sanctum Portal Login\nMobile: ${credentialsModal.phone}\nPassword: ${credentialsModal.password}\nPortal Link: ${window.location.origin}/client`;
+                  navigator.clipboard.writeText(textToCopy);
+                  setCopiedCredentials(true);
+                  setTimeout(() => setCopiedCredentials(false), 2500);
+                }}
+                className="px-4 py-2 rounded-full border border-neutral-300 hover:bg-neutral-100 text-xs font-medium cursor-pointer flex items-center gap-1.5 transition-colors"
+              >
+                {copiedCredentials ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedCredentials ? 'Copied to Clipboard!' : 'Copy Credentials'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setCredentialsModal(null)}
+                className="px-5 py-2 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800 text-xs font-semibold cursor-pointer shadow-xs transition-colors"
+              >
+                Done & Begin Consultation
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Screen 1: Choose Client to Start Consultation */}
       {showPicker ? (

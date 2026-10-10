@@ -22,7 +22,11 @@ import {
   ToggleLeft,
   ToggleRight,
   Eye,
-  UserPlus
+  EyeOff,
+  UserPlus,
+  KeyRound,
+  Check,
+  Copy
 } from 'lucide-react';
 
 export interface ConsultationRecord {
@@ -215,6 +219,49 @@ export const AdminClientsPage: React.FC = () => {
 
   // Messages inbox state
   const [selectedThreadConsultationId, setSelectedThreadConsultationId] = useState<string | null>(null);
+
+  // Customer Reset Password Modal state
+  const [resetPasswordCustomer, setResetPasswordCustomer] = useState<{ id: string; name: string; phone: string } | null>(null);
+  const [newResetPassword, setNewResetPassword] = useState('');
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [resettingPassword, setResettingPassword] = useState(false);
+  const [resetPasswordSuccess, setResetPasswordSuccess] = useState<string | null>(null);
+  const [resetPasswordError, setResetPasswordError] = useState<string | null>(null);
+  const [copiedResetPassword, setCopiedResetPassword] = useState(false);
+
+  const handleResetPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetPasswordCustomer) return;
+    if (newResetPassword.trim().length < 6) {
+      setResetPasswordError('Password must be at least 6 characters.');
+      return;
+    }
+
+    setResettingPassword(true);
+    setResetPasswordError(null);
+
+    try {
+      if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase.functions.invoke('register-customer', {
+          body: {
+            action: 'reset_password',
+            customer_id: resetPasswordCustomer.id,
+            password: newResetPassword.trim()
+          }
+        });
+
+        if (error || !data?.success) {
+          throw new Error(data?.error || error?.message || 'Failed to reset customer password.');
+        }
+      }
+      setResetPasswordSuccess(newResetPassword.trim());
+      setToastMsg(`Password successfully updated for ${resetPasswordCustomer.name}.`);
+    } catch (err: any) {
+      setResetPasswordError(err?.message || 'Failed to update customer password.');
+    } finally {
+      setResettingPassword(false);
+    }
+  };
 
   // Client inspection modal tab and journey controls state
   const [modalTab, setModalTab] = useState<'details' | 'journey' | 'chat'>('details');
@@ -850,6 +897,23 @@ export const AdminClientsPage: React.FC = () => {
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
                     </button>
+
+                    <button
+                      onClick={() => {
+                        setResetPasswordCustomer({
+                          id: cust.id,
+                          name: cust.name,
+                          phone: cust.phone
+                        });
+                        setNewResetPassword('');
+                        setResetPasswordSuccess(null);
+                        setResetPasswordError(null);
+                      }}
+                      className="p-1.5 rounded-md border border-neutral-200 hover:border-[#0A0A0A] text-neutral-600 hover:text-[#0A0A0A] transition-colors cursor-pointer"
+                      title="Reset customer login password"
+                    >
+                      <KeyRound className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
               ))}
@@ -943,13 +1007,34 @@ export const AdminClientsPage: React.FC = () => {
                 <span>Back to Client List</span>
               </button>
 
-              <button
-                onClick={() => handleStartConsultation(selectedRecord)}
-                className="px-3 py-1.5 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800 text-xs font-medium flex items-center gap-1.5 cursor-pointer"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-white" />
-                <span>Start Live Consultation</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setResetPasswordCustomer({
+                      id: selectedRecord.id,
+                      name: selectedRecord.client_name,
+                      phone: selectedRecord.client_phone
+                    });
+                    setNewResetPassword('');
+                    setResetPasswordSuccess(null);
+                    setResetPasswordError(null);
+                  }}
+                  className="px-3 py-1.5 rounded-full border border-neutral-300 hover:border-[#0A0A0A] text-[#0A0A0A] hover:bg-neutral-50 text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+                  title="Reset customer login password"
+                >
+                  <KeyRound className="w-3.5 h-3.5" />
+                  <span>Reset Password</span>
+                </button>
+
+                <button
+                  onClick={() => handleStartConsultation(selectedRecord)}
+                  className="px-3 py-1.5 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800 text-xs font-medium flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-white" />
+                  <span>Start Live Consultation</span>
+                </button>
+              </div>
             </div>
 
             {/* Modal Tabs */}
@@ -1108,6 +1193,130 @@ export const AdminClientsPage: React.FC = () => {
                   currentUserId={user?.id || 'admin-user'}
                 />
               </div>
+            )}
+          </div>
+        </Modal>
+      )}
+
+      {/* Admin Reset Password Modal */}
+      {resetPasswordCustomer && (
+        <Modal
+          isOpen={Boolean(resetPasswordCustomer)}
+          onClose={() => {
+            setResetPasswordCustomer(null);
+            setNewResetPassword('');
+            setResetPasswordSuccess(null);
+            setResetPasswordError(null);
+          }}
+          title={`Reset Password · ${resetPasswordCustomer.name}`}
+          maxWidth="md"
+        >
+          <div className="space-y-4 pt-1">
+            {resetPasswordSuccess ? (
+              <div className="space-y-4">
+                <div className="p-4 rounded-[14px] bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs space-y-2">
+                  <div className="font-semibold flex items-center gap-1.5">
+                    <Check className="w-4 h-4 text-emerald-600" />
+                    <span>Password successfully updated!</span>
+                  </div>
+                  <p className="text-emerald-800 leading-relaxed font-sans">
+                    Share the new login credentials with <strong>{resetPasswordCustomer.name}</strong> ({resetPasswordCustomer.phone}):
+                  </p>
+                  <div className="bg-white p-3 rounded-lg border border-emerald-300 font-mono text-xs text-[#0A0A0A] flex items-center justify-between shadow-xs">
+                    <div>
+                      <span className="text-[10px] text-neutral-400 block font-sans uppercase">New Password</span>
+                      <span className="font-bold text-sm tracking-wide">{resetPasswordSuccess}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const copyText = `Svvayam Sanctum Portal\nMobile: ${resetPasswordCustomer.phone}\nNew Password: ${resetPasswordSuccess}\nLogin Link: ${window.location.origin}/client`;
+                        navigator.clipboard.writeText(copyText);
+                        setCopiedResetPassword(true);
+                        setTimeout(() => setCopiedResetPassword(false), 2000);
+                      }}
+                      className="px-3 py-1.5 rounded-full border border-neutral-300 hover:bg-neutral-100 text-xs text-neutral-700 hover:text-black flex items-center gap-1.5 cursor-pointer font-sans"
+                    >
+                      {copiedResetPassword ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedResetPassword ? 'Copied!' : 'Copy Info'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => {
+                      setResetPasswordCustomer(null);
+                      setNewResetPassword('');
+                      setResetPasswordSuccess(null);
+                    }}
+                    className="bg-[#0A0A0A] text-white"
+                  >
+                    Done
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleResetPasswordSubmit} className="space-y-4">
+                <p className="text-xs text-neutral-500 font-sans leading-relaxed">
+                  Enter a new login password for <strong>{resetPasswordCustomer.name}</strong> ({resetPasswordCustomer.phone}). The customer will use this to sign into their portal.
+                </p>
+
+                {resetPasswordError && (
+                  <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs">
+                    {resetPasswordError}
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
+                    New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showResetPassword ? 'text' : 'password'}
+                      value={newResetPassword}
+                      onChange={(e) => setNewResetPassword(e.target.value)}
+                      placeholder="Min 6 characters"
+                      required
+                      autoFocus
+                      className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowResetPassword(!showResetPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-[#0A0A0A] cursor-pointer"
+                      title={showResetPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showResetPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  <p className="mt-1 text-[11px] text-neutral-400 font-mono">Minimum 6 characters</p>
+                </div>
+
+                <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-neutral-100">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setResetPasswordCustomer(null)}
+                    disabled={resettingPassword}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="sm"
+                    disabled={resettingPassword || newResetPassword.trim().length < 6}
+                    className="bg-[#0A0A0A] text-white hover:bg-neutral-800"
+                  >
+                    {resettingPassword ? 'Updating...' : 'Update Password'}
+                  </Button>
+                </div>
+              </form>
             )}
           </div>
         </Modal>

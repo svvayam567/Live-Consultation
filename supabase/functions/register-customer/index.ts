@@ -1,7 +1,7 @@
 // Supabase Edge Function: register-customer
 // Admin-only customer registration & lifecycle management
-// Creates confirmed phone auth user via Service Role Key (secret)
-// Upserts profile with role 'customer' and links consultations.client_id
+// Creates customer auth login (phone converted to hidden email + password) via Service Role Key
+// Upserts profile with role 'client' and links consultations.client_id
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -12,9 +12,10 @@ const corsHeaders = {
 };
 
 interface RegisterRequest {
-  action?: 'register' | 'deactivate';
+  action?: 'register' | 'deactivate' | 'reset_password';
   name?: string;
   phone?: string;
+  password?: string;
   title?: string;
   surname?: string;
   product?: string;
@@ -79,6 +80,31 @@ serve(async (req) => {
 
     const payload: RegisterRequest = await req.json();
 
+    // ACTION: Reset Password
+    if (payload.action === "reset_password") {
+      if (!payload.customer_id || !payload.password) {
+        throw new Error("customer_id and new password are required to reset password.");
+      }
+      if (payload.password.trim().length < 6) {
+        throw new Error("Password must be at least 6 characters.");
+      }
+
+      const { error: resetErr } = await supabaseAdmin.auth.admin.updateUserById(
+        payload.customer_id,
+        { password: payload.password.trim() }
+      );
+
+      if (resetErr) throw resetErr;
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: "Customer password has been reset successfully."
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     // ACTION: Deactivate / Reactivate
     if (payload.action === "deactivate") {
       if (!payload.customer_id) {
@@ -101,79 +127,172 @@ serve(async (req) => {
       );
     }
 
-    // ACTION: Register Customer
+    // ACTION: Register Customer + Create Login + Create Consultation
     const rawName = (payload.name || "").trim();
-    let rawPhone = (payload.phone || "").trim();
+    const rawPhone = (payload.phone || "").trim();
+    const rawPassword = (payload.password || "").trim();
     const location = (payload.location || "").trim();
     const title = (payload.title || "Mr.").trim();
     const surname = (payload.surname || (rawName ? rawName.trim().split(/\s+/).pop() : "") || "").trim();
     const product = (payload.product || "Temple").trim();
     const projectName = payload.project_name || (surname ? `${title} ${surname}'s ${product}` : product);
 
-    if (!rawName || !rawPhone) {
-      throw new Error("Customer name and phone number are required.");
+    if (!rawName) {
+      throw new Error("Customer name is required.");
+    }
+    if (!rawPhone) {
+      throw new Error("Phone number is required.");
     }
 
-    // Format phone with +91 default
-    if (!rawPhone.startsWith("+")) {
-      rawPhone = "+91" + rawPhone.replace(/^0+/, "");
+    const cleanDigits10 = rawPhone.replace(/\D/g, "").slice(-10);
+    if (cleanDigits10.length !== 10) {
+      throw new Error("Phone number must be a valid 10-digit mobile number.");
+    }
+    const normalizedPhone = "+91" + cleanDigits10;
+    const hiddenEmail = `${cleanDigits10}@svvayam.internal`;
+
+    if (!rawPassword || rawPassword.length < 6) {
+      throw new Error("Customer password is required and must be at least 6 characters.");
     }
 
-    // 2. Check if auth user already exists or create new confirmed user
-    let customerUserId: string;
+    // 2. Check if customer already exists (Prevent Duplicates)
+    // First check profiles table
+    const { data: existingProfile } = await supabaseAdmin
+      .from("profiles")
+      .select("id, name, phone, title, surname, product, project_name, location, is_active")
+      .or(`phone.eq.${normalizedPhone},phone.ilike.%${cleanDigits10}%`)
+      .limit(1)
+      .maybeSingle();
 
-    // Search existing users
-    const { data: { users }, error: listErr } = await supabaseAdmin.auth.admin.listUsers();
-    if (listErr) throw listErr;
+    if (existingProfile) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          code: "CUSTOMER_EXISTS",
+          error: "Customer already exists with this mobile number.",
+          customer: {
+            id: existingProfile.id,
+            name: existingProfile.name,
+            phone: existingProfile.phone || normalizedPhone,
+            title: existingProfile.title || title,
+            surname: existingProfile.surname || surname,
+            product: existingProfile.product || product,
+            project_name: existingProfile.project_name || projectName,
+            location: existingProfile.location || location,
+            is_active: existingProfile.is_active ?? true
+          }
+        }),
+        { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-    const existingUser = users.find((u) => u.phone === rawPhone);
-
-    if (existingUser) {
-      customerUserId = existingUser.id;
-    } else {
-      // Create confirmed phone auth user
-      const { data: created, error: createErr } = await supabaseAdmin.auth.admin.createUser({
-        phone: rawPhone,
-        phone_confirm: true,
-        user_metadata: { name: rawName, project_name: projectName }
-      });
-
-      if (createErr || !created.user) {
-        throw createErr || new Error("Failed to create customer auth user.");
+    // Also check auth.users for existing email
+    const { data: { users }, error: listUsersErr } = await supabaseAdmin.auth.admin.listUsers();
+    if (!listUsersErr && users) {
+      const matchAuthUser = users.find(u => u.email === hiddenEmail || (u.phone && u.phone.replace(/\D/g, "").endsWith(cleanDigits10)));
+      if (matchAuthUser) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            code: "CUSTOMER_EXISTS",
+            error: "Customer already exists with this mobile number.",
+            customer: {
+              id: matchAuthUser.id,
+              name: rawName,
+              phone: normalizedPhone,
+              title,
+              surname,
+              product,
+              project_name: projectName,
+              location,
+              is_active: true
+            }
+          }),
+          { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
       }
-      customerUserId = created.user.id;
     }
 
-    // 3. Upsert into public.profiles with role 'customer'
+    // 3. Create customer auth user (Phone converted to hidden email + password)
+    // Atomic: If this step fails, no profile, project, or consultation is created
+    const { data: createdAuth, error: createAuthErr } = await supabaseAdmin.auth.admin.createUser({
+      email: hiddenEmail,
+      email_confirm: true,
+      password: rawPassword,
+      user_metadata: {
+        name: rawName,
+        phone: normalizedPhone,
+        title,
+        surname,
+        product,
+        project_name: projectName,
+        role: "client"
+      }
+    });
+
+    if (createAuthErr || !createdAuth.user) {
+      throw new Error(createAuthErr?.message || "Failed to create customer auth user.");
+    }
+
+    const customerUserId = createdAuth.user.id;
+
+    // 4. Insert profile row with role = 'client'
     const { error: profileErr } = await supabaseAdmin
       .from("profiles")
       .upsert({
         id: customerUserId,
         name: rawName,
-        phone: rawPhone,
-        role: "customer",
+        phone: normalizedPhone,
+        role: "client",
         title,
         surname,
         product,
         project_name: projectName,
+        location,
         is_active: true
       }, { onConflict: "id" });
 
-    if (profileErr) throw profileErr;
+    if (profileErr) {
+      // Rollback auth user creation if profile insertion fails
+      await supabaseAdmin.auth.admin.deleteUser(customerUserId);
+      throw new Error(`Failed to save customer profile: ${profileErr.message}`);
+    }
 
-    // 4. Link or Create Consultation
+    // 5. Create Project row attached to client
+    const { data: newProject, error: projectErr } = await supabaseAdmin
+      .from("projects")
+      .insert({
+        client_id: customerUserId,
+        project_name: projectName,
+        product_type: product,
+        location: location || "India",
+        status: "draft"
+      })
+      .select("id")
+      .single();
+
+    if (projectErr) {
+      console.warn("Project creation note:", projectErr);
+    }
+
+    const newProjectId = newProject?.id || null;
+
+    // 6. Create Consultation record linked to client_id
     let linkedConsultationId = payload.consultation_id || null;
 
     if (payload.create_new_consultation || !linkedConsultationId) {
-      // Create new draft consultation linked to client_id
       const { data: newConsult, error: consultErr } = await supabaseAdmin
         .from("consultations")
         .insert({
           client_id: customerUserId,
-          client_phone: rawPhone,
+          project_id: newProjectId,
+          client_phone: normalizedPhone,
           created_by: callerUser.id,
           project_name: projectName,
           client_name: rawName,
+          title,
+          surname,
+          product,
           fields: {
             client: rawName,
             title,
@@ -181,17 +300,21 @@ serve(async (req) => {
             product,
             projectName,
             project_name: projectName,
+            phone: normalizedPhone,
+            client_phone: normalizedPhone,
             location: location,
             date: new Date().toLocaleDateString("en-CA"),
           },
           status: "draft",
-          portal_visible: false,
-          current_step: 0
+          portal_visible: true,
+          current_step: 1
         })
         .select("id")
         .single();
 
-      if (consultErr) throw consultErr;
+      if (consultErr) {
+        throw new Error(`Failed to create consultation: ${consultErr.message}`);
+      }
       linkedConsultationId = newConsult.id;
     } else {
       // Link existing consultation
@@ -199,28 +322,34 @@ serve(async (req) => {
         .from("consultations")
         .update({
           client_id: customerUserId,
-          client_phone: rawPhone,
+          project_id: newProjectId,
+          client_phone: normalizedPhone,
           project_name: projectName,
-          client_name: rawName
+          client_name: rawName,
+          portal_visible: true
         })
         .eq("id", linkedConsultationId);
 
-      if (linkErr) throw linkErr;
+      if (linkErr) {
+        throw new Error(`Failed to link consultation: ${linkErr.message}`);
+      }
     }
 
+    // Plain-text password is NEVER returned or stored in database
     return new Response(
       JSON.stringify({
         success: true,
-        message: "Customer successfully registered and linked.",
+        message: "Customer login and consultation created successfully.",
         customer: {
           id: customerUserId,
           name: rawName,
-          phone: rawPhone,
+          phone: normalizedPhone,
           title,
           surname,
           product,
           project_name: projectName,
           location,
+          project_id: newProjectId,
           consultation_id: linkedConsultationId,
           is_active: true
         }

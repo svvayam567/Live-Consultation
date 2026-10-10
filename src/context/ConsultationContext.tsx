@@ -205,6 +205,7 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
             selected_refs: nextState.selected_reference ? [nextState.selected_reference] : [],
             current_step: nextState.slide + 1,
             status: computedStatus,
+            portal_visible: true,
             updated_at: new Date().toISOString()
           };
 
