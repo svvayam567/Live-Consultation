@@ -274,40 +274,99 @@ export const AdminClientsPage: React.FC = () => {
     }
   };
 
-  // Delete Draft Confirmation Modal state
-  const [deleteDraftTarget, setDeleteDraftTarget] = useState<ConsultationRecord | null>(null);
-  const [deleteTimeRemaining, setDeleteTimeRemaining] = useState<number>(5000);
-  const [isDeletingDraft, setIsDeletingDraft] = useState<boolean>(false);
+  // Delete Consultation Confirmation Modal state
+  const [deleteTarget, setDeleteTarget] = useState<ConsultationRecord | null>(null);
+  const [deleteTimeRemaining, setDeleteTimeRemaining] = useState<number>(10000);
+  const [countdownFinished, setCountdownFinished] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const deleteTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const cancelDeleteDraft = () => {
+  const cancelDelete = () => {
     if (deleteTimerRef.current) {
       clearInterval(deleteTimerRef.current);
       deleteTimerRef.current = null;
     }
-    setDeleteDraftTarget(null);
-    setDeleteTimeRemaining(5000);
-    setIsDeletingDraft(false);
+    setDeleteTarget(null);
+    setDeleteTimeRemaining(10000);
+    setCountdownFinished(false);
+    setIsDeleting(false);
   };
 
-  const performDraftDeletion = async (target: ConsultationRecord) => {
-    if (isDeletingDraft) return;
-    setIsDeletingDraft(true);
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget || isDeleting) return;
+    setIsDeleting(true);
 
+    const target = deleteTarget;
     try {
+      let deleted = false;
+      let failureReason = '';
+
       if (isSupabaseConfigured && supabase) {
-        const { error } = await supabase
+        console.log('[Delete Consultation] Initiating deletion:', {
+          id: target.id,
+          client_name: target.client_name,
+          status: target.status
+        });
+
+        // 1. Delete associated child records safely so FKs never block
+        try {
+          await supabase.from('journey_stage_progress').delete().eq('consultation_id', target.id);
+          await supabase.from('journey_updates').delete().eq('consultation_id', target.id);
+          await supabase.from('portal_messages').delete().eq('consultation_id', target.id);
+          await supabase.from('consultation_images').delete().eq('consultation_id', target.id);
+          await supabase.from('sheet_sync_log').delete().eq('consultation_id', target.id);
+        } catch (childErr) {
+          console.warn('[Delete Consultation] Child records cleanup note:', childErr);
+        }
+
+        // 2. Direct delete on public.consultations with select('id') to get affected rows
+        const { data, error } = await supabase
           .from('consultations')
           .delete()
           .eq('id', target.id)
-          .eq('status', 'draft');
+          .select('id');
 
-        if (error) {
-          throw new Error(error.message || 'Failed to delete draft consultation from database.');
+        const rowsAffected = data ? data.length : 0;
+        console.log('[Delete Consultation] Direct delete result:', {
+          table: 'consultations',
+          id: target.id,
+          rowsAffected,
+          data,
+          error
+        });
+
+        if (!error && rowsAffected > 0) {
+          deleted = true;
+        } else {
+          failureReason = error?.message || (rowsAffected === 0 ? '0 rows affected by direct delete.' : 'Delete failed.');
+          console.warn('[Delete Consultation] Direct delete failed or returned 0 rows. Attempting admin edge function fallback...', { error, data });
+
+          // 3. Fallback: Edge Function using service role credentials
+          const { data: edgeData, error: edgeErr } = await supabase.functions.invoke('register-customer', {
+            body: {
+              action: 'delete_consultation',
+              consultation_id: target.id
+            }
+          });
+
+          console.log('[Delete Consultation] Edge function fallback result:', { edgeData, edgeErr });
+
+          if (!edgeErr && edgeData?.success) {
+            deleted = true;
+          } else {
+            failureReason = edgeData?.error || edgeErr?.message || failureReason;
+          }
         }
+      } else {
+        // Offline / mock mode
+        deleted = true;
       }
 
-      // Also clean up local storage if present
+      if (!deleted) {
+        throw new Error(failureReason || '0 rows deleted in database. Check admin permissions and RLS policy.');
+      }
+
+      // Clean up local storage if present
       try {
         const stored = localStorage.getItem('svvayam_admin_consultations_v1');
         if (stored) {
@@ -321,26 +380,27 @@ export const AdminClientsPage: React.FC = () => {
         // Ignored
       }
 
-      // Immediately remove row without page reload
+      // ONLY AFTER DB CONFIRMATION: Remove row from table without reloading page
       setConsultations(prev => prev.filter(c => c.id !== target.id));
       if (selectedRecord?.id === target.id) {
         setSelectedRecord(null);
       }
 
-      setToastMsg('Draft deleted');
-      cancelDeleteDraft();
+      setToastMsg('Deleted');
+      cancelDelete();
     } catch (err: any) {
-      console.error('Delete draft error:', err);
-      setToastMsg(`Error deleting draft: ${err?.message || 'Permission denied or network issue'}`);
-      cancelDeleteDraft();
+      console.error('[Delete Consultation] Execution failed:', err);
+      // Keep row in table and show the real error
+      setToastMsg(`Deletion failed: ${err?.message || 'Permission denied or network issue'}`);
+      cancelDelete();
     } finally {
-      setIsDeletingDraft(false);
+      setIsDeleting(false);
     }
   };
 
-  // Countdown timer effect
+  // 10-Second Countdown timer effect
   useEffect(() => {
-    if (!deleteDraftTarget) {
+    if (!deleteTarget) {
       if (deleteTimerRef.current) {
         clearInterval(deleteTimerRef.current);
         deleteTimerRef.current = null;
@@ -348,9 +408,10 @@ export const AdminClientsPage: React.FC = () => {
       return;
     }
 
-    setDeleteTimeRemaining(5000);
+    setDeleteTimeRemaining(10000);
+    setCountdownFinished(false);
     const startTime = Date.now();
-    const duration = 5000;
+    const duration = 10000;
 
     deleteTimerRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -362,7 +423,8 @@ export const AdminClientsPage: React.FC = () => {
           clearInterval(deleteTimerRef.current);
           deleteTimerRef.current = null;
         }
-        performDraftDeletion(deleteDraftTarget);
+        // When countdown reaches 0, DO NOT delete automatically! Instead, reveal Confirm Deletion button!
+        setCountdownFinished(true);
       }
     }, 100);
 
@@ -372,26 +434,28 @@ export const AdminClientsPage: React.FC = () => {
         deleteTimerRef.current = null;
       }
     };
-  }, [deleteDraftTarget]);
+  }, [deleteTarget]);
 
-  // Escape key cancels delete draft popup
+  // Escape key cancels delete popup
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && deleteDraftTarget) {
-        cancelDeleteDraft();
+      if (e.key === 'Escape' && deleteTarget && !isDeleting) {
+        cancelDelete();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [deleteDraftTarget]);
+  }, [deleteTarget, isDeleting]);
 
-  const handleDeleteDraftClick = (record: ConsultationRecord, e: React.MouseEvent) => {
+  const handleDeleteConsultationClick = (record: ConsultationRecord, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (record.status !== 'draft') return;
-    if (deleteDraftTarget) return; // Prevent double clicks / only one popup allowed
+    if (!isAdmin) return;
+    if (deleteTarget) return; // Prevent double clicks / multiple popups
 
-    setDeleteDraftTarget(record);
-    setDeleteTimeRemaining(5000);
+    setDeleteTarget(record);
+    setDeleteTimeRemaining(10000);
+    setCountdownFinished(false);
+    setIsDeleting(false);
   };
 
   // Add Admin Modal state
@@ -1019,13 +1083,13 @@ export const AdminClientsPage: React.FC = () => {
                                   <FileSpreadsheet className={`w-3.5 h-3.5 ${syncingId === item.id ? 'animate-spin' : ''}`} />
                                 </button>
 
-                                {/* Delete Draft action: ONLY visible when status === 'draft' */}
-                                {item.status === 'draft' && (
+                                {/* Delete Consultation action: Visible on EVERY row for Admins */}
+                                {isAdmin && (
                                   <button
                                     type="button"
-                                    onClick={(e) => handleDeleteDraftClick(item, e)}
+                                    onClick={(e) => handleDeleteConsultationClick(item, e)}
                                     className="p-1 border border-neutral-200 hover:border-rose-400 text-neutral-400 hover:text-rose-600 hover:bg-rose-50/50 cursor-pointer rounded-sm transition-colors"
-                                    title="Delete this draft consultation"
+                                    title="Delete this consultation"
                                   >
                                     <Trash2 className="w-3.5 h-3.5" />
                                   </button>
@@ -1565,26 +1629,27 @@ export const AdminClientsPage: React.FC = () => {
       )}
 
       {/* ========================================================= */}
-      {/* DELETE DRAFT 5-SECOND COUNTDOWN CONFIRMATION POPUP        */}
+      {/* DELETE CONSULTATION 10-SECOND COUNTDOWN CONFIRMATION POPUP */}
       {/* ========================================================= */}
-      {deleteDraftTarget && (
+      {deleteTarget && (
         <div 
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 transition-opacity animate-in fade-in duration-150"
           onClick={(e) => {
-            if (e.target === e.currentTarget) cancelDeleteDraft();
+            if (e.target === e.currentTarget && !isDeleting) cancelDelete();
           }}
         >
           <div 
             className="w-full max-w-sm sm:max-w-md bg-white rounded-[20px] border border-neutral-200 shadow-2xl p-6 sm:p-7 space-y-5 text-center relative"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="delete-draft-title"
+            aria-labelledby="delete-consultation-title"
           >
             {/* Close / Cancel corner button */}
             <button
               type="button"
-              onClick={cancelDeleteDraft}
-              className="absolute right-4 top-4 p-1.5 text-neutral-400 hover:text-[#0A0A0A] rounded-full hover:bg-neutral-100 transition-colors cursor-pointer"
+              onClick={cancelDelete}
+              disabled={isDeleting}
+              className="absolute right-4 top-4 p-1.5 text-neutral-400 hover:text-[#0A0A0A] rounded-full hover:bg-neutral-100 transition-colors cursor-pointer disabled:opacity-40"
               title="Cancel deletion"
             >
               <X className="w-4 h-4" />
@@ -1595,46 +1660,111 @@ export const AdminClientsPage: React.FC = () => {
               <AlertTriangle className="w-6 h-6 stroke-[2]" />
             </div>
 
-            {/* Title & Body */}
-            <div className="space-y-1.5">
-              <h3 id="delete-draft-title" className="text-lg font-medium text-[#0A0A0A]">
-                Delete this draft?
+            {/* Title & Customer + Status Info */}
+            <div className="space-y-2">
+              <h3 id="delete-consultation-title" className="text-lg font-medium text-[#0A0A0A]">
+                Delete this consultation?
               </h3>
-              <p className="text-xs text-neutral-600 font-sans leading-relaxed">
-                Draft for <strong className="text-[#0A0A0A] font-semibold">{deleteDraftTarget.client_name || deleteDraftTarget.project_name}</strong> will be permanently deleted.
-              </p>
-              <p className="text-[11px] text-rose-600 font-medium">
-                This cannot be undone.
-              </p>
-            </div>
 
-            {/* Countdown Badge & Decreasing Progress Bar */}
-            <div className="space-y-2.5 py-1">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-xs font-mono text-neutral-700">
-                <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
-                <span>Deleting in {Math.max(1, Math.ceil(deleteTimeRemaining / 1000))}…</span>
+              <div className="text-xs text-neutral-600 font-sans space-y-1">
+                <p>
+                  Customer: <strong className="text-[#0A0A0A] font-semibold">{deleteTarget.client_name}</strong>
+                  {deleteTarget.project_name && deleteTarget.project_name !== deleteTarget.client_name && (
+                    <span className="text-neutral-500"> ({deleteTarget.project_name})</span>
+                  )}
+                </p>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-neutral-100 border border-neutral-200 text-[10px] font-mono uppercase tracking-wider text-neutral-700">
+                  <span>Status:</span>
+                  <span className="font-semibold text-[#0A0A0A]">{deleteTarget.status.replace('_', ' ')}</span>
+                </div>
               </div>
 
-              {/* Decreasing progress bar */}
-              <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden border border-neutral-200">
-                <div
-                  className="h-full bg-rose-600 transition-[width] ease-linear duration-100"
-                  style={{ width: `${Math.max(0, (deleteTimeRemaining / 5000) * 100)}%` }}
-                />
-              </div>
+              {/* Status warning: stronger red alert if not a draft */}
+              {deleteTarget.status !== 'draft' ? (
+                <div className="p-3 rounded-[12px] bg-rose-50 border border-rose-200 text-rose-800 text-xs font-sans leading-relaxed text-left space-y-1">
+                  <p className="font-semibold text-rose-900">
+                    This consultation is {deleteTarget.status.replace('_', ' ')}.
+                  </p>
+                  <p className="text-[11px] text-rose-700">
+                    Deleting it also removes its proposal and data. This cannot be undone.
+                  </p>
+                </div>
+              ) : (
+                <p className="text-[11px] text-rose-600 font-medium">
+                  This draft consultation will be permanently deleted. This cannot be undone.
+                </p>
+              )}
             </div>
+
+            {/* Countdown or Ready State */}
+            {!countdownFinished ? (
+              <div className="space-y-2.5 py-1">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-xs font-mono text-neutral-700">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <span>Please wait {Math.max(1, Math.ceil(deleteTimeRemaining / 1000))}…</span>
+                </div>
+
+                {/* Decreasing progress bar */}
+                <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden border border-neutral-200">
+                  <div
+                    className="h-full bg-rose-600 transition-[width] ease-linear duration-100"
+                    style={{ width: `${Math.max(0, (deleteTimeRemaining / 10000) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="p-2.5 rounded-[12px] bg-neutral-50 border border-neutral-200 text-xs text-neutral-600 font-sans">
+                Countdown completed. Please confirm to permanently remove this consultation from the database.
+              </div>
+            )}
 
             {/* Actions */}
             <div className="pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="md"
-                onClick={cancelDeleteDraft}
-                className="w-full py-2.5 rounded-full border-neutral-300 hover:border-[#0A0A0A] text-xs font-medium cursor-pointer"
-              >
-                Cancel
-              </Button>
+              {!countdownFinished ? (
+                /* During countdown, ONLY Cancel button is active */
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="md"
+                  onClick={cancelDelete}
+                  className="w-full py-2.5 rounded-full border-neutral-300 hover:border-[#0A0A0A] text-xs font-medium cursor-pointer"
+                >
+                  Cancel
+                </Button>
+              ) : (
+                /* When countdown reaches 0: "Confirm deletion" (red) and "Cancel" buttons */
+                <div className="flex items-center justify-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="md"
+                    onClick={cancelDelete}
+                    disabled={isDeleting}
+                    className="flex-1 py-2.5 rounded-full border-neutral-300 hover:border-[#0A0A0A] text-xs font-medium cursor-pointer"
+                  >
+                    Cancel
+                  </Button>
+
+                  <button
+                    type="button"
+                    onClick={handleConfirmDelete}
+                    disabled={isDeleting}
+                    className="flex-1 py-2.5 px-4 rounded-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium cursor-pointer transition-colors shadow-xs flex items-center justify-center gap-1.5 disabled:opacity-50"
+                  >
+                    {isDeleting ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Deleting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Trash2 className="w-3.5 h-3.5 text-white" />
+                        <span>Confirm deletion</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

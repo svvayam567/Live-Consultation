@@ -23,7 +23,7 @@ function jsonResponse(data: unknown, status = 200) {
 }
 
 interface RegisterRequest {
-  action?: 'register' | 'deactivate' | 'reset_password' | 'register_admin';
+  action?: 'register' | 'deactivate' | 'reset_password' | 'register_admin' | 'delete_consultation';
   role?: 'client' | 'admin';
   name?: string;
   phone?: string;
@@ -149,6 +149,43 @@ serve(async (req) => {
       return jsonResponse({
         success: true,
         message: `Customer status updated to ${newStatus ? 'active' : 'deactivated'}.`
+      }, 200);
+    }
+
+    // ACTION: Delete Consultation (Admin-only, removes consultation and child records)
+    if (payload.action === 'delete_consultation') {
+      const consultId = payload.consultation_id;
+      if (!consultId) {
+        return jsonResponse({ success: false, error: "consultation_id is required." }, 400);
+      }
+
+      // 1. Delete associated child data belonging only to this consultation
+      await supabaseAdmin.from('journey_stage_progress').delete().eq('consultation_id', consultId);
+      await supabaseAdmin.from('journey_updates').delete().eq('consultation_id', consultId);
+      await supabaseAdmin.from('portal_messages').delete().eq('consultation_id', consultId);
+      await supabaseAdmin.from('consultation_images').delete().eq('consultation_id', consultId);
+      await supabaseAdmin.from('sheet_sync_log').delete().eq('consultation_id', consultId);
+
+      // 2. Delete consultation row
+      const { data: delData, error: delErr } = await supabaseAdmin
+        .from('consultations')
+        .delete()
+        .eq('id', consultId)
+        .select('id');
+
+      if (delErr) {
+        return jsonResponse({ success: false, error: delErr.message }, 400);
+      }
+
+      if (!delData || delData.length === 0) {
+        return jsonResponse({ success: false, error: "Consultation not found or already deleted (0 rows affected)." }, 404);
+      }
+
+      return jsonResponse({
+        success: true,
+        message: "Consultation deleted successfully.",
+        deleted_id: consultId,
+        count: delData.length
       }, 200);
     }
 
