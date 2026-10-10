@@ -297,77 +297,100 @@ export const AdminClientsPage: React.FC = () => {
     setIsDeleting(true);
 
     const target = deleteTarget;
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(target.id);
+
     try {
       let deleted = false;
       let failureReason = '';
 
-      if (isSupabaseConfigured && supabase) {
-        console.log('[Delete Consultation] Initiating deletion:', {
-          id: target.id,
-          client_name: target.client_name,
-          status: target.status
-        });
+      if (isUuid && isSupabaseConfigured && supabase) {
+        console.log('[Delete Consultation] Initiating deletion for UUID:', target.id, 'status:', target.status);
 
-        // 1. Delete associated child records safely so FKs never block
+        // Method 1: Try secure RPC function (from migration 012)
         try {
-          await supabase.from('journey_stage_progress').delete().eq('consultation_id', target.id);
-          await supabase.from('journey_updates').delete().eq('consultation_id', target.id);
-          await supabase.from('portal_messages').delete().eq('consultation_id', target.id);
-          await supabase.from('consultation_images').delete().eq('consultation_id', target.id);
-          await supabase.from('sheet_sync_log').delete().eq('consultation_id', target.id);
-        } catch (childErr) {
-          console.warn('[Delete Consultation] Child records cleanup note:', childErr);
+          const { data: rpcSuccess, error: rpcErr } = await supabase.rpc('admin_delete_consultation', {
+            p_consultation_id: target.id
+          });
+          console.log('[Delete Consultation] RPC admin_delete_consultation result:', { rpcSuccess, rpcErr });
+          if (!rpcErr && rpcSuccess === true) {
+            deleted = true;
+          } else if (rpcErr && rpcErr.message && !rpcErr.message.includes('function public.admin_delete_consultation') && !rpcErr.message.includes('not found')) {
+            failureReason = rpcErr.message;
+          }
+        } catch (rpcEx) {
+          console.warn('[Delete Consultation] RPC exception:', rpcEx);
         }
 
-        // 2. Direct delete on public.consultations with select('id') to get affected rows
-        const { data, error } = await supabase
-          .from('consultations')
-          .delete()
-          .eq('id', target.id)
-          .select('id');
+        // Method 2: Direct Supabase delete if RPC not used
+        if (!deleted) {
+          // 1. Delete associated child records safely so FKs never block
+          try {
+            await supabase.from('journey_stage_progress').delete().eq('consultation_id', target.id);
+            await supabase.from('journey_updates').delete().eq('consultation_id', target.id);
+            await supabase.from('portal_messages').delete().eq('consultation_id', target.id);
+            await supabase.from('consultation_images').delete().eq('consultation_id', target.id);
+            await supabase.from('sheet_sync_log').delete().eq('consultation_id', target.id);
+          } catch (childErr) {
+            console.warn('[Delete Consultation] Child records cleanup note:', childErr);
+          }
 
-        const rowsAffected = data ? data.length : 0;
-        console.log('[Delete Consultation] Direct delete result:', {
-          table: 'consultations',
-          id: target.id,
-          rowsAffected,
-          data,
-          error
-        });
+          // 2. Direct delete on public.consultations with select('id') to get affected rows
+          const { data, error } = await supabase
+            .from('consultations')
+            .delete()
+            .eq('id', target.id)
+            .select('id');
 
-        if (!error && rowsAffected > 0) {
-          deleted = true;
-        } else {
-          failureReason = error?.message || (rowsAffected === 0 ? '0 rows affected by direct delete.' : 'Delete failed.');
-          console.warn('[Delete Consultation] Direct delete failed or returned 0 rows. Attempting admin edge function fallback...', { error, data });
-
-          // 3. Fallback: Edge Function using service role credentials
-          const { data: edgeData, error: edgeErr } = await supabase.functions.invoke('register-customer', {
-            body: {
-              action: 'delete_consultation',
-              consultation_id: target.id
-            }
+          const rowsAffected = data ? data.length : 0;
+          console.log('[Delete Consultation] Direct delete result:', {
+            table: 'consultations',
+            id: target.id,
+            rowsAffected,
+            data,
+            error
           });
 
-          console.log('[Delete Consultation] Edge function fallback result:', { edgeData, edgeErr });
-
-          if (!edgeErr && edgeData?.success) {
+          if (!error && rowsAffected > 0) {
             deleted = true;
           } else {
-            failureReason = edgeData?.error || edgeErr?.message || failureReason;
+            failureReason = error?.message || (rowsAffected === 0 ? '0 rows affected by direct delete.' : 'Delete failed.');
+            console.warn('[Delete Consultation] Direct delete failed or returned 0 rows. Attempting admin edge function fallback...', { error, data });
+
+            // 3. Fallback: Edge Function using service role credentials
+            const { data: edgeData, error: edgeErr } = await supabase.functions.invoke('register-customer', {
+              body: {
+                action: 'delete_consultation',
+                consultation_id: target.id
+              }
+            });
+
+            console.log('[Delete Consultation] Edge function fallback result:', { edgeData, edgeErr });
+
+            if (!edgeErr && edgeData?.success) {
+              deleted = true;
+            } else {
+              failureReason = edgeData?.error || edgeErr?.message || failureReason;
+            }
           }
         }
       } else {
-        // Offline / mock mode
+        // Non-UUID (seed data) or offline mode: remove locally
+        console.log('[Delete Consultation] Non-UUID or offline record, removing locally:', target.id);
         deleted = true;
       }
 
       if (!deleted) {
-        throw new Error(failureReason || '0 rows deleted in database. Check admin permissions and RLS policy.');
+        throw new Error(failureReason || '0 rows deleted in database. Check admin permissions and ensure Migration 012 is executed.');
       }
 
-      // Clean up local storage if present
+      // Record in deleted IDs list so it never reappears on reload
       try {
+        const deletedIds = JSON.parse(localStorage.getItem('svvayam_deleted_consultation_ids') || '[]');
+        if (!deletedIds.includes(target.id)) {
+          deletedIds.push(target.id);
+          localStorage.setItem('svvayam_deleted_consultation_ids', JSON.stringify(deletedIds));
+        }
+
         const stored = localStorage.getItem('svvayam_admin_consultations_v1');
         if (stored) {
           const parsed = JSON.parse(stored);
@@ -380,7 +403,7 @@ export const AdminClientsPage: React.FC = () => {
         // Ignored
       }
 
-      // ONLY AFTER DB CONFIRMATION: Remove row from table without reloading page
+      // Remove row from table without reloading page
       setConsultations(prev => prev.filter(c => c.id !== target.id));
       if (selectedRecord?.id === target.id) {
         setSelectedRecord(null);
@@ -545,6 +568,15 @@ export const AdminClientsPage: React.FC = () => {
   // Load consultations from Supabase or resilient local state
   const loadConsultations = async () => {
     setLoadingConsultations(true);
+    const deletedIds: string[] = (() => {
+      try {
+        const raw = localStorage.getItem('svvayam_deleted_consultation_ids');
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        return [];
+      }
+    })();
+
     if (isSupabaseConfigured && supabase) {
       try {
         const { data, error } = await supabase
@@ -601,7 +633,8 @@ export const AdminClientsPage: React.FC = () => {
             };
           });
 
-          setConsultations(mapped);
+          const activeList = mapped.filter((item) => !deletedIds.includes(item.id));
+          setConsultations(activeList);
           setLoadingConsultations(false);
           return;
         }
@@ -613,10 +646,11 @@ export const AdminClientsPage: React.FC = () => {
     // Fallback: Local storage check or default seed
     try {
       const stored = localStorage.getItem('svvayam_admin_consultations_v1');
-      if (stored) {
+      if (stored !== null) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setConsultations(parsed);
+        if (Array.isArray(parsed)) {
+          const filtered = parsed.filter((c: any) => !deletedIds.includes(c.id));
+          setConsultations(filtered);
           setLoadingConsultations(false);
           return;
         }
@@ -625,8 +659,9 @@ export const AdminClientsPage: React.FC = () => {
       // Ignored
     }
 
-    setConsultations(SEED_CONSULTATIONS);
-    localStorage.setItem('svvayam_admin_consultations_v1', JSON.stringify(SEED_CONSULTATIONS));
+    const remainingSeeds = SEED_CONSULTATIONS.filter((c) => !deletedIds.includes(c.id));
+    setConsultations(remainingSeeds);
+    localStorage.setItem('svvayam_admin_consultations_v1', JSON.stringify(remainingSeeds));
     setLoadingConsultations(false);
   };
 

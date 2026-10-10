@@ -117,3 +117,41 @@ begin
     create policy "Admins delete consultation images" on public.consultation_images for delete using (public.is_admin());
   end if;
 end $$;
+
+-- 7. Atomic RPC function for admins to delete a consultation and all its child records
+create or replace function public.admin_delete_consultation(p_consultation_id uuid)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_caller_role text;
+  v_rows_deleted integer;
+begin
+  -- 1. Verify caller has admin role
+  select role into v_caller_role
+  from public.profiles
+  where id = auth.uid();
+
+  if v_caller_role is distinct from 'admin' then
+    raise exception 'Permission denied: Only administrators can delete consultations.';
+  end if;
+
+  -- 2. Clean up child records belonging strictly to this consultation
+  delete from public.journey_stage_progress where consultation_id = p_consultation_id;
+  delete from public.journey_updates where consultation_id = p_consultation_id;
+  delete from public.portal_messages where consultation_id = p_consultation_id;
+  delete from public.consultation_images where consultation_id = p_consultation_id;
+  delete from public.sheet_sync_log where consultation_id = p_consultation_id;
+
+  -- 3. Delete consultation row
+  delete from public.consultations where id = p_consultation_id;
+  get diagnostics v_rows_deleted = row_count;
+
+  return v_rows_deleted > 0;
+end;
+$$;
+
+grant execute on function public.admin_delete_consultation(uuid) to authenticated;
+
