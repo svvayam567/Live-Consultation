@@ -394,30 +394,63 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           password: password.trim()
         });
 
-        if (error) {
-          const errText = error.message.toLowerCase();
+        let authUser = data?.user;
+
+        if (error || !authUser) {
+          const errText = error?.message?.toLowerCase() || '';
           if (errText.includes('banned') || errText.includes('disabled') || errText.includes('deactivated')) {
             return {
               success: false,
               error: 'This account is disabled. Contact the Svvayam owner.'
             };
           }
-          // Generic friendly message - never reveal whether an email exists
-          return {
-            success: false,
-            error: 'Wrong email or password.'
-          };
+
+          // If super admin and credentials failed (account not created yet in auth.users),
+          // attempt bootstrap registration with the entered credentials
+          if (cleanEmail === SUPER_ADMIN_EMAIL) {
+            try {
+              const { data: signUpData } = await supabase.auth.signUp({
+                email: cleanEmail,
+                password: password.trim(),
+                options: {
+                  data: {
+                    name: 'Svvayam Super Admin',
+                    role: 'super_admin'
+                  }
+                }
+              });
+
+              if (signUpData?.user) {
+                authUser = signUpData.user;
+                if (!signUpData.session) {
+                  // Attempt sign in if email was auto-confirmed
+                  const { data: retryAuth } = await supabase.auth.signInWithPassword({
+                    email: cleanEmail,
+                    password: password.trim()
+                  });
+                  if (retryAuth?.user) {
+                    authUser = retryAuth.user;
+                  }
+                }
+              }
+            } catch (bootErr) {
+              console.warn('Super admin bootstrap notice:', bootErr);
+            }
+          }
+
+          if (!authUser) {
+            return {
+              success: false,
+              error: 'Wrong email or password.'
+            };
+          }
         }
 
-        if (!data.user) {
-          return { success: false, error: 'Wrong email or password.' };
-        }
-
-        // Fetch profile
+        // Fetch or create profile
         let { data: profData } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', data.user.id)
+          .eq('id', authUser.id)
           .maybeSingle();
 
         if (!profData) {
@@ -429,6 +462,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             .maybeSingle();
           if (profByEmail) {
             profData = profByEmail;
+          }
+        }
+
+        // Ensure super_admin role profile is saved
+        if (cleanEmail === SUPER_ADMIN_EMAIL) {
+          try {
+            await supabase.from('profiles').upsert({
+              id: authUser.id,
+              name: 'Svvayam Super Admin',
+              email: cleanEmail,
+              role: 'super_admin',
+              active: true,
+              is_active: true
+            }, { onConflict: 'id' });
+          } catch {
+            // Non-blocking fallback
           }
         }
 
@@ -461,24 +510,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         const effectiveRole: UserRole = isSuper ? 'super_admin' : 'admin';
         const effectiveProfile: Profile = profData || {
-          id: data.user.id,
-          name: isSuper ? 'Svvayam Super Admin' : (data.user.user_metadata?.name || 'Svvayam Admin'),
+          id: authUser.id,
+          name: isSuper ? 'Svvayam Super Admin' : (authUser.user_metadata?.name || 'Svvayam Admin'),
           email: cleanEmail,
           role: effectiveRole,
           active: true,
           is_active: true,
-          must_change_password: Boolean(data.user.user_metadata?.must_change_password),
+          must_change_password: Boolean(authUser.user_metadata?.must_change_password),
           created_at: new Date().toISOString()
         };
 
-        setUser({ id: data.user.id, email: cleanEmail, phone: effectiveProfile.phone });
+        setUser({ id: authUser.id, email: cleanEmail, phone: effectiveProfile.phone });
         setProfile(effectiveProfile);
         localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(effectiveProfile));
 
         // Audit log login
         try {
           await supabase.from('admin_activity').insert({
-            actor_id: data.user.id,
+            actor_id: authUser.id,
             actor_name: effectiveProfile.name,
             action: 'login',
             target: `Admin console login (${cleanEmail})`,
