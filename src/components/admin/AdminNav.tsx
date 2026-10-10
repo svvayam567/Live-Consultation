@@ -14,6 +14,7 @@ import {
   Check
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { AddAdminModal } from './AddAdminModal';
 
 export interface AdminNavProps {
   activeSection?: 'showcase' | 'clients' | 'register' | 'consultation' | 'team';
@@ -28,6 +29,7 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
   const [editingName, setEditingName] = useState(profile?.name || '');
   const [savingName, setSavingName] = useState(false);
   const [nameSuccess, setNameSuccess] = useState(false);
+  const [addAdminModalOpen, setAddAdminModalOpen] = useState(false);
 
   // Determine current active section from prop or location
   const currentSection = activeSection || (
@@ -153,6 +155,19 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
 
           {/* Right: User Identity & Profile Edit Pill & Log Out */}
           <div className="flex items-center space-x-2.5 sm:space-x-3 text-xs font-sans">
+            {/* Showcase Page: Add Admin Button in right top corner */}
+            {currentSection === 'showcase' && (
+              <button
+                type="button"
+                onClick={() => setAddAdminModalOpen(true)}
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border border-neutral-300 hover:border-[#0A0A0A] bg-white hover:bg-neutral-50 text-[#0A0A0A] transition-colors cursor-pointer text-xs font-medium shadow-2xs"
+                title="Create another administrator account"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-neutral-800" />
+                <span>Add Admin</span>
+              </button>
+            )}
+
             {/* Clickable Profile Pill: "Logged in as <name>" */}
             <button
               type="button"
@@ -289,6 +304,12 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
           </div>
         </Modal>
       )}
+
+      {/* Add Administrator Modal for Showcase page */}
+      <AddAdminModal
+        isOpen={addAdminModalOpen}
+        onClose={() => setAddAdminModalOpen(false)}
+      />
     </>
   );
 };
