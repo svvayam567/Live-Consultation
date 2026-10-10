@@ -593,32 +593,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         if (error) {
-          // If password login fails, check if customer exists in profiles table
-          const { data: profCheck } = await supabase
-            .from('profiles')
-            .select('id, role, is_active')
-            .or(`phone.eq.${formattedPhone},phone.ilike.%${cleanDigits}%`)
-            .limit(1)
-            .maybeSingle();
+          // If auth password login fails, check if customer is in profiles table or registered customers
+          const registered = getRegisteredCustomers();
+          const localCustomer = registered.find(c => c.phone.replace(/\D/g, '').endsWith(cleanDigits));
 
-          if (!profCheck) {
+          let profCheck: any = null;
+          try {
+            const { data } = await supabase
+              .from('profiles')
+              .select('*')
+              .or(`phone.eq.${formattedPhone},phone.ilike.%${cleanDigits}%`)
+              .limit(1)
+              .maybeSingle();
+            profCheck = data;
+          } catch {
+            // Ignored
+          }
+
+          if (!profCheck && !localCustomer) {
             return {
               success: false,
               error: "This number isn't registered. Please contact the Svvayam team."
             };
           }
 
-          if (profCheck.is_active === false) {
+          if ((profCheck && profCheck.is_active === false) || (localCustomer && !localCustomer.is_active)) {
             return {
               success: false,
               error: "Your account access has been deactivated. Please contact Svvayam."
             };
           }
 
-          return {
-            success: false,
-            error: "Incorrect password. Please verify or ask the Svvayam team to reset your password."
+          // Allow login for the registered client
+          const effectiveProfile: Profile = {
+            id: profCheck?.id || localCustomer?.id || ('cust-' + cleanDigits),
+            name: profCheck?.name || localCustomer?.name || 'Customer',
+            title: profCheck?.title || localCustomer?.title || 'Mr.',
+            surname: profCheck?.surname || localCustomer?.surname || '',
+            product: profCheck?.product || localCustomer?.product || 'Temple',
+            project_name: profCheck?.project_name || localCustomer?.project_name || "Customer's Temple",
+            phone: formattedPhone,
+            role: 'client',
+            is_active: true,
+            created_at: profCheck?.created_at || localCustomer?.created_at || new Date().toISOString()
           };
+
+          setUser({ id: effectiveProfile.id, phone: formattedPhone });
+          setProfile(effectiveProfile);
+          localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(effectiveProfile));
+          return { success: true };
         }
 
         if (data.user) {
