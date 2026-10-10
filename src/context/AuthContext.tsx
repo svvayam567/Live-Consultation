@@ -1,16 +1,22 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase, isSupabaseConfigured, INITIAL_ADMIN_PHONES } from '../lib/supabase';
 import type { Profile, UserRole, CustomerRecord } from '../types/consultation';
-import { normalizeToE164, phoneToHiddenEmail } from '../lib/utils';
+import { normalizeToE164 } from '../lib/utils';
 
 interface AuthContextType {
   user: { id: string; phone: string } | null;
   profile: Profile | null;
   role: UserRole | null;
   isAdmin: boolean;
+  isSuperAdmin: boolean;
   isCustomer: boolean;
   isLoading: boolean;
   resendCooldown: number;
+  mustChangePassword: boolean;
+  lockoutNotice: string | null;
+  clearLockoutNotice: () => void;
+  clearMustChangePassword: () => void;
+  refreshProfile: () => Promise<void>;
   signInWithPassword: (
     phone: string,
     password: string,
@@ -115,12 +121,19 @@ export function isNumberInAdminList(phoneStr: string): boolean {
   });
 }
 
+export function isSuperAdminNumber(phoneStr: string): boolean {
+  if (!phoneStr) return false;
+  const digits = phoneStr.replace(/[^0-9]/g, '');
+  return digits.endsWith('8074257384');
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<{ id: string; phone: string } | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [resendCooldown, setResendCooldown] = useState<number>(0);
   const [pendingName, setPendingName] = useState<string>('');
+  const [lockoutNotice, setLockoutNotice] = useState<string | null>(null);
 
   // Resend cooldown timer
   useEffect(() => {
@@ -149,6 +162,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             project_name: "Mrs. Sharma's Temple",
             phone: '+919845012345',
             role: 'customer',
+            active: true,
             is_active: true,
             created_at: new Date().toISOString()
           };
@@ -159,9 +173,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else if (params.get('admin_test') === '1') {
           const mockAdmin: Profile = {
             id: 'admin-001',
-            name: 'Svvayam Staff',
-            phone: '+919182424228',
-            role: 'admin',
+            name: 'Ar. Jagirdhar',
+            phone: '+918074257384',
+            role: 'super_admin',
+            active: true,
             is_active: true,
             created_at: new Date().toISOString()
           };
@@ -175,9 +190,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         if (isSupabaseConfigured && supabase) {
           const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user?.phone) {
-            const formattedPhone = normalizeToE164(session.user.phone);
+          if (session?.user) {
+            const rawPhone = session.user.phone || session.user.user_metadata?.phone || (session.user.email ? session.user.email.replace(/\D/g, '').slice(-10) : '');
+            const formattedPhone = normalizeToE164(rawPhone);
             setUser({ id: session.user.id, phone: formattedPhone });
+
             // Fetch profile from supabase
             let { data: profData } = await supabase
               .from('profiles')
@@ -202,16 +219,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
 
             if (profData) {
+              // Instant Lockout Verification: Check active status
+              const isActive = profData.active !== false && profData.is_active !== false;
+              if (!isActive) {
+                await supabase.auth.signOut();
+                localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
+                setUser(null);
+                setProfile(null);
+                setLockoutNotice('Your account is disabled. Contact the Svvayam owner.');
+                return;
+              }
+
+              // Promote 8074257384 to super_admin if still recorded as admin
+              if (isSuperAdminNumber(formattedPhone) && profData.role !== 'super_admin') {
+                profData.role = 'super_admin';
+                await supabase.from('profiles').update({ role: 'super_admin' }).eq('id', session.user.id);
+              }
+
               setProfile(profData as Profile);
             } else {
+              const isInitialSuperAdmin = isSuperAdminNumber(formattedPhone);
               const isInitialAdmin = isNumberInAdminList(formattedPhone);
-              const role: UserRole = isInitialAdmin ? 'admin' : 'customer';
+              const role: UserRole = isInitialSuperAdmin ? 'super_admin' : (isInitialAdmin ? 'admin' : 'customer');
               const newProf: Profile = {
                 id: session.user.id,
-                name: pendingName || (role === 'admin' ? 'Svvayam Staff' : 'Client'),
+                name: pendingName || (role === 'super_admin' ? 'Ar. Jagirdhar' : role === 'admin' ? 'Svvayam Staff' : 'Client'),
                 phone: formattedPhone,
                 role,
+                active: true,
                 is_active: true,
+                must_change_password: false,
                 created_at: new Date().toISOString()
               };
               await supabase.from('profiles').upsert(newProf);
@@ -223,8 +260,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const stored = localStorage.getItem(LOCAL_STORAGE_AUTH_KEY);
           if (stored) {
             const p: Profile = JSON.parse(stored);
-            setUser({ id: p.id, phone: p.phone });
-            setProfile(p);
+            if (p.active === false || p.is_active === false) {
+              localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
+              setUser(null);
+              setProfile(null);
+              setLockoutNotice('Your account is disabled. Contact the Svvayam owner.');
+            } else {
+              setUser({ id: p.id, phone: p.phone });
+              setProfile(p);
+            }
           }
         }
       } catch (err) {
@@ -239,15 +283,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (isSupabaseConfigured && supabase) {
       const client = supabase;
       const { data: { subscription } } = client.auth.onAuthStateChange(async (_event, session) => {
-        if (session?.user?.phone) {
-          const formattedPhone = normalizeToE164(session.user.phone);
+        if (session?.user) {
+          const rawPhone = session.user.phone || session.user.user_metadata?.phone || (session.user.email ? session.user.email.replace(/\D/g, '').slice(-10) : '');
+          const formattedPhone = normalizeToE164(rawPhone);
           setUser({ id: session.user.id, phone: formattedPhone });
           const { data: profData } = await client
             .from('profiles')
             .select('*')
             .eq('id', session.user.id)
             .maybeSingle();
-          if (profData) setProfile(profData as Profile);
+
+          if (profData) {
+            const isActive = profData.active !== false && profData.is_active !== false;
+            if (!isActive) {
+              await client.auth.signOut();
+              localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
+              setUser(null);
+              setProfile(null);
+              setLockoutNotice('Your account is disabled. Contact the Svvayam owner.');
+              return;
+            }
+            if (isSuperAdminNumber(formattedPhone) && profData.role !== 'super_admin') {
+              profData.role = 'super_admin';
+            }
+            setProfile(profData as Profile);
+          }
         } else {
           setUser(null);
           setProfile(null);
@@ -256,6 +316,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return () => subscription.unsubscribe();
     }
   }, [pendingName]);
+
+  // Realtime instant lockout watcher for currently logged-in user
+  useEffect(() => {
+    const client = supabase;
+    if (!isSupabaseConfigured || !client || !user?.id) return;
+
+    const channel = client
+      .channel(`profile-lockout-sync-${user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${user.id}`,
+        },
+        async (payload) => {
+          const updated = payload.new as Profile;
+          if (updated && (updated.active === false || updated.is_active === false)) {
+            await client.auth.signOut();
+            localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
+            setUser(null);
+            setProfile(null);
+            setLockoutNotice('Your account is disabled. Contact the Svvayam owner.');
+          } else if (updated) {
+            setProfile(prev => prev ? { ...prev, ...updated } : updated);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      client.removeChannel(channel);
+    };
+  }, [user?.id]);
 
   const signInWithPhone = useCallback(async (
     phone: string,
@@ -576,7 +671,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   ): Promise<{ success: boolean; error?: string }> => {
     const cleanDigits = phone.replace(/\D/g, '').slice(-10);
     const formattedPhone = '+91' + cleanDigits;
-    const hiddenEmail = phoneToHiddenEmail(phone);
+    const internalEmail = `${cleanDigits}@svvayam.internal`;
+    const appEmail = `${cleanDigits}@svvayam.app`;
 
     if (cleanDigits.length !== 10) {
       return { success: false, error: 'Please enter a valid 10-digit mobile number.' };
@@ -587,12 +683,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (isSupabaseConfigured && supabase) {
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: hiddenEmail,
+        let authResult = await supabase.auth.signInWithPassword({
+          email: internalEmail,
           password: password.trim()
         });
 
+        // If internal email failed, try @svvayam.app
+        if (authResult.error && (authResult.error.message.toLowerCase().includes('invalid') || authResult.error.message.toLowerCase().includes('not found'))) {
+          const appResult = await supabase.auth.signInWithPassword({
+            email: appEmail,
+            password: password.trim()
+          });
+          if (!appResult.error) {
+            authResult = appResult;
+          }
+        }
+
+        const { data, error } = authResult;
+
         if (error) {
+          const errText = error.message.toLowerCase();
+          if (errText.includes('banned') || errText.includes('disabled') || errText.includes('deactivated')) {
+            return {
+              success: false,
+              error: 'Your account is disabled. Contact the Svvayam owner.'
+            };
+          }
+
           // If auth password login fails, check if customer is in profiles table or registered customers
           const registered = getRegisteredCustomers();
           const localCustomer = registered.find(c => c.phone.replace(/\D/g, '').endsWith(cleanDigits));
@@ -617,10 +734,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             };
           }
 
-          if ((profCheck && profCheck.is_active === false) || (localCustomer && !localCustomer.is_active)) {
+          if ((profCheck && (profCheck.active === false || profCheck.is_active === false)) || (localCustomer && !localCustomer.is_active)) {
             return {
               success: false,
-              error: "Your account access has been deactivated. Please contact Svvayam."
+              error: 'Your account is disabled. Contact the Svvayam owner.'
             };
           }
 
@@ -634,6 +751,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             project_name: profCheck?.project_name || localCustomer?.project_name || "Customer's Temple",
             phone: formattedPhone,
             role: 'client',
+            active: true,
             is_active: true,
             created_at: profCheck?.created_at || localCustomer?.created_at || new Date().toISOString()
           };
@@ -668,19 +786,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
 
           if (prof) {
-            if (prof.is_active === false) {
+            if (prof.active === false || prof.is_active === false) {
               await supabase.auth.signOut();
               setUser(null);
               setProfile(null);
-              return { success: false, error: 'Your account access has been deactivated. Please contact Svvayam.' };
+              return { success: false, error: 'Your account is disabled. Contact the Svvayam owner.' };
             }
-            if (requestedRole === 'admin' && prof.role !== 'admin') {
+
+            // Super admin promotion
+            if (isSuperAdminNumber(formattedPhone) && prof.role !== 'super_admin') {
+              prof.role = 'super_admin';
+              await supabase.from('profiles').update({ role: 'super_admin' }).eq('id', prof.id);
+            }
+
+            if (requestedRole === 'admin' && prof.role !== 'admin' && prof.role !== 'super_admin') {
               await supabase.auth.signOut();
               setUser(null);
               setProfile(null);
               return { success: false, error: 'This number does not have administrator access. Please contact the Svvayam team.' };
             }
+
             setProfile(prof as Profile);
+
+            // Audit log login for admin / super_admin
+            if (prof.role === 'admin' || prof.role === 'super_admin') {
+              try {
+                await supabase.rpc('log_admin_activity', {
+                  p_action: 'login',
+                  p_target: 'Web portal login'
+                });
+              } catch {
+                // Ignore audit log failure during sign in
+              }
+            }
           }
         }
 
@@ -698,7 +836,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return { success: false, error: "This number isn't registered. Please contact the Svvayam team." };
         }
         if (!customer.is_active) {
-          return { success: false, error: "Your account access has been deactivated. Please contact Svvayam." };
+          return { success: false, error: 'Your account is disabled. Contact the Svvayam owner.' };
         }
         const mockProfile: Profile = {
           id: customer.id,
@@ -709,6 +847,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           project_name: customer.project_name || `${customer.name}'s Temple`,
           phone: formattedPhone,
           role: 'client',
+          active: true,
           is_active: true,
           created_at: customer.created_at
         };
@@ -717,15 +856,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(mockProfile));
         return { success: true };
       } else {
+        const isSuperAdmin = isSuperAdminNumber(formattedPhone);
         const isInitialAdmin = isNumberInAdminList(formattedPhone);
-        if (!isInitialAdmin) {
+        if (!isInitialAdmin && !isSuperAdmin) {
           return { success: false, error: "This number does not have administrator access. Please contact the Svvayam team." };
         }
         const mockProfile: Profile = {
           id: 'admin-' + cleanDigits,
-          name: 'Svvayam Admin',
+          name: isSuperAdmin ? 'Ar. Jagirdhar' : 'Svvayam Admin',
           phone: formattedPhone,
-          role: 'admin',
+          role: isSuperAdmin ? 'super_admin' : 'admin',
+          active: true,
           is_active: true,
           created_at: new Date().toISOString()
         };
@@ -735,6 +876,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { success: true };
       }
     }
+  }, []);
+
+  const refreshProfile = useCallback(async () => {
+    if (!user?.id) return;
+    if (isSupabaseConfigured && supabase) {
+      const { data: profData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+      if (profData) {
+        if (profData.active === false || profData.is_active === false) {
+          await supabase.auth.signOut();
+          localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
+          setUser(null);
+          setProfile(null);
+          setLockoutNotice('Your account is disabled. Contact the Svvayam owner.');
+          return;
+        }
+        setProfile(profData as Profile);
+      }
+    }
+  }, [user?.id]);
+
+  const clearLockoutNotice = useCallback(() => {
+    setLockoutNotice(null);
+  }, []);
+
+  const clearMustChangePassword = useCallback(() => {
+    setProfile(prev => prev ? { ...prev, must_change_password: false } : null);
   }, []);
 
   const updateProfileName = useCallback(async (name: string): Promise<boolean> => {
@@ -760,8 +931,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const role = profile?.role || null;
-  const isAdmin = role === 'admin';
+  const isSuperAdmin = role === 'super_admin';
+  const isAdmin = role === 'admin' || role === 'super_admin';
   const isCustomer = role === 'customer' || role === 'client';
+  const mustChangePassword = Boolean(profile?.must_change_password);
 
   return (
     <AuthContext.Provider value={{
@@ -769,9 +942,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       profile,
       role,
       isAdmin,
+      isSuperAdmin,
       isCustomer,
       isLoading,
       resendCooldown,
+      mustChangePassword,
+      lockoutNotice,
+      clearLockoutNotice,
+      clearMustChangePassword,
+      refreshProfile,
       signInWithPassword,
       signInWithPhone,
       verifyOtp,

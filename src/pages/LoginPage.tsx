@@ -4,12 +4,22 @@ import { useAuth } from '../context/AuthContext';
 import { Logo } from '../components/ui/Logo';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Toast } from '../components/ui/Toast';
 import { ArrowLeft, User, ShieldCheck, Shield, Info, Eye, EyeOff } from 'lucide-react';
 import { cn, normalizeToE164 } from '../lib/utils';
 
 export const LoginPage: React.FC = () => {
-  const { user, isAdmin, isCustomer, isLoading, signInWithPhone, verifyOtp, signInWithPassword, resendCooldown } = useAuth();
+  const {
+    user,
+    isAdmin,
+    isCustomer,
+    isLoading,
+    signInWithPhone,
+    verifyOtp,
+    signInWithPassword,
+    resendCooldown,
+    lockoutNotice,
+    clearLockoutNotice
+  } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -18,10 +28,10 @@ export const LoginPage: React.FC = () => {
   const [activeRole, setActiveRole] = useState<'customer' | 'admin'>(initialRole);
   const redirectUrl = searchParams.get('redirect');
 
-  const [phone, setPhone] = useState('+91 9845012345');
-  const [password, setPassword] = useState('123456');
+  const [phone, setPhone] = useState(initialRole === 'admin' ? '+91 8074257384' : '+91 9845012345');
+  const [password, setPassword] = useState(initialRole === 'admin' ? '' : '123456');
   const [showPassword, setShowPassword] = useState(false);
-  const [customerAuthMode, setCustomerAuthMode] = useState<'password' | 'otp'>('password');
+  const [authMode, setAuthMode] = useState<'password' | 'otp'>('password');
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [loading, setLoading] = useState(false);
@@ -34,6 +44,11 @@ export const LoginPage: React.FC = () => {
     const r = searchParams.get('role');
     if (r === 'admin' || r === 'customer') {
       setActiveRole(r);
+      if (r === 'admin') {
+        setPhone('+91 8074257384');
+      } else {
+        setPhone('+91 9845012345');
+      }
     }
   }, [searchParams]);
 
@@ -68,12 +83,20 @@ export const LoginPage: React.FC = () => {
     setSearchParams({ role: newRole });
     setError(null);
     setCalmNotice(null);
+    clearLockoutNotice();
     setStep('phone');
     setOtp('');
+    if (newRole === 'admin') {
+      setPhone('+91 8074257384');
+      setPassword('');
+    } else {
+      setPhone('+91 9845012345');
+      setPassword('123456');
+    }
   };
 
-  // Customer Password Login Handler
-  const handleCustomerPasswordLogin = async (e: React.FormEvent) => {
+  // Unified Password Login Handler (Customer & Admin)
+  const handlePasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
 
@@ -91,13 +114,18 @@ export const LoginPage: React.FC = () => {
     setLoading(true);
     setError(null);
     setCalmNotice(null);
+    clearLockoutNotice();
 
     const formatted = '+91' + cleanDigits;
-    const res = await signInWithPassword(formatted, password.trim(), 'customer');
+    const res = await signInWithPassword(formatted, password.trim(), activeRole);
     setLoading(false);
 
     if (res.success) {
-      navigate(redirectUrl || '/client', { replace: true });
+      if (activeRole === 'admin') {
+        navigate(redirectUrl || '/showcase', { replace: true });
+      } else {
+        navigate(redirectUrl || '/client', { replace: true });
+      }
     } else {
       setError(res.error || 'Failed to sign in. Please verify your credentials.');
     }
@@ -242,14 +270,22 @@ export const LoginPage: React.FC = () => {
           </div>
         )}
 
-        {error && <Toast type="error" message={error} onClose={() => setError(null)} />}
+        {/* Instant Lockout Notice or Error Notification */}
+        {(lockoutNotice || error) && (
+          <div className="p-3.5 bg-red-50/90 border border-red-200 rounded-[12px] flex items-start gap-2.5 text-xs text-red-900 font-sans shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-red-600 mt-1.5 shrink-0" />
+            <div className="flex-1 font-medium leading-relaxed">
+              {lockoutNotice || error}
+            </div>
+          </div>
+        )}
 
-        {/* CUSTOMER LOGIN WITH PASSWORD */}
-        {activeRole === 'customer' && customerAuthMode === 'password' ? (
-          <form onSubmit={handleCustomerPasswordLogin} className="space-y-4">
+        {/* PASSWORD LOGIN FORM (DEFAULT FOR BOTH ADMIN AND CUSTOMER) */}
+        {authMode === 'password' ? (
+          <form onSubmit={handlePasswordLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
-                Registered Mobile Number
+                {activeRole === 'admin' ? "Admin Mobile Number" : "Registered Mobile Number"}
               </label>
               <div className="flex rounded-[12px] shadow-xs">
                 <span className="inline-flex items-center px-3.5 rounded-l-[12px] border border-r-0 border-[#E5E5E5] bg-[#F7F7F7] text-xs font-mono font-semibold text-[#0A0A0A] select-none">
@@ -262,14 +298,16 @@ export const LoginPage: React.FC = () => {
                     const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
                     setPhone('+91 ' + digits);
                   }}
-                  placeholder="9845012345"
+                  placeholder={activeRole === 'admin' ? "8074257384" : "9845012345"}
                   maxLength={10}
                   required
                   autoFocus
                   className="flex-1 px-3.5 py-2.5 rounded-r-[12px] border border-[#E5E5E5] bg-white text-xs font-mono text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
                 />
               </div>
-              <p className="mt-1 text-[11px] text-neutral-400 font-mono">10-digit registered number</p>
+              <p className="mt-1 text-[11px] text-neutral-400 font-mono">
+                {activeRole === 'admin' ? "10-digit administrator mobile number" : "10-digit registered number"}
+              </p>
             </div>
 
             <div>
@@ -281,7 +319,7 @@ export const LoginPage: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your portal password"
+                  placeholder={activeRole === 'admin' ? "Enter administrator password" : "Enter portal password"}
                   required
                   className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
                 />
@@ -294,7 +332,9 @@ export const LoginPage: React.FC = () => {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              <p className="mt-1 text-[11px] text-neutral-400 font-mono">Password provided by Svvayam team</p>
+              <p className="mt-1 text-[11px] text-neutral-400 font-mono">
+                {activeRole === 'admin' ? "Temporary or permanent admin password" : "Password provided by Svvayam team"}
+              </p>
             </div>
 
             <Button
@@ -305,7 +345,7 @@ export const LoginPage: React.FC = () => {
               className="w-full relative group overflow-hidden border border-[#0A0A0A] hover:bg-neutral-800 transition-colors shadow-xs"
             >
               <span className="flex items-center justify-center gap-1.5">
-                <span>{loading ? 'Signing In...' : 'Sign In to Portal'}</span>
+                <span>{loading ? 'Verifying Credentials...' : activeRole === 'admin' ? 'Sign In as Administrator' : 'Sign In to Portal'}</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-white group-hover:scale-125 transition-transform" />
               </span>
             </Button>
@@ -314,9 +354,10 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => {
-                  setCustomerAuthMode('otp');
+                  setAuthMode('otp');
                   setStep('phone');
                   setError(null);
+                  clearLockoutNotice();
                 }}
                 className="text-xs text-neutral-500 hover:text-[#0A0A0A] underline cursor-pointer font-sans"
               >
@@ -325,7 +366,7 @@ export const LoginPage: React.FC = () => {
             </div>
           </form>
         ) : step === 'phone' ? (
-          /* ADMIN LOGIN OR CUSTOMER OTP LOGIN */
+          /* OTP PHONE ENTRY */
           <form onSubmit={handleSendOtp} className="space-y-4">
             <Input
               label={activeRole === 'customer' ? "Registered Mobile Number" : "Admin Mobile Number"}
@@ -361,20 +402,19 @@ export const LoginPage: React.FC = () => {
               </span>
             </Button>
 
-            {activeRole === 'customer' && (
-              <div className="text-center pt-1">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCustomerAuthMode('password');
-                    setError(null);
-                  }}
-                  className="text-xs text-neutral-500 hover:text-[#0A0A0A] underline cursor-pointer font-sans"
-                >
-                  Sign in with Password instead
-                </button>
-              </div>
-            )}
+            <div className="text-center pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthMode('password');
+                  setError(null);
+                  clearLockoutNotice();
+                }}
+                className="text-xs text-neutral-500 hover:text-[#0A0A0A] underline cursor-pointer font-sans"
+              >
+                Sign in with Password instead
+              </button>
+            </div>
           </form>
         ) : (
           /* OTP VERIFICATION STEP */

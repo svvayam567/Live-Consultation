@@ -16,11 +16,11 @@ import {
 import { cn } from '../../lib/utils';
 
 export interface AdminNavProps {
-  activeSection?: 'showcase' | 'clients' | 'register' | 'consultation';
+  activeSection?: 'showcase' | 'clients' | 'register' | 'consultation' | 'team';
 }
 
 export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
-  const { user, profile, updateProfileName, logout } = useAuth();
+  const { user, profile, updateProfileName, logout, isSuperAdmin } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,6 +33,8 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
   const currentSection = activeSection || (
     location.pathname.startsWith('/showcase')
       ? 'showcase'
+      : location.pathname.startsWith('/admin/team')
+      ? 'team'
       : location.pathname.startsWith('/admin/register')
       ? 'register'
       : location.pathname.startsWith('/admin/consultation') || location.pathname.startsWith('/consult')
@@ -87,10 +89,18 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
       label: 'Consultation',
       path: '/admin/consultation',
       icon: Sparkles
-    }
+    },
+    ...(isSuperAdmin ? [
+      {
+        id: 'team',
+        label: 'Team',
+        path: '/admin/team',
+        icon: ShieldCheck
+      }
+    ] : [])
   ];
 
-  const adminDisplayName = profile?.name || 'Svvayam Admin';
+  const adminDisplayName = profile?.name || (isSuperAdmin ? 'Ar. Jagirdhar' : 'Svvayam Admin');
 
   return (
     <>
@@ -107,8 +117,10 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
               <Logo className="h-7 sm:h-8 object-contain transition-transform group-hover:scale-102" />
             </Link>
             <div className="hidden sm:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-neutral-100 border border-[#ECECEC] text-[10px] font-mono text-[#0A0A0A]">
-              <ShieldCheck className="w-3 h-3 text-[#0E2A1C]" />
-              <span className="font-semibold uppercase tracking-wider">Admin Studio</span>
+              <ShieldCheck className={cn("w-3 h-3", isSuperAdmin ? "text-purple-700" : "text-[#0E2A1C]")} />
+              <span className="font-semibold uppercase tracking-wider">
+                {isSuperAdmin ? 'Super Admin' : 'Admin Studio'}
+              </span>
             </div>
           </div>
 

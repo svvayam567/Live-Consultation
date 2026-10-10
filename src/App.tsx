@@ -10,7 +10,16 @@ import { ClientExplorerPage } from './pages/ClientExplorerPage';
 import { AdminClientsPage } from './pages/admin/AdminClientsPage';
 import { AdminRegisterPage } from './pages/admin/AdminRegisterPage';
 import { AdminConsultationPage } from './pages/admin/AdminConsultationPage';
+import { AdminTeamPage } from './pages/admin/AdminTeamPage';
 import { AdminFloatingChat } from './components/chat/AdminFloatingChat';
+import { ForcePasswordChangeModal } from './components/auth/ForcePasswordChangeModal';
+
+// Mandatory Forced Password Change screen wrapper
+const ForcedPasswordChangeWrapper: React.FC = () => {
+  const { user, mustChangePassword } = useAuth();
+  if (!user || !mustChangePassword) return null;
+  return <ForcePasswordChangeModal />;
+};
 
 // Global floating chat wrapper for Admin / Showcase sessions
 const AdminFloatingChatWrapper: React.FC = () => {
@@ -96,6 +105,30 @@ const ProtectedAdminConsultationRoute: React.FC = () => {
   }
 
   return <AdminConsultationPage />;
+};
+
+// Guard for Super Admin Team Management Section (/admin/team)
+const ProtectedAdminTeamRoute: React.FC = () => {
+  const { user, isSuperAdmin, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
+        Verifying super admin privileges...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to={`/?role=admin&redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
+  }
+
+  if (!isSuperAdmin) {
+    return <Navigate to="/admin/clients" replace />;
+  }
+
+  return <AdminTeamPage />;
 };
 
 // Guard for Architectural Showcase (/showcase)
@@ -216,6 +249,9 @@ export const App: React.FC = () => {
             <Route path="/consult" element={<ProtectedAdminConsultationRoute />} />
             <Route path="/consult/:id" element={<ProtectedAdminConsultationRoute />} />
 
+            {/* Section 4: Team & Admin Management (Super Admin only) */}
+            <Route path="/admin/team" element={<ProtectedAdminTeamRoute />} />
+
             {/* Architectural 37 Projects Explorer */}
             <Route path="/client-explorer" element={<ProtectedExplorerRoute />} />
 
@@ -231,6 +267,8 @@ export const App: React.FC = () => {
           </Routes>
           {/* Floating Admin Chat Inbox */}
           <AdminFloatingChatWrapper />
+          {/* Mandatory Forced Password Change Screen */}
+          <ForcedPasswordChangeWrapper />
         </ConsultationProvider>
       </AuthProvider>
     </BrowserRouter>

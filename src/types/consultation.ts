@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'client' | 'customer';
+export type UserRole = 'super_admin' | 'admin' | 'client' | 'customer';
 
 export type CustomerTitle = 'Mr.' | 'Mrs.' | 'Ms.' | 'Dr.';
 export type CustomerProduct = 'Temple' | 'Puja Mandir' | 'Sanctum';
@@ -12,7 +12,39 @@ export interface Profile {
   surname?: string;
   product?: CustomerProduct;
   project_name?: string;
+  active?: boolean;
   is_active?: boolean;
+  must_change_password?: boolean;
+  created_at: string;
+}
+
+export type AdminActivityAction = 
+  | 'admin_created'
+  | 'admin_disabled'
+  | 'admin_enabled'
+  | 'admin_deleted'
+  | 'admin_password_reset'
+  | 'customer_created'
+  | 'consultation_deleted'
+  | 'login';
+
+export interface AdminActivityRecord {
+  id: string;
+  actor_id: string | null;
+  actor_name: string;
+  action: AdminActivityAction;
+  target: string | null;
+  created_at: string;
+}
+
+export interface AdminUserRecord {
+  id: string;
+  name: string;
+  phone: string;
+  role: 'super_admin' | 'admin';
+  active: boolean;
+  must_change_password?: boolean;
+  last_sign_in_at?: string | null;
   created_at: string;
 }
 
