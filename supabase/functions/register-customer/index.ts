@@ -23,7 +23,8 @@ function jsonResponse(data: unknown, status = 200) {
 }
 
 interface RegisterRequest {
-  action?: 'register' | 'deactivate' | 'reset_password';
+  action?: 'register' | 'deactivate' | 'reset_password' | 'register_admin';
+  role?: 'client' | 'admin';
   name?: string;
   phone?: string;
   password?: string;
@@ -149,6 +150,98 @@ serve(async (req) => {
         success: true,
         message: `Customer status updated to ${newStatus ? 'active' : 'deactivated'}.`
       }, 200);
+    }
+
+    // ACTION: Register Administrator
+    if (payload.action === 'register_admin' || payload.role === 'admin') {
+      const rawName = (payload.name || "").trim();
+      const rawPhone = (payload.phone || "").trim();
+      const rawPassword = (payload.password || "").trim();
+
+      if (!rawName) {
+        return jsonResponse({ success: false, error: "Administrator full name is required." }, 400);
+      }
+      if (!rawPhone) {
+        return jsonResponse({ success: false, error: "Mobile number is required." }, 400);
+      }
+
+      const cleanDigits10 = rawPhone.replace(/\D/g, "").slice(-10);
+      if (cleanDigits10.length !== 10) {
+        return jsonResponse({ success: false, error: "Phone number must be a valid 10-digit mobile number." }, 400);
+      }
+      const normalizedPhone = "+91" + cleanDigits10;
+      const hiddenEmail = `${cleanDigits10}@svvayam.internal`;
+
+      if (!rawPassword || rawPassword.length < 8) {
+        return jsonResponse({ success: false, error: "Admin password must be at least 8 characters." }, 400);
+      }
+
+      // Check if user already exists
+      const { data: existingProf } = await supabaseAdmin
+        .from("profiles")
+        .select("id, name, phone, role")
+        .or(`phone.eq.${normalizedPhone},phone.ilike.%${cleanDigits10}%`)
+        .limit(1)
+        .maybeSingle();
+
+      if (existingProf) {
+        return jsonResponse({
+          success: false,
+          code: "ADMIN_EXISTS",
+          error: "An account with this mobile number already exists."
+        }, 409);
+      }
+
+      // Create admin auth user
+      const { data: createdAuth, error: createAuthErr } = await supabaseAdmin.auth.admin.createUser({
+        email: hiddenEmail,
+        email_confirm: true,
+        password: rawPassword,
+        user_metadata: {
+          name: rawName,
+          phone: normalizedPhone,
+          role: "admin"
+        }
+      });
+
+      if (createAuthErr || !createdAuth.user) {
+        return jsonResponse({
+          success: false,
+          error: createAuthErr?.message || "Failed to create administrator login credentials."
+        }, 400);
+      }
+
+      const adminUserId = createdAuth.user.id;
+
+      // Upsert profile with role = 'admin'
+      const { error: profileErr } = await supabaseAdmin
+        .from("profiles")
+        .upsert({
+          id: adminUserId,
+          name: rawName,
+          phone: normalizedPhone,
+          role: "admin",
+          is_active: true
+        }, { onConflict: "id" });
+
+      if (profileErr) {
+        await supabaseAdmin.auth.admin.deleteUser(adminUserId);
+        return jsonResponse({
+          success: false,
+          error: `Failed to save administrator profile: ${profileErr.message}`
+        }, 500);
+      }
+
+      return jsonResponse({
+        success: true,
+        message: "Administrator account created successfully.",
+        admin: {
+          id: adminUserId,
+          name: rawName,
+          phone: normalizedPhone,
+          role: "admin"
+        }
+      }, 201);
     }
 
     // ACTION: Register Customer + Create Login + Create Consultation
@@ -319,6 +412,8 @@ serve(async (req) => {
           project_id: newProjectId,
           client_phone: normalizedPhone,
           created_by: callerUser.id,
+          consultant_id: callerUser.id,
+          consultant_name: callerProfile?.name || "Svvayam Admin",
           project_name: projectName,
           client_name: rawName,
           title,

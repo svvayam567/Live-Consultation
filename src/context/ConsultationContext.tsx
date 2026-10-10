@@ -211,6 +211,8 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
           const computedStatus = nextState.status || (nextState.slide === 7 ? 'completed' : 'draft');
           const payload: any = {
             created_by: user.id,
+            consultant_id: profile?.id || user.id || nextState.consultant_id || null,
+            consultant_name: profile?.name || nextState.consultant_name || 'Svvayam Admin',
             project_id: nextState.project_id || null,
             client_id: nextState.client_id || null,
             project_name: projName,
@@ -253,7 +255,9 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
             product: nextState.fields.product,
             client_phone: nextState.fields.client_phone || nextState.fields.phone || '',
             location: nextState.fields.location || '',
-            consultant: profile?.name || 'Svvayam Staff',
+            consultant: profile?.name || nextState.consultant_name || 'Svvayam Admin',
+            consultant_id: profile?.id || user?.id || nextState.consultant_id,
+            consultant_name: profile?.name || nextState.consultant_name || 'Svvayam Admin',
             consultant_phone: profile?.phone || '+91 8074257384',
             status: nextState.status || (nextState.slide === 7 ? 'completed' : 'draft'),
             date: nextState.fields.date || new Date().toISOString().split('T')[0],
@@ -627,6 +631,8 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
           const projName = updatedState.project_name || updatedState.fields.projectName || updatedState.fields.project_name || (updatedState.fields.surname ? formatProjectName(updatedState.fields.title, updatedState.fields.surname, updatedState.fields.product) : null);
           const payload: any = {
             created_by: user?.id,
+            consultant_id: profile?.id || user?.id || updatedState.consultant_id || null,
+            consultant_name: profile?.name || updatedState.consultant_name || 'Svvayam Admin',
             project_id: updatedState.project_id || null,
             client_id: updatedState.client_id || null,
             project_name: projName,
@@ -673,7 +679,9 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
           product: updatedState.fields.product,
           client_phone: updatedState.fields.client_phone || updatedState.fields.phone || '',
           location: updatedState.fields.location || '',
-          consultant: profile?.name || 'Svvayam Staff',
+          consultant: profile?.name || updatedState.consultant_name || 'Svvayam Admin',
+          consultant_id: profile?.id || user?.id || updatedState.consultant_id,
+          consultant_name: profile?.name || updatedState.consultant_name || 'Svvayam Admin',
           consultant_phone: profile?.phone || '+91 8074257384',
           status: 'completed',
           date: updatedState.fields.date || new Date().toISOString().split('T')[0],

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Header } from '../components/layout/Header';
+import { AdminNav } from '../components/admin/AdminNav';
 import { Logo } from '../components/ui/Logo';
 import { VisualExploreModal } from '../components/explorer/VisualExploreModal';
 import { PresentationsDocsModal } from '../components/explorer/PresentationsDocsModal';
@@ -27,8 +28,8 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
-      {/* Top Application Header: Logo on left, Logout/User on right */}
-      <Header />
+      {/* Top Application Header: AdminNav when logged in as admin, Header otherwise */}
+      {isAdmin ? <AdminNav activeSection="showcase" /> : <Header />}
 
       {/* Hero Section */}
       <main className="flex-1 flex flex-col justify-between">

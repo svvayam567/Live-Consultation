@@ -31,7 +31,7 @@ export const Header: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
           {/* Left: Brand / Logo */}
           <div className="flex items-center space-x-4">
-            <Link to={isAdmin ? "/admin" : isCustomer ? "/client" : "/"} className="flex items-center group">
+            <Link to={isAdmin ? "/showcase" : isCustomer ? "/client" : "/"} className="flex items-center group">
               <Logo className="h-7 sm:h-8 object-contain" />
             </Link>
           </div>
@@ -42,7 +42,7 @@ export const Header: React.FC = () => {
               <div className="flex items-center space-x-3 sm:space-x-4">
                 {isAdmin && (
                   <Link
-                    to="/admin"
+                    to="/admin/clients"
                     className="hidden sm:inline-flex items-center space-x-1.5 text-xs text-[#0A0A0A] hover:underline"
                   >
                     <ShieldCheck className="w-3.5 h-3.5 text-[#0E2A1C]" />
@@ -63,7 +63,7 @@ export const Header: React.FC = () => {
                 <div className="flex items-center space-x-1.5 text-[#5C5C5C]">
                   <User className="w-3.5 h-3.5 text-neutral-400" />
                   <span className="font-medium text-[#0A0A0A] hidden sm:inline">
-                    {profile?.name || user.phone}
+                    {isAdmin ? `Logged in as ${profile?.name || user.phone}` : (profile?.name || user.phone)}
                   </span>
                   {isAdmin ? (
                     <span className="text-[10px] uppercase tracking-wider bg-neutral-100 border border-[#ECECEC] text-[#0A0A0A] px-2 py-0.5 rounded-full font-mono">

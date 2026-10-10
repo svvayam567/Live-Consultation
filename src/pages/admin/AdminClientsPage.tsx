@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useSearchParams, useLocation, Navigate } from 'react-router-dom';
 import { useAuth, getRegisteredCustomers } from '../../context/AuthContext';
 import { useConsultation } from '../../context/ConsultationContext';
@@ -26,7 +26,11 @@ import {
   UserPlus,
   KeyRound,
   Check,
-  Copy
+  Copy,
+  Trash2,
+  ShieldCheck,
+  AlertTriangle,
+  X
 } from 'lucide-react';
 
 export interface ConsultationRecord {
@@ -40,6 +44,8 @@ export interface ConsultationRecord {
   location: string;
   consultant: string;
   consultant_phone?: string;
+  consultant_id?: string;
+  consultant_name?: string;
   estimate?: string;
   status: 'draft' | 'proposal_sent' | 'completed';
   date: string;
@@ -63,7 +69,8 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
     product: 'Temple',
     client_phone: '+91 9845012345',
     location: 'Bengaluru, Indiranagar',
-    consultant: 'Svvayam Staff',
+    consultant: 'Svvayam Admin',
+    consultant_name: 'Svvayam Admin',
     consultant_phone: '+91 8074257384',
     estimate: '18 lakh',
     status: 'draft',
@@ -123,7 +130,8 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
     product: 'Sanctum',
     client_phone: '+91 9701020304',
     location: 'Hyderabad, Jubilee Hills',
-    consultant: 'Svvayam Staff',
+    consultant: 'Svvayam Admin',
+    consultant_name: 'Svvayam Admin',
     consultant_phone: '+91 8074257384',
     estimate: '25 lakh',
     status: 'proposal_sent',
@@ -183,7 +191,8 @@ const SEED_CONSULTATIONS: ConsultationRecord[] = [
     product: 'Temple',
     client_phone: '+91 9884011223',
     location: 'Chennai, Adyar',
-    consultant: 'Svvayam Staff',
+    consultant: 'Svvayam Admin',
+    consultant_name: 'Svvayam Admin',
     consultant_phone: '+91 8074257384',
     estimate: '12 lakh',
     status: 'completed',
@@ -265,6 +274,188 @@ export const AdminClientsPage: React.FC = () => {
     }
   };
 
+  // Delete Draft Confirmation Modal state
+  const [deleteDraftTarget, setDeleteDraftTarget] = useState<ConsultationRecord | null>(null);
+  const [deleteTimeRemaining, setDeleteTimeRemaining] = useState<number>(5000);
+  const [isDeletingDraft, setIsDeletingDraft] = useState<boolean>(false);
+  const deleteTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const cancelDeleteDraft = () => {
+    if (deleteTimerRef.current) {
+      clearInterval(deleteTimerRef.current);
+      deleteTimerRef.current = null;
+    }
+    setDeleteDraftTarget(null);
+    setDeleteTimeRemaining(5000);
+    setIsDeletingDraft(false);
+  };
+
+  const performDraftDeletion = async (target: ConsultationRecord) => {
+    if (isDeletingDraft) return;
+    setIsDeletingDraft(true);
+
+    try {
+      if (isSupabaseConfigured && supabase) {
+        const { error } = await supabase
+          .from('consultations')
+          .delete()
+          .eq('id', target.id)
+          .eq('status', 'draft');
+
+        if (error) {
+          throw new Error(error.message || 'Failed to delete draft consultation from database.');
+        }
+      }
+
+      // Also clean up local storage if present
+      try {
+        const stored = localStorage.getItem('svvayam_admin_consultations_v1');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            const updated = parsed.filter((c: any) => c.id !== target.id);
+            localStorage.setItem('svvayam_admin_consultations_v1', JSON.stringify(updated));
+          }
+        }
+      } catch {
+        // Ignored
+      }
+
+      // Immediately remove row without page reload
+      setConsultations(prev => prev.filter(c => c.id !== target.id));
+      if (selectedRecord?.id === target.id) {
+        setSelectedRecord(null);
+      }
+
+      setToastMsg('Draft deleted');
+      cancelDeleteDraft();
+    } catch (err: any) {
+      console.error('Delete draft error:', err);
+      setToastMsg(`Error deleting draft: ${err?.message || 'Permission denied or network issue'}`);
+      cancelDeleteDraft();
+    } finally {
+      setIsDeletingDraft(false);
+    }
+  };
+
+  // Countdown timer effect
+  useEffect(() => {
+    if (!deleteDraftTarget) {
+      if (deleteTimerRef.current) {
+        clearInterval(deleteTimerRef.current);
+        deleteTimerRef.current = null;
+      }
+      return;
+    }
+
+    setDeleteTimeRemaining(5000);
+    const startTime = Date.now();
+    const duration = 5000;
+
+    deleteTimerRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, duration - elapsed);
+      setDeleteTimeRemaining(remaining);
+
+      if (remaining <= 0) {
+        if (deleteTimerRef.current) {
+          clearInterval(deleteTimerRef.current);
+          deleteTimerRef.current = null;
+        }
+        performDraftDeletion(deleteDraftTarget);
+      }
+    }, 100);
+
+    return () => {
+      if (deleteTimerRef.current) {
+        clearInterval(deleteTimerRef.current);
+        deleteTimerRef.current = null;
+      }
+    };
+  }, [deleteDraftTarget]);
+
+  // Escape key cancels delete draft popup
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && deleteDraftTarget) {
+        cancelDeleteDraft();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [deleteDraftTarget]);
+
+  const handleDeleteDraftClick = (record: ConsultationRecord, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (record.status !== 'draft') return;
+    if (deleteDraftTarget) return; // Prevent double clicks / only one popup allowed
+
+    setDeleteDraftTarget(record);
+    setDeleteTimeRemaining(5000);
+  };
+
+  // Add Admin Modal state
+  const [showAddAdminModal, setShowAddAdminModal] = useState(false);
+  const [adminName, setAdminName] = useState('');
+  const [adminPhone, setAdminPhone] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
+  const [isCreatingAdmin, setIsCreatingAdmin] = useState(false);
+  const [createAdminError, setCreateAdminError] = useState<string | null>(null);
+  const [createdAdminResult, setCreatedAdminResult] = useState<{ name: string; phone: string; password: string } | null>(null);
+  const [copiedAdminCredentials, setCopiedAdminCredentials] = useState(false);
+  const [showManualAdminHelp, setShowManualAdminHelp] = useState(false);
+
+  const handleCreateAdminSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanPhoneDigits = adminPhone.replace(/\D/g, '').slice(-10);
+
+    if (!adminName.trim()) {
+      setCreateAdminError('Please enter administrator full name.');
+      return;
+    }
+    if (cleanPhoneDigits.length !== 10) {
+      setCreateAdminError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+    if (adminPassword.trim().length < 8) {
+      setCreateAdminError('Password must be at least 8 characters.');
+      return;
+    }
+
+    setIsCreatingAdmin(true);
+    setCreateAdminError(null);
+
+    try {
+      if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase.functions.invoke('register-customer', {
+          body: {
+            action: 'register_admin',
+            role: 'admin',
+            name: adminName.trim(),
+            phone: '+91' + cleanPhoneDigits,
+            password: adminPassword.trim()
+          }
+        });
+
+        if (error || !data?.success) {
+          throw new Error(data?.error || error?.message || 'Failed to create administrator account.');
+        }
+      }
+
+      setCreatedAdminResult({
+        name: adminName.trim(),
+        phone: '+91' + cleanPhoneDigits,
+        password: adminPassword.trim()
+      });
+      setToastMsg(`Administrator account created for ${adminName.trim()}.`);
+    } catch (err: any) {
+      setCreateAdminError(err?.message || 'Failed to create administrator account.');
+    } finally {
+      setIsCreatingAdmin(false);
+    }
+  };
+
   // Client inspection modal tab and journey controls state
   const [modalTab, setModalTab] = useState<'details' | 'journey' | 'chat'>('details');
   const [journeyStages, setJourneyStages] = useState<Array<{ stage: number; status: 'not_started' | 'in_progress' | 'completed' }>>([
@@ -319,8 +510,10 @@ export const AdminClientsPage: React.FC = () => {
               product: row.product || row.fields?.product || 'Temple',
               client_phone: row.client_phone || row.fields?.client_phone || '—',
               location: row.fields?.location || 'Not specified',
-              consultant: row.profiles?.name || 'Svvayam Consultant',
+              consultant: row.consultant_name || row.profiles?.name || 'Svvayam Admin',
               consultant_phone: row.profiles?.phone || '+91 8074257384',
+              consultant_id: row.consultant_id,
+              consultant_name: row.consultant_name || row.profiles?.name || 'Svvayam Admin',
               estimate: row.fields?.estimate || 'Pending',
               status: row.status || 'draft',
               date: row.fields?.date || row.created_at?.split('T')[0] || '—',
@@ -477,7 +670,7 @@ export const AdminClientsPage: React.FC = () => {
         (item.surname && item.surname.toLowerCase().includes(q)) ||
         item.client_phone.toLowerCase().includes(q) ||
         item.location.toLowerCase().includes(q) ||
-        item.consultant.toLowerCase().includes(q);
+        (item.consultant_name || item.consultant || 'Svvayam Admin').toLowerCase().includes(q);
       return matchesStatus && matchesSearch;
     });
   }, [consultations, statusFilter, searchQuery]);
@@ -539,6 +732,25 @@ export const AdminClientsPage: React.FC = () => {
             >
               <UserPlus className="w-3.5 h-3.5 text-white" />
               <span>Register Customer</span>
+            </Button>
+
+            {/* Add Admin Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setShowAddAdminModal(true);
+                setAdminName('');
+                setAdminPhone('');
+                setAdminPassword('');
+                setCreateAdminError(null);
+                setCreatedAdminResult(null);
+              }}
+              className="text-xs flex items-center gap-1.5 rounded-full border-neutral-300 hover:border-[#0A0A0A] cursor-pointer text-[#0A0A0A]"
+              title="Create another administrator account"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-neutral-800" />
+              <span>Add Admin</span>
             </Button>
 
             <Button
@@ -703,7 +915,7 @@ export const AdminClientsPage: React.FC = () => {
                               {item.location}
                             </td>
                             <td className="py-3 px-4 text-neutral-600">
-                              {item.consultant}
+                              {item.consultant_name || item.consultant || 'Svvayam Admin'}
                             </td>
                             <td className="py-3 px-4 font-mono text-[#0A0A0A]">
                               {est ? money(est) : item.estimate || '—'}
@@ -806,6 +1018,18 @@ export const AdminClientsPage: React.FC = () => {
                                 >
                                   <FileSpreadsheet className={`w-3.5 h-3.5 ${syncingId === item.id ? 'animate-spin' : ''}`} />
                                 </button>
+
+                                {/* Delete Draft action: ONLY visible when status === 'draft' */}
+                                {item.status === 'draft' && (
+                                  <button
+                                    type="button"
+                                    onClick={(e) => handleDeleteDraftClick(item, e)}
+                                    className="p-1 border border-neutral-200 hover:border-rose-400 text-neutral-400 hover:text-rose-600 hover:bg-rose-50/50 cursor-pointer rounded-sm transition-colors"
+                                    title="Delete this draft consultation"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                )}
                               </div>
                             </td>
                           </tr>
@@ -1101,6 +1325,10 @@ export const AdminClientsPage: React.FC = () => {
                       <span className="text-neutral-400 block text-[10px]">Budget:</span>
                       <span>{selectedRecord.estimate || '15-20 lakh'}</span>
                     </div>
+                    <div>
+                      <span className="text-neutral-400 block text-[10px]">Consultant:</span>
+                      <span className="text-[#0A0A0A] font-medium">{selectedRecord.consultant_name || selectedRecord.consultant || 'Svvayam Admin'}</span>
+                    </div>
                   </div>
                 </div>
 
@@ -1328,6 +1556,293 @@ export const AdminClientsPage: React.FC = () => {
                     className="bg-[#0A0A0A] text-white hover:bg-neutral-800"
                   >
                     {resettingPassword ? 'Updating...' : 'Update Password'}
+                  </Button>
+                </div>
+              </form>
+            )}
+          </div>
+        </Modal>
+      )}
+
+      {/* ========================================================= */}
+      {/* DELETE DRAFT 5-SECOND COUNTDOWN CONFIRMATION POPUP        */}
+      {/* ========================================================= */}
+      {deleteDraftTarget && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 transition-opacity animate-in fade-in duration-150"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) cancelDeleteDraft();
+          }}
+        >
+          <div 
+            className="w-full max-w-sm sm:max-w-md bg-white rounded-[20px] border border-neutral-200 shadow-2xl p-6 sm:p-7 space-y-5 text-center relative"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-draft-title"
+          >
+            {/* Close / Cancel corner button */}
+            <button
+              type="button"
+              onClick={cancelDeleteDraft}
+              className="absolute right-4 top-4 p-1.5 text-neutral-400 hover:text-[#0A0A0A] rounded-full hover:bg-neutral-100 transition-colors cursor-pointer"
+              title="Cancel deletion"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Warning Icon with pulsating ring */}
+            <div className="mx-auto w-12 h-12 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600">
+              <AlertTriangle className="w-6 h-6 stroke-[2]" />
+            </div>
+
+            {/* Title & Body */}
+            <div className="space-y-1.5">
+              <h3 id="delete-draft-title" className="text-lg font-medium text-[#0A0A0A]">
+                Delete this draft?
+              </h3>
+              <p className="text-xs text-neutral-600 font-sans leading-relaxed">
+                Draft for <strong className="text-[#0A0A0A] font-semibold">{deleteDraftTarget.client_name || deleteDraftTarget.project_name}</strong> will be permanently deleted.
+              </p>
+              <p className="text-[11px] text-rose-600 font-medium">
+                This cannot be undone.
+              </p>
+            </div>
+
+            {/* Countdown Badge & Decreasing Progress Bar */}
+            <div className="space-y-2.5 py-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-xs font-mono text-neutral-700">
+                <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
+                <span>Deleting in {Math.max(1, Math.ceil(deleteTimeRemaining / 1000))}…</span>
+              </div>
+
+              {/* Decreasing progress bar */}
+              <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden border border-neutral-200">
+                <div
+                  className="h-full bg-rose-600 transition-[width] ease-linear duration-100"
+                  style={{ width: `${Math.max(0, (deleteTimeRemaining / 5000) * 100)}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="md"
+                onClick={cancelDeleteDraft}
+                className="w-full py-2.5 rounded-full border-neutral-300 hover:border-[#0A0A0A] text-xs font-medium cursor-pointer"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* ADD ADMINISTRATOR MODAL                                    */}
+      {/* ========================================================= */}
+      {showAddAdminModal && (
+        <Modal
+          isOpen={true}
+          onClose={() => {
+            setShowAddAdminModal(false);
+            setCreatedAdminResult(null);
+            setCreateAdminError(null);
+          }}
+          title={createdAdminResult ? "Administrator Account Created" : "Create Administrator"}
+          subtitle={createdAdminResult ? "Securely share these credentials with the new admin" : "Add another Svvayam admin team member"}
+          maxWidth="md"
+        >
+          <div className="space-y-4 text-xs font-sans">
+            {createdAdminResult ? (
+              <div className="space-y-4">
+                <div className="p-4 rounded-[14px] bg-emerald-50 border border-emerald-200 text-emerald-900 space-y-2">
+                  <div className="flex items-center gap-2 font-medium">
+                    <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                    <span>Administrator account created successfully!</span>
+                  </div>
+                  <p className="text-[11px] text-emerald-800 leading-relaxed">
+                    This admin account can now sign in immediately at the login screen using their mobile number and password.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-[14px] bg-neutral-50 border border-neutral-200 space-y-2.5">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-neutral-500 font-mono uppercase text-[10px]">Full Name</span>
+                    <strong className="text-[#0A0A0A] font-sans">{createdAdminResult.name}</strong>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-neutral-500 font-mono uppercase text-[10px]">Mobile</span>
+                    <strong className="text-[#0A0A0A] font-mono">{createdAdminResult.phone}</strong>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-neutral-500 font-mono uppercase text-[10px]">Password</span>
+                    <strong className="text-[#0A0A0A] font-mono">{createdAdminResult.password}</strong>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const copyText = `Svvayam Administrator Access\nName: ${createdAdminResult.name}\nMobile: ${createdAdminResult.phone}\nPassword: ${createdAdminResult.password}\nPortal Link: ${window.location.origin}/`;
+                      navigator.clipboard.writeText(copyText);
+                      setCopiedAdminCredentials(true);
+                      setTimeout(() => setCopiedAdminCredentials(false), 2000);
+                    }}
+                    className="px-3 py-1.5 rounded-full border border-neutral-300 hover:bg-neutral-100 text-xs text-neutral-700 hover:text-black flex items-center gap-1.5 cursor-pointer font-sans"
+                  >
+                    {copiedAdminCredentials ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedAdminCredentials ? 'Copied to Clipboard!' : 'Copy Credentials'}</span>
+                  </button>
+
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => {
+                      setShowAddAdminModal(false);
+                      setCreatedAdminResult(null);
+                      setAdminName('');
+                      setAdminPhone('');
+                      setAdminPassword('');
+                    }}
+                    className="bg-[#0A0A0A] text-white"
+                  >
+                    Done
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleCreateAdminSubmit} className="space-y-4">
+                <p className="text-xs text-neutral-500 font-sans leading-relaxed">
+                  Enter the details of the new admin. Their consultations will display their name as the consultant.
+                </p>
+
+                {createAdminError && (
+                  <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs">
+                    {createAdminError}
+                  </div>
+                )}
+
+                {/* Full Name */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
+                    Administrator Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={adminName}
+                    onChange={(e) => setAdminName(e.target.value)}
+                    placeholder="e.g. Ar. Jagirdhar / Pooja Sharma"
+                    required
+                    autoFocus
+                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+                  />
+                  <p className="text-[11px] text-neutral-400 font-sans">
+                    This name will be saved and displayed as the Consultant for consultations created by this admin.
+                  </p>
+                </div>
+
+                {/* 10-Digit Mobile */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
+                    Mobile Number
+                  </label>
+                  <div className="relative flex items-center rounded-[12px] border border-[#E5E5E5] bg-white overflow-hidden focus-within:ring-1 focus-within:ring-[#0A0A0A] focus-within:border-[#0A0A0A]">
+                    <div className="px-3 py-2.5 bg-neutral-50 border-r border-[#E5E5E5] text-xs font-mono text-neutral-500 font-semibold select-none">
+                      +91
+                    </div>
+                    <input
+                      type="tel"
+                      value={adminPhone}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                        setAdminPhone(val);
+                      }}
+                      placeholder="10-digit mobile number"
+                      maxLength={10}
+                      required
+                      className="flex-1 px-3 py-2.5 text-xs font-mono text-[#0A0A0A] focus:outline-none bg-transparent"
+                    />
+                  </div>
+                  <p className="text-[11px] text-neutral-400 font-mono">Used to sign in as Administrator</p>
+                </div>
+
+                {/* Password */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showAdminPassword ? 'text' : 'password'}
+                      value={adminPassword}
+                      onChange={(e) => setAdminPassword(e.target.value)}
+                      placeholder="Minimum 8 characters"
+                      required
+                      className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowAdminPassword(!showAdminPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-[#0A0A0A] cursor-pointer"
+                      title={showAdminPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showAdminPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-neutral-400 font-mono">Minimum 8 characters</p>
+                </div>
+
+                {/* Expandable Manual Supabase instructions */}
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setShowManualAdminHelp(!showManualAdminHelp)}
+                    className="text-[11px] text-neutral-500 hover:text-[#0A0A0A] underline underline-offset-2 flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>{showManualAdminHelp ? 'Hide' : 'Need manual instructions for Supabase Dashboard?'}</span>
+                  </button>
+
+                  {showManualAdminHelp && (
+                    <div className="mt-2.5 p-3 rounded-[12px] bg-neutral-50 border border-neutral-200 text-[11px] text-neutral-600 font-sans space-y-1.5 text-left">
+                      <p className="font-semibold text-neutral-900">Alternative: Create admin directly in Supabase Dashboard:</p>
+                      <ol className="list-decimal pl-4 space-y-1">
+                        <li>Go to <strong>Authentication &gt; Users &gt; Add user &gt; Create user</strong>.</li>
+                        <li>Email: <code className="bg-neutral-200 px-1 py-0.5 rounded text-[10px]">&lt;10digits&gt;@svvayam.internal</code>, set password, check <em>Auto Confirm User</em>.</li>
+                        <li>Copy the generated User UUID.</li>
+                        <li>In <strong>SQL Editor</strong>, run:
+                          <pre className="mt-1 p-2 bg-neutral-900 text-neutral-100 rounded text-[10px] overflow-x-auto font-mono whitespace-pre">
+{`insert into public.profiles (id, phone, role, is_active, name)
+values ('<USER-UUID>', '+91<10-DIGITS>', 'admin', true, '<FULL-NAME>')
+on conflict (id) do update set role = 'admin', name = excluded.name;`}
+                          </pre>
+                        </li>
+                      </ol>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-neutral-100">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowAddAdminModal(false)}
+                    disabled={isCreatingAdmin}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="sm"
+                    disabled={isCreatingAdmin || adminPassword.trim().length < 8 || adminPhone.length < 10 || !adminName.trim()}
+                    className="bg-[#0A0A0A] text-white hover:bg-neutral-800"
+                  >
+                    {isCreatingAdmin ? 'Creating...' : 'Create Administrator'}
                   </Button>
                 </div>
               </form>

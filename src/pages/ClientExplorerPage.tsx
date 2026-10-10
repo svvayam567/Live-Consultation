@@ -1,24 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { Logo } from '../components/ui/Logo';
 import { ClientExplorer } from '../components/explorer/ClientExplorer';
 import { ArrowLeft } from 'lucide-react';
 
 export const ClientExplorerPage: React.FC = () => {
+  const { isAdmin, isCustomer } = useAuth();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
       {/* Minimal Top Header */}
       <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-[#ECECEC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
           <Link
-            to="/"
+            to={isAdmin ? "/showcase" : "/"}
             className="flex items-center space-x-1.5 text-xs font-sans text-[#5C5C5C] hover:text-[#0A0A0A] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Overview</span>
           </Link>
 
-          <Link to="/" className="flex items-center">
+          <Link to={isAdmin ? "/showcase" : isCustomer ? "/client" : "/"} className="flex items-center">
             <Logo className="h-7 sm:h-8 object-contain" />
           </Link>
 

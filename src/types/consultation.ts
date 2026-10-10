@@ -107,6 +107,8 @@ export interface ConsultationState {
   status?: 'draft' | 'proposal_sent' | 'completed';
   client_id?: string;
   project_id?: string;
+  consultant_id?: string;
+  consultant_name?: string;
   portal_visible?: boolean;
   internal_notes?: string;
   created_at?: string;
@@ -185,6 +187,8 @@ export interface ConsultationRecord {
   location: string;
   consultant: string;
   consultant_phone?: string;
+  consultant_id?: string;
+  consultant_name?: string;
   status: 'draft' | 'proposal_sent' | 'completed';
   date?: string;
   updated_at: string;
