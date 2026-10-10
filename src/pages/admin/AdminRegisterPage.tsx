@@ -4,7 +4,6 @@ import { useAuth, getRegisteredCustomers, saveRegisteredCustomers } from '../../
 import { useConsultation } from '../../context/ConsultationContext';
 import { AdminNav } from '../../components/admin/AdminNav';
 import { Button } from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
 import { Toast } from '../../components/ui/Toast';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { extractSurname, formatProjectName, cn } from '../../lib/utils';
@@ -12,11 +11,54 @@ import type { CustomerTitle, CustomerProduct, CustomerRecord } from '../../types
 import type { ConsultationRecord } from './AdminClientsPage';
 import { Sparkles, Play, Loader2, AlertCircle, Eye, EyeOff, ShieldAlert, ArrowRight } from 'lucide-react';
 
+const COMMON_PASSWORDS = new Set([
+  'password', 'password1', 'password12', 'password123', 'password1234',
+  '12345678', '123456789', '1234567890', 'qwertyuiop', 'qwerty123',
+  'admin123', 'welcome123', 'letmein123', 'pass1234', 'iloveyou123',
+  'svvayam123', 'svvayam1234', 'svvayam@123', 'temple123', 'mandir123'
+]);
+
+const checkIsCommonOrContainsPersonal = (
+  pw: string,
+  custName: string,
+  custSurname: string,
+  custPhone: string
+): boolean => {
+  const cleanPw = pw.toLowerCase().trim();
+  if (!cleanPw) return false;
+  if (COMMON_PASSWORDS.has(cleanPw)) return true;
+
+  // Check if contains customer's name (if 3+ characters)
+  const cleanName = custName.toLowerCase().trim().replace(/[^a-z]/g, '');
+  if (cleanName.length >= 3 && cleanPw.includes(cleanName)) {
+    return true;
+  }
+
+  // Check if contains customer's surname (if 3+ characters)
+  const cleanSurname = custSurname.toLowerCase().trim().replace(/[^a-z]/g, '');
+  if (cleanSurname.length >= 3 && cleanPw.includes(cleanSurname)) {
+    return true;
+  }
+
+  // Check if contains customer's phone digits
+  const phoneDigits = custPhone.replace(/\D/g, '').slice(-10);
+  if (phoneDigits.length >= 6 && cleanPw.includes(phoneDigits)) {
+    return true;
+  }
+  if (phoneDigits.length >= 6) {
+    const last6 = phoneDigits.slice(-6);
+    if (cleanPw.includes(last6)) return true;
+  }
+
+  return false;
+};
+
 export const AdminRegisterPage: React.FC = () => {
   const { isAdmin, isLoading: authLoading, profile } = useAuth();
   const { importSession, setSlide } = useConsultation();
   const navigate = useNavigate();
 
+  // Form Fields
   const [title, setTitle] = useState<CustomerTitle>('Mr.');
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
@@ -30,28 +72,45 @@ export const AdminRegisterPage: React.FC = () => {
   const [linkedConsultationId, setLinkedConsultationId] = useState('');
   const [existingConsultations, setExistingConsultations] = useState<Array<{ id: string; client_name: string; project_name?: string; current_step?: number; client_phone?: string }>>([]);
 
+  // Touched state per field (prevents showing errors on untouched fields upon initial load)
+  const [touched, setTouched] = useState<Record<string, boolean>>({
+    title: false,
+    name: false,
+    surname: false,
+    phone: false,
+    password: false,
+    product: false,
+    location: false,
+    linkedConsultationId: false,
+  });
+
+  const markTouched = (field: string) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+  };
+
   const [submitting, setSubmitting] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [existingCustomerNotice, setExistingCustomerNotice] = useState<{ id: string; name: string; phone: string; project_name?: string } | null>(null);
 
   // Field-level inline errors
-  const [errors, setErrors] = useState<{
-    title?: string;
-    name?: string;
-    surname?: string;
-    phone?: string;
-    password?: string;
-    product?: string;
-    location?: string;
-    linkedConsultationId?: string;
-  }>({});
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({});
 
   // Auto-generate project name live preview: "<Title> <Surname>'s <Product>"
   const generatedProjectName = useMemo(() => {
     const finalSurname = surname.trim() || (name.trim() ? extractSurname(name.trim()) : '');
     return formatProjectName(title, finalSurname, product);
   }, [title, surname, name, product]);
+
+  // Live password criteria check (8+ chars, letter, number, symbol)
+  const passwordCriteria = useMemo(() => {
+    return {
+      hasMinLength: password.length >= 8,
+      hasLetter: /[a-zA-Z]/.test(password),
+      hasNumber: /[0-9]/.test(password),
+      hasSymbol: /[^a-zA-Z0-9\s]/.test(password),
+    };
+  }, [password]);
 
   // Load consultations for linking option
   useEffect(() => {
@@ -121,7 +180,7 @@ export const AdminRegisterPage: React.FC = () => {
     return existingConsultations;
   }, [existingConsultations, phone]);
 
-  // When full name changes, automatically extract surname if not manually customized
+  // Handle Full Name change: automatically extract surname if not manually customized
   const handleNameChange = (val: string) => {
     setName(val);
     if (errors.name) {
@@ -134,6 +193,11 @@ export const AdminRegisterPage: React.FC = () => {
         setErrors(prev => ({ ...prev, surname: undefined }));
       }
     }
+    // Re-check password if already touched (in case password contained the name)
+    if (touched.password && password) {
+      const pwErr = validateField('password', password, val, surname, phone);
+      setErrors(prev => ({ ...prev, password: pwErr }));
+    }
   };
 
   const handleSurnameChange = (val: string) => {
@@ -141,6 +205,10 @@ export const AdminRegisterPage: React.FC = () => {
     setSurname(val);
     if (errors.surname) {
       setErrors(prev => ({ ...prev, surname: undefined }));
+    }
+    if (touched.password && password) {
+      const pwErr = validateField('password', password, name, val, phone);
+      setErrors(prev => ({ ...prev, password: pwErr }));
     }
   };
 
@@ -153,6 +221,18 @@ export const AdminRegisterPage: React.FC = () => {
     if (errors.phone) {
       setErrors(prev => ({ ...prev, phone: undefined }));
     }
+    if (touched.password && password) {
+      const pwErr = validateField('password', password, name, surname, digits);
+      setErrors(prev => ({ ...prev, password: pwErr }));
+    }
+  };
+
+  const handlePasswordChange = (val: string) => {
+    setPassword(val);
+    if (touched.password) {
+      const pwErr = validateField('password', val, name, surname, phone);
+      setErrors(prev => ({ ...prev, password: pwErr }));
+    }
   };
 
   const handleLocationChange = (val: string) => {
@@ -162,49 +242,79 @@ export const AdminRegisterPage: React.FC = () => {
     }
   };
 
-  // Inline Validation
+  // Field-level Validator
+  const validateField = (
+    fieldName: string,
+    val?: string,
+    currentName = name,
+    currentSurname = surname,
+    currentPhone = phone
+  ): string | undefined => {
+    switch (fieldName) {
+      case 'title':
+        return !title ? 'Title is required' : undefined;
+      case 'name':
+        return !(val !== undefined ? val : currentName).trim() ? 'Full customer name is required' : undefined;
+      case 'surname':
+        return !(val !== undefined ? val : currentSurname).trim() ? 'Surname is required' : undefined;
+      case 'phone': {
+        const p = val !== undefined ? val : currentPhone;
+        const clean = p.replace(/\D/g, '').slice(-10);
+        if (!p.trim()) return 'Mobile number is required';
+        if (clean.length !== 10) return 'Please enter exactly 10 digits';
+        return undefined;
+      }
+      case 'password': {
+        const pw = val !== undefined ? val : password;
+        if (!pw.trim()) {
+          return 'Password is required';
+        }
+        if (checkIsCommonOrContainsPersonal(pw, currentName, currentSurname, currentPhone)) {
+          return 'That password is too common. Try a different one with a mix of letters, numbers and symbols.';
+        }
+        const meetsCriteria =
+          pw.length >= 8 &&
+          /[a-zA-Z]/.test(pw) &&
+          /[0-9]/.test(pw) &&
+          /[^a-zA-Z0-9\s]/.test(pw);
+        if (!meetsCriteria) {
+          return 'Password is too weak. Add letters, numbers and a symbol like @ # $ !';
+        }
+        return undefined;
+      }
+      case 'product':
+        return !product ? 'Product type is required' : undefined;
+      case 'location':
+        return !(val !== undefined ? val : location).trim() ? 'Project location is required' : undefined;
+      case 'linkedConsultationId':
+        return consultationOption === 'link_existing' && !linkedConsultationId
+          ? 'Please select a consultation to link'
+          : undefined;
+      default:
+        return undefined;
+    }
+  };
+
+  // Comprehensive Form Validation on Submit
   const validateForm = (): boolean => {
-    const newErrors: typeof errors = {};
+    const newErrors: Record<string, string | undefined> = {
+      title: validateField('title'),
+      name: validateField('name'),
+      surname: validateField('surname'),
+      phone: validateField('phone'),
+      password: validateField('password'),
+      product: validateField('product'),
+      location: validateField('location'),
+      linkedConsultationId: validateField('linkedConsultationId'),
+    };
 
-    if (!title) {
-      newErrors.title = 'Title is required';
+    const cleaned: Record<string, string> = {};
+    for (const [k, v] of Object.entries(newErrors)) {
+      if (v) cleaned[k] = v;
     }
 
-    if (!name.trim()) {
-      newErrors.name = 'Full customer name is required';
-    }
-
-    if (!surname.trim()) {
-      newErrors.surname = 'Surname is required';
-    }
-
-    const cleanDigits = phone.replace(/\D/g, '').slice(-10);
-    if (!phone.trim()) {
-      newErrors.phone = 'Mobile number is required';
-    } else if (cleanDigits.length !== 10) {
-      newErrors.phone = 'Please enter exactly 10 digits';
-    }
-
-    if (!password.trim()) {
-      newErrors.password = 'Create password is required';
-    } else if (password.trim().length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-
-    if (!product) {
-      newErrors.product = 'Product type is required';
-    }
-
-    if (!location.trim()) {
-      newErrors.location = 'Project location is required';
-    }
-
-    if (consultationOption === 'link_existing' && !linkedConsultationId) {
-      newErrors.linkedConsultationId = 'Please select a consultation to link';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setErrors(cleaned);
+    return Object.keys(cleaned).length === 0;
   };
 
   // Submit Handler: "Start Live Consultation"
@@ -213,7 +323,19 @@ export const AdminRegisterPage: React.FC = () => {
     setErrorMessage(null);
     setExistingCustomerNotice(null);
 
-    // a) Validate all required fields inline
+    // Mark all fields as touched on submit
+    setTouched({
+      title: true,
+      name: true,
+      surname: true,
+      phone: true,
+      password: true,
+      product: true,
+      location: true,
+      linkedConsultationId: true,
+    });
+
+    // Validate all required fields inline
     if (!validateForm()) {
       return;
     }
@@ -227,89 +349,110 @@ export const AdminRegisterPage: React.FC = () => {
       const finalProjectName = formatProjectName(title, finalSurname, product);
       const cleanLocation = location.trim();
 
-      // b) Check if mobile number already exists (Prevent duplicate customer accounts)
-      let existingClient: CustomerRecord | null = null;
+      // Check if mobile number already exists in local registered customers cache
+      const localCustomers = getRegisteredCustomers();
+      const matchedLocal = localCustomers.find(c =>
+        c.phone.replace(/\D/g, '').endsWith(cleanDigits)
+      );
 
-      if (isSupabaseConfigured && supabase) {
-        try {
-          const { data: profiles } = await supabase
-            .from('profiles')
-            .select('*')
-            .or(`phone.eq.${formattedPhone},phone.ilike.%${cleanDigits}`)
-            .limit(1);
-
-          if (profiles && profiles.length > 0) {
-            existingClient = profiles[0] as CustomerRecord;
-          }
-        } catch (err) {
-          console.warn('Supabase profile query fallback:', err);
-        }
-      }
-
-      if (!existingClient) {
-        const localCustomers = getRegisteredCustomers();
-        const matchedLocal = localCustomers.find(c =>
-          c.phone.replace(/\D/g, '').endsWith(cleanDigits)
-        );
-        if (matchedLocal) {
-          existingClient = matchedLocal;
-        }
-      }
-
-      // If customer already exists: Show "Customer already exists" and stop without creating duplicate
-      if (existingClient) {
-        setExistingCustomerNotice({
-          id: existingClient.id,
-          name: existingClient.name,
-          phone: existingClient.phone || formattedPhone,
-          project_name: existingClient.project_name
-        });
-        setSubmitting(false);
-        return;
-      }
-
-      // c) Call Edge Function to create Customer Login + Profile (role = 'client') + Project + Consultation
+      // Call Edge Function to create Customer Login + Profile (role = 'client') + Project + Consultation
       let customerUserId: string;
       let linkedConsultId: string;
       let createdProjectId: string | null = null;
 
       if (isSupabaseConfigured && supabase) {
-        const { data: edgeRes, error: edgeErr } = await supabase.functions.invoke('register-customer', {
-          body: {
-            action: 'register',
-            name: name.trim(),
-            phone: formattedPhone,
-            password: password.trim(),
-            title,
-            surname: finalSurname,
-            product,
-            project_name: finalProjectName,
-            location: cleanLocation,
-            create_new_consultation: consultationOption === 'create_new',
-            consultation_id: linkedConsultationId || undefined
-          }
-        });
+        let edgeResData: any = null;
+        let edgeError: any = null;
 
-        if (edgeErr || !edgeRes?.success) {
-          if (edgeRes?.code === 'CUSTOMER_EXISTS' || edgeRes?.error?.includes('already exists')) {
-            setExistingCustomerNotice({
-              id: edgeRes?.customer?.id || 'existing',
-              name: edgeRes?.customer?.name || name.trim(),
+        try {
+          const response = await supabase.functions.invoke('register-customer', {
+            body: {
+              action: 'register',
+              name: name.trim(),
               phone: formattedPhone,
-              project_name: edgeRes?.customer?.project_name
+              password: password.trim(),
+              title,
+              surname: finalSurname,
+              product,
+              project_name: finalProjectName,
+              location: cleanLocation,
+              create_new_consultation: consultationOption === 'create_new',
+              consultation_id: linkedConsultationId || undefined
+            }
+          });
+          edgeResData = response.data;
+          edgeError = response.error;
+        } catch (fetchErr: any) {
+          edgeError = fetchErr;
+        }
+
+        // Process Edge Function Response or Error
+        if (edgeError) {
+          let parsedErrorMsg: string | null = null;
+
+          // Attempt to extract JSON from HTTP response context (e.g. 409 Conflict, 400 Bad Request)
+          if (edgeError && typeof (edgeError as any).context?.json === 'function') {
+            try {
+              const errorJson = await (edgeError as any).context.json();
+              if (errorJson) {
+                if (errorJson.code === 'CUSTOMER_EXISTS' || errorJson.error?.includes('already exists')) {
+                  setExistingCustomerNotice({
+                    id: errorJson.customer?.id || 'existing',
+                    name: errorJson.customer?.name || name.trim(),
+                    phone: formattedPhone,
+                    project_name: errorJson.customer?.project_name
+                  });
+                  setSubmitting(false);
+                  return;
+                }
+                parsedErrorMsg = errorJson.error || errorJson.message;
+              }
+            } catch {
+              // Context json read failed
+            }
+          }
+
+          if (!parsedErrorMsg) {
+            if (edgeError.message?.includes('Failed to send a request') || edgeError.name === 'FunctionsFetchError') {
+              parsedErrorMsg = 'Could not reach the registration service. The "register-customer" Supabase Edge Function may not be deployed yet. Run: "supabase functions deploy register-customer" or check your network connection.';
+            } else {
+              parsedErrorMsg = edgeError.message || 'Edge function call failed.';
+            }
+          }
+
+          throw new Error(parsedErrorMsg || 'Edge function call failed.');
+        }
+
+        if (!edgeResData?.success) {
+          if (edgeResData?.code === 'CUSTOMER_EXISTS' || edgeResData?.error?.includes('already exists')) {
+            setExistingCustomerNotice({
+              id: edgeResData?.customer?.id || 'existing',
+              name: edgeResData?.customer?.name || name.trim(),
+              phone: formattedPhone,
+              project_name: edgeResData?.customer?.project_name
             });
             setSubmitting(false);
             return;
           }
-          // Account creation failed: Do NOT save half-created customer, show clear error and keep form filled in
-          throw new Error(edgeRes?.error || edgeErr?.message || 'Failed to create customer login. Please try again.');
+          throw new Error(edgeResData?.error || 'Failed to create customer login. Please try again.');
         }
 
-        customerUserId = edgeRes.customer.id;
-        linkedConsultId = edgeRes.customer.consultation_id;
-        createdProjectId = edgeRes.customer.project_id || null;
+        customerUserId = edgeResData.customer.id;
+        linkedConsultId = edgeResData.customer.consultation_id;
+        createdProjectId = edgeResData.customer.project_id || null;
       } else {
-        // Dev Mock Mode Fallback
+        // Dev Mock Mode Fallback when Supabase is not configured
+        if (matchedLocal) {
+          setExistingCustomerNotice({
+            id: matchedLocal.id,
+            name: matchedLocal.name,
+            phone: matchedLocal.phone || formattedPhone,
+            project_name: matchedLocal.project_name
+          });
+          setSubmitting(false);
+          return;
+        }
+
         customerUserId = 'cust-' + Date.now().toString().slice(-4);
         linkedConsultId = 'draft-' + Date.now().toString().slice(-4);
         createdProjectId = 'proj-' + Date.now().toString().slice(-4);
@@ -478,15 +621,22 @@ export const AdminRegisterPage: React.FC = () => {
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-8 py-8 space-y-6">
         {/* Error Notice Banner if saving failed */}
         {errorMessage && (
-          <div className="p-4 rounded-[16px] bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center justify-between gap-3 animate-fadeIn">
-            <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
-              <span>{errorMessage}</span>
+          <div className="p-4 rounded-[16px] bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start justify-between gap-3 animate-fadeIn">
+            <div className="flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <p className="font-medium text-rose-900">{errorMessage}</p>
+                {errorMessage.includes('Edge Function') && (
+                  <p className="text-[11px] text-rose-700 font-mono">
+                    CLI deployment command: <code className="bg-rose-100 px-1.5 py-0.5 rounded text-rose-950 font-bold">supabase functions deploy register-customer</code>
+                  </p>
+                )}
+              </div>
             </div>
             <button
               type="button"
               onClick={() => setErrorMessage(null)}
-              className="text-xs text-rose-600 hover:text-rose-900 font-semibold cursor-pointer"
+              className="text-xs text-rose-600 hover:text-rose-900 font-semibold cursor-pointer shrink-0"
             >
               Dismiss
             </button>
@@ -514,7 +664,7 @@ export const AdminRegisterPage: React.FC = () => {
                 onClick={() => navigate(`/admin/consultation?client=${existingCustomerNotice.id}&step=1`)}
                 className="px-4 py-2 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800 font-semibold text-xs cursor-pointer flex items-center gap-2 shadow-xs transition-colors"
               >
-                <Sparkles className="w-3.5 h-3.5 text-white" />
+                <Sparkles className="w-3.5 h-3.5 text-[#FACC15]" />
                 <span>Open Existing Consultation</span>
                 <ArrowRight className="w-3.5 h-3.5 text-white" />
               </button>
@@ -529,11 +679,11 @@ export const AdminRegisterPage: React.FC = () => {
           </div>
         )}
 
-        {/* Live Project Name Generated Preview Card (Monochrome Black & White) */}
+        {/* Live Project Name Generated Preview Card */}
         <div className="p-5 rounded-[18px] bg-white border border-[#ECECEC] shadow-xs space-y-2 relative overflow-hidden">
           <div className="flex items-center space-x-3 pt-1">
             <div className="w-8 h-8 rounded-full bg-[#0A0A0A] text-white flex items-center justify-center shrink-0">
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-[#FACC15]" />
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-display font-semibold text-[#0A0A0A]">
@@ -546,23 +696,29 @@ export const AdminRegisterPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Registration Form Card */}
+        {/* Registration Form Card: Symmetrical 2-Column Grid */}
         <div className="bg-white rounded-[20px] border border-[#ECECEC] shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-6 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-              {/* Title Dropdown */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 items-start">
+              {/* ROW 1 - Col 1: Title Dropdown */}
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
+                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 whitespace-nowrap mb-1.5">
                   Title
                 </label>
                 <select
                   value={title}
-                  onChange={(e) => setTitle(e.target.value as CustomerTitle)}
+                  onChange={(e) => {
+                    setTitle(e.target.value as CustomerTitle);
+                    if (touched.title) {
+                      setErrors(prev => ({ ...prev, title: undefined }));
+                    }
+                  }}
+                  onBlur={() => markTouched('title')}
                   className={cn(
-                    "w-full px-3.5 py-2.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1",
-                    errors.title
-                      ? "border-rose-500 focus:ring-rose-500 ring-1 ring-rose-500"
-                      : "border-[#E5E5E5] focus:ring-[#0A0A0A]"
+                    "w-full h-11 px-3.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none transition-colors",
+                    touched.title && errors.title
+                      ? "border-rose-500 ring-1 ring-rose-500"
+                      : "border-[#E5E5E5] focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A]"
                   )}
                 >
                   <option value="Mr.">Mr.</option>
@@ -570,137 +726,262 @@ export const AdminRegisterPage: React.FC = () => {
                   <option value="Ms.">Ms.</option>
                   <option value="Dr.">Dr.</option>
                 </select>
-                {errors.title && (
-                  <p className="mt-1 text-[11px] text-rose-600 font-sans">{errors.title}</p>
-                )}
+                <div className="min-h-[20px] mt-1">
+                  {touched.title && errors.title && (
+                    <p className="text-[11px] text-rose-600 font-sans">{errors.title}</p>
+                  )}
+                </div>
               </div>
 
-              {/* Full Name */}
-              <div className="sm:col-span-2">
-                <Input
-                  label="Full Customer Name"
+              {/* ROW 1 - Col 2: Full Customer Name */}
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 whitespace-nowrap mb-1.5">
+                  Full Customer Name
+                </label>
+                <input
+                  type="text"
                   value={name}
                   onChange={(e) => handleNameChange(e.target.value)}
+                  onBlur={() => markTouched('name')}
                   placeholder="e.g. Mala Sharma"
-                  error={errors.name}
                   autoFocus
+                  className={cn(
+                    "w-full h-11 px-3.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] placeholder:text-neutral-400 focus:outline-none transition-colors box-border",
+                    touched.name && errors.name
+                      ? "border-rose-500 ring-1 ring-rose-500"
+                      : "border-[#E5E5E5] focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A]"
+                  )}
                 />
+                <div className="min-h-[20px] mt-1">
+                  {touched.name && errors.name && (
+                    <p className="text-[11px] text-rose-600 font-sans">{errors.name}</p>
+                  )}
+                </div>
               </div>
 
-              {/* Editable Surname */}
+              {/* ROW 2 - Col 1: Surname */}
               <div>
-                <Input
-                  label="Surname (family name)"
+                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 whitespace-nowrap mb-1.5">
+                  Surname (Family Name)
+                </label>
+                <input
+                  type="text"
                   value={surname}
                   onChange={(e) => handleSurnameChange(e.target.value)}
+                  onBlur={() => markTouched('surname')}
                   placeholder="e.g. Sharma"
-                  helperText="Exact spelling preserved"
-                  error={errors.surname}
+                  className={cn(
+                    "w-full h-11 px-3.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] placeholder:text-neutral-400 focus:outline-none transition-colors box-border",
+                    touched.surname && errors.surname
+                      ? "border-rose-500 ring-1 ring-rose-500"
+                      : "border-[#E5E5E5] focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A]"
+                  )}
                 />
-              </div>
-
-              {/* Mobile Number with Fixed +91 Prefix (10 digits) */}
-              <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
-                  Mobile Number
-                </label>
-                <div className="flex rounded-[12px] shadow-xs">
-                  <span className="inline-flex items-center px-3.5 rounded-l-[12px] border border-r-0 border-[#E5E5E5] bg-[#F7F7F7] text-xs font-mono font-semibold text-[#0A0A0A] select-none">
-                    +91
-                  </span>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => handlePhoneChange(e.target.value)}
-                    placeholder="9845012345"
-                    maxLength={10}
-                    className={cn(
-                      "flex-1 px-3.5 py-2.5 rounded-r-[12px] border bg-white text-xs font-mono text-[#0A0A0A] focus:outline-none focus:ring-1",
-                      errors.phone
-                        ? "border-rose-500 focus:ring-rose-500 ring-1 ring-rose-500"
-                        : "border-[#E5E5E5] focus:ring-[#0A0A0A]"
-                    )}
-                  />
+                <div className="min-h-[20px] mt-1">
+                  {touched.surname && errors.surname ? (
+                    <p className="text-[11px] text-rose-600 font-sans">{errors.surname}</p>
+                  ) : (
+                    <p className="text-[11px] text-neutral-400 font-mono">Exact spelling preserved</p>
+                  )}
                 </div>
-                {errors.phone ? (
-                  <p className="mt-1 text-[11px] text-rose-600 font-sans">{errors.phone}</p>
-                ) : (
-                  <p className="mt-1 text-[11px] text-neutral-400 font-mono">Fixed +91 prefix · Exactly 10 digits</p>
-                )}
               </div>
 
-              {/* Create Password Field with Show/Hide Toggle */}
+              {/* ROW 2 - Col 2: Product Type */}
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
-                  Create Password (Portal Login)
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      if (errors.password) {
-                        setErrors(prev => ({ ...prev, password: undefined }));
-                      }
-                    }}
-                    placeholder="Min 6 characters"
-                    className={cn(
-                      "w-full px-3.5 py-2.5 pr-10 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1",
-                      errors.password
-                        ? "border-rose-500 focus:ring-rose-500 ring-1 ring-rose-500"
-                        : "border-[#E5E5E5] focus:ring-[#0A0A0A]"
-                    )}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-[#0A0A0A] cursor-pointer"
-                    title={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-                {errors.password ? (
-                  <p className="mt-1 text-[11px] text-rose-600 font-sans">{errors.password}</p>
-                ) : (
-                  <p className="mt-1 text-[11px] text-neutral-400 font-mono">Min 6 characters · Shared with customer</p>
-                )}
-              </div>
-
-              {/* Product Type Dropdown */}
-              <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
+                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 whitespace-nowrap mb-1.5">
                   Product Type
                 </label>
                 <select
                   value={product}
-                  onChange={(e) => setProduct(e.target.value as CustomerProduct)}
+                  onChange={(e) => {
+                    setProduct(e.target.value as CustomerProduct);
+                    if (touched.product) {
+                      setErrors(prev => ({ ...prev, product: undefined }));
+                    }
+                  }}
+                  onBlur={() => markTouched('product')}
                   className={cn(
-                    "w-full px-3.5 py-2.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1",
-                    errors.product
-                      ? "border-rose-500 focus:ring-rose-500 ring-1 ring-rose-500"
-                      : "border-[#E5E5E5] focus:ring-[#0A0A0A]"
+                    "w-full h-11 px-3.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none transition-colors",
+                    touched.product && errors.product
+                      ? "border-rose-500 ring-1 ring-rose-500"
+                      : "border-[#E5E5E5] focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A]"
                   )}
                 >
                   <option value="Temple">Temple</option>
                   <option value="Puja Mandir">Puja Mandir</option>
                   <option value="Sanctum">Sanctum</option>
                 </select>
-                {errors.product && (
-                  <p className="mt-1 text-[11px] text-rose-600 font-sans">{errors.product}</p>
-                )}
+                <div className="min-h-[20px] mt-1">
+                  {touched.product && errors.product && (
+                    <p className="text-[11px] text-rose-600 font-sans">{errors.product}</p>
+                  )}
+                </div>
               </div>
 
-              {/* Project Location */}
+              {/* ROW 3 - Col 1: Mobile Number with Fixed +91 Prefix */}
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 whitespace-nowrap mb-1.5">
+                  Mobile Number
+                </label>
+                <div className={cn(
+                  "flex items-center h-11 w-full rounded-[12px] border bg-white overflow-hidden transition-colors",
+                  touched.phone && errors.phone
+                    ? "border-rose-500 ring-1 ring-rose-500"
+                    : "border-[#E5E5E5] focus-within:ring-1 focus-within:ring-[#0A0A0A] focus-within:border-[#0A0A0A]"
+                )}>
+                  <span className="flex items-center justify-center px-3.5 h-full bg-[#F7F7F7] border-r border-[#E5E5E5] text-xs font-mono font-semibold text-[#0A0A0A] select-none shrink-0">
+                    +91
+                  </span>
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    value={phone}
+                    onChange={(e) => handlePhoneChange(e.target.value)}
+                    onBlur={() => markTouched('phone')}
+                    placeholder="9845012345"
+                    maxLength={10}
+                    className="w-full min-w-0 h-full px-3.5 bg-transparent text-xs font-mono text-[#0A0A0A] placeholder:text-neutral-400 focus:outline-none box-border"
+                  />
+                </div>
+                <div className="min-h-[20px] mt-1">
+                  {touched.phone && errors.phone ? (
+                    <p className="text-[11px] text-rose-600 font-sans">{errors.phone}</p>
+                  ) : (
+                    <p className="text-[11px] text-neutral-400 font-mono">Fixed +91 prefix · Exactly 10 digits</p>
+                  )}
+                </div>
+              </div>
+
+              {/* ROW 3 - Col 2: Password with Show/Hide and Portal Helper */}
+              <div>
+                <div className="flex items-baseline justify-between mb-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 whitespace-nowrap">
+                    Password
+                  </label>
+                  <span className="text-[11px] text-neutral-400 font-sans hidden sm:inline truncate">
+                    Used for the customer's portal login
+                  </span>
+                </div>
+                <div className={cn(
+                  "relative flex items-center h-11 w-full rounded-[12px] border bg-white transition-colors",
+                  touched.password && errors.password
+                    ? "border-rose-500 ring-1 ring-rose-500"
+                    : "border-[#E5E5E5] focus-within:ring-1 focus-within:ring-[#0A0A0A] focus-within:border-[#0A0A0A]"
+                )}>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                    onBlur={() => markTouched('password')}
+                    placeholder="Create customer password"
+                    className="w-full min-w-0 h-full px-3.5 pr-11 bg-transparent text-xs font-sans text-[#0A0A0A] placeholder:text-neutral-400 focus:outline-none box-border"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-[#0A0A0A] p-1 rounded transition-colors cursor-pointer"
+                    title={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+
+                {/* Live Password Strength Checklist */}
+                <div className="mt-2 space-y-1">
+                  <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-mono">
+                    <span className={cn(
+                      "inline-flex items-center gap-1 px-2 py-0.5 rounded-full border transition-colors",
+                      passwordCriteria.hasMinLength
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-300 font-medium"
+                        : "bg-neutral-50 text-neutral-400 border-neutral-200"
+                    )}>
+                      <span className={cn(
+                        "w-1.5 h-1.5 rounded-full",
+                        passwordCriteria.hasMinLength ? "bg-emerald-500" : "bg-neutral-300"
+                      )} />
+                      8+ characters
+                    </span>
+
+                    <span className={cn(
+                      "inline-flex items-center gap-1 px-2 py-0.5 rounded-full border transition-colors",
+                      passwordCriteria.hasLetter
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-300 font-medium"
+                        : "bg-neutral-50 text-neutral-400 border-neutral-200"
+                    )}>
+                      <span className={cn(
+                        "w-1.5 h-1.5 rounded-full",
+                        passwordCriteria.hasLetter ? "bg-emerald-500" : "bg-neutral-300"
+                      )} />
+                      A letter
+                    </span>
+
+                    <span className={cn(
+                      "inline-flex items-center gap-1 px-2 py-0.5 rounded-full border transition-colors",
+                      passwordCriteria.hasNumber
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-300 font-medium"
+                        : "bg-neutral-50 text-neutral-400 border-neutral-200"
+                    )}>
+                      <span className={cn(
+                        "w-1.5 h-1.5 rounded-full",
+                        passwordCriteria.hasNumber ? "bg-emerald-500" : "bg-neutral-300"
+                      )} />
+                      A number
+                    </span>
+
+                    <span className={cn(
+                      "inline-flex items-center gap-1 px-2 py-0.5 rounded-full border transition-colors",
+                      passwordCriteria.hasSymbol
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-300 font-medium"
+                        : "bg-neutral-50 text-neutral-400 border-neutral-200"
+                    )}>
+                      <span className={cn(
+                        "w-1.5 h-1.5 rounded-full",
+                        passwordCriteria.hasSymbol ? "bg-emerald-500" : "bg-neutral-300"
+                      )} />
+                      A symbol
+                    </span>
+                  </div>
+
+                  {/* Reserved fixed-height error/helper text */}
+                  <div className="min-h-[18px]">
+                    {touched.password && errors.password ? (
+                      <p className="text-[11px] text-rose-600 font-sans leading-tight animate-fadeIn">
+                        {errors.password}
+                      </p>
+                    ) : (
+                      <p className="text-[11px] text-neutral-400 font-sans sm:hidden">
+                        Used for the customer's portal login
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* ROW 4: Project Location (Full Width) */}
               <div className="sm:col-span-2">
-                <Input
-                  label="Project Location"
+                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 whitespace-nowrap mb-1.5">
+                  Project Location
+                </label>
+                <input
+                  type="text"
                   value={location}
                   onChange={(e) => handleLocationChange(e.target.value)}
+                  onBlur={() => markTouched('location')}
                   placeholder="e.g. Indiranagar, Bengaluru / Jubilee Hills, Hyderabad"
-                  error={errors.location}
+                  className={cn(
+                    "w-full h-11 px-3.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] placeholder:text-neutral-400 focus:outline-none transition-colors box-border",
+                    touched.location && errors.location
+                      ? "border-rose-500 ring-1 ring-rose-500"
+                      : "border-[#E5E5E5] focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A]"
+                  )}
                 />
+                <div className="min-h-[20px] mt-1">
+                  {touched.location && errors.location ? (
+                    <p className="text-[11px] text-rose-600 font-sans">{errors.location}</p>
+                  ) : (
+                    <p className="text-[11px] text-neutral-400 font-mono">City / Neighborhood for site analysis & shipping</p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -772,9 +1053,10 @@ export const AdminRegisterPage: React.FC = () => {
                         setErrors(prev => ({ ...prev, linkedConsultationId: undefined }));
                       }
                     }}
+                    onBlur={() => markTouched('linkedConsultationId')}
                     className={cn(
-                      "w-full px-3.5 py-2.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1",
-                      errors.linkedConsultationId
+                      "w-full h-11 px-3.5 rounded-[12px] border bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1",
+                      touched.linkedConsultationId && errors.linkedConsultationId
                         ? "border-rose-500 focus:ring-rose-500 ring-1 ring-rose-500"
                         : "border-[#E5E5E5] focus:ring-[#0A0A0A]"
                     )}
@@ -786,7 +1068,7 @@ export const AdminRegisterPage: React.FC = () => {
                       </option>
                     ))}
                   </select>
-                  {errors.linkedConsultationId && (
+                  {touched.linkedConsultationId && errors.linkedConsultationId && (
                     <p className="text-[11px] text-rose-600 font-sans">{errors.linkedConsultationId}</p>
                   )}
                 </div>
@@ -818,12 +1100,12 @@ export const AdminRegisterPage: React.FC = () => {
                 <span className="flex items-center gap-1.5">
                   {submitting ? (
                     <>
-                      <Loader2 className="w-3.5 h-3.5 text-white animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 text-[#FACC15] animate-spin" />
                       <span>STARTING LIVE CONSULTATION...</span>
                     </>
                   ) : (
                     <>
-                      <Play className="w-3.5 h-3.5 fill-white text-white" />
+                      <Play className="w-3.5 h-3.5 fill-[#FACC15] text-[#FACC15]" />
                       <span>START LIVE CONSULTATION</span>
                     </>
                   )}
@@ -838,4 +1120,3 @@ export const AdminRegisterPage: React.FC = () => {
 };
 
 export default AdminRegisterPage;
-

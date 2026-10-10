@@ -9,7 +9,18 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
+
+function jsonResponse(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json",
+    },
+  });
+}
 
 interface RegisterRequest {
   action?: 'register' | 'deactivate' | 'reset_password';
@@ -37,7 +48,10 @@ serve(async (req) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
     if (!supabaseUrl || !serviceRoleKey) {
-      throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment configuration.");
+      return jsonResponse({
+        success: false,
+        error: "Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment configuration. Please set function secrets."
+      }, 500);
     }
 
     // Initialize admin client with service role key (functions secret)
@@ -48,20 +62,20 @@ serve(async (req) => {
     // 1. Verify caller authorization (must be logged-in admin)
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
-      return new Response(
-        JSON.stringify({ success: false, error: "Missing authorization header." }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return jsonResponse({
+        success: false,
+        error: "Missing authorization header. Please log in as administrator."
+      }, 401);
     }
 
     const token = authHeader.replace("Bearer ", "");
     const { data: { user: callerUser }, error: callerError } = await supabaseAdmin.auth.getUser(token);
 
     if (callerError || !callerUser) {
-      return new Response(
-        JSON.stringify({ success: false, error: "Unauthorized access token." }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return jsonResponse({
+        success: false,
+        error: "Unauthorized access token. Please sign in again."
+      }, 401);
     }
 
     // Check if caller is admin
@@ -72,10 +86,10 @@ serve(async (req) => {
       .single();
 
     if (callerProfile?.role !== "admin") {
-      return new Response(
-        JSON.stringify({ success: false, error: "Forbidden. Admin access required." }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return jsonResponse({
+        success: false,
+        error: "Forbidden. Admin access required."
+      }, 403);
     }
 
     const payload: RegisterRequest = await req.json();
@@ -83,10 +97,16 @@ serve(async (req) => {
     // ACTION: Reset Password
     if (payload.action === "reset_password") {
       if (!payload.customer_id || !payload.password) {
-        throw new Error("customer_id and new password are required to reset password.");
+        return jsonResponse({
+          success: false,
+          error: "customer_id and new password are required to reset password."
+        }, 400);
       }
-      if (payload.password.trim().length < 6) {
-        throw new Error("Password must be at least 6 characters.");
+      if (payload.password.trim().length < 8) {
+        return jsonResponse({
+          success: false,
+          error: "Password must be at least 8 characters."
+        }, 400);
       }
 
       const { error: resetErr } = await supabaseAdmin.auth.admin.updateUserById(
@@ -94,21 +114,23 @@ serve(async (req) => {
         { password: payload.password.trim() }
       );
 
-      if (resetErr) throw resetErr;
+      if (resetErr) {
+        return jsonResponse({ success: false, error: resetErr.message }, 400);
+      }
 
-      return new Response(
-        JSON.stringify({
-          success: true,
-          message: "Customer password has been reset successfully."
-        }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return jsonResponse({
+        success: true,
+        message: "Customer password has been reset successfully."
+      }, 200);
     }
 
     // ACTION: Deactivate / Reactivate
     if (payload.action === "deactivate") {
       if (!payload.customer_id) {
-        throw new Error("customer_id is required to update active status.");
+        return jsonResponse({
+          success: false,
+          error: "customer_id is required to update active status."
+        }, 400);
       }
 
       const newStatus = payload.is_active !== undefined ? payload.is_active : false;
@@ -119,12 +141,14 @@ serve(async (req) => {
         .update({ is_active: newStatus })
         .eq("id", payload.customer_id);
 
-      if (profErr) throw profErr;
+      if (profErr) {
+        return jsonResponse({ success: false, error: profErr.message }, 400);
+      }
 
-      return new Response(
-        JSON.stringify({ success: true, message: `Customer status updated to ${newStatus ? 'active' : 'deactivated'}.` }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return jsonResponse({
+        success: true,
+        message: `Customer status updated to ${newStatus ? 'active' : 'deactivated'}.`
+      }, 200);
     }
 
     // ACTION: Register Customer + Create Login + Create Consultation
@@ -138,21 +162,21 @@ serve(async (req) => {
     const projectName = payload.project_name || (surname ? `${title} ${surname}'s ${product}` : product);
 
     if (!rawName) {
-      throw new Error("Customer name is required.");
+      return jsonResponse({ success: false, error: "Customer full name is required." }, 400);
     }
     if (!rawPhone) {
-      throw new Error("Phone number is required.");
+      return jsonResponse({ success: false, error: "Mobile number is required." }, 400);
     }
 
     const cleanDigits10 = rawPhone.replace(/\D/g, "").slice(-10);
     if (cleanDigits10.length !== 10) {
-      throw new Error("Phone number must be a valid 10-digit mobile number.");
+      return jsonResponse({ success: false, error: "Phone number must be a valid 10-digit mobile number." }, 400);
     }
     const normalizedPhone = "+91" + cleanDigits10;
     const hiddenEmail = `${cleanDigits10}@svvayam.internal`;
 
-    if (!rawPassword || rawPassword.length < 6) {
-      throw new Error("Customer password is required and must be at least 6 characters.");
+    if (!rawPassword || rawPassword.length < 8) {
+      return jsonResponse({ success: false, error: "Customer password must be at least 8 characters." }, 400);
     }
 
     // 2. Check if customer already exists (Prevent Duplicates)
@@ -165,25 +189,22 @@ serve(async (req) => {
       .maybeSingle();
 
     if (existingProfile) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          code: "CUSTOMER_EXISTS",
-          error: "Customer already exists with this mobile number.",
-          customer: {
-            id: existingProfile.id,
-            name: existingProfile.name,
-            phone: existingProfile.phone || normalizedPhone,
-            title: existingProfile.title || title,
-            surname: existingProfile.surname || surname,
-            product: existingProfile.product || product,
-            project_name: existingProfile.project_name || projectName,
-            location: existingProfile.location || location,
-            is_active: existingProfile.is_active ?? true
-          }
-        }),
-        { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return jsonResponse({
+        success: false,
+        code: "CUSTOMER_EXISTS",
+        error: "A customer with this mobile number already exists.",
+        customer: {
+          id: existingProfile.id,
+          name: existingProfile.name,
+          phone: existingProfile.phone || normalizedPhone,
+          title: existingProfile.title || title,
+          surname: existingProfile.surname || surname,
+          product: existingProfile.product || product,
+          project_name: existingProfile.project_name || projectName,
+          location: existingProfile.location || location,
+          is_active: existingProfile.is_active ?? true
+        }
+      }, 409);
     }
 
     // Also check auth.users for existing email
@@ -191,25 +212,22 @@ serve(async (req) => {
     if (!listUsersErr && users) {
       const matchAuthUser = users.find(u => u.email === hiddenEmail || (u.phone && u.phone.replace(/\D/g, "").endsWith(cleanDigits10)));
       if (matchAuthUser) {
-        return new Response(
-          JSON.stringify({
-            success: false,
-            code: "CUSTOMER_EXISTS",
-            error: "Customer already exists with this mobile number.",
-            customer: {
-              id: matchAuthUser.id,
-              name: rawName,
-              phone: normalizedPhone,
-              title,
-              surname,
-              product,
-              project_name: projectName,
-              location,
-              is_active: true
-            }
-          }),
-          { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        return jsonResponse({
+          success: false,
+          code: "CUSTOMER_EXISTS",
+          error: "A customer with this mobile number already exists.",
+          customer: {
+            id: matchAuthUser.id,
+            name: rawName,
+            phone: normalizedPhone,
+            title,
+            surname,
+            product,
+            project_name: projectName,
+            location,
+            is_active: true
+          }
+        }, 409);
       }
     }
 
@@ -231,7 +249,17 @@ serve(async (req) => {
     });
 
     if (createAuthErr || !createdAuth.user) {
-      throw new Error(createAuthErr?.message || "Failed to create customer auth user.");
+      if (createAuthErr?.message?.toLowerCase().includes("already") || createAuthErr?.message?.toLowerCase().includes("exists")) {
+        return jsonResponse({
+          success: false,
+          code: "CUSTOMER_EXISTS",
+          error: "A customer with this mobile number already exists."
+        }, 409);
+      }
+      return jsonResponse({
+        success: false,
+        error: createAuthErr?.message || "Failed to create customer login credentials."
+      }, 400);
     }
 
     const customerUserId = createdAuth.user.id;
@@ -255,7 +283,10 @@ serve(async (req) => {
     if (profileErr) {
       // Rollback auth user creation if profile insertion fails
       await supabaseAdmin.auth.admin.deleteUser(customerUserId);
-      throw new Error(`Failed to save customer profile: ${profileErr.message}`);
+      return jsonResponse({
+        success: false,
+        error: `Failed to save customer profile: ${profileErr.message}`
+      }, 500);
     }
 
     // 5. Create Project row attached to client
@@ -313,7 +344,15 @@ serve(async (req) => {
         .single();
 
       if (consultErr) {
-        throw new Error(`Failed to create consultation: ${consultErr.message}`);
+        // Rollback
+        await supabaseAdmin.auth.admin.deleteUser(customerUserId);
+        if (newProjectId) {
+          await supabaseAdmin.from("projects").delete().eq("id", newProjectId);
+        }
+        return jsonResponse({
+          success: false,
+          error: `Failed to create consultation: ${consultErr.message}`
+        }, 500);
       }
       linkedConsultationId = newConsult.id;
     } else {
@@ -331,38 +370,35 @@ serve(async (req) => {
         .eq("id", linkedConsultationId);
 
       if (linkErr) {
-        throw new Error(`Failed to link consultation: ${linkErr.message}`);
+        return jsonResponse({
+          success: false,
+          error: `Failed to link consultation: ${linkErr.message}`
+        }, 500);
       }
     }
 
     // Plain-text password is NEVER returned or stored in database
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: "Customer login and consultation created successfully.",
-        customer: {
-          id: customerUserId,
-          name: rawName,
-          phone: normalizedPhone,
-          title,
-          surname,
-          product,
-          project_name: projectName,
-          location,
-          project_id: newProjectId,
-          consultation_id: linkedConsultationId,
-          is_active: true
-        }
-      }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return jsonResponse({
+      success: true,
+      message: "Customer login and consultation created successfully.",
+      customer: {
+        id: customerUserId,
+        name: rawName,
+        phone: normalizedPhone,
+        title,
+        surname,
+        product,
+        project_name: projectName,
+        location,
+        project_id: newProjectId,
+        consultation_id: linkedConsultationId,
+        is_active: true
+      }
+    }, 200);
   } catch (error: any) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error.message || "An unexpected error occurred during customer registration."
-      }),
-      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return jsonResponse({
+      success: false,
+      error: error.message || "An unexpected error occurred during customer registration."
+    }, 500);
   }
 });
