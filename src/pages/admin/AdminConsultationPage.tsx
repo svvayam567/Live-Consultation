@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useSearchParams, useLocation, Link } from 'react-router-dom';
+import { useSearchParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import { useConsultation } from '../../context/ConsultationContext';
 import { getRegisteredCustomers } from '../../context/AuthContext';
 import { AdminNav } from '../../components/admin/AdminNav';
@@ -87,8 +87,9 @@ export const AdminConsultationPage: React.FC = () => {
     updateField,
     resetConsultation
   } = useConsultation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [availableClients, setAvailableClients] = useState<ConsultationClientItem[]>(SEED_CLIENTS);
   const [clientSearch, setClientSearch] = useState('');
@@ -228,21 +229,32 @@ export const AdminConsultationPage: React.FC = () => {
   // If ?client= query param is set, load that client's consultation once
   const loadedClientRef = useRef<string | null>(null);
   useEffect(() => {
-    if (clientParam && loadedClientRef.current !== clientParam && availableClients.length > 0) {
-      const matched = availableClients.find(c => c.id === clientParam);
-      if (matched) {
-        loadedClientRef.current = clientParam;
-        if (matched.state) {
-          importSession(matched.state as ConsultationState);
-        } else {
-          // Initialize fields with client data if state is empty
-          if (state.fields.client !== matched.name) {
-            updateField('client', matched.name);
-            updateField('projectName', matched.project_name);
-            updateField('location', matched.location);
-          }
-        }
+    if (clientParam && loadedClientRef.current !== clientParam) {
+      if (clientParam === 'walk-in') {
+        loadedClientRef.current = 'walk-in';
         setIsPickingClient(false);
+        return;
+      }
+      if (availableClients.length > 0) {
+        const matched = availableClients.find(c => c.id === clientParam);
+        if (matched) {
+          loadedClientRef.current = clientParam;
+          if (matched.state) {
+            importSession(matched.state as ConsultationState);
+          } else {
+            // Initialize fields with client data if state is empty
+            if (state.fields.client !== matched.name) {
+              updateField('client', matched.name);
+              updateField('projectName', matched.project_name);
+              updateField('location', matched.location);
+              if (matched.phone) {
+                updateField('phone', matched.phone);
+                updateField('client_phone', matched.phone);
+              }
+            }
+          }
+          setIsPickingClient(false);
+        }
       }
     }
   }, [clientParam, availableClients, importSession, updateField, state.fields.client]);
@@ -290,25 +302,71 @@ export const AdminConsultationPage: React.FC = () => {
   }, [availableClients, clientSearch]);
 
   const handleSelectClient = (clientItem: ConsultationClientItem) => {
+    // 1. If clientItem already has full consultation state attached, resume it directly
     if (clientItem.state) {
       importSession(clientItem.state as ConsultationState);
-    } else {
-      resetConsultation();
-      updateField('client', clientItem.name);
-      updateField('projectName', clientItem.project_name);
-      updateField('location', clientItem.location);
+      const targetStep = clientItem.current_step || (clientItem.state.slide ? clientItem.state.slide + 1 : 1);
+      setSlide(Math.max(0, Math.min(7, targetStep - 1)));
+      loadedClientRef.current = clientItem.id;
+      loadedIdRef.current = clientItem.id;
+      setIsPickingClient(false);
+      navigate(`/admin/consultation?id=${clientItem.id}&client=${clientItem.id}&step=${targetStep}`);
+      return;
     }
-    setSearchParams({ client: clientItem.id });
+
+    // 2. Look for existing saved consultation draft in localStorage
+    try {
+      const stored = localStorage.getItem('svvayam_admin_consultations_v1');
+      if (stored) {
+        const list = JSON.parse(stored);
+        const cleanPhone = clientItem.phone ? clientItem.phone.replace(/\D/g, '').slice(-10) : '';
+        const found = list.find((c: any) =>
+          c.id === clientItem.id ||
+          (cleanPhone && c.client_phone && c.client_phone.replace(/\D/g, '').endsWith(cleanPhone)) ||
+          (c.client_name && c.client_name.toLowerCase().trim() === clientItem.name.toLowerCase().trim())
+        );
+
+        if (found?.state) {
+          importSession(found.state);
+          const targetStep = found.current_step || (found.state.slide ? found.state.slide + 1 : 1);
+          setSlide(Math.max(0, Math.min(7, targetStep - 1)));
+          loadedClientRef.current = clientItem.id;
+          loadedIdRef.current = found.id;
+          setIsPickingClient(false);
+          navigate(`/admin/consultation?id=${found.id}&client=${clientItem.id}&step=${targetStep}`);
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Error reading stored consultations:', err);
+    }
+
+    // 3. Fresh consultation setup for this client
+    resetConsultation();
+    updateField('client', clientItem.name);
+    updateField('projectName', clientItem.project_name);
+    updateField('location', clientItem.location || 'India');
+    if (clientItem.phone) {
+      updateField('phone', clientItem.phone);
+      updateField('client_phone', clientItem.phone);
+    }
+    updateField('client_id', clientItem.id);
+
+    const targetStep = clientItem.current_step || 1;
+    setSlide(Math.max(0, Math.min(7, targetStep - 1)));
+    loadedClientRef.current = clientItem.id;
     setIsPickingClient(false);
+    navigate(`/admin/consultation?client=${clientItem.id}&step=${targetStep}`);
   };
 
   const handleStartWalkIn = () => {
     resetConsultation();
     updateField('client', 'Walk-in Client');
-    updateField('projectName', "Sanctum Architecture");
+    updateField('projectName', 'Sanctum Architecture');
     updateField('location', 'Studio');
-    setSearchParams({});
+    setSlide(0);
     setIsPickingClient(false);
+    navigate('/admin/consultation?client=walk-in&step=1');
   };
 
   // Step 4 (Slide index 4 = Examples) requires exactly 1 selected reference
@@ -459,12 +517,15 @@ export const AdminConsultationPage: React.FC = () => {
                   <span>Resume Current</span>
                 </Button>
               )}
-              <Link to="/admin/register">
-                <Button variant="primary" size="sm" className="text-xs">
-                  <UserPlus className="w-3.5 h-3.5 mr-1" />
-                  <span>Register Customer</span>
-                </Button>
-              </Link>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => navigate('/admin/register')}
+                className="text-xs cursor-pointer"
+              >
+                <UserPlus className="w-3.5 h-3.5 mr-1" />
+                <span>Register Customer</span>
+              </Button>
             </div>
           </div>
 
@@ -577,12 +638,15 @@ export const AdminConsultationPage: React.FC = () => {
                   <p className="text-sm font-sans text-[#737373]">
                     No clients matched &quot;{clientSearch}&quot;.
                   </p>
-                  <Link to="/admin/register">
-                    <Button variant="primary" size="sm" className="text-xs">
-                      <UserPlus className="w-3.5 h-3.5 mr-1" />
-                      <span>Register New Customer</span>
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => navigate('/admin/register')}
+                    className="text-xs cursor-pointer"
+                  >
+                    <UserPlus className="w-3.5 h-3.5 mr-1" />
+                    <span>Register New Customer</span>
+                  </Button>
                 </div>
               )}
             </div>

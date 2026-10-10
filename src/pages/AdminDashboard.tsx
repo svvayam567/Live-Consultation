@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth, getRegisteredCustomers, saveRegisteredCustomers } from '../context/AuthContext';
 import { useConsultation } from '../context/ConsultationContext';
 import { Header } from '../components/layout/Header';
@@ -506,26 +506,35 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <Link to="/consult">
-              <Button variant="primary" size="sm" className="text-xs">
-                <Sparkles className="w-3.5 h-3.5 mr-1" />
-                <span>New Consultation</span>
-              </Button>
-            </Link>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => navigate('/consult')}
+              className="text-xs cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 mr-1" />
+              <span>New Consultation</span>
+            </Button>
 
-            <Link to="/client-explorer">
-              <Button variant="outline" size="sm" className="text-xs">
-                <Grid className="w-3.5 h-3.5 mr-1" />
-                <span>Client Explorer</span>
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/client-explorer')}
+              className="text-xs cursor-pointer"
+            >
+              <Grid className="w-3.5 h-3.5 mr-1" />
+              <span>Client Explorer</span>
+            </Button>
 
-            <Link to="/showcase">
-              <Button variant="outline" size="sm" className="text-xs">
-                <Layers className="w-3.5 h-3.5 mr-1" />
-                <span>Showcase & Docs</span>
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/showcase')}
+              className="text-xs cursor-pointer"
+            >
+              <Layers className="w-3.5 h-3.5 mr-1" />
+              <span>Showcase & Docs</span>
+            </Button>
 
             <Button
               variant="outline"
@@ -816,11 +825,14 @@ export const AdminDashboard: React.FC = () => {
                 <p className="text-xs text-neutral-500 leading-relaxed font-sans">
                   Configure the 16 reference images once in Supabase Storage. Shared across all team calls.
                 </p>
-                <Link to="/consult">
-                  <Button variant="outline" size="sm" className="text-xs">
-                    <span>Setup Matrix (Step 5)</span>
-                  </Button>
-                </Link>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/consult')}
+                  className="text-xs cursor-pointer"
+                >
+                  <span>Setup Matrix (Step 5)</span>
+                </Button>
               </div>
 
               <div className="p-5 border border-neutral-200 space-y-3 rounded-[16px]">
@@ -833,11 +845,14 @@ export const AdminDashboard: React.FC = () => {
                 <p className="text-xs text-neutral-500 leading-relaxed font-sans">
                   Upload factory blueprints, carving proofs and dispatch videos for customer walkthroughs.
                 </p>
-                <Link to="/consult">
-                  <Button variant="outline" size="sm" className="text-xs">
-                    <span>Manage Files (Step 7)</span>
-                  </Button>
-                </Link>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/consult')}
+                  className="text-xs cursor-pointer"
+                >
+                  <span>Manage Files (Step 7)</span>
+                </Button>
               </div>
             </div>
           </div>

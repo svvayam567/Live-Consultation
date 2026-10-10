@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useConsultation } from '../../context/ConsultationContext';
 import { Input, Textarea } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -23,6 +23,7 @@ const ORIENTATIONS = [
 
 export const Step1Purpose: React.FC = () => {
   const { state, updateField } = useConsultation();
+  const navigate = useNavigate();
 
   const title: CustomerTitle = (state.fields.title as CustomerTitle) || 'Mr.';
   const clientName: string = state.fields.client || '';
@@ -212,19 +213,25 @@ export const Step1Purpose: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Link to="/admin/register">
-              <Button variant="primary" size="md" className="text-xs rounded-full px-5 bg-[#0A0A0A] text-white">
-                <UserPlus className="w-3.5 h-3.5 mr-1.5 text-white" />
-                <span>Register New Customer</span>
-              </Button>
-            </Link>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => navigate('/admin/register')}
+              className="text-xs rounded-full px-5 bg-[#0A0A0A] text-white cursor-pointer"
+            >
+              <UserPlus className="w-3.5 h-3.5 mr-1.5 text-white" />
+              <span>Register New Customer</span>
+            </Button>
 
-            <Link to="/admin/clients">
-              <Button variant="outline" size="md" className="text-xs rounded-full px-5">
-                <Users className="w-3.5 h-3.5 mr-1.5 text-neutral-600" />
-                <span>Choose from Client Explorer</span>
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              size="md"
+              onClick={() => navigate('/admin/clients')}
+              className="text-xs rounded-full px-5 cursor-pointer"
+            >
+              <Users className="w-3.5 h-3.5 mr-1.5 text-neutral-600" />
+              <span>Choose from Client Explorer</span>
+            </Button>
           </div>
         </div>
       )}

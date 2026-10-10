@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useNavigate, useSearchParams, useLocation, Navigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation, Navigate } from 'react-router-dom';
 import { useAuth, getRegisteredCustomers } from '../../context/AuthContext';
 import { useConsultation } from '../../context/ConsultationContext';
 import { AdminNav } from '../../components/admin/AdminNav';
@@ -529,16 +529,15 @@ export const AdminClientsPage: React.FC = () => {
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Primary Action Button: Opens dedicated Register Customer page */}
-            <Link to="/admin/register">
-              <Button
-                variant="primary"
-                size="sm"
-                className="text-xs flex items-center gap-1.5 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800"
-              >
-                <UserPlus className="w-3.5 h-3.5 text-white" />
-                <span>Register Customer</span>
-              </Button>
-            </Link>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => navigate('/admin/register')}
+              className="text-xs flex items-center gap-1.5 rounded-full bg-[#0A0A0A] text-white hover:bg-neutral-800 cursor-pointer"
+            >
+              <UserPlus className="w-3.5 h-3.5 text-white" />
+              <span>Register Customer</span>
+            </Button>
 
             <Button
               variant="outline"
@@ -832,12 +831,15 @@ export const AdminClientsPage: React.FC = () => {
                   Active customer portal credentials authorized by admin.
                 </p>
               </div>
-              <Link to="/admin/register">
-                <Button variant="primary" size="sm" className="text-xs bg-[#0A0A0A] text-white">
-                  <UserPlus className="w-3.5 h-3.5 mr-1 text-white" />
-                  <span>Register Customer</span>
-                </Button>
-              </Link>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => navigate('/admin/register')}
+                className="text-xs bg-[#0A0A0A] text-white cursor-pointer"
+              >
+                <UserPlus className="w-3.5 h-3.5 mr-1 text-white" />
+                <span>Register Customer</span>
+              </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
