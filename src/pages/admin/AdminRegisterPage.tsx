@@ -732,11 +732,6 @@ export const AdminRegisterPage: React.FC = () => {
               <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
               <div className="space-y-1">
                 <p className="font-medium text-rose-900">{errorMessage}</p>
-                {errorMessage.includes('Edge Function') && (
-                  <p className="text-[11px] text-rose-700 font-mono">
-                    CLI deployment command: <code className="bg-rose-100 px-1.5 py-0.5 rounded text-rose-950 font-bold">supabase functions deploy register-customer</code>
-                  </p>
-                )}
               </div>
             </div>
             <button
