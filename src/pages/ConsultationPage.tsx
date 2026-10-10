@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useConsultation } from '../context/ConsultationContext';
 import { Header } from '../components/layout/Header';
@@ -25,20 +25,33 @@ export const ConsultationPage: React.FC = () => {
     importSession
   } = useConsultation();
   const [searchParams] = useSearchParams();
+  const idParam = searchParams.get('id');
+  const stepParam = searchParams.get('step');
 
-  // Support ?id=... to resume existing consultation
+  // Track previous slide to scroll to top ONLY when user moves to a DIFFERENT step
+  const prevSlideRef = useRef<number | null>(null);
+
   useEffect(() => {
-    const idParam = searchParams.get('id');
-    if (idParam && state.id !== idParam) {
-      // Check local storage or seed
+    // Only scroll to top if moving to a different step, and NOT on initial mount
+    if (prevSlideRef.current !== null && prevSlideRef.current !== currentSlide) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    prevSlideRef.current = currentSlide;
+  }, [currentSlide]);
+
+  // Support ?id=... to resume existing consultation once
+  const loadedIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (idParam && loadedIdRef.current !== idParam) {
       try {
         const stored = localStorage.getItem('svvayam_admin_consultations_v1');
         if (stored) {
           const list = JSON.parse(stored);
           const found = list.find((c: any) => c.id === idParam);
           if (found?.state) {
+            loadedIdRef.current = idParam;
             importSession(found.state);
-            if (found.current_step) {
+            if (found.current_step && !stepParam) {
               setSlide(Math.max(0, Math.min(7, found.current_step - 1)));
             }
           }
@@ -47,23 +60,20 @@ export const ConsultationPage: React.FC = () => {
         // Ignored
       }
     }
-  }, [searchParams, state.id, importSession, setSlide]);
+  }, [idParam, stepParam, importSession, setSlide]);
 
-  // Support ?step=1..8 query parameter
+  // Support ?step=1..8 query parameter without re-triggering on every render
   useEffect(() => {
-    const stepParam = searchParams.get('step');
     if (stepParam) {
       const s = parseInt(stepParam, 10);
       if (!isNaN(s) && s >= 1 && s <= 8) {
-        setSlide(s - 1);
+        const targetSlide = s - 1;
+        if (currentSlide !== targetSlide) {
+          setSlide(targetSlide);
+        }
       }
     }
-  }, [searchParams, setSlide]);
-
-  // Scroll to top when changing slide
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentSlide]);
+  }, [stepParam, currentSlide, setSlide]);
 
   // Validation: Step 1 requires client & location; Step 5 requires 1 reference
   const isStep1Incomplete = currentSlide === 0 && (!state.fields.client || !state.fields.location);
@@ -94,7 +104,7 @@ export const ConsultationPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
+    <div className="min-h-screen min-h-[100dvh] bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
       {/* Top Application Header */}
       <Header />
 
@@ -102,7 +112,7 @@ export const ConsultationPage: React.FC = () => {
       <StepIndicator />
 
       {/* Main Slide Container with Generous Whitespace & Soft Layered Card */}
-      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-8 py-6 sm:py-8">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-8 py-6 sm:py-8 pb-36 sm:pb-28">
         <div className="bg-white rounded-[20px] shadow-[0_10px_30px_rgba(0,0,0,0.06)] border border-[#ECECEC] p-6 sm:p-10 transition-all duration-300">
           {renderCurrentStep()}
         </div>

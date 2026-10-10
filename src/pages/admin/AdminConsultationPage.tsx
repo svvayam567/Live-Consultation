@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams, useLocation, Link } from 'react-router-dom';
 import { useConsultation } from '../../context/ConsultationContext';
 import { getRegisteredCustomers } from '../../context/AuthContext';
@@ -111,20 +111,29 @@ export const AdminConsultationPage: React.FC = () => {
   const idParam = searchParams.get('id');
   const stepParam = searchParams.get('step');
 
-  // Support ?step=1..8 query parameter
+  // Track previous slide to scroll to top ONLY when user moves to a DIFFERENT step
+  const prevSlideRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    // Only scroll to top if moving to a different step, and NOT on initial mount
+    if (prevSlideRef.current !== null && prevSlideRef.current !== currentSlide) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    prevSlideRef.current = currentSlide;
+  }, [currentSlide]);
+
+  // Support ?step=1..8 query parameter without re-triggering on every render
   useEffect(() => {
     if (stepParam) {
       const s = parseInt(stepParam, 10);
       if (!isNaN(s) && s >= 1 && s <= 8) {
-        setSlide(s - 1);
+        const targetSlide = s - 1;
+        if (currentSlide !== targetSlide) {
+          setSlide(targetSlide);
+        }
       }
     }
-  }, [stepParam, setSlide]);
-
-  // Scroll to top when changing slide
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentSlide]);
+  }, [stepParam, currentSlide, setSlide]);
 
   // Load client directory for selector
   const loadClientDirectory = async () => {
@@ -193,15 +202,17 @@ export const AdminConsultationPage: React.FC = () => {
     loadClientDirectory();
   }, []);
 
-  // If ?id= query param is set, load that consultation
+  // If ?id= query param is set, load that consultation once
+  const loadedIdRef = useRef<string | null>(null);
   useEffect(() => {
-    if (idParam) {
+    if (idParam && loadedIdRef.current !== idParam) {
       try {
         const stored = localStorage.getItem('svvayam_admin_consultations_v1');
         if (stored) {
           const list = JSON.parse(stored);
           const found = list.find((c: any) => c.id === idParam);
           if (found?.state) {
+            loadedIdRef.current = idParam;
             importSession(found.state);
             if (found.current_step && !stepParam) {
               setSlide(Math.max(0, Math.min(7, found.current_step - 1)));
@@ -212,13 +223,15 @@ export const AdminConsultationPage: React.FC = () => {
         }
       } catch {}
     }
-  }, [idParam, importSession, setSlide, stepParam]);
+  }, [idParam, stepParam, importSession, setSlide]);
 
-  // If ?client= query param is set, load that client's consultation
+  // If ?client= query param is set, load that client's consultation once
+  const loadedClientRef = useRef<string | null>(null);
   useEffect(() => {
-    if (clientParam) {
+    if (clientParam && loadedClientRef.current !== clientParam && availableClients.length > 0) {
       const matched = availableClients.find(c => c.id === clientParam);
       if (matched) {
+        loadedClientRef.current = clientParam;
         if (matched.state) {
           importSession(matched.state as ConsultationState);
         } else {
@@ -234,14 +247,16 @@ export const AdminConsultationPage: React.FC = () => {
     }
   }, [clientParam, availableClients, importSession, updateField, state.fields.client]);
 
-  // When clicking Consultation tab with no parameters, auto-resume the most recent draft
+  // When clicking Consultation tab with no parameters, auto-resume the most recent draft once
+  const autoResumedRef = useRef(false);
   useEffect(() => {
-    if (!clientParam && !idParam && !state.fields.client && !state.project_name) {
+    if (!clientParam && !idParam && !autoResumedRef.current && !state.fields.client && !state.project_name) {
       try {
         const stored = localStorage.getItem('svvayam_admin_consultations_v1');
         if (stored) {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0 && parsed[0]?.state) {
+            autoResumedRef.current = true;
             importSession(parsed[0].state);
             const resumeStep = parsed[0].current_step || 1;
             setSlide(Math.max(0, Math.min(7, resumeStep - 1)));
@@ -330,7 +345,7 @@ export const AdminConsultationPage: React.FC = () => {
     (state.fields.client ? `${state.fields.client}'s Sanctum` : 'Active Consultation');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
+    <div className="min-h-screen min-h-[100dvh] bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
       {/* Persistent Admin Navigation (Desktop Top Bar / Mobile Bottom Bar) */}
       <AdminNav activeSection="consultation" />
 
@@ -623,7 +638,7 @@ export const AdminConsultationPage: React.FC = () => {
           <StepIndicator />
 
           {/* Main Slide Container with Generous Whitespace & Soft Layered Card */}
-          <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-8 py-6 sm:py-8 pb-24 sm:pb-20">
+          <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-8 py-6 sm:py-8 pb-36 sm:pb-28">
             <div className="bg-white rounded-[20px] shadow-[0_10px_30px_rgba(0,0,0,0.06)] border border-[#ECECEC] p-6 sm:p-10 transition-all duration-300">
               {renderCurrentStep()}
             </div>

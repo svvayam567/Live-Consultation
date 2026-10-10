@@ -166,9 +166,15 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   const [saveStatus, setSaveStatus] = useState<string>('Saved');
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stateRef = useRef(state);
+
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   // Sync to database and localStorage with debounce
   const persistState = useCallback((nextState: ConsultationState) => {
+    stateRef.current = nextState;
     setState(nextState);
     setSaveStatus('Saving...');
 
@@ -289,12 +295,15 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   }, []);
 
   const updateField = useCallback((field: keyof ConsultationFields, value: string) => {
+    const cur = stateRef.current;
+    if (cur.fields && cur.fields[field] === value) return; // No change, ignore
+
     const nextFields = {
-      ...state.fields,
+      ...cur.fields,
       [field]: value
     };
     const nextState: any = {
-      ...state,
+      ...cur,
       fields: nextFields
     };
     if (field === 'client_id') nextState.client_id = value;
@@ -302,33 +311,35 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     if (field === 'projectName' || field === 'project_name') nextState.project_name = value;
 
     persistState(nextState);
-  }, [state, persistState]);
+  }, [persistState]);
 
   const setSlide = useCallback((slide: number) => {
     if (slide >= 0 && slide <= 7) {
-      persistState({ ...state, slide });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (stateRef.current.slide === slide) return; // Already on this slide, ignore!
+      persistState({ ...stateRef.current, slide });
     }
-  }, [state, persistState]);
+  }, [persistState]);
 
   const nextSlide = useCallback((): boolean => {
+    const cur = stateRef.current;
     // Step 5 validation: must have exactly 1 reference selected
-    const totalRefs = state.selected_reference ? 1 : 0;
-    if (state.slide === 4 && totalRefs !== 1) {
+    const totalRefs = cur.selected_reference ? 1 : 0;
+    if (cur.slide === 4 && totalRefs !== 1) {
       return false;
     }
-    if (state.slide < 7) {
-      setSlide(state.slide + 1);
+    if (cur.slide < 7) {
+      setSlide(cur.slide + 1);
       return true;
     }
     return false;
-  }, [state.slide, state.selected_reference, setSlide]);
+  }, [setSlide]);
 
   const prevSlide = useCallback(() => {
-    if (state.slide > 0) {
-      setSlide(state.slide - 1);
+    const cur = stateRef.current;
+    if (cur.slide > 0) {
+      setSlide(cur.slide - 1);
     }
-  }, [state.slide, setSlide]);
+  }, [setSlide]);
 
   // Step 3 Image handlers
   const addImage = useCallback((image: ConsultationImage) => {
@@ -520,30 +531,32 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   // Session reset
   const resetConsultation = useCallback(() => {
+    const cur = stateRef.current;
     const fresh: ConsultationState = {
       ...INITIAL_CONSULTATION_STATE,
       fields: {
         ...INITIAL_CONSULTATION_STATE.fields,
         date: new Date().toLocaleDateString('en-CA')
       },
-      gallery: state.gallery, // Preserve configured reference grid
-      journey: state.journey  // Preserve configured journey files
+      gallery: cur.gallery, // Preserve configured reference grid
+      journey: cur.journey  // Preserve configured journey files
     };
     persistState(fresh);
-  }, [state.gallery, state.journey, persistState]);
+  }, [persistState]);
 
   const importSession = useCallback((imported: ConsultationState): boolean => {
     if (imported && imported.fields) {
+      const cur = stateRef.current;
       const normalized = normalizeConsultationState(imported);
       persistState({
         ...normalized,
-        gallery: imported.gallery || state.gallery,
-        journey: imported.journey || state.journey
+        gallery: imported.gallery || cur.gallery,
+        journey: imported.journey || cur.journey
       });
       return true;
     }
     return false;
-  }, [state.gallery, state.journey, persistState]);
+  }, [persistState]);
 
   // Google Sheets sync caller
   const triggerSheetsSync = useCallback(async (): Promise<{ success: boolean; message?: string }> => {
