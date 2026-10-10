@@ -12,7 +12,9 @@ export const StepIndicator: React.FC = () => {
     saveStatus,
     resetConsultation,
     importSession,
-    state
+    state,
+    stepValidations,
+    incompleteSteps
   } = useConsultation();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -77,6 +79,7 @@ export const StepIndicator: React.FC = () => {
   const currentStep = CONSULTATION_STEPS[currentSlide];
   const currentStepTitle = currentStep?.title.split('·')[0].trim() || 'Purpose';
   const currentStepSubtitle = currentStep?.title.split('·')[1]?.trim() || '';
+  const currentValidation = stepValidations[currentSlide];
 
   const projectName =
     state.fields.projectName ||
@@ -105,6 +108,12 @@ export const StepIndicator: React.FC = () => {
                   <span>{projectName}</span>
                 </span>
               </>
+            )}
+            {incompleteSteps.length > 0 && currentSlide === 7 && (
+              <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-mono text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <span>{incompleteSteps.length} incomplete step{incompleteSteps.length > 1 ? 's' : ''}</span>
+              </span>
             )}
           </div>
 
@@ -169,11 +178,13 @@ export const StepIndicator: React.FC = () => {
               <ArrowLeft className="w-4 h-4" />
             </button>
 
-            {/* Steps 1 - 8 as small rounded squares */}
+            {/* Steps 1 - 8 as small rounded squares with Red Dot Indicator for incomplete items */}
             <div className="flex items-center gap-1.5">
               {CONSULTATION_STEPS.map((step, idx) => {
                 const isActive = currentSlide === idx;
-                const isCompleted = currentSlide > idx;
+                const validation = stepValidations[idx];
+                const isStepValid = validation ? validation.isComplete : true;
+                const isPassed = currentSlide > idx;
 
                 return (
                   <button
@@ -181,18 +192,31 @@ export const StepIndicator: React.FC = () => {
                     ref={isActive ? activeStepRef : undefined}
                     type="button"
                     onClick={() => setSlide(idx)}
-                    title={`Step ${idx + 1}: ${step.title}`}
+                    title={
+                      !isStepValid
+                        ? `Step ${idx + 1}: Incomplete — Missing: ${validation.missingItems.map(m => m.label).join(', ')}`
+                        : `Step ${idx + 1}: ${step.title}`
+                    }
                     className={cn(
-                      "w-8 h-8 rounded-[10px] font-mono text-xs font-medium flex items-center justify-center shrink-0 transition-all duration-200 cursor-pointer select-none",
+                      "relative w-8 h-8 rounded-[10px] font-mono text-xs font-medium flex items-center justify-center shrink-0 transition-all duration-200 cursor-pointer select-none",
                       isActive && "bg-gradient-to-b from-[#2A2A2A] via-[#141414] to-[#0E2A1C] text-white shadow-[0_8px_16px_rgba(0,0,0,0.25)] ring-1 ring-white/10 font-bold scale-105",
-                      isCompleted && "bg-[#2A2A2A] text-white hover:bg-[#383838]",
-                      !isActive && !isCompleted && "bg-[#F1F1F1] text-[#5C5C5C] hover:bg-[#E5E5E5] hover:text-[#0A0A0A]"
+                      !isActive && isPassed && isStepValid && "bg-[#2A2A2A] text-white hover:bg-[#383838]",
+                      !isActive && isPassed && !isStepValid && "bg-[#FFF1F2] text-rose-700 border border-rose-300 hover:bg-[#FFE4E6]",
+                      !isActive && !isPassed && "bg-[#F1F1F1] text-[#5C5C5C] hover:bg-[#E5E5E5] hover:text-[#0A0A0A]"
                     )}
                   >
-                    {isCompleted ? (
+                    {isPassed && isStepValid ? (
                       <Check className="w-3.5 h-3.5 stroke-[2.5]" />
                     ) : (
                       idx + 1
+                    )}
+
+                    {/* Small red dot indication if important information is missing */}
+                    {!isStepValid && (
+                      <span
+                        className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white shadow-xs animate-pulse"
+                        title={`Missing: ${validation?.missingItems.map(m => m.label).join(', ')}`}
+                      />
                     )}
                   </button>
                 );
@@ -200,8 +224,8 @@ export const StepIndicator: React.FC = () => {
             </div>
           </div>
 
-          {/* Step Name in Cormorant Garamond */}
-          <div className="flex items-baseline gap-2 shrink-0 md:text-right px-1 sm:px-0">
+          {/* Step Name in Cormorant Garamond & Incomplete notification */}
+          <div className="flex items-center gap-2 shrink-0 md:text-right px-1 sm:px-0">
             <h2 className="font-display font-semibold text-lg sm:text-xl text-[#0A0A0A] leading-none">
               {currentStepTitle}
             </h2>
@@ -210,9 +234,20 @@ export const StepIndicator: React.FC = () => {
                 · {currentStepSubtitle}
               </span>
             )}
+            {currentValidation && !currentValidation.isComplete && (
+              <span
+                className="inline-flex items-center gap-1 text-[11px] font-sans font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200 shrink-0"
+                title={`Missing: ${currentValidation.missingItems.map(m => m.label).join(', ')}`}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <span>Incomplete</span>
+              </span>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+export default StepIndicator;

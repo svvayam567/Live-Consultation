@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import type {
   ConsultationState,
   ConsultationFields,
@@ -18,6 +18,12 @@ import {
 import { assetUrl, formatProjectName } from '../lib/utils';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { useAuth } from './AuthContext';
+import {
+  getAllStepsValidation,
+  getIncompleteSteps,
+  areAllPreparationStepsComplete as checkAllStepsComplete,
+  type StepValidation
+} from '../lib/consultationValidation';
 
 interface ConsultationContextType {
   state: ConsultationState;
@@ -44,10 +50,14 @@ interface ConsultationContextType {
   // Step 7 Journey
   addJourneyFile: (stage: number, data: string, caption: string, mimeType?: string) => void;
   removeJourneyAsset: (stage: number, assetIndex: number) => void;
-  // Persistence & session
+  // Persistence, validation & finalization
   resetConsultation: () => void;
   importSession: (importedState: ConsultationState) => boolean;
   triggerSheetsSync: () => Promise<{ success: boolean; message?: string }>;
+  stepValidations: StepValidation[];
+  incompleteSteps: StepValidation[];
+  areAllPreparationStepsComplete: boolean;
+  finalizeProposal: () => Promise<{ success: boolean; message: string }>;
 }
 
 const ConsultationContext = createContext<ConsultationContextType | undefined>(undefined);
@@ -583,6 +593,121 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   }, [state, profile]);
 
+  // Validation status for all 8 steps
+  const stepValidations = useMemo(() => getAllStepsValidation(state), [state]);
+  const incompleteSteps = useMemo(() => getIncompleteSteps(state), [state]);
+  const areAllPreparationStepsComplete = useMemo(() => checkAllStepsComplete(state), [state]);
+
+  // Finalize proposal action
+  const finalizeProposal = useCallback(async (): Promise<{ success: boolean; message: string }> => {
+    try {
+      const cur = stateRef.current;
+      const completedAt = new Date().toISOString();
+      const updatedState: ConsultationState = {
+        ...cur,
+        status: 'completed',
+        slide: 7,
+        updated_at: completedAt
+      };
+
+      // 1. Update state & ref immediately
+      setState(updatedState);
+      stateRef.current = updatedState;
+
+      // 2. Persist to active localStorage
+      try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedState));
+      } catch (e) {
+        console.warn('LocalStorage save failed:', e);
+      }
+
+      // 3. Persist to Supabase if available
+      if (isSupabaseConfigured && supabase) {
+        try {
+          const projName = updatedState.project_name || updatedState.fields.projectName || updatedState.fields.project_name || (updatedState.fields.surname ? formatProjectName(updatedState.fields.title, updatedState.fields.surname, updatedState.fields.product) : null);
+          const payload: any = {
+            created_by: user?.id,
+            project_id: updatedState.project_id || null,
+            client_id: updatedState.client_id || null,
+            project_name: projName,
+            client_name: updatedState.fields.client || null,
+            client_phone: updatedState.fields.client_phone || updatedState.fields.phone || null,
+            fields: updatedState.fields,
+            selected_reference: updatedState.selected_reference,
+            selected_refs: updatedState.selected_reference ? [updatedState.selected_reference] : [],
+            current_step: 8,
+            status: 'completed',
+            portal_visible: true,
+            updated_at: completedAt
+          };
+
+          if (updatedState.id) {
+            await supabase.from('consultations').update(payload).eq('id', updatedState.id);
+          } else {
+            const { data } = await supabase.from('consultations').insert(payload).select('id').single();
+            if (data?.id) {
+              setState(s => ({ ...s, id: data.id }));
+              updatedState.id = data.id;
+            }
+          }
+        } catch (dbErr) {
+          console.warn('Supabase consultation completion update error:', dbErr);
+        }
+      }
+
+      // 4. Update svvayam_admin_consultations_v1 so unfinished consultations list updates to completed
+      try {
+        const adminConsultationsKey = 'svvayam_admin_consultations_v1';
+        const stored = localStorage.getItem(adminConsultationsKey);
+        const list: any[] = stored ? JSON.parse(stored) : [];
+        const consultId = updatedState.id || 'draft-active';
+        const projName = updatedState.project_name || updatedState.fields.projectName || updatedState.fields.project_name || (updatedState.fields.surname ? formatProjectName(updatedState.fields.title, updatedState.fields.surname, updatedState.fields.product) : 'Sanctum Project');
+
+        const existingIdx = list.findIndex(c => c.id === consultId);
+        const updatedRecord = {
+          id: consultId,
+          client_name: updatedState.fields.client || 'Client',
+          project_name: projName,
+          title: updatedState.fields.title,
+          surname: updatedState.fields.surname,
+          product: updatedState.fields.product,
+          client_phone: updatedState.fields.client_phone || updatedState.fields.phone || '',
+          location: updatedState.fields.location || '',
+          consultant: profile?.name || 'Svvayam Staff',
+          consultant_phone: profile?.phone || '+91 8074257384',
+          status: 'completed',
+          date: updatedState.fields.date || new Date().toISOString().split('T')[0],
+          portal_visible: true,
+          updated_at: completedAt,
+          current_step: 8,
+          state: updatedState
+        };
+
+        if (existingIdx >= 0) {
+          list[existingIdx] = { ...list[existingIdx], ...updatedRecord };
+        } else if (updatedState.fields.client) {
+          list.unshift(updatedRecord);
+        }
+        localStorage.setItem(adminConsultationsKey, JSON.stringify(list));
+      } catch (adminErr) {
+        console.warn('Admin consultations list update error:', adminErr);
+      }
+
+      // 5. Trigger Google Sheets Sync
+      try {
+        await triggerSheetsSync();
+      } catch (sheetErr) {
+        console.warn('Google sheets sync during finalization error:', sheetErr);
+      }
+
+      setSaveStatus('Proposal Finalized ✓');
+      return { success: true, message: 'Proposal officially finalized and saved to customer portal!' };
+    } catch (err) {
+      console.error('Finalize proposal error:', err);
+      return { success: false, message: 'Failed to finalize proposal. Please try again.' };
+    }
+  }, [user, profile, triggerSheetsSync]);
+
   return (
     <ConsultationContext.Provider value={{
       state,
@@ -608,7 +733,11 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       removeJourneyAsset,
       resetConsultation,
       importSession,
-      triggerSheetsSync
+      triggerSheetsSync,
+      stepValidations,
+      incompleteSteps,
+      areAllPreparationStepsComplete,
+      finalizeProposal
     }}>
       {children}
     </ConsultationContext.Provider>

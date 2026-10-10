@@ -67,13 +67,14 @@ export const Step3Space: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
         <Input
           label="Width × depth × height, with units"
+          requiredDot={!state.fields.dimensions?.trim()}
           value={state.fields.dimensions || ''}
           onChange={(e) => updateField('dimensions', e.target.value)}
           placeholder="e.g. 6 ft W × 4 ft D × 9 ft H (or 1800 × 1200 × 2700 mm)"
         />
 
         <Input
-          label="Internal or external · measured or approximate"
+          label="Internal or external · measured or approximate (Optional)"
           value={state.fields.dimensionType || ''}
           onChange={(e) => updateField('dimensionType', e.target.value)}
           placeholder="e.g. Internal niche size, architect CAD measured"
@@ -81,7 +82,7 @@ export const Step3Space: React.FC = () => {
 
         <div className="sm:col-span-2">
           <Input
-            label="Essential storage, doors or enclosure"
+            label="Essential storage, doors or enclosure (Optional)"
             value={state.fields.features || ''}
             onChange={(e) => updateField('features', e.target.value)}
             placeholder="e.g. Pull-out bhog tray, brass jali double doors, drawer for oil & agarbatti"
@@ -90,7 +91,7 @@ export const Step3Space: React.FC = () => {
 
         <div className="sm:col-span-2">
           <Textarea
-            label="Site status / constraints"
+            label="Site status / constraints (Optional)"
             value={state.fields.site || ''}
             onChange={(e) => updateField('site', e.target.value)}
             placeholder="e.g. Bare shell under construction / false ceiling in place / existing marble flooring"
@@ -102,7 +103,7 @@ export const Step3Space: React.FC = () => {
       {/* Paste & Upload Reference Images Section */}
       <div className="pt-6 border-t border-neutral-200 space-y-4">
         <label className="block text-xs uppercase tracking-wider font-medium text-[#0A0A0A]">
-          Client Reference Images & Inspiration Photos
+          Client Reference Images & Inspiration Photos (Optional)
         </label>
 
         <div

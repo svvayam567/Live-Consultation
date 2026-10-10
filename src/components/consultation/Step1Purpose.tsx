@@ -103,9 +103,14 @@ export const Step1Purpose: React.FC = () => {
                 Product: <strong>{product}</strong>
               </div>
 
-              {location && (
+              {location ? (
                 <div className="px-3 py-1 rounded-full bg-white border border-[#E5E5E5] text-[#0A0A0A] shadow-2xs">
                   Location: <strong>{location}</strong>
+                </div>
+              ) : (
+                <div className="px-3 py-1 rounded-full bg-rose-50 border border-rose-300 text-rose-700 shadow-2xs flex items-center gap-1.5 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                  <span>Missing Location (Required)</span>
                 </div>
               )}
             </div>
@@ -113,10 +118,19 @@ export const Step1Purpose: React.FC = () => {
 
           {/* Consultation Planning Details */}
           <div className="space-y-6 pt-2">
-            {/* Consultation Date */}
-            <div className="max-w-xs">
+            {/* Project Location & Consultation Date */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
-                label="Consultation Date"
+                label="Project Location"
+                requiredDot={!state.fields.location?.trim()}
+                value={state.fields.location || ''}
+                onChange={(e) => updateField('location', e.target.value)}
+                placeholder="e.g. Bengaluru, Indiranagar"
+                helperText="City and neighborhood of the installation"
+              />
+
+              <Input
+                label="Consultation Date (Optional)"
                 type="date"
                 value={consultDate}
                 onChange={(e) => updateField('date', e.target.value)}
@@ -128,7 +142,7 @@ export const Step1Purpose: React.FC = () => {
               <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
                 <span className="flex items-center gap-1.5">
                   <Home className="w-3.5 h-3.5 text-[#0E2A1C]" />
-                  <span>Space Typology</span>
+                  <span>Space Typology (Optional)</span>
                 </span>
               </label>
 
@@ -159,7 +173,7 @@ export const Step1Purpose: React.FC = () => {
               <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
                 <span className="flex items-center gap-1.5">
                   <Compass className="w-3.5 h-3.5 text-[#0E2A1C]" />
-                  <span>Auspicious Direction / Orientation</span>
+                  <span>Auspicious Direction / Orientation (Optional)</span>
                 </span>
               </label>
 
@@ -188,7 +202,7 @@ export const Step1Purpose: React.FC = () => {
             {/* Space Intentions & Notes */}
             <div>
               <Textarea
-                label="Space Intentions & Initial Architectural Notes"
+                label="Space Intentions & Initial Architectural Notes (Optional)"
                 value={state.fields.scope || ''}
                 onChange={(e) => updateField('scope', e.target.value)}
                 placeholder="e.g. Dedicated ground floor space, marble flooring prepared, ceiling height 10 ft, requires brass ventilation..."
@@ -199,7 +213,11 @@ export const Step1Purpose: React.FC = () => {
         </>
       ) : (
         /* Unconfigured State: Invitation to Register or Pick Client */
-        <div className="p-8 sm:p-12 rounded-[20px] bg-white border border-[#ECECEC] text-center space-y-4 shadow-sm">
+        <div className="p-8 sm:p-12 rounded-[20px] bg-white border border-[#ECECEC] text-center space-y-4 shadow-sm relative">
+          <div className="inline-flex items-center gap-1.5 text-xs font-medium text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
+            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+            <span>Missing Client Registration · Step 1 Incomplete</span>
+          </div>
           <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center mx-auto text-[#0A0A0A]">
             <Sparkles className="w-6 h-6 text-[#0E2A1C]" />
           </div>

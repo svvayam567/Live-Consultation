@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useConsultation } from '../context/ConsultationContext';
 import { Header } from '../components/layout/Header';
@@ -12,7 +12,8 @@ import { Step6Scope } from '../components/consultation/Step6Scope';
 import { Step7Journey } from '../components/consultation/Step7Journey';
 import { Step8Proposal } from '../components/consultation/Step8Proposal';
 import { Button } from '../components/ui/Button';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, Sparkles, Copy } from 'lucide-react';
+import { cn } from '../lib/utils';
 
 export const ConsultationPage: React.FC = () => {
   const {
@@ -22,11 +23,16 @@ export const ConsultationPage: React.FC = () => {
     prevSlide,
     totalSelectedCount,
     setSlide,
-    importSession
+    importSession,
+    incompleteSteps,
+    areAllPreparationStepsComplete,
+    finalizeProposal
   } = useConsultation();
   const [searchParams] = useSearchParams();
   const idParam = searchParams.get('id');
   const stepParam = searchParams.get('step');
+  const [finalizingProposal, setFinalizingProposal] = useState(false);
+  const [proposalSuccessModal, setProposalSuccessModal] = useState(false);
 
   // Track previous slide to scroll to top ONLY when user moves to a DIFFERENT step
   const prevSlideRef = useRef<number | null>(null);
@@ -75,10 +81,29 @@ export const ConsultationPage: React.FC = () => {
     }
   }, [stepParam, currentSlide, setSlide]);
 
-  // Validation: Step 1 requires client & location; Step 5 requires 1 reference
-  const isStep1Incomplete = currentSlide === 0 && (!state.fields.client || !state.fields.location);
+  // Validation: Step 5 requires 1 reference
   const isStep5Incomplete = currentSlide === 4 && totalSelectedCount !== 1;
-  const isNextDisabled = currentSlide === 7 || isStep1Incomplete || isStep5Incomplete;
+  const isNextDisabled = isStep5Incomplete || finalizingProposal;
+
+  const handleNextOrFinalize = async () => {
+    if (currentSlide === 7) {
+      if (!areAllPreparationStepsComplete) {
+        if (incompleteSteps.length > 0) {
+          setSlide(incompleteSteps[0].stepIndex);
+        }
+        return;
+      }
+      setFinalizingProposal(true);
+      const res = await finalizeProposal();
+      setFinalizingProposal(false);
+      if (res.success) {
+        setProposalSuccessModal(true);
+      }
+      return;
+    }
+
+    nextSlide();
+  };
 
   const renderCurrentStep = () => {
     switch (currentSlide) {
@@ -137,36 +162,104 @@ export const ConsultationPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {isStep1Incomplete && (
-              <span className="text-[11px] text-[#737373] hidden sm:inline font-sans">
-                Select client & configure project to continue
+            {isStep5Incomplete && (
+              <span className="text-[11px] text-rose-600 font-medium font-sans flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <span>Select one reference to continue</span>
               </span>
             )}
-            {isStep5Incomplete && (
-              <span className="text-[11px] text-[#737373] hidden sm:inline font-sans">
-                Select one reference to continue
+            {currentSlide === 7 && !areAllPreparationStepsComplete && (
+              <span className="text-[11px] text-rose-600 font-medium font-sans flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <span>{incompleteSteps.length} incomplete step{incompleteSteps.length > 1 ? 's' : ''}</span>
               </span>
             )}
             <Button
               variant="primary"
               size="md"
-              onClick={nextSlide}
+              onClick={handleNextOrFinalize}
               disabled={isNextDisabled}
-              title={currentSlide === 4 && totalSelectedCount !== 1 ? 'Select one reference to continue' : undefined}
-              className="text-xs"
+              className={cn(
+                "text-xs transition-all",
+                currentSlide === 7 && areAllPreparationStepsComplete && state.status === 'completed' && "bg-emerald-700 hover:bg-emerald-800 text-white",
+                currentSlide === 7 && !areAllPreparationStepsComplete && "bg-rose-600 hover:bg-rose-700 text-white"
+              )}
             >
-              <span>
-                {currentSlide === 6
-                  ? 'Review proposal'
-                  : currentSlide === 7
-                  ? 'Proposal finalized'
-                  : 'Next'}
-              </span>
-              {currentSlide < 6 && <ArrowRight className="w-3.5 h-3.5 ml-1" />}
+              {currentSlide === 7 && !areAllPreparationStepsComplete ? (
+                <>
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse mr-1" />
+                  <span>Fix Incomplete Steps ({incompleteSteps.length})</span>
+                </>
+              ) : currentSlide === 7 && state.status === 'completed' ? (
+                <>
+                  <Check className="w-3.5 h-3.5 mr-1" />
+                  <span>Proposal Finalized ✓</span>
+                </>
+              ) : currentSlide === 7 ? (
+                <>
+                  <Sparkles className="w-3.5 h-3.5 mr-1 text-emerald-300" />
+                  <span>{finalizingProposal ? 'Finalizing...' : 'Finalize Proposal'}</span>
+                </>
+              ) : currentSlide === 6 ? (
+                <>
+                  <span>Review proposal</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </>
+              ) : (
+                <>
+                  <span>Next</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </>
+              )}
             </Button>
           </div>
         </div>
       </footer>
+
+      {/* Proposal Finalization Success Celebration Modal */}
+      {proposalSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-[24px] max-w-md w-full p-6 sm:p-7 shadow-2xl border border-[#ECECEC] space-y-5 text-center">
+            <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-xs">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+
+            <div className="space-y-1.5">
+              <h3 className="text-xl font-display font-semibold text-[#0A0A0A]">
+                Proposal Officially Finalized!
+              </h3>
+              <p className="text-xs text-[#5C5C5C] leading-relaxed">
+                All 8 consultation stages are complete. The proposal has been saved and is now published in the customer's sacred portal.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2 pt-2">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => {
+                  setProposalSuccessModal(false);
+                  const url = window.location.origin + `/proposal/${state.id || 'draft'}`;
+                  navigator.clipboard.writeText(url);
+                }}
+                className="w-full text-xs bg-[#0A0A0A] text-white hover:bg-[#222] py-2.5 rounded-full cursor-pointer"
+              >
+                <Copy className="w-3.5 h-3.5 mr-1.5" />
+                <span>Copy Customer Link &amp; Close</span>
+              </Button>
+
+              <Button
+                variant="secondary"
+                size="md"
+                onClick={() => setProposalSuccessModal(false)}
+                className="w-full text-xs rounded-full cursor-pointer"
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -71,6 +71,7 @@ export const Step6Scope: React.FC = () => {
       <div className="grid grid-cols-1 gap-6 pt-2">
         <Textarea
           label="Recommended scope and design direction"
+          requiredDot={!state.fields.scope?.trim()}
           value={state.fields.scope || ''}
           onChange={(e) => updateField('scope', e.target.value)}
           placeholder="e.g. Dedicated Sanctum with Shikhar, hand-carved pillars, concealed brass lighting, integrated bhog storage..."
@@ -78,7 +79,7 @@ export const Step6Scope: React.FC = () => {
         />
 
         <Input
-          label="Proposed materials and finishes"
+          label="Proposed materials and finishes (Optional)"
           value={state.fields.materials || ''}
           onChange={(e) => updateField('materials', e.target.value)}
           placeholder="e.g. Burma Teakwood with gold leaf accents / Bansi Paharpur Pink Stone"
@@ -87,6 +88,7 @@ export const Step6Scope: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
           <Input
             label="Indicative project budget · ₹ (enter one amount)"
+            requiredDot={!state.fields.estimate?.trim()}
             value={state.fields.estimate || ''}
             onChange={(e) => updateField('estimate', e.target.value)}
             placeholder="e.g. 15 lakh, 3500000, 1.2 cr"
@@ -111,14 +113,14 @@ export const Step6Scope: React.FC = () => {
         </div>
 
         <Input
-          label="Proposed timeline and dependencies"
+          label="Proposed timeline and dependencies (Optional)"
           value={state.fields.timeline || ''}
           onChange={(e) => updateField('timeline', e.target.value)}
           placeholder="e.g. 3–4 months from technical sign-off and site readiness"
         />
 
         <Textarea
-          label="Tax basis, exclusions and assumptions"
+          label="Tax basis, exclusions and assumptions (Optional)"
           value={state.fields.exclusions || ''}
           onChange={(e) => updateField('exclusions', e.target.value)}
           placeholder="e.g. GST 18% extra; transportation and on-site crating included; civil preparation by client"

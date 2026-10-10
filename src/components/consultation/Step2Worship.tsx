@@ -22,13 +22,14 @@ export const Step2Worship: React.FC = () => {
       <div className="grid grid-cols-1 gap-6 pt-2">
         <Input
           label="Deities, traditions and idols"
+          requiredDot={!state.fields.deity?.trim()}
           value={state.fields.deity || ''}
           onChange={(e) => updateField('deity', e.target.value)}
           placeholder="e.g. Lord Venkateshwara, Radha Krishna, Shivling, family kula-daivam"
         />
 
         <Textarea
-          label="How you worship · daily rituals and family usage"
+          label="How you worship · daily rituals and family usage (Optional)"
           value={state.fields.rituals || ''}
           onChange={(e) => updateField('rituals', e.target.value)}
           placeholder="e.g. Daily deepam & aarti, weekly abhishekam, sitting on floor vs standing, festival gatherings"
@@ -36,7 +37,7 @@ export const Step2Worship: React.FC = () => {
         />
 
         <Input
-          label="Idol dimensions / clearance, if known"
+          label="Idol dimensions / clearance, if known (Optional)"
           value={state.fields.idol || ''}
           onChange={(e) => updateField('idol', e.target.value)}
           placeholder="e.g. Main idol 18 inches brass; secondary vigrahas 6–9 inches"

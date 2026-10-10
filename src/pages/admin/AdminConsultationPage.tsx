@@ -15,7 +15,7 @@ import { Step7Journey } from '../../components/consultation/Step7Journey';
 import { Step8Proposal } from '../../components/consultation/Step8Proposal';
 import { Button } from '../../components/ui/Button';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
-import { formatProjectName } from '../../lib/utils';
+import { formatProjectName, cn } from '../../lib/utils';
 import type { ConsultationState, CustomerRecord } from '../../types/consultation';
 import {
   ArrowLeft,
@@ -85,7 +85,10 @@ export const AdminConsultationPage: React.FC = () => {
     setSlide,
     importSession,
     updateField,
-    resetConsultation
+    resetConsultation,
+    incompleteSteps,
+    areAllPreparationStepsComplete,
+    finalizeProposal
   } = useConsultation();
   const [searchParams] = useSearchParams();
   const location = useLocation();
@@ -96,6 +99,8 @@ export const AdminConsultationPage: React.FC = () => {
   const [loadingClients, setLoadingClients] = useState(false);
   const [isPickingClient, setIsPickingClient] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(location.state?.notice || null);
+  const [finalizingProposal, setFinalizingProposal] = useState(false);
+  const [proposalSuccessModal, setProposalSuccessModal] = useState(false);
 
   // One-time Customer Credentials confirmation state from registration
   const [credentialsModal, setCredentialsModal] = useState<{
@@ -370,9 +375,30 @@ export const AdminConsultationPage: React.FC = () => {
   };
 
   // Step 4 (Slide index 4 = Examples) requires exactly 1 selected reference
-  const isNextDisabled =
-    currentSlide === 7 ||
-    (currentSlide === 4 && totalSelectedCount !== 1);
+  const isStep5Incomplete = currentSlide === 4 && totalSelectedCount !== 1;
+  const isNextDisabled = isStep5Incomplete || finalizingProposal;
+
+  const handleNextOrFinalize = async () => {
+    if (currentSlide === 7) {
+      if (!areAllPreparationStepsComplete) {
+        if (incompleteSteps.length > 0) {
+          setSlide(incompleteSteps[0].stepIndex);
+        }
+        return;
+      }
+      setFinalizingProposal(true);
+      const res = await finalizeProposal();
+      setFinalizingProposal(false);
+      if (res.success) {
+        setProposalSuccessModal(true);
+      } else {
+        setToastMsg(res.message);
+      }
+      return;
+    }
+
+    nextSlide();
+  };
 
   const renderCurrentStep = () => {
     switch (currentSlide) {
@@ -728,31 +754,118 @@ export const AdminConsultationPage: React.FC = () => {
 
               <div className="flex items-center gap-3">
                 {currentSlide === 4 && totalSelectedCount !== 1 && (
-                  <span className="text-[11px] text-[#737373] hidden sm:inline font-sans">
-                    Select one reference to continue
+                  <span className="text-[11px] text-rose-600 font-medium font-sans flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                    <span>Select one reference to continue</span>
+                  </span>
+                )}
+                {currentSlide === 7 && !areAllPreparationStepsComplete && (
+                  <span className="text-[11px] text-rose-600 font-medium font-sans flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                    <span>{incompleteSteps.length} incomplete step{incompleteSteps.length > 1 ? 's' : ''}</span>
                   </span>
                 )}
                 <Button
                   variant="primary"
                   size="md"
-                  onClick={nextSlide}
+                  onClick={handleNextOrFinalize}
                   disabled={isNextDisabled}
-                  title={currentSlide === 4 && totalSelectedCount !== 1 ? 'Select one reference to continue' : undefined}
-                  className="text-xs"
+                  className={cn(
+                    "text-xs transition-all",
+                    currentSlide === 7 && areAllPreparationStepsComplete && state.status === 'completed' && "bg-emerald-700 hover:bg-emerald-800 text-white",
+                    currentSlide === 7 && !areAllPreparationStepsComplete && "bg-rose-600 hover:bg-rose-700 text-white"
+                  )}
                 >
-                  <span>
-                    {currentSlide === 6
-                      ? 'Review proposal'
-                      : currentSlide === 7
-                      ? 'Proposal finalized'
-                      : 'Next'}
-                  </span>
-                  {currentSlide < 6 && <ArrowRight className="w-3.5 h-3.5 ml-1" />}
+                  {currentSlide === 7 && !areAllPreparationStepsComplete ? (
+                    <>
+                      <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse mr-1" />
+                      <span>Fix Incomplete Steps ({incompleteSteps.length})</span>
+                    </>
+                  ) : currentSlide === 7 && state.status === 'completed' ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 mr-1" />
+                      <span>Proposal Finalized ✓</span>
+                    </>
+                  ) : currentSlide === 7 ? (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 mr-1 text-emerald-300" />
+                      <span>{finalizingProposal ? 'Finalizing...' : 'Finalize Proposal'}</span>
+                    </>
+                  ) : currentSlide === 6 ? (
+                    <>
+                      <span>Review proposal</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                    </>
+                  ) : (
+                    <>
+                      <span>Next</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
           </footer>
         </>
+      )}
+
+      {/* Proposal Finalization Success Celebration Modal */}
+      {proposalSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-[24px] max-w-md w-full p-6 sm:p-7 shadow-2xl border border-[#ECECEC] space-y-5 text-center">
+            <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-xs">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+
+            <div className="space-y-1.5">
+              <h3 className="text-xl font-display font-semibold text-[#0A0A0A]">
+                Proposal Officially Finalized!
+              </h3>
+              <p className="text-xs text-[#5C5C5C] leading-relaxed">
+                All 8 consultation stages are complete. The proposal has been saved and is now published in the customer's sacred portal.
+              </p>
+            </div>
+
+            <div className="bg-[#FAFAFA] border border-[#ECECEC] rounded-[16px] p-4 text-left space-y-2 text-xs">
+              <div className="flex justify-between items-center text-[#5C5C5C]">
+                <span>Project Name:</span>
+                <strong className="text-[#0A0A0A] font-medium">{activeProjectTitle}</strong>
+              </div>
+              <div className="flex justify-between items-center text-[#5C5C5C]">
+                <span>Status:</span>
+                <span className="font-mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-semibold">
+                  Completed &amp; Published
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 pt-2">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => {
+                  setProposalSuccessModal(false);
+                  const url = window.location.origin + `/proposal/${state.id || 'draft'}`;
+                  navigator.clipboard.writeText(url);
+                  setToastMsg('Proposal link copied to clipboard!');
+                }}
+                className="w-full text-xs bg-[#0A0A0A] text-white hover:bg-[#222] py-2.5 rounded-full cursor-pointer"
+              >
+                <Copy className="w-3.5 h-3.5 mr-1.5" />
+                <span>Copy Customer Link &amp; Close</span>
+              </Button>
+
+              <Button
+                variant="secondary"
+                size="md"
+                onClick={() => setProposalSuccessModal(false)}
+                className="w-full text-xs rounded-full cursor-pointer"
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

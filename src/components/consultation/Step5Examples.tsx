@@ -66,21 +66,30 @@ export const Step5Examples: React.FC = () => {
       <div className="p-5 bg-white rounded-[20px] border border-[#ECECEC] shadow-[0_10px_30px_rgba(0,0,0,0.06)] space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center space-x-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A] font-sans">
-              Selected Reference
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A] font-sans flex items-center gap-1.5">
+              <span>Selected Reference</span>
+              {totalSelectedCount !== 1 && (
+                <span className="inline-block w-2 h-2 rounded-full bg-rose-500 animate-pulse" title="Required: 1 visual reference must be chosen" />
+              )}
             </span>
             <Badge
-              variant="default"
+              variant={totalSelectedCount === 1 ? 'default' : 'outline'}
               size="sm"
+              className={totalSelectedCount !== 1 ? 'border-rose-300 text-rose-700 bg-rose-50' : ''}
             >
               {totalSelectedCount} of 1 selected
             </Badge>
           </div>
 
-          <span className="text-xs text-[#5C5C5C]">
-            {totalSelectedCount === 1
-              ? '✓ Exactly 1 reference chosen. Ready to proceed to Scope.'
-              : 'Select one reference to continue.'}
+          <span className="text-xs">
+            {totalSelectedCount === 1 ? (
+              <span className="text-emerald-700 font-medium">✓ Exactly 1 reference chosen. Ready to proceed to Scope.</span>
+            ) : (
+              <span className="text-rose-600 font-medium flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <span>Select one reference to continue (Required)</span>
+              </span>
+            )}
           </span>
         </div>
 

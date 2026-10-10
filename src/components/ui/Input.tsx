@@ -2,10 +2,11 @@ import React from 'react';
 import { cn } from '../../lib/utils';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label?: React.ReactNode;
   error?: string;
   helper?: string;
   helperText?: string;
+  requiredDot?: boolean;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
@@ -14,6 +15,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   error,
   helper,
   helperText,
+  requiredDot,
   id,
   type = 'text',
   ...props
@@ -24,8 +26,16 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   return (
     <div className="w-full space-y-1.5">
       {label && (
-        <label htmlFor={inputId} className="block text-xs font-medium text-[#0A0A0A] tracking-normal">
-          {label}
+        <label htmlFor={inputId} className="flex items-center justify-between text-xs font-medium text-[#0A0A0A] tracking-normal">
+          <span className="flex items-center gap-1.5">
+            <span>{label}</span>
+            {requiredDot && (
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shrink-0" title="Required section" />
+            )}
+          </span>
+          {requiredDot && (
+            <span className="text-[10px] font-mono text-rose-500 font-normal">Required</span>
+          )}
         </label>
       )}
       <input
@@ -51,9 +61,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
 Input.displayName = 'Input';
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
+  label?: React.ReactNode;
   error?: string;
   helper?: string;
+  requiredDot?: boolean;
 }
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
@@ -61,6 +72,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
   label,
   error,
   helper,
+  requiredDot,
   id,
   rows = 3,
   ...props
@@ -70,8 +82,16 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
   return (
     <div className="w-full space-y-1.5">
       {label && (
-        <label htmlFor={inputId} className="block text-xs font-medium text-[#0A0A0A] tracking-normal">
-          {label}
+        <label htmlFor={inputId} className="flex items-center justify-between text-xs font-medium text-[#0A0A0A] tracking-normal">
+          <span className="flex items-center gap-1.5">
+            <span>{label}</span>
+            {requiredDot && (
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shrink-0" title="Required section" />
+            )}
+          </span>
+          {requiredDot && (
+            <span className="text-[10px] font-mono text-rose-500 font-normal">Required</span>
+          )}
         </label>
       )}
       <textarea

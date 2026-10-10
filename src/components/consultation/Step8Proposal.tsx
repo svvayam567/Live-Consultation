@@ -5,11 +5,20 @@ import { money, indicativeAmount } from '../../lib/utils';
 import { Logo } from '../ui/Logo';
 import { Button } from '../ui/Button';
 import { Toast } from '../ui/Toast';
-import { Printer, Share2, RefreshCw } from 'lucide-react';
+import { Printer, Share2, RefreshCw, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
 
 export const Step8Proposal: React.FC = () => {
-  const { state, selectedReferencesList, triggerSheetsSync } = useConsultation();
+  const {
+    state,
+    selectedReferencesList,
+    triggerSheetsSync,
+    setSlide,
+    incompleteSteps,
+    areAllPreparationStepsComplete,
+    finalizeProposal
+  } = useConsultation();
   const [syncing, setSyncing] = useState(false);
+  const [finalizing, setFinalizing] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const amount = indicativeAmount(state.fields.estimate);
@@ -39,6 +48,24 @@ export const Step8Proposal: React.FC = () => {
     setTimeout(() => setToastMsg(null), 4000);
   };
 
+  const handleFinalize = async () => {
+    if (!areAllPreparationStepsComplete) {
+      if (incompleteSteps.length > 0) {
+        setSlide(incompleteSteps[0].stepIndex);
+      }
+      return;
+    }
+    setFinalizing(true);
+    const res = await finalizeProposal();
+    setFinalizing(false);
+    if (res.success) {
+      setToastMsg('Proposal finalized successfully! Saved to customer portal.');
+    } else {
+      setToastMsg(res.message);
+    }
+    setTimeout(() => setToastMsg(null), 4000);
+  };
+
   return (
     <div className="space-y-8 proposal-document">
       {/* Action Toolbar (Hidden during Print) */}
@@ -47,12 +74,16 @@ export const Step8Proposal: React.FC = () => {
           <span className="font-sans font-semibold text-xs sm:text-sm text-[#0A0A0A]">
             Preliminary Architectural Proposal
           </span>
-          <span className="text-[10px] font-mono uppercase bg-[#F1F1F1] text-[#0A0A0A] px-2 py-0.5 rounded-full border border-[#ECECEC]">
-            Ready for Client Review
+          <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full border ${
+            state.status === 'completed'
+              ? 'bg-emerald-100 text-emerald-900 border-emerald-300 font-semibold'
+              : 'bg-[#F1F1F1] text-[#0A0A0A] border-[#ECECEC]'
+          }`}>
+            {state.status === 'completed' ? 'Finalized ✓' : 'Ready for Client Review'}
           </span>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center flex-wrap gap-2">
           <Button
             variant="secondary"
             size="sm"
@@ -60,7 +91,7 @@ export const Step8Proposal: React.FC = () => {
             className="text-xs"
           >
             <Printer className="w-3.5 h-3.5 mr-1" />
-            <span>Print / Save PDF</span>
+            <span>Print / PDF</span>
           </Button>
 
           <Button
@@ -70,20 +101,142 @@ export const Step8Proposal: React.FC = () => {
             className="text-xs"
           >
             <Share2 className="w-3.5 h-3.5 mr-1" />
-            <span>Copy Client Link</span>
+            <span>Copy Link</span>
           </Button>
 
           <Button
-            variant="primary"
+            variant="secondary"
             size="sm"
             onClick={handleSheetsSync}
             disabled={syncing}
             className="text-xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 mr-1 ${syncing ? 'animate-spin' : ''}`} />
-            <span>{syncing ? 'Syncing...' : 'Sync to Google Sheet'}</span>
+            <span>{syncing ? 'Syncing...' : 'Sheets'}</span>
+          </Button>
+
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={handleFinalize}
+            disabled={finalizing}
+            className={`text-xs ${
+              state.status === 'completed'
+                ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
+                : !areAllPreparationStepsComplete
+                ? 'bg-rose-600 hover:bg-rose-700 text-white'
+                : 'bg-[#0A0A0A] text-white hover:bg-[#222]'
+            }`}
+          >
+            {state.status === 'completed' ? (
+              <>
+                <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
+                <span>Proposal Finalized ✓</span>
+              </>
+            ) : !areAllPreparationStepsComplete ? (
+              <>
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse mr-1" />
+                <span>Fix Incomplete ({incompleteSteps.length})</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-3.5 h-3.5 mr-1 text-emerald-300" />
+                <span>{finalizing ? 'Finalizing...' : 'Finalize Proposal'}</span>
+              </>
+            )}
           </Button>
         </div>
+      </div>
+
+      {/* Proposal Finalization & Missing Sections Status Card */}
+      <div className="no-print p-5 rounded-[20px] bg-white border border-[#ECECEC] shadow-[0_10px_30px_rgba(0,0,0,0.06)] space-y-4">
+        {!areAllPreparationStepsComplete ? (
+          <div className="space-y-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse" />
+                <h3 className="text-sm font-semibold text-[#0A0A0A]">
+                  Incomplete Preparation Steps ({incompleteSteps.length} Step{incompleteSteps.length > 1 ? 's' : ''} Missing Required Details)
+                </h3>
+              </div>
+              <span className="text-[11px] font-mono text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                Action Required
+              </span>
+            </div>
+            <p className="text-xs text-[#5C5C5C]">
+              Before finalizing this proposal, please complete the required sections below. You can click on any step to jump directly to it:
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+              {incompleteSteps.map((step) => (
+                <button
+                  key={step.stepIndex}
+                  type="button"
+                  onClick={() => setSlide(step.stepIndex)}
+                  className="flex items-center justify-between p-3 rounded-[12px] bg-rose-50/60 hover:bg-rose-100/60 border border-rose-200 text-left transition-all cursor-pointer group"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0" />
+                    <div className="min-w-0">
+                      <div className="text-xs font-semibold text-[#0A0A0A]">
+                        Step {step.stepNumber}: {step.stepName}
+                      </div>
+                      <div className="text-[11px] text-rose-700 truncate">
+                        Missing: {step.missingItems.map(m => m.label).join(', ')}
+                      </div>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-3.5 h-3.5 text-rose-600 group-hover:translate-x-0.5 transition-transform shrink-0 ml-2" />
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : state.status === 'completed' ? (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F0FDF4] border border-emerald-200 rounded-[16px] p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-emerald-950">
+                  Proposal Officially Finalized
+                </h4>
+                <p className="text-xs text-emerald-700">
+                  All 8 steps completed. The preliminary architectural proposal is saved to the customer's portal and synchronized.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-mono font-medium text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
+                Status: Completed ✓
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#FAFAFA] border border-[#0A0A0A]/15 rounded-[16px] p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#0A0A0A] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <Sparkles className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-[#0A0A0A]">
+                  All 7 Preparation Steps Completed
+                </h4>
+                <p className="text-xs text-[#5C5C5C]">
+                  All required sacred specifications are verified. Click to finalize the proposal.
+                </p>
+              </div>
+            </div>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={handleFinalize}
+              disabled={finalizing}
+              className="text-xs px-5 bg-[#0A0A0A] text-white hover:bg-[#222] shadow-xs cursor-pointer shrink-0"
+            >
+              {finalizing ? 'Finalizing...' : 'Finalize Proposal'}
+            </Button>
+          </div>
+        )}
       </div>
 
       {toastMsg && (

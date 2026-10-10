@@ -21,14 +21,8 @@ export const Step4Alignment: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
         <Input
-          label="Family / architect approvers"
-          value={state.fields.approvers || ''}
-          onChange={(e) => updateField('approvers', e.target.value)}
-          placeholder="e.g. Self & spouse / Parents / Architect Mr. Mehta"
-        />
-
-        <Input
           label="Comfortable investment range"
+          requiredDot={!state.fields.budget?.trim()}
           value={state.fields.budget || ''}
           onChange={(e) => updateField('budget', e.target.value)}
           placeholder="e.g. ₹15–20 Lakhs / ₹40–50 Lakhs"
@@ -36,13 +30,21 @@ export const Step4Alignment: React.FC = () => {
 
         <Input
           label="Desired installation date"
+          requiredDot={!state.fields.installation?.trim()}
           value={state.fields.installation || ''}
           onChange={(e) => updateField('installation', e.target.value)}
           placeholder="e.g. Diwali 2026 / Gruhapravesham Nov 2026"
         />
 
         <Input
-          label="When would you like to decide?"
+          label="Family / architect approvers (Optional)"
+          value={state.fields.approvers || ''}
+          onChange={(e) => updateField('approvers', e.target.value)}
+          placeholder="e.g. Self & spouse / Parents / Architect Mr. Mehta"
+        />
+
+        <Input
+          label="When would you like to decide? (Optional)"
           value={state.fields.decision || ''}
           onChange={(e) => updateField('decision', e.target.value)}
           placeholder="e.g. This week after reviewing with family"
