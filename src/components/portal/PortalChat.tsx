@@ -1,6 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
-import type { PortalMessage } from '../../types/consultation';
+import type { Message, SenderRole } from '../../types/message';
+import {
+  fetchCustomerMessages,
+  sendMessage,
+  markAsReadByCustomer,
+  markAsReadByAdmin,
+  subscribeToCustomerMessages,
+  escapeMessageText,
+  MAX_MESSAGE_LENGTH
+} from '../../lib/messagesApi';
 import { Button } from '../ui/Button';
 import {
   Send,
@@ -16,6 +25,7 @@ import { cn } from '../../lib/utils';
 
 export interface PortalChatProps {
   consultationId: string;
+  customerId?: string;
   projectName?: string;
   currentUserRole: 'customer' | 'admin';
   currentUserName: string;
@@ -26,10 +36,9 @@ export interface PortalChatProps {
   compact?: boolean;
 }
 
-const LOCAL_STORAGE_MESSAGES_PREFIX = 'svvayam_messages_v1_';
-
 export const PortalChat: React.FC<PortalChatProps> = ({
   consultationId,
+  customerId,
   projectName,
   currentUserRole,
   currentUserName,
@@ -39,7 +48,7 @@ export const PortalChat: React.FC<PortalChatProps> = ({
   className,
   compact = false
 }) => {
-  const [messages, setMessages] = useState<PortalMessage[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [sending, setSending] = useState(false);
   const [attachment, setAttachment] = useState<{
@@ -53,6 +62,9 @@ export const PortalChat: React.FC<PortalChatProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollEndRef = useRef<HTMLDivElement>(null);
 
+  // Determine the effective customer ID for this conversation thread
+  const effectiveCustomerId = customerId || (currentUserRole === 'customer' ? currentUserId : consultationId);
+
   // Sync prefill context into input text
   useEffect(() => {
     if (prefillContext) {
@@ -63,109 +75,36 @@ export const PortalChat: React.FC<PortalChatProps> = ({
     }
   }, [prefillContext]);
 
-  // Load message thread from Supabase or LocalStorage
-  const loadMessages = async () => {
-    if (isSupabaseConfigured && supabase && consultationId) {
-      try {
-        const { data, error } = await supabase
-          .from('portal_messages')
-          .select('*')
-          .eq('consultation_id', consultationId)
-          .order('created_at', { ascending: true });
-
-        if (!error && data) {
-          setMessages(data as PortalMessage[]);
-          // Mark received messages as read
-          const unreadIds = data
-            .filter((m: any) => m.sender_role !== currentUserRole && !m.is_read)
-            .map((m: any) => m.id);
-
-          if (unreadIds.length > 0) {
-            await supabase
-              .from('portal_messages')
-              .update({ is_read: true })
-              .in('id', unreadIds);
-          }
-          return;
-        }
-      } catch (err) {
-        console.warn('Portal messages query notice:', err);
-      }
-    }
-
-    // Mock development fallback
+  // Load message thread from unified messages API
+  const loadMessages = useCallback(async () => {
+    if (!effectiveCustomerId) return;
     try {
-      const stored = localStorage.getItem(`${LOCAL_STORAGE_MESSAGES_PREFIX}${consultationId}`);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setMessages(parsed);
-          return;
-        }
-      }
-    } catch {
-      // Ignored
-    }
+      const list = await fetchCustomerMessages(effectiveCustomerId);
+      setMessages(list);
 
-    // Default welcome messages in thread
-    const defaultMessages: PortalMessage[] = [
-      {
-        id: 'msg-seed-1',
-        consultation_id: consultationId,
-        sender_id: 'team-svvayam',
-        sender_role: 'team',
-        sender_name: 'Svvayam Design Studio',
-        content: `Namaste ${currentUserName}! Welcome to your dedicated Svvayam project portal. Our temple architects and master guild craftsmen are at your service. Feel free to ask questions about your requirements, layout or references here.`,
-        created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
-        is_read: true,
-        delivery_status: 'read'
+      // Mark unread messages as read
+      if (currentUserRole === 'customer') {
+        await markAsReadByCustomer(effectiveCustomerId);
+      } else {
+        await markAsReadByAdmin(effectiveCustomerId);
       }
-    ];
-    setMessages(defaultMessages);
-    localStorage.setItem(
-      `${LOCAL_STORAGE_MESSAGES_PREFIX}${consultationId}`,
-      JSON.stringify(defaultMessages)
-    );
-  };
+    } catch (err) {
+      console.warn('Portal messages query notice:', err);
+    }
+  }, [effectiveCustomerId, currentUserRole]);
 
   useEffect(() => {
     loadMessages();
 
-    // Setup Supabase Realtime channel
-    if (isSupabaseConfigured && supabase && consultationId) {
-      const client = supabase;
-      const channel = client
-        .channel(`portal_messages:${consultationId}`)
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'portal_messages',
-            filter: `consultation_id=eq.${consultationId}`
-          },
-          (payload) => {
-            const newMsg = payload.new as PortalMessage;
-            setMessages(prev => {
-              if (prev.some(m => m.id === newMsg.id)) return prev;
-              return [...prev, newMsg];
-            });
-            // Mark as read if received from opposite party
-            if (newMsg.sender_role !== currentUserRole) {
-              client
-                .from('portal_messages')
-                .update({ is_read: true })
-                .eq('id', newMsg.id);
-            }
-          }
-        )
-        .subscribe();
+    // Setup Realtime subscription and short polling fallback
+    const unsubscribe = subscribeToCustomerMessages(effectiveCustomerId, () => {
+      loadMessages();
+    });
 
-      return () => {
-        client.removeChannel(channel);
-      };
-    }
-  }, [consultationId, currentUserRole]);
+    return () => {
+      unsubscribe();
+    };
+  }, [loadMessages, effectiveCustomerId]);
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -214,22 +153,21 @@ export const PortalChat: React.FC<PortalChatProps> = ({
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim() && !attachment) return;
+    if (sending) return;
 
     setSending(true);
     setUploadError(null);
 
     let uploadedUrl: string | undefined = undefined;
     let attachmentName: string | undefined = undefined;
-    let attachmentType: string | undefined = undefined;
 
     if (attachment) {
       attachmentName = attachment.name;
-      attachmentType = attachment.type;
 
       if (isSupabaseConfigured && supabase) {
         try {
           const fileExt = attachment.file.name.split('.').pop();
-          const filePath = `${consultationId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+          const filePath = `${effectiveCustomerId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
           const { error: uploadErr } = await supabase.storage
             .from('portal-attachments')
             .upload(filePath, attachment.file, {
@@ -238,7 +176,6 @@ export const PortalChat: React.FC<PortalChatProps> = ({
             });
 
           if (!uploadErr) {
-            // Generate short-lived signed URL (24 hours)
             const { data: signedData } = await supabase.storage
               .from('portal-attachments')
               .createSignedUrl(filePath, 86400);
@@ -252,7 +189,6 @@ export const PortalChat: React.FC<PortalChatProps> = ({
         }
       }
 
-      // If mock mode or upload failed, convert to Data URL for instant rendering
       if (!uploadedUrl) {
         uploadedUrl = await new Promise<string>((resolve) => {
           const reader = new FileReader();
@@ -262,77 +198,41 @@ export const PortalChat: React.FC<PortalChatProps> = ({
       }
     }
 
-    const newMsg: PortalMessage = {
-      id: 'msg-' + Date.now(),
-      consultation_id: consultationId,
-      sender_id: currentUserId,
-      sender_role: currentUserRole,
-      sender_name: currentUserName,
-      content: inputText.trim(),
-      attachment_url: uploadedUrl,
-      attachment_name: attachmentName,
-      attachment_type: attachmentType,
-      section_context: prefillContext || undefined,
-      is_read: false,
-      created_at: new Date().toISOString(),
-      delivery_status: 'delivered'
-    };
+    try {
+      const senderRole: SenderRole = currentUserRole === 'customer' ? 'client' : 'admin';
+      const newMsg = await sendMessage({
+        customerId: effectiveCustomerId,
+        senderRole,
+        senderId: currentUserId,
+        body: inputText.trim(),
+        attachmentUrl: uploadedUrl,
+        attachmentName: attachmentName
+      });
 
-    if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('portal_messages').insert({
+      // Dual write to portal_messages for legacy compatibility if configured
+      if (isSupabaseConfigured && supabase && consultationId) {
+        void supabase.from('portal_messages').insert({
+          id: newMsg.id,
           consultation_id: consultationId,
           sender_id: currentUserId,
           sender_role: currentUserRole,
           sender_name: currentUserName,
-          content: newMsg.content,
+          content: newMsg.body,
           attachment_url: newMsg.attachment_url,
           attachment_name: newMsg.attachment_name,
-          attachment_type: newMsg.attachment_type,
-          section_context: newMsg.section_context,
+          section_context: prefillContext || undefined,
           is_read: false
         });
-      } catch (err) {
-        console.warn('Realtime message insert error:', err);
       }
-    }
 
-    // Update local state
-    const updated = [...messages, newMsg];
-    setMessages(updated);
-    localStorage.setItem(
-      `${LOCAL_STORAGE_MESSAGES_PREFIX}${consultationId}`,
-      JSON.stringify(updated)
-    );
-
-    setInputText('');
-    setAttachment(null);
-    if (onClearPrefill) onClearPrefill();
-    setSending(false);
-
-    // Dev mode auto-reply simulation for customers
-    if (!isSupabaseConfigured && currentUserRole === 'customer') {
-      setTimeout(() => {
-        const autoReply: PortalMessage = {
-          id: 'reply-' + Date.now(),
-          consultation_id: consultationId,
-          sender_id: 'team-svvayam',
-          sender_role: 'team',
-          sender_name: 'Svvayam Studio (Ar. Jagirdhar)',
-          content: `Thank you for sharing your inquiry, ${currentUserName}. We have logged this with our chief temple architect and will update your drawing specifications shortly.`,
-          created_at: new Date().toISOString(),
-          is_read: true,
-          delivery_status: 'read'
-        };
-        setMessages(prev => {
-          const next = [...prev, autoReply];
-          localStorage.setItem(
-            `${LOCAL_STORAGE_MESSAGES_PREFIX}${consultationId}`,
-            JSON.stringify(next)
-          );
-          return next;
-        });
-      }, 1500);
+      setMessages(prev => [...prev, newMsg]);
+      setInputText('');
+      setAttachment(null);
+      if (onClearPrefill) onClearPrefill();
+    } catch (err: any) {
+      setUploadError(err.message || 'Failed to send message');
+    } finally {
+      setSending(false);
     }
   };
 
@@ -367,108 +267,124 @@ export const PortalChat: React.FC<PortalChatProps> = ({
 
       {/* Messages Thread List */}
       <div className={cn("flex-1 p-4 sm:p-5 overflow-y-auto space-y-3.5 bg-gradient-to-b from-white to-[#FAFAFA]", compact ? "max-h-[360px]" : "max-h-[500px]")}>
-        {messages.map((msg) => {
-          const isMe = msg.sender_role === currentUserRole;
+        {messages.length === 0 ? (
+          <div className="p-6 text-center space-y-2">
+            <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center mx-auto text-[#0A0A0A]">
+              <MessageCircle className="w-4 h-4" />
+            </div>
+            <p className="text-xs text-[#0A0A0A] font-medium">
+              Namaste {currentUserName}! Welcome to your dedicated Svvayam sanctum portal.
+            </p>
+            <p className="text-[11px] text-[#5C5C5C] max-w-sm mx-auto leading-relaxed">
+              Our temple architects and master guild craftsmen are at your service. Feel free to ask questions about your requirements, layout or references here.
+            </p>
+          </div>
+        ) : (
+          messages.map((msg) => {
+            const isMe = (currentUserRole === 'customer' && msg.sender_role === 'client') ||
+                         (currentUserRole === 'admin' && msg.sender_role === 'admin');
 
-          return (
-            <div
-              key={msg.id}
-              className={cn(
-                "flex flex-col max-w-[85%] sm:max-w-[75%]",
-                isMe ? "ml-auto items-end" : "mr-auto items-start"
-              )}
-            >
-              {/* Sender Name & Role */}
-              <div className="flex items-center space-x-1.5 mb-1 px-1 text-[10px] text-[#737373]">
-                <span className="font-medium text-[#0A0A0A]">{msg.sender_name}</span>
-                <span>•</span>
-                <span className="capitalize">{msg.sender_role}</span>
-              </div>
+            const isImage = msg.attachment_url && (
+              msg.attachment_url.startsWith('data:image/') ||
+              msg.attachment_url.match(/\.(jpeg|jpg|gif|png|webp)($|\?)/i)
+            );
 
-              {/* Message Bubble */}
+            const isRead = isMe
+              ? (msg.sender_role === 'client' ? msg.read_by_admin : msg.read_by_customer)
+              : true;
+
+            const senderLabel = isMe
+              ? 'You'
+              : (msg.sender_role === 'client' ? (currentUserName || 'Customer') : 'Svvayam Studio (Admin)');
+
+            return (
               <div
+                key={msg.id}
                 className={cn(
-                  "p-3.5 rounded-[16px] text-xs font-sans leading-relaxed shadow-xs relative",
-                  isMe
-                    ? "bg-gradient-to-b from-[#2A2A2A] to-[#0A0A0A] text-white rounded-tr-xs"
-                    : "bg-white border border-[#ECECEC] text-[#0A0A0A] rounded-tl-xs"
+                  "flex flex-col max-w-[85%] sm:max-w-[75%]",
+                  isMe ? "ml-auto items-end" : "mr-auto items-start"
                 )}
               >
-                {/* Section context tag if prefilled */}
-                {msg.section_context && (
-                  <div className={cn(
-                    "text-[10px] font-mono px-2 py-0.5 rounded-md mb-1.5 inline-block border",
+                {/* Sender Name & Role */}
+                <div className="flex items-center space-x-1.5 mb-1 px-1 text-[10px] text-[#737373]">
+                  <span className="font-medium text-[#0A0A0A]">{senderLabel}</span>
+                  <span>•</span>
+                  <span className="capitalize">{msg.sender_role === 'client' ? 'Customer' : 'Admin'}</span>
+                </div>
+
+                {/* Message Bubble */}
+                <div
+                  className={cn(
+                    "p-3.5 rounded-[16px] text-xs font-sans leading-relaxed shadow-xs relative",
                     isMe
-                      ? "bg-white/10 text-neutral-200 border-white/20"
-                      : "bg-[#FAFAFA] text-[#0E2A1C] border-[#ECECEC]"
-                  )}>
-                    Inquiry: {msg.section_context}
-                  </div>
-                )}
+                      ? "bg-gradient-to-b from-[#2A2A2A] to-[#0A0A0A] text-white rounded-tr-xs"
+                      : "bg-white border border-[#ECECEC] text-[#0A0A0A] rounded-tl-xs"
+                  )}
+                >
+                  {/* Text Content */}
+                  {msg.body && <p className="whitespace-pre-wrap select-text">{escapeMessageText(msg.body)}</p>}
 
-                {/* Text Content */}
-                {msg.content && <p className="whitespace-pre-wrap">{msg.content}</p>}
+                  {/* Attachment Preview */}
+                  {msg.attachment_url && (
+                    <div className="mt-2.5 pt-2 border-t border-white/10">
+                      {isImage ? (
+                        <a
+                          href={msg.attachment_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block rounded-lg overflow-hidden border border-white/20 hover:opacity-90 transition-opacity"
+                        >
+                          <img
+                            src={msg.attachment_url}
+                            alt={msg.attachment_name || 'Attachment'}
+                            className="max-h-48 w-auto object-cover rounded-lg"
+                          />
+                        </a>
+                      ) : (
+                        <a
+                          href={msg.attachment_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={cn(
+                            "flex items-center gap-2 p-2 rounded-lg border text-xs font-mono transition-colors",
+                            isMe
+                              ? "bg-white/10 text-white border-white/20 hover:bg-white/20"
+                              : "bg-[#FAFAFA] text-[#0A0A0A] border-[#ECECEC] hover:bg-[#F0F0F0]"
+                          )}
+                        >
+                          <FileText className="w-4 h-4 shrink-0 text-[#0E2A1C]" />
+                          <span className="truncate max-w-[200px]">
+                            {msg.attachment_name || 'Attached Document.pdf'}
+                          </span>
+                          <ExternalLink className="w-3 h-3 ml-auto shrink-0 opacity-60" />
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
 
-                {/* Attachment Preview */}
-                {msg.attachment_url && (
-                  <div className="mt-2.5 pt-2 border-t border-white/10">
-                    {msg.attachment_type === 'image' ? (
-                      <a
-                        href={msg.attachment_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="block rounded-lg overflow-hidden border border-white/20 hover:opacity-90 transition-opacity"
-                      >
-                        <img
-                          src={msg.attachment_url}
-                          alt={msg.attachment_name || 'Attachment'}
-                          className="max-h-48 w-auto object-cover rounded-lg"
-                        />
-                      </a>
-                    ) : (
-                      <a
-                        href={msg.attachment_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={cn(
-                          "flex items-center gap-2 p-2 rounded-lg border text-xs font-mono transition-colors",
-                          isMe
-                            ? "bg-white/10 text-white border-white/20 hover:bg-white/20"
-                            : "bg-[#FAFAFA] text-[#0A0A0A] border-[#ECECEC] hover:bg-[#F0F0F0]"
-                        )}
-                      >
-                        <FileText className="w-4 h-4 shrink-0 text-[#0E2A1C]" />
-                        <span className="truncate max-w-[200px]">
-                          {msg.attachment_name || 'Attached Document.pdf'}
-                        </span>
-                        <ExternalLink className="w-3 h-3 ml-auto shrink-0 opacity-60" />
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Timestamp & Status Markers */}
-              <div className="flex items-center space-x-1.5 mt-1 px-1 text-[10px] text-[#737373] font-mono">
-                <span>
-                  {new Date(msg.created_at).toLocaleTimeString('en-IN', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </span>
-                {isMe && (
-                  <span title={msg.is_read ? 'Read' : 'Delivered'}>
-                    {msg.is_read ? (
-                      <CheckCheck className="w-3 h-3 text-[#0E2A1C]" />
-                    ) : (
-                      <Check className="w-3 h-3 text-neutral-400" />
-                    )}
+                {/* Timestamp & Status Markers */}
+                <div className="flex items-center space-x-1.5 mt-1 px-1 text-[10px] text-[#737373] font-mono">
+                  <span>
+                    {new Date(msg.created_at).toLocaleTimeString('en-IN', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
                   </span>
-                )}
+                  {isMe && (
+                    <span title={isRead ? 'Read' : 'Delivered'}>
+                      {isRead ? (
+                        <CheckCheck className="w-3 h-3 text-[#0E2A1C]" />
+                      ) : (
+                        <Check className="w-3 h-3 text-neutral-400" />
+                      )}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
         <div ref={scrollEndRef} />
       </div>
 
@@ -536,6 +452,7 @@ export const PortalChat: React.FC<PortalChatProps> = ({
         <input
           type="text"
           value={inputText}
+          maxLength={MAX_MESSAGE_LENGTH}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Type your question or message for our architects..."
           className="flex-1 px-4 py-2.5 text-xs font-sans bg-[#F9F9F9] focus:bg-white rounded-full border border-[#ECECEC] focus:border-[#0A0A0A] focus:outline-none focus:ring-2 focus:ring-[#0E2A1C]"
@@ -555,3 +472,5 @@ export const PortalChat: React.FC<PortalChatProps> = ({
     </div>
   );
 };
+
+export default PortalChat;

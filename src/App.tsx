@@ -10,6 +10,21 @@ import { ClientExplorerPage } from './pages/ClientExplorerPage';
 import { AdminClientsPage } from './pages/admin/AdminClientsPage';
 import { AdminRegisterPage } from './pages/admin/AdminRegisterPage';
 import { AdminConsultationPage } from './pages/admin/AdminConsultationPage';
+import { AdminFloatingChat } from './components/chat/AdminFloatingChat';
+
+// Global floating chat wrapper for Admin / Showcase sessions
+const AdminFloatingChatWrapper: React.FC = () => {
+  const { user, isAdmin } = useAuth();
+  const location = useLocation();
+
+  // Only render when authenticated as admin and on admin/showcase routes
+  if (!user || !isAdmin) return null;
+  if (location.pathname === '/' || location.pathname.startsWith('/client')) {
+    return null;
+  }
+
+  return <AdminFloatingChat />;
+};
 
 // Guard for Admin Clients Section (/admin/clients)
 const ProtectedAdminClientsRoute: React.FC = () => {
@@ -214,6 +229,8 @@ export const App: React.FC = () => {
             {/* Catch-all: Redirect to Entry Login */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          {/* Floating Admin Chat Inbox */}
+          <AdminFloatingChatWrapper />
         </ConsultationProvider>
       </AuthProvider>
     </BrowserRouter>

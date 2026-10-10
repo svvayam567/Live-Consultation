@@ -48,6 +48,8 @@ export interface ConsultationRecord {
   updated_at: string;
   selected_reference?: SelectedReference | null;
   current_step?: number;
+  client_id?: string;
+  project_id?: string;
   state?: any;
 }
 
@@ -971,6 +973,11 @@ export const AdminClientsPage: React.FC = () => {
                 {selectedThreadConsultationId ? (
                   <PortalChat
                     consultationId={selectedThreadConsultationId}
+                    customerId={
+                      consultations.find(c => c.id === selectedThreadConsultationId)?.client_id ||
+                      (consultations.find(c => c.id === selectedThreadConsultationId) as any)?.state?.client_id ||
+                      selectedThreadConsultationId
+                    }
                     projectName={consultations.find(c => c.id === selectedThreadConsultationId)?.project_name}
                     currentUserRole="admin"
                     currentUserName={profile?.name || "Svvayam Studio"}
@@ -1189,6 +1196,11 @@ export const AdminClientsPage: React.FC = () => {
               <div className="space-y-2">
                 <PortalChat
                   consultationId={selectedRecord.id}
+                  customerId={
+                    selectedRecord.client_id ||
+                    (selectedRecord as any).state?.client_id ||
+                    selectedRecord.id
+                  }
                   projectName={selectedRecord.project_name}
                   currentUserRole="admin"
                   currentUserName={profile?.name || "Svvayam Studio"}

@@ -1015,6 +1015,7 @@ export const CustomerPortalPage: React.FC = () => {
             </div>
             <PortalChat
               consultationId={portalData.id}
+              customerId={user?.id}
               projectName={portalData.project_name}
               currentUserRole="customer"
               currentUserName={portalData.client_name}
@@ -1050,6 +1051,7 @@ export const CustomerPortalPage: React.FC = () => {
       >
         <PortalChat
           consultationId={portalData.id}
+          customerId={user?.id}
           projectName={portalData.project_name}
           currentUserRole="customer"
           currentUserName={portalData.client_name}
