@@ -17,7 +17,7 @@ import {
 export interface AddAdminModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess?: (admin: { name: string; phone: string; password: string }) => void;
+  onSuccess?: (admin: { name: string; email: string; password: string }) => void;
 }
 
 export const AddAdminModal: React.FC<AddAdminModalProps> = ({
@@ -26,7 +26,7 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
   onSuccess
 }) => {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,12 +36,12 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
   // Success state with created credentials
   const [createdAdmin, setCreatedAdmin] = useState<{
     name: string;
-    phone: string;
+    email: string;
     password: string;
   } | null>(null);
   const [copiedCredentials, setCopiedCredentials] = useState(false);
 
-  // Strong password generator
+  // Strong password generator: >= 10 chars with letter, number and symbol
   const handleGeneratePassword = () => {
     const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
     const lower = 'abcdefghijkmnopqrstuvwxyz';
@@ -53,7 +53,7 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
     pwd += numbers.charAt(Math.floor(Math.random() * numbers.length));
     pwd += symbols.charAt(Math.floor(Math.random() * symbols.length));
     const all = upper + lower + numbers + symbols;
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 8; i++) {
       pwd += all.charAt(Math.floor(Math.random() * all.length));
     }
     // Shuffle
@@ -64,7 +64,7 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
 
   const handleClose = () => {
     setName('');
-    setPhone('');
+    setEmail('');
     setPassword('');
     setShowPassword(false);
     setIsSubmitting(false);
@@ -77,34 +77,42 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanDigits = phone.replace(/\D/g, '').slice(-10);
+    const cleanEmail = email.trim().toLowerCase();
 
     if (!name.trim()) {
       setErrorMessage('Please enter the administrator full name.');
       return;
     }
-    if (cleanDigits.length !== 10) {
-      setErrorMessage('Please enter a valid 10-digit mobile number.');
+    if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+      setErrorMessage('Please enter a valid administrator email address.');
       return;
     }
-    if (password.trim().length < 8) {
-      setErrorMessage('Password must be at least 8 characters.');
+    if (password.trim().length < 10) {
+      setErrorMessage('Password must be at least 10 characters.');
+      return;
+    }
+
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSymbol = /[^a-zA-Z0-9\s]/.test(password);
+
+    if (!hasLetter || !hasNumber || !hasSymbol) {
+      setErrorMessage('Password must contain at least one letter, one number, and one symbol.');
       return;
     }
 
     setIsSubmitting(true);
     setErrorMessage(null);
 
-    const normalizedPhone = '+91' + cleanDigits;
     const finalPassword = password.trim();
 
     try {
       if (isSupabaseConfigured && supabase) {
-        const { data, error } = await supabase.functions.invoke('register-customer', {
+        const { data, error } = await supabase.functions.invoke('manage-admin', {
           body: {
             action: 'register_admin',
             name: name.trim(),
-            phone: normalizedPhone,
+            email: cleanEmail,
             password: finalPassword
           }
         });
@@ -116,7 +124,7 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
 
       const result = {
         name: name.trim(),
-        phone: normalizedPhone,
+        email: cleanEmail,
         password: finalPassword
       };
 
@@ -134,7 +142,7 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
 
   const handleCopyCredentials = () => {
     if (!createdAdmin) return;
-    const copyText = `Svvayam Administrator Access\nName: ${createdAdmin.name}\nMobile: ${createdAdmin.phone}\nPassword: ${createdAdmin.password}\nPortal Link: ${window.location.origin}/`;
+    const copyText = `Svvayam Administrator Access\nName: ${createdAdmin.name}\nEmail: ${createdAdmin.email}\nPassword: ${createdAdmin.password}\nPortal Link: ${window.location.origin}/login?role=admin`;
     navigator.clipboard.writeText(copyText);
     setCopiedCredentials(true);
     setTimeout(() => setCopiedCredentials(false), 2000);
@@ -157,7 +165,7 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
                 <span>Administrator account created successfully!</span>
               </div>
               <p className="text-[11px] text-emerald-800 leading-relaxed">
-                This admin account can now sign in immediately using their mobile number and password. Their consultations will record their name as the consultant.
+                This admin account can now sign in immediately using their email address and temporary password. They will be prompted to set their own permanent password on first login.
               </p>
             </div>
 
@@ -167,11 +175,11 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
                 <strong className="text-[#0A0A0A] font-sans font-semibold">{createdAdmin.name}</strong>
               </div>
               <div className="flex justify-between items-center text-xs">
-                <span className="text-neutral-500 font-mono uppercase text-[10px]">Mobile</span>
-                <strong className="text-[#0A0A0A] font-mono">{createdAdmin.phone}</strong>
+                <span className="text-neutral-500 font-mono uppercase text-[10px]">Email Address</span>
+                <strong className="text-[#0A0A0A] font-mono">{createdAdmin.email}</strong>
               </div>
               <div className="flex justify-between items-center text-xs">
-                <span className="text-neutral-500 font-mono uppercase text-[10px]">Password</span>
+                <span className="text-neutral-500 font-mono uppercase text-[10px]">Temporary Password</span>
                 <strong className="text-[#0A0A0A] font-mono tracking-wider">{createdAdmin.password}</strong>
               </div>
             </div>
@@ -237,36 +245,27 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
               </p>
             </div>
 
-            {/* 10-Digit Mobile */}
+            {/* Email Address */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
-                Mobile Number
+                Email Address
               </label>
-              <div className="relative flex items-center rounded-[12px] border border-[#E5E5E5] bg-white overflow-hidden focus-within:ring-1 focus-within:ring-[#0A0A0A] focus-within:border-[#0A0A0A]">
-                <div className="px-3 py-2.5 bg-neutral-50 border-r border-[#E5E5E5] text-xs font-mono text-neutral-500 font-semibold select-none">
-                  +91
-                </div>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => {
-                    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-                    setPhone(val);
-                  }}
-                  placeholder="10-digit mobile number"
-                  maxLength={10}
-                  required
-                  className="flex-1 px-3 py-2.5 text-xs font-mono text-[#0A0A0A] focus:outline-none bg-transparent"
-                />
-              </div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="e.g. pooja@svvayam.com"
+                required
+                className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+              />
               <p className="text-[11px] text-neutral-400 font-mono">Used to sign in as Administrator</p>
             </div>
 
-            {/* Password with generator & toggle */}
+            {/* Temporary Password with generator & toggle */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
-                  Password
+                  Temporary Password
                 </label>
                 <button
                   type="button"
@@ -283,7 +282,7 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Minimum 8 characters"
+                  placeholder="Minimum 10 characters (letter, number, symbol)"
                   required
                   className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
                 />
@@ -296,7 +295,7 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              <p className="text-[11px] text-neutral-400 font-mono">Minimum 8 characters</p>
+              <p className="text-[11px] text-neutral-400 font-mono">At least 10 characters with a letter, number and symbol</p>
             </div>
 
             {/* Expandable Manual Supabase instructions */}
@@ -315,13 +314,13 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
                   <p className="font-semibold text-neutral-900">Alternative: Create admin directly in Supabase Dashboard:</p>
                   <ol className="list-decimal pl-4 space-y-1">
                     <li>Go to <strong>Authentication &gt; Users &gt; Add user &gt; Create user</strong>.</li>
-                    <li>Email: <code className="bg-neutral-200 px-1 py-0.5 rounded text-[10px]">&lt;10digits&gt;@svvayam.internal</code>, set password, check <em>Auto Confirm User</em>.</li>
+                    <li>Email: <code className="bg-neutral-200 px-1 py-0.5 rounded text-[10px]">&lt;admin-email&gt;</code>, set password, check <em>Auto Confirm User</em>.</li>
                     <li>Copy the generated User UUID.</li>
                     <li>In <strong>SQL Editor</strong>, run:
                       <pre className="mt-1 p-2 bg-neutral-900 text-neutral-100 rounded text-[10px] overflow-x-auto font-mono whitespace-pre">
-{`insert into public.profiles (id, phone, role, is_active, name)
-values ('<USER-UUID>', '+91<10-DIGITS>', 'admin', true, '<FULL-NAME>')
-on conflict (id) do update set role = 'admin', name = excluded.name;`}
+{`insert into public.profiles (id, email, role, is_active, name, must_change_password)
+values ('<USER-UUID>', '<ADMIN-EMAIL>', 'admin', true, '<FULL-NAME>', true)
+on conflict (id) do update set role = 'admin', email = excluded.email, name = excluded.name;`}
                       </pre>
                     </li>
                   </ol>

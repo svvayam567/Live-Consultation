@@ -118,12 +118,13 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
             >
               <Logo className="h-7 sm:h-8 object-contain transition-transform group-hover:scale-102" />
             </Link>
-            <div className="hidden sm:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-neutral-100 border border-[#ECECEC] text-[10px] font-mono text-[#0A0A0A]">
-              <ShieldCheck className={cn("w-3 h-3", isSuperAdmin ? "text-purple-700" : "text-[#0E2A1C]")} />
-              <span className="font-semibold uppercase tracking-wider">
-                {isSuperAdmin ? 'Super Admin' : 'Admin Studio'}
-              </span>
-            </div>
+            {isSuperAdmin && (
+              <div className="hidden sm:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-[#0A0A0A] text-white text-[10px] font-mono shadow-xs">
+                <span className="font-bold uppercase tracking-wider">
+                  SUPER ADMIN
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Center: Desktop Section Switcher (Monochrome Black and White Active State) */}
@@ -180,8 +181,14 @@ export const AdminNav: React.FC<AdminNavProps> = ({ activeSection }) => {
               title="Click to edit your consultant display name"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-              <span className="text-xs">
-                Logged in as <strong className="text-[#0A0A0A] font-medium">{adminDisplayName}</strong>
+              <span className="text-xs flex items-center gap-1.5">
+                <span>Logged in as</span>
+                <strong className="text-[#0A0A0A] font-medium">{adminDisplayName}</strong>
+                {isSuperAdmin && (
+                  <span className="px-2 py-0.5 rounded-full bg-[#0A0A0A] text-white text-[9px] font-bold uppercase tracking-wider font-mono">
+                    SUPER ADMIN
+                  </span>
+                )}
               </span>
             </button>
 

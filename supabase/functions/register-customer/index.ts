@@ -37,6 +37,7 @@ interface RegisterRequest {
     | 'log_activity';
   role?: 'client' | 'admin' | 'super_admin';
   name?: string;
+  email?: string;
   phone?: string;
   password?: string;
   title?: string;
@@ -118,7 +119,8 @@ serve(async (req) => {
       }, 403);
     }
 
-    const isSuperAdmin = callerRole === "super_admin";
+    const callerEmail = (callerUser.email || callerProfile?.email || "").toLowerCase().trim();
+    const isSuperAdmin = callerRole === "super_admin" || callerEmail === "marketing@svvayam.com";
 
     const payload: RegisterRequest = await req.json();
     const action = payload.action || 'register';
@@ -162,7 +164,7 @@ serve(async (req) => {
     if (action === 'list_admins') {
       const { data: adminProfiles, error: profErr } = await supabaseAdmin
         .from("profiles")
-        .select("id, name, phone, role, active, is_active, must_change_password, created_at")
+        .select("id, name, email, phone, role, active, is_active, must_change_password, created_at")
         .in("role", ["admin", "super_admin"])
         .order("created_at", { ascending: false });
 
@@ -185,9 +187,11 @@ serve(async (req) => {
 
       const mergedAdmins = (adminProfiles || []).map(p => {
         const authUser = authUserMap[p.id];
+        const effectiveEmail = p.email || authUser?.email || (p.role === 'super_admin' ? 'marketing@svvayam.com' : '');
         return {
           id: p.id,
           name: p.name || 'Unnamed Admin',
+          email: effectiveEmail,
           phone: p.phone,
           role: p.role,
           active: p.active !== false && p.is_active !== false,
@@ -203,35 +207,37 @@ serve(async (req) => {
       }, 200);
     }
 
-    // ACTION: Register Administrator (Super Admin only)
+    // ACTION: Register Administrator (Super Admin only - Email + Password)
     if (action === 'register_admin') {
       const rawName = (payload.name || "").trim();
-      const rawPhone = (payload.phone || "").trim();
+      const rawEmail = (payload.email || "").trim().toLowerCase();
       const rawPassword = (payload.password || "").trim();
 
       if (!rawName) {
         return jsonResponse({ success: false, error: "Administrator full name is required." }, 400);
       }
-      if (!rawPhone) {
-        return jsonResponse({ success: false, error: "Mobile number is required." }, 400);
+      if (!rawEmail || !rawEmail.includes("@") || !rawEmail.includes(".")) {
+        return jsonResponse({ success: false, error: "A valid email address is required." }, 400);
+      }
+      if (rawEmail === "marketing@svvayam.com") {
+        return jsonResponse({ success: false, error: "Cannot create another super administrator account." }, 400);
+      }
+      if (!rawPassword || rawPassword.length < 10) {
+        return jsonResponse({ success: false, error: "Temporary password must be at least 10 characters." }, 400);
       }
 
-      const cleanDigits10 = rawPhone.replace(/\D/g, "").slice(-10);
-      if (cleanDigits10.length !== 10) {
-        return jsonResponse({ success: false, error: "Phone number must be a valid 10-digit mobile number." }, 400);
-      }
-      const normalizedPhone = "+91" + cleanDigits10;
-      const hiddenEmail = `${cleanDigits10}@svvayam.internal`;
-
-      if (!rawPassword || rawPassword.length < 8) {
-        return jsonResponse({ success: false, error: "Temporary password must be at least 8 characters." }, 400);
+      const hasLetter = /[a-zA-Z]/.test(rawPassword);
+      const hasNumber = /\d/.test(rawPassword);
+      const hasSymbol = /[^a-zA-Z0-9\s]/.test(rawPassword);
+      if (!hasLetter || !hasNumber || !hasSymbol) {
+        return jsonResponse({ success: false, error: "Password must contain at least one letter, one number, and one symbol." }, 400);
       }
 
       // Check if user already exists in profiles
       const { data: existingProf } = await supabaseAdmin
         .from("profiles")
-        .select("id, name, phone, role")
-        .or(`phone.eq.${normalizedPhone},phone.ilike.%${cleanDigits10}%`)
+        .select("id, name, email, role")
+        .ilike("email", rawEmail)
         .limit(1)
         .maybeSingle();
 
@@ -239,26 +245,34 @@ serve(async (req) => {
         return jsonResponse({
           success: false,
           code: "ADMIN_EXISTS",
-          error: "An account with this mobile number already exists."
+          error: "An account with this email address already exists."
         }, 409);
       }
 
       // Create admin auth user
       const { data: createdAuth, error: createAuthErr } = await supabaseAdmin.auth.admin.createUser({
-        email: hiddenEmail,
+        email: rawEmail,
         email_confirm: true,
         password: rawPassword,
         user_metadata: {
           name: rawName,
-          phone: normalizedPhone,
-          role: "admin"
+          role: "admin",
+          must_change_password: true
         }
       });
 
       if (createAuthErr || !createdAuth.user) {
+        const errMsg = createAuthErr?.message || "Failed to create administrator login credentials.";
+        if (errMsg.toLowerCase().includes("already") || errMsg.toLowerCase().includes("registered")) {
+          return jsonResponse({
+            success: false,
+            code: "ADMIN_EXISTS",
+            error: "An account with this email address already exists."
+          }, 409);
+        }
         return jsonResponse({
           success: false,
-          error: createAuthErr?.message || "Failed to create administrator login credentials."
+          error: errMsg
         }, 400);
       }
 
@@ -270,7 +284,7 @@ serve(async (req) => {
         .upsert({
           id: adminUserId,
           name: rawName,
-          phone: normalizedPhone,
+          email: rawEmail,
           role: "admin",
           active: true,
           is_active: true,
@@ -286,7 +300,7 @@ serve(async (req) => {
       }
 
       // Record audit log
-      await recordActivity("admin_created", `${rawName} (${normalizedPhone})`);
+      await recordActivity("admin_created", `${rawName} (${rawEmail})`);
 
       return jsonResponse({
         success: true,
@@ -294,7 +308,7 @@ serve(async (req) => {
         admin: {
           id: adminUserId,
           name: rawName,
-          phone: normalizedPhone,
+          email: rawEmail,
           role: "admin",
           active: true,
           must_change_password: true
@@ -322,7 +336,7 @@ serve(async (req) => {
       // Fetch target profile
       const { data: targetProf } = await supabaseAdmin
         .from("profiles")
-        .select("id, name, phone, role")
+        .select("id, name, email, phone, role")
         .eq("id", targetAdminId)
         .single();
 
@@ -330,8 +344,8 @@ serve(async (req) => {
         return jsonResponse({ success: false, error: "Administrator not found." }, 404);
       }
 
-      // Prevent disabling primary super admin phone 8074257384
-      if (targetProf.phone?.includes("8074257384") || targetProf.role === "super_admin") {
+      // Prevent disabling primary super admin marketing@svvayam.com
+      if (targetProf.email?.toLowerCase() === "marketing@svvayam.com" || targetProf.role === "super_admin") {
         return jsonResponse({
           success: false,
           error: "Primary Super Administrator accounts cannot be disabled."
@@ -363,7 +377,7 @@ serve(async (req) => {
       // Record audit log
       await recordActivity(
         newActive ? "admin_enabled" : "admin_disabled",
-        `${targetProf.name || 'Admin'} (${targetProf.phone})`
+        `${targetProf.name || 'Admin'} (${targetProf.email || targetProf.phone || targetAdminId})`
       );
 
       return jsonResponse({
@@ -382,13 +396,13 @@ serve(async (req) => {
         return jsonResponse({ success: false, error: "admin_id and new password are required." }, 400);
       }
 
-      if (rawPassword.length < 8) {
-        return jsonResponse({ success: false, error: "Temporary password must be at least 8 characters." }, 400);
+      if (rawPassword.length < 10) {
+        return jsonResponse({ success: false, error: "Temporary password must be at least 10 characters." }, 400);
       }
 
       const { data: targetProf } = await supabaseAdmin
         .from("profiles")
-        .select("id, name, phone, role")
+        .select("id, name, email, phone, role")
         .eq("id", targetAdminId)
         .single();
 
@@ -415,7 +429,7 @@ serve(async (req) => {
       // Record audit log
       await recordActivity(
         "admin_password_reset",
-        `${targetProf.name || 'Admin'} (${targetProf.phone})`
+        `${targetProf.name || 'Admin'} (${targetProf.email || targetProf.phone || targetAdminId})`
       );
 
       return jsonResponse({
@@ -441,7 +455,7 @@ serve(async (req) => {
 
       const { data: targetProf } = await supabaseAdmin
         .from("profiles")
-        .select("id, name, phone, role")
+        .select("id, name, email, phone, role")
         .eq("id", targetAdminId)
         .single();
 
@@ -449,7 +463,7 @@ serve(async (req) => {
         return jsonResponse({ success: false, error: "Administrator not found." }, 404);
       }
 
-      if (targetProf.phone?.includes("8074257384") || targetProf.role === "super_admin") {
+      if (targetProf.email?.toLowerCase() === "marketing@svvayam.com" || targetProf.role === "super_admin") {
         return jsonResponse({
           success: false,
           error: "Super Administrator accounts cannot be deleted."
@@ -468,7 +482,7 @@ serve(async (req) => {
       // Record audit log
       await recordActivity(
         "admin_deleted",
-        `${targetProf.name || 'Admin'} (${targetProf.phone})`
+        `${targetProf.name || 'Admin'} (${targetProf.email || targetProf.phone || targetAdminId})`
       );
 
       return jsonResponse({

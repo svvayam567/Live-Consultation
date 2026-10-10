@@ -35,8 +35,8 @@ const LOCAL_STORAGE_MOCK_ACTIVITY_KEY = 'svvayam_mock_admin_activity_v1';
 const SEED_ADMINS: AdminUserRecord[] = [
   {
     id: 'admin-super-001',
-    name: 'Ar. Jagirdhar',
-    phone: '+918074257384',
+    name: 'Svvayam Super Admin',
+    email: 'marketing@svvayam.com',
     role: 'super_admin',
     active: true,
     must_change_password: false,
@@ -46,7 +46,7 @@ const SEED_ADMINS: AdminUserRecord[] = [
   {
     id: 'admin-staff-002',
     name: 'Studio Consultant',
-    phone: '+919182424228',
+    email: 'consultant@svvayam.com',
     role: 'admin',
     active: true,
     must_change_password: false,
@@ -81,12 +81,12 @@ export const AdminTeamPage: React.FC = () => {
   // Modals
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [credentialsModalOpen, setCredentialsModalOpen] = useState(false);
-  const [newCredentials, setNewCredentials] = useState<{ name: string; phone: string; password: string } | null>(null);
+  const [newCredentials, setNewCredentials] = useState<{ name: string; email: string; password: string } | null>(null);
   const [copiedCredentials, setCopiedCredentials] = useState(false);
 
   // Add Admin Form
   const [addName, setAddName] = useState('');
-  const [addPhone, setAddPhone] = useState('');
+  const [addEmail, setAddEmail] = useState('');
   const [addPassword, setAddPassword] = useState('');
   const [showAddPassword, setShowAddPassword] = useState(false);
   const [submittingAdd, setSubmittingAdd] = useState(false);
@@ -136,9 +136,14 @@ export const AdminTeamPage: React.FC = () => {
         let fetchedLogs: AdminActivityRecord[] = [];
 
         try {
-          const res = await supabase.functions.invoke('register-customer', {
+          let res = await supabase.functions.invoke('manage-admin', {
             body: { action: 'list_admins' }
           });
+          if (!res.data?.success) {
+            res = await supabase.functions.invoke('register-customer', {
+              body: { action: 'list_admins' }
+            });
+          }
           if (res.data?.success && Array.isArray(res.data.admins)) {
             fetchedAdmins = res.data.admins;
           }
@@ -150,7 +155,7 @@ export const AdminTeamPage: React.FC = () => {
         if (fetchedAdmins.length === 0) {
           const { data: profs } = await supabase
             .from('profiles')
-            .select('id, name, phone, role, active, is_active, must_change_password, created_at')
+            .select('id, name, email, phone, role, active, is_active, must_change_password, created_at')
             .in('role', ['admin', 'super_admin'])
             .order('created_at', { ascending: false });
 
@@ -158,6 +163,7 @@ export const AdminTeamPage: React.FC = () => {
             fetchedAdmins = profs.map(p => ({
               id: p.id,
               name: p.name || 'Unnamed Admin',
+              email: p.email || (p.role === 'super_admin' ? 'marketing@svvayam.com' : (p.phone ? `${p.phone}@svvayam.app` : 'admin@svvayam.com')),
               phone: p.phone,
               role: p.role as 'super_admin' | 'admin',
               active: p.active !== false && p.is_active !== false,
@@ -229,7 +235,7 @@ export const AdminTeamPage: React.FC = () => {
   // Open Add Admin Modal
   const handleOpenAddModal = () => {
     setAddName('');
-    setAddPhone('');
+    setAddEmail('');
     setAddPassword(generateStrongPassword());
     setShowAddPassword(false);
     setAddModalOpen(true);
@@ -238,33 +244,60 @@ export const AdminTeamPage: React.FC = () => {
   // Submit Add Admin
   const handleCreateAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanDigits = addPhone.replace(/\D/g, '').slice(-10);
-    if (!addName.trim()) {
+    const cleanName = addName.trim();
+    const cleanEmail = addEmail.trim().toLowerCase();
+    const cleanPass = addPassword.trim();
+
+    if (!cleanName) {
       setToastMessage({ type: 'error', text: 'Please enter the administrator full name.' });
       return;
     }
-    if (cleanDigits.length !== 10) {
-      setToastMessage({ type: 'error', text: 'Please enter a valid 10-digit mobile number.' });
+    if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+      setToastMessage({ type: 'error', text: 'Please enter a valid email address.' });
       return;
     }
-    if (addPassword.trim().length < 8) {
-      setToastMessage({ type: 'error', text: 'Password must be at least 8 characters.' });
+    if (cleanEmail === 'marketing@svvayam.com') {
+      setToastMessage({ type: 'error', text: 'Cannot create another super administrator account.' });
+      return;
+    }
+    
+    // Live checklist validation (min 10 chars, letter, number, symbol)
+    const hasMinLen = cleanPass.length >= 10;
+    const hasLetter = /[a-zA-Z]/.test(cleanPass);
+    const hasNumber = /[0-9]/.test(cleanPass);
+    const hasSymbol = /[^a-zA-Z0-9]/.test(cleanPass);
+
+    if (!hasMinLen || !hasLetter || !hasNumber || !hasSymbol) {
+      setToastMessage({
+        type: 'error',
+        text: 'Password must be at least 10 characters and include at least one letter, one number, and one symbol.'
+      });
       return;
     }
 
     setSubmittingAdd(true);
-    const normalizedPhone = '+91' + cleanDigits;
 
     try {
       if (isSupabaseConfigured && supabase) {
-        const response = await supabase.functions.invoke('register-customer', {
+        let response = await supabase.functions.invoke('manage-admin', {
           body: {
             action: 'register_admin',
-            name: addName.trim(),
-            phone: normalizedPhone,
-            password: addPassword.trim()
+            name: cleanName,
+            email: cleanEmail,
+            password: cleanPass
           }
         });
+
+        if (!response.data?.success) {
+          response = await supabase.functions.invoke('register-customer', {
+            body: {
+              action: 'register_admin',
+              name: cleanName,
+              email: cleanEmail,
+              password: cleanPass
+            }
+          });
+        }
 
         if (!response.data?.success) {
           throw new Error(response.data?.error || response.error?.message || 'Failed to create administrator account.');
@@ -272,9 +305,9 @@ export const AdminTeamPage: React.FC = () => {
       } else {
         // Mock fallback
         const newMockAdmin: AdminUserRecord = {
-          id: 'admin-' + cleanDigits,
-          name: addName.trim(),
-          phone: normalizedPhone,
+          id: 'admin-' + Date.now(),
+          name: cleanName,
+          email: cleanEmail,
           role: 'admin',
           active: true,
           must_change_password: true,
@@ -290,7 +323,7 @@ export const AdminTeamPage: React.FC = () => {
           actor_id: user?.id || null,
           actor_name: profile?.name || 'Super Admin',
           action: 'admin_created',
-          target: `${addName.trim()} (${normalizedPhone})`,
+          target: `${cleanName} (${cleanEmail})`,
           created_at: new Date().toISOString()
         };
         const updatedLogs = [newLog, ...activityLogs];
@@ -300,12 +333,12 @@ export const AdminTeamPage: React.FC = () => {
 
       setAddModalOpen(false);
       setNewCredentials({
-        name: addName.trim(),
-        phone: normalizedPhone,
-        password: addPassword.trim()
+        name: cleanName,
+        email: cleanEmail,
+        password: cleanPass
       });
       setCredentialsModalOpen(true);
-      setToastMessage({ type: 'success', text: `Administrator ${addName.trim()} created successfully.` });
+      setToastMessage({ type: 'success', text: `Administrator ${cleanName} created successfully.` });
       loadData(true);
     } catch (err: any) {
       setToastMessage({ type: 'error', text: err.message || 'Error creating administrator.' });
@@ -317,7 +350,7 @@ export const AdminTeamPage: React.FC = () => {
   // Toggle Active Status
   const handleToggleActive = async (adminItem: AdminUserRecord) => {
     // Prevent disabling self or primary super admin
-    if (adminItem.phone.includes('8074257384') || adminItem.role === 'super_admin' || adminItem.id === user?.id) {
+    if (adminItem.email?.toLowerCase() === 'marketing@svvayam.com' || adminItem.role === 'super_admin' || adminItem.id === user?.id) {
       setToastMessage({ type: 'error', text: 'Super Administrator accounts cannot be disabled.' });
       return;
     }
@@ -325,13 +358,23 @@ export const AdminTeamPage: React.FC = () => {
     const nextActive = !adminItem.active;
     try {
       if (isSupabaseConfigured && supabase) {
-        const response = await supabase.functions.invoke('register-customer', {
+        let response = await supabase.functions.invoke('manage-admin', {
           body: {
             action: 'toggle_admin_active',
             admin_id: adminItem.id,
             active: nextActive
           }
         });
+
+        if (!response.data?.success) {
+          response = await supabase.functions.invoke('register-customer', {
+            body: {
+              action: 'toggle_admin_active',
+              admin_id: adminItem.id,
+              active: nextActive
+            }
+          });
+        }
 
         if (!response.data?.success) {
           throw new Error(response.data?.error || response.error?.message || 'Failed to update admin status.');
@@ -347,7 +390,7 @@ export const AdminTeamPage: React.FC = () => {
           actor_id: user?.id || null,
           actor_name: profile?.name || 'Super Admin',
           action: nextActive ? 'admin_enabled' : 'admin_disabled',
-          target: `${adminItem.name} (${adminItem.phone})`,
+          target: `${adminItem.name} (${adminItem.email || adminItem.phone || adminItem.id})`,
           created_at: new Date().toISOString()
         };
         const updatedLogs = [newLog, ...activityLogs];
@@ -377,21 +420,31 @@ export const AdminTeamPage: React.FC = () => {
   const handleConfirmResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!targetAdminForReset) return;
-    if (resetPasswordVal.trim().length < 8) {
-      setToastMessage({ type: 'error', text: 'Password must be at least 8 characters.' });
+    if (resetPasswordVal.trim().length < 10) {
+      setToastMessage({ type: 'error', text: 'Temporary password must be at least 10 characters.' });
       return;
     }
 
     setSubmittingReset(true);
     try {
       if (isSupabaseConfigured && supabase) {
-        const response = await supabase.functions.invoke('register-customer', {
+        let response = await supabase.functions.invoke('manage-admin', {
           body: {
             action: 'reset_admin_password',
             admin_id: targetAdminForReset.id,
             password: resetPasswordVal.trim()
           }
         });
+
+        if (!response.data?.success) {
+          response = await supabase.functions.invoke('register-customer', {
+            body: {
+              action: 'reset_admin_password',
+              admin_id: targetAdminForReset.id,
+              password: resetPasswordVal.trim()
+            }
+          });
+        }
 
         if (!response.data?.success) {
           throw new Error(response.data?.error || response.error?.message || 'Failed to reset password.');
@@ -407,7 +460,7 @@ export const AdminTeamPage: React.FC = () => {
           actor_id: user?.id || null,
           actor_name: profile?.name || 'Super Admin',
           action: 'admin_password_reset',
-          target: `${targetAdminForReset.name} (${targetAdminForReset.phone})`,
+          target: `${targetAdminForReset.name} (${targetAdminForReset.email || targetAdminForReset.phone})`,
           created_at: new Date().toISOString()
         };
         const updatedLogs = [newLog, ...activityLogs];
@@ -418,7 +471,7 @@ export const AdminTeamPage: React.FC = () => {
       setResetModalOpen(false);
       setNewCredentials({
         name: targetAdminForReset.name,
-        phone: targetAdminForReset.phone,
+        email: targetAdminForReset.email || '',
         password: resetPasswordVal.trim()
       });
       setCredentialsModalOpen(true);
@@ -436,7 +489,7 @@ export const AdminTeamPage: React.FC = () => {
 
   // Open Delete Modal
   const handleOpenDeleteModal = (adminItem: AdminUserRecord) => {
-    if (adminItem.phone.includes('8074257384') || adminItem.role === 'super_admin' || adminItem.id === user?.id) {
+    if (adminItem.email?.toLowerCase() === 'marketing@svvayam.com' || adminItem.role === 'super_admin' || adminItem.id === user?.id) {
       setToastMessage({ type: 'error', text: 'Super Administrator accounts cannot be deleted.' });
       return;
     }
@@ -452,12 +505,21 @@ export const AdminTeamPage: React.FC = () => {
     setIsDeleting(true);
     try {
       if (isSupabaseConfigured && supabase) {
-        const response = await supabase.functions.invoke('register-customer', {
+        let response = await supabase.functions.invoke('manage-admin', {
           body: {
             action: 'delete_admin',
             admin_id: targetAdminForDelete.id
           }
         });
+
+        if (!response.data?.success) {
+          response = await supabase.functions.invoke('register-customer', {
+            body: {
+              action: 'delete_admin',
+              admin_id: targetAdminForDelete.id
+            }
+          });
+        }
 
         if (!response.data?.success) {
           throw new Error(response.data?.error || response.error?.message || 'Failed to delete administrator.');
@@ -473,7 +535,7 @@ export const AdminTeamPage: React.FC = () => {
           actor_id: user?.id || null,
           actor_name: profile?.name || 'Super Admin',
           action: 'admin_deleted',
-          target: `${targetAdminForDelete.name} (${targetAdminForDelete.phone})`,
+          target: `${targetAdminForDelete.name} (${targetAdminForDelete.email || targetAdminForDelete.phone})`,
           created_at: new Date().toISOString()
         };
         const updatedLogs = [newLog, ...activityLogs];
@@ -495,7 +557,7 @@ export const AdminTeamPage: React.FC = () => {
   // Copy credentials helper
   const handleCopyCredentials = () => {
     if (!newCredentials) return;
-    const text = `Svvayam Architectural Staff Access Credentials\nName: ${newCredentials.name}\nMobile Number: ${newCredentials.phone}\nTemporary Password: ${newCredentials.password}\nPortal URL: ${window.location.origin}\nNote: You will be prompted to set your own permanent password on first login.`;
+    const text = `Svvayam Architectural Staff Access Credentials\nName: ${newCredentials.name}\nEmail: ${newCredentials.email}\nTemporary Password: ${newCredentials.password}\nPortal URL: ${window.location.origin}\nNote: Admins log in using Email + Password. You will be prompted to set your permanent password on first login.`;
     navigator.clipboard.writeText(text);
     setCopiedCredentials(true);
     setTimeout(() => setCopiedCredentials(false), 2000);
@@ -507,7 +569,8 @@ export const AdminTeamPage: React.FC = () => {
     if (!q) return admins;
     return admins.filter(a =>
       a.name.toLowerCase().includes(q) ||
-      a.phone.toLowerCase().includes(q)
+      (a.email && a.email.toLowerCase().includes(q)) ||
+      (a.phone && a.phone.toLowerCase().includes(q))
     );
   }, [admins, searchQuery]);
 
@@ -723,7 +786,7 @@ export const AdminTeamPage: React.FC = () => {
                 <thead>
                   <tr className="border-b border-[#ECECEC] text-[11px] font-mono uppercase text-neutral-500 tracking-wider">
                     <th className="py-3 px-3">Administrator</th>
-                    <th className="py-3 px-3">Mobile Number</th>
+                    <th className="py-3 px-3">Email Address</th>
                     <th className="py-3 px-3">Role</th>
                     <th className="py-3 px-3">Account Status</th>
                     <th className="py-3 px-3">Password Status</th>
@@ -746,7 +809,7 @@ export const AdminTeamPage: React.FC = () => {
                     </tr>
                   ) : (
                     filteredAdmins.map((adm) => {
-                      const isPrimarySuperAdmin = adm.phone.includes('8074257384') || adm.role === 'super_admin';
+                      const isPrimarySuperAdmin = adm.email?.toLowerCase() === 'marketing@svvayam.com' || adm.role === 'super_admin';
                       const isCurrentCaller = adm.id === user?.id;
 
                       return (
@@ -778,9 +841,9 @@ export const AdminTeamPage: React.FC = () => {
                             </div>
                           </td>
 
-                          {/* Phone */}
+                          {/* Email */}
                           <td className="py-3.5 px-3 font-mono text-neutral-700">
-                            {adm.phone}
+                            {adm.email || adm.phone || '—'}
                           </td>
 
                           {/* Role Badge */}
@@ -1059,25 +1122,16 @@ export const AdminTeamPage: React.FC = () => {
 
           <div>
             <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
-              10-Digit Mobile Number
+              Email Address
             </label>
-            <div className="flex rounded-[12px] shadow-xs">
-              <span className="inline-flex items-center px-3.5 rounded-l-[12px] border border-r-0 border-[#E5E5E5] bg-[#F7F7F7] text-xs font-mono font-semibold text-[#0A0A0A] select-none">
-                +91
-              </span>
-              <input
-                type="tel"
-                value={addPhone}
-                onChange={(e) => {
-                  const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
-                  setAddPhone(digits);
-                }}
-                placeholder="9182424228"
-                maxLength={10}
-                required
-                className="flex-1 px-3.5 py-2.5 rounded-r-[12px] border border-[#E5E5E5] bg-white text-xs font-mono text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
-              />
-            </div>
+            <input
+              type="email"
+              value={addEmail}
+              onChange={(e) => setAddEmail(e.target.value)}
+              placeholder="e.g. staff@svvayam.com"
+              required
+              className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+            />
           </div>
 
           <div>
@@ -1099,7 +1153,7 @@ export const AdminTeamPage: React.FC = () => {
                 type={showAddPassword ? 'text' : 'password'}
                 value={addPassword}
                 onChange={(e) => setAddPassword(e.target.value)}
-                placeholder="At least 8 characters"
+                placeholder="At least 10 characters"
                 required
                 className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-mono text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
               />
@@ -1110,6 +1164,26 @@ export const AdminTeamPage: React.FC = () => {
               >
                 {showAddPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
+            </div>
+
+            {/* Live Password Checklist */}
+            <div className="mt-2.5 grid grid-cols-2 gap-2 p-3 bg-neutral-50 rounded-[12px] border border-neutral-200/80 text-[11px] font-mono">
+              <div className={cn("flex items-center gap-1.5", addPassword.length >= 10 ? "text-emerald-700 font-semibold" : "text-neutral-500")}>
+                <span className={cn("w-1.5 h-1.5 rounded-full", addPassword.length >= 10 ? "bg-emerald-600" : "bg-neutral-300")} />
+                10+ characters
+              </div>
+              <div className={cn("flex items-center gap-1.5", /[a-zA-Z]/.test(addPassword) ? "text-emerald-700 font-semibold" : "text-neutral-500")}>
+                <span className={cn("w-1.5 h-1.5 rounded-full", /[a-zA-Z]/.test(addPassword) ? "bg-emerald-600" : "bg-neutral-300")} />
+                At least 1 letter
+              </div>
+              <div className={cn("flex items-center gap-1.5", /[0-9]/.test(addPassword) ? "text-emerald-700 font-semibold" : "text-neutral-500")}>
+                <span className={cn("w-1.5 h-1.5 rounded-full", /[0-9]/.test(addPassword) ? "bg-emerald-600" : "bg-neutral-300")} />
+                At least 1 number
+              </div>
+              <div className={cn("flex items-center gap-1.5", /[^a-zA-Z0-9]/.test(addPassword) ? "text-emerald-700 font-semibold" : "text-neutral-500")}>
+                <span className={cn("w-1.5 h-1.5 rounded-full", /[^a-zA-Z0-9]/.test(addPassword) ? "bg-emerald-600" : "bg-neutral-300")} />
+                At least 1 symbol
+              </div>
             </div>
           </div>
 
@@ -1161,8 +1235,8 @@ export const AdminTeamPage: React.FC = () => {
                 <span className="font-semibold text-white">{newCredentials.name}</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-neutral-400 font-sans">Mobile Number:</span>
-                <span className="font-semibold text-white">{newCredentials.phone}</span>
+                <span className="text-neutral-400 font-sans">Email Address:</span>
+                <span className="font-semibold text-white">{newCredentials.email}</span>
               </div>
               <div className="flex justify-between py-1 items-center">
                 <span className="text-neutral-400 font-sans">Temporary Password:</span>
@@ -1208,7 +1282,7 @@ export const AdminTeamPage: React.FC = () => {
       >
         <form onSubmit={handleConfirmResetPassword} className="space-y-4">
           <p className="text-xs text-neutral-500 font-sans leading-relaxed">
-            Set a new temporary password for <strong>{targetAdminForReset?.name}</strong> ({targetAdminForReset?.phone}). Setting a temporary password forces them to create a permanent password on their next login.
+            Set a new temporary password for <strong>{targetAdminForReset?.name}</strong> ({targetAdminForReset?.email || targetAdminForReset?.phone}). Setting a temporary password forces them to create a permanent password on their next login.
           </p>
 
           <div>
@@ -1230,7 +1304,7 @@ export const AdminTeamPage: React.FC = () => {
                 type={showResetPassword ? 'text' : 'password'}
                 value={resetPasswordVal}
                 onChange={(e) => setResetPasswordVal(e.target.value)}
-                placeholder="At least 8 characters"
+                placeholder="At least 10 characters"
                 required
                 className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-mono text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
               />
@@ -1278,7 +1352,7 @@ export const AdminTeamPage: React.FC = () => {
             <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
             <div className="space-y-1 leading-relaxed">
               <p className="font-semibold">
-                Permanent Administrator Removal: {targetAdminForDelete?.name} ({targetAdminForDelete?.phone})
+                Permanent Administrator Removal: {targetAdminForDelete?.name} ({targetAdminForDelete?.email || targetAdminForDelete?.phone})
               </p>
               <p>
                 Deleting this administrator account permanently revokes access and deletes their login credentials. This action cannot be undone.

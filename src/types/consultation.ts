@@ -6,7 +6,8 @@ export type CustomerProduct = 'Temple' | 'Puja Mandir' | 'Sanctum';
 export interface Profile {
   id: string;
   name: string;
-  phone: string;
+  email?: string;
+  phone?: string;
   role: UserRole;
   title?: CustomerTitle;
   surname?: string;
@@ -40,7 +41,8 @@ export interface AdminActivityRecord {
 export interface AdminUserRecord {
   id: string;
   name: string;
-  phone: string;
+  email: string;
+  phone?: string;
   role: 'super_admin' | 'admin';
   active: boolean;
   must_change_password?: boolean;

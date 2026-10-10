@@ -96,7 +96,7 @@ export const CustomerPortalPage: React.FC = () => {
               setPortalData({
                 id: data.id,
                 client_name: profile?.name || data.fields?.client || 'Valued Customer',
-                client_phone: user.phone,
+                client_phone: user.phone || profile?.phone || '',
                 location: data.fields?.location || 'Pending location',
                 date: data.fields?.date || new Date().toISOString().slice(0, 10),
                 status: data.status || 'draft',
@@ -128,7 +128,7 @@ export const CustomerPortalPage: React.FC = () => {
               id: data.id,
               client_name: clientName,
               project_name: projName,
-              client_phone: user.phone,
+              client_phone: user.phone || profile?.phone || '',
               location: data.fields?.location || 'Bengaluru, India',
               date: data.fields?.date || new Date().toISOString().slice(0, 10),
               status: data.status || 'draft',

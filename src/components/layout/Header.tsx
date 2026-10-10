@@ -6,7 +6,7 @@ import { Modal } from '../ui/Modal';
 import { LogOut, User, ShieldCheck, Home, ArrowRight } from 'lucide-react';
 
 export const Header: React.FC = () => {
-  const { user, profile, isAdmin, isCustomer, logout } = useAuth();
+  const { user, profile, isAdmin, isSuperAdmin, isCustomer, logout } = useAuth();
   const navigate = useNavigate();
   const [chooserOpen, setChooserOpen] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -65,11 +65,11 @@ export const Header: React.FC = () => {
                   <span className="font-medium text-[#0A0A0A] hidden sm:inline">
                     {isAdmin ? `Logged in as ${profile?.name || user.phone}` : (profile?.name || user.phone)}
                   </span>
-                  {isAdmin ? (
-                    <span className="text-[10px] uppercase tracking-wider bg-neutral-100 border border-[#ECECEC] text-[#0A0A0A] px-2 py-0.5 rounded-full font-mono">
-                      Admin
+                  {isSuperAdmin ? (
+                    <span className="text-[9px] uppercase tracking-wider bg-[#0A0A0A] text-white font-bold px-2 py-0.5 rounded-full font-mono">
+                      SUPER ADMIN
                     </span>
-                  ) : isCustomer ? (
+                  ) : isAdmin ? null : isCustomer ? (
                     <span className="text-[10px] uppercase tracking-wider bg-emerald-950/10 border border-emerald-800/30 text-[#0E2A1C] px-2 py-0.5 rounded-full font-mono">
                       Customer
                     </span>
