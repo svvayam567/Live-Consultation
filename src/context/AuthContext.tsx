@@ -161,12 +161,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             id: 'admin-super-001',
             name: 'Svvayam Super Admin',
             email: SUPER_ADMIN_EMAIL,
+            phone: '+918074257384',
             role: 'super_admin',
             active: true,
             is_active: true,
             created_at: new Date().toISOString()
           };
-          setUser({ id: mockAdmin.id, email: SUPER_ADMIN_EMAIL });
+          setUser({ id: mockAdmin.id, email: SUPER_ADMIN_EMAIL, phone: mockAdmin.phone });
           setProfile(mockAdmin);
           setIsLoading(false);
           return;

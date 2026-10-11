@@ -6,7 +6,7 @@ import { Modal } from '../ui/Modal';
 import { LogOut, User, ShieldCheck, Home, ArrowRight } from 'lucide-react';
 
 export const Header: React.FC = () => {
-  const { user, profile, isAdmin, isSuperAdmin, isCustomer, logout } = useAuth();
+  const { user, profile, isAdmin, isCustomer, logout } = useAuth();
   const navigate = useNavigate();
   const [chooserOpen, setChooserOpen] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -60,30 +60,27 @@ export const Header: React.FC = () => {
                   </Link>
                 )}
 
-                <div className="flex items-center space-x-1.5 text-[#5C5C5C]">
-                  <User className="w-3.5 h-3.5 text-neutral-400" />
-                  <span className="font-medium text-[#0A0A0A] hidden sm:inline">
-                    {isAdmin ? `Logged in as ${profile?.name || user.phone}` : (profile?.name || user.phone)}
-                  </span>
-                  {isSuperAdmin ? (
-                    <span className="text-[9px] uppercase tracking-wider bg-[#0A0A0A] text-white font-bold px-2 py-0.5 rounded-full font-mono">
-                      SUPER ADMIN
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center font-serif text-xs font-semibold bg-[#F4F4F4] text-[#0A0A0A] border border-[#ECECEC]"
+                    title={profile?.name || user.phone || 'Customer Account'}
+                  >
+                    <span>
+                      {(profile?.name
+                        ? profile.name.trim().split(/\s+/).map((p: string) => p[0]).join('').slice(0, 2).toUpperCase()
+                        : 'CU')}
                     </span>
-                  ) : isAdmin ? null : isCustomer ? (
-                    <span className="text-[10px] uppercase tracking-wider bg-emerald-950/10 border border-emerald-800/30 text-[#0E2A1C] px-2 py-0.5 rounded-full font-mono">
-                      Customer
-                    </span>
-                  ) : null}
-                </div>
+                  </div>
 
-                <button
-                  onClick={handleLogout}
-                  className="text-[#5C5C5C] hover:text-[#0A0A0A] transition-colors flex items-center space-x-1 text-xs cursor-pointer"
-                  title="Log out"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>Logout</span>
-                </button>
+                  <button
+                    onClick={handleLogout}
+                    className="text-[#5C5C5C] hover:text-[#0A0A0A] transition-colors flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#ECECEC] hover:border-[#0A0A0A] bg-white cursor-pointer"
+                    title="Log out"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <button
