@@ -207,7 +207,14 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
         // If user is authenticated and Supabase is configured, save to Postgres
         if (isSupabaseConfigured && supabase && user) {
-          const projName = nextState.project_name || nextState.fields.projectName || nextState.fields.project_name || (nextState.fields.surname ? formatProjectName(nextState.fields.title, nextState.fields.surname, nextState.fields.product) : null);
+          const projName = formatProjectName(
+            nextState.project_name || nextState.fields.projectName || nextState.fields.project_name || {
+              title: nextState.fields.title,
+              surname: nextState.fields.surname,
+              product: nextState.fields.product || nextState.fields.productType || 'Temple',
+              client_name: nextState.fields.client
+            }
+          );
           const computedStatus = nextState.status || (nextState.slide === 7 ? 'completed' : 'draft');
           const payload: any = {
             created_by: user.id,
@@ -243,7 +250,14 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
           const stored = localStorage.getItem(adminConsultationsKey);
           const list: any[] = stored ? JSON.parse(stored) : [];
           const consultId = nextState.id || 'draft-active';
-          const projName = nextState.project_name || nextState.fields.projectName || nextState.fields.project_name || (nextState.fields.surname ? formatProjectName(nextState.fields.title, nextState.fields.surname, nextState.fields.product) : 'Sanctum Project');
+          const projName = formatProjectName(
+            nextState.project_name || nextState.fields.projectName || nextState.fields.project_name || {
+              title: nextState.fields.title,
+              surname: nextState.fields.surname,
+              product: nextState.fields.product || nextState.fields.productType || 'Temple',
+              client_name: nextState.fields.client
+            }
+          );
 
           const existingIdx = list.findIndex(c => c.id === consultId);
           const updatedRecord = {
@@ -628,7 +642,14 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       // 3. Persist to Supabase if available
       if (isSupabaseConfigured && supabase) {
         try {
-          const projName = updatedState.project_name || updatedState.fields.projectName || updatedState.fields.project_name || (updatedState.fields.surname ? formatProjectName(updatedState.fields.title, updatedState.fields.surname, updatedState.fields.product) : null);
+          const projName = formatProjectName(
+            updatedState.project_name || updatedState.fields.projectName || updatedState.fields.project_name || {
+              title: updatedState.fields.title,
+              surname: updatedState.fields.surname,
+              product: updatedState.fields.product || updatedState.fields.productType || 'Temple',
+              client_name: updatedState.fields.client
+            }
+          );
           const payload: any = {
             created_by: user?.id,
             consultant_id: profile?.id || user?.id || updatedState.consultant_id || null,
@@ -667,7 +688,14 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         const stored = localStorage.getItem(adminConsultationsKey);
         const list: any[] = stored ? JSON.parse(stored) : [];
         const consultId = updatedState.id || 'draft-active';
-        const projName = updatedState.project_name || updatedState.fields.projectName || updatedState.fields.project_name || (updatedState.fields.surname ? formatProjectName(updatedState.fields.title, updatedState.fields.surname, updatedState.fields.product) : 'Sanctum Project');
+        const projName = formatProjectName(
+          updatedState.project_name || updatedState.fields.projectName || updatedState.fields.project_name || {
+            title: updatedState.fields.title,
+            surname: updatedState.fields.surname,
+            product: updatedState.fields.product || updatedState.fields.productType || 'Temple',
+            client_name: updatedState.fields.client
+          }
+        );
 
         const existingIdx = list.findIndex(c => c.id === consultId);
         const updatedRecord = {

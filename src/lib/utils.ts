@@ -102,35 +102,109 @@ export function normalizeToE164(phone: string): string {
 }
 
 /**
- * Extract surname / last name from full client name (e.g. "Mala Sharma" -> "Sharma")
+ * Extract surname / family name from full client name (e.g. "Mala Sharma" -> "Sharma")
+ * Exact spelling and casing preserved, only trimming whitespace.
  */
 export function extractSurname(fullName: string): string {
   if (!fullName) return '';
   // Remove known titles if present at start
-  const cleaned = fullName.replace(/^(Mr\.|Mrs\.|Ms\.|Dr\.)\s+/i, '').trim();
+  const cleaned = fullName.replace(/^(Mr\.|Mrs\.|Ms\.|Dr\.|Mr|Mrs|Ms|Dr)\s+/i, '').trim();
   const parts = cleaned.split(/\s+/).filter(Boolean);
   if (parts.length === 0) return '';
   return parts[parts.length - 1];
 }
 
+export interface ProjectNameSource {
+  title?: string | null;
+  surname?: string | null;
+  product?: string | null;
+  product_type?: string | null;
+  projectName?: string | null;
+  project_name?: string | null;
+  client?: string | null;
+  client_name?: string | null;
+  name?: string | null;
+}
+
 /**
- * Standard project naming format: "<Title> <Surname>'s <Product>"
- * Examples: "Mrs. Pal's Temple", "Mr. Agarwal's Sanctum", "Mrs. Sharma's Temple"
+ * Single source of truth for project naming across the entire Svvayam app:
+ * Format: "<Title> <Surname>'s <Product>"
+ *
+ * Examples:
+ * - Ms. Reddy's Temple
+ * - Mr. Shenoy's Sanctum
+ * - Mrs. Sharma's Temple
+ *
+ * Rules:
+ * - Surname: keep exact spelling entered by admin; only trim extra spaces.
+ * - Title: use as selected with a full stop and space after it (e.g. "Mr. ", "Ms. ").
+ * - Possessive: always append 's directly after surname.
+ * - Product: exact selected product type (defaults to 'Temple').
+ * - Fallbacks: if surname missing -> "Client"; if product missing -> "Temple".
+ * - Never returns or displays "undefined" or "null".
  */
 export function formatProjectName(
-  title: string | undefined = 'Mr.',
-  surname: string | undefined = '',
-  product: string | undefined = 'Temple'
+  titleOrSource?: string | null | ProjectNameSource,
+  surnameParam?: string | null,
+  productParam?: string | null
 ): string {
-  const cleanTitle = (title || 'Mr.').trim();
-  const cleanSurname = (surname || '').trim();
-  const cleanProduct = (product || 'Temple').trim();
+  let title: string | undefined;
+  let surname: string | undefined;
+  let product: string | undefined;
 
-  if (!cleanSurname) {
-    return cleanProduct;
+  if (titleOrSource && typeof titleOrSource === 'object') {
+    title = titleOrSource.title ?? undefined;
+    surname = titleOrSource.surname ?? undefined;
+    product = titleOrSource.product ?? titleOrSource.product_type ?? undefined;
+
+    // If surname is missing on the object, attempt extraction from full name
+    if (!surname || !surname.trim()) {
+      const fallbackName = titleOrSource.client_name || titleOrSource.name || titleOrSource.client;
+      if (fallbackName && fallbackName.trim()) {
+        surname = extractSurname(fallbackName.trim());
+      }
+    }
+  } else if (typeof titleOrSource === 'string' && surnameParam === undefined && productParam === undefined) {
+    // If a single string was passed (e.g. legacy full name or already-formatted project name)
+    const raw = titleOrSource.trim();
+    if (raw.includes("'s ") || raw.includes("’s ")) {
+      return raw.replace(/’s\s+/g, "'s ");
+    }
+    const titleMatch = raw.match(/^(Mr\.|Mrs\.|Ms\.|Dr\.)/i);
+    if (titleMatch) {
+      title = titleMatch[1];
+    }
+    surname = extractSurname(raw);
+    product = 'Temple';
+  } else {
+    title = (typeof titleOrSource === 'string' ? titleOrSource : undefined);
+    surname = (surnameParam ?? undefined);
+    product = (productParam ?? undefined);
   }
 
-  return `${cleanTitle} ${cleanSurname}'s ${cleanProduct}`;
+  // 1. Title formatting (ensure dot and trailing space if title present)
+  let cleanTitle = (title || '').trim();
+  if (cleanTitle) {
+    if (!cleanTitle.endsWith('.')) {
+      cleanTitle = cleanTitle + '.';
+    }
+    cleanTitle = cleanTitle + ' ';
+  }
+
+  // 2. Surname formatting (exact spelling preserved, extra spaces trimmed)
+  let cleanSurname = (surname || '').trim();
+  if (!cleanSurname) {
+    cleanSurname = 'Client';
+  }
+
+  // 3. Product formatting (exact product type, sensible fallback 'Temple')
+  let cleanProduct = (product || '').trim();
+  if (!cleanProduct) {
+    cleanProduct = 'Temple';
+  }
+
+  // 4. Output: <Title> <Surname>'s <Product>
+  return `${cleanTitle}${cleanSurname}'s ${cleanProduct}`;
 }
 
 /**

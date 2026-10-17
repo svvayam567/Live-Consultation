@@ -8,7 +8,7 @@ import { Toast } from '../../components/ui/Toast';
 import { Modal } from '../../components/ui/Modal';
 import { PortalChat } from '../../components/portal/PortalChat';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
-import { money, indicativeAmount, cn } from '../../lib/utils';
+import { money, indicativeAmount, cn, formatProjectName } from '../../lib/utils';
 import type { ConsultationState, SelectedReference, CustomerRecord } from '../../types/consultation';
 import {
   Users,
@@ -642,8 +642,9 @@ export const AdminClientsPage: React.FC = () => {
       }
     }
 
+    const displayName = formatProjectName(consultation.title, consultation.surname, consultation.product) || consultation.project_name || 'Client Project';
     setToastMsg(
-      `Consultation for ${consultation.client_name} is now ${newStatus ? 'visible' : 'hidden'} in Customer Portal.`
+      `Consultation for ${displayName} is now ${newStatus ? 'visible' : 'hidden'} in Customer Portal.`
     );
   };
 
@@ -700,11 +701,15 @@ export const AdminClientsPage: React.FC = () => {
     return consultations.filter((item) => {
       const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
       const q = searchQuery.toLowerCase().trim();
+      const projName = (item.project_name || formatProjectName(item.title, item.surname, item.product) || '').toLowerCase();
+      const surname = (item.surname || '').toLowerCase();
+      const product = (item.product || '').toLowerCase();
       const matchesSearch =
         q === '' ||
-        item.client_name.toLowerCase().includes(q) ||
-        (item.project_name && item.project_name.toLowerCase().includes(q)) ||
-        (item.surname && item.surname.toLowerCase().includes(q)) ||
+        projName.includes(q) ||
+        surname.includes(q) ||
+        product.includes(q) ||
+        (item.client_name && item.client_name.toLowerCase().includes(q)) ||
         item.client_phone.toLowerCase().includes(q) ||
         item.location.toLowerCase().includes(q) ||
         (item.consultant_name || item.consultant || 'Svvayam Admin').toLowerCase().includes(q);
@@ -728,8 +733,9 @@ export const AdminClientsPage: React.FC = () => {
     setSyncingId(record.id);
     const result = await triggerSheetsSync();
     setSyncingId(null);
+    const displayName = formatProjectName(record.title, record.surname, record.product) || record.project_name || 'Client Project';
     if (result.success) {
-      setToastMsg(`Synced ${record.project_name || record.client_name} consultation row to Master Google Sheet!`);
+      setToastMsg(`Synced ${displayName} consultation row to Master Google Sheet!`);
     } else {
       setToastMsg(`Sync simulation logged: ${result.message || 'Credentials pending.'}`);
     }
@@ -920,10 +926,10 @@ export const AdminClientsPage: React.FC = () => {
                           >
                             <td className="py-3 px-4">
                               <div className="font-semibold text-[#0A0A0A] font-sans">
-                                {item.project_name || item.client_name}
+                                {formatProjectName(item.title, item.surname, item.product) || item.project_name}
                               </div>
                               <div className="text-[11px] text-neutral-500 font-sans">
-                                {item.client_name}
+                                {item.location || (item.client_phone ? '•••• ' + item.client_phone.slice(-4) : '')}
                               </div>
                             </td>
                             <td className="py-3 px-4 font-mono text-neutral-600">
@@ -1201,10 +1207,10 @@ export const AdminClientsPage: React.FC = () => {
                     )}
                   >
                     <div className="font-semibold text-xs truncate">
-                      {item.project_name || item.client_name}
+                      {formatProjectName(item.title, item.surname, item.product) || item.project_name}
                     </div>
                     <div className={cn("text-[11px] truncate", selectedThreadConsultationId === item.id ? "text-neutral-300" : "text-neutral-500")}>
-                      Client: {item.client_name}
+                      {item.location || (item.client_phone ? '•••• ' + item.client_phone.slice(-4) : '')}
                     </div>
                   </button>
                 ))}
@@ -1220,7 +1226,7 @@ export const AdminClientsPage: React.FC = () => {
                       (consultations.find(c => c.id === selectedThreadConsultationId) as any)?.state?.client_id ||
                       selectedThreadConsultationId
                     }
-                    projectName={consultations.find(c => c.id === selectedThreadConsultationId)?.project_name}
+                    projectName={formatProjectName(consultations.find(c => c.id === selectedThreadConsultationId))}
                     currentUserRole="admin"
                     currentUserName={profile?.name || "Svvayam Studio"}
                     currentUserId={user?.id || 'admin-user'}
@@ -1243,8 +1249,8 @@ export const AdminClientsPage: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setSelectedRecord(null)}
-          title={selectedRecord.project_name || selectedRecord.client_name}
-          subtitle={`Client: ${selectedRecord.client_name} · ${selectedRecord.location}`}
+          title={formatProjectName(selectedRecord.title, selectedRecord.surname, selectedRecord.product) || selectedRecord.project_name || 'Client Project'}
+          subtitle={`${selectedRecord.location}${selectedRecord.client_phone ? ' · •••• ' + selectedRecord.client_phone.slice(-4) : ''}`}
           maxWidth="2xl"
         >
           <div className="space-y-4 text-xs font-sans">
@@ -1264,7 +1270,7 @@ export const AdminClientsPage: React.FC = () => {
                   onClick={() => {
                     setResetPasswordCustomer({
                       id: selectedRecord.id,
-                      name: selectedRecord.client_name,
+                      name: formatProjectName(selectedRecord.title, selectedRecord.surname, selectedRecord.product) || selectedRecord.project_name || selectedRecord.client_name,
                       phone: selectedRecord.client_phone
                     });
                     setNewResetPassword('');
@@ -1387,7 +1393,7 @@ export const AdminClientsPage: React.FC = () => {
             {modalTab === 'journey' && (
               <div className="space-y-3">
                 <span className="text-[11px] font-sans text-neutral-500 block">
-                  Update creation progress stages for {selectedRecord.project_name || selectedRecord.client_name}.
+                  Update creation progress stages for {formatProjectName(selectedRecord.title, selectedRecord.surname, selectedRecord.product) || selectedRecord.project_name}.
                 </span>
                 <div className="space-y-2">
                   {[
@@ -1447,7 +1453,7 @@ export const AdminClientsPage: React.FC = () => {
                     (selectedRecord as any).state?.client_id ||
                     selectedRecord.id
                   }
-                  projectName={selectedRecord.project_name}
+                  projectName={formatProjectName(selectedRecord)}
                   currentUserRole="admin"
                   currentUserName={profile?.name || "Svvayam Studio"}
                   currentUserId={user?.id || 'admin-user'}
@@ -1622,10 +1628,7 @@ export const AdminClientsPage: React.FC = () => {
 
               <div className="text-xs text-neutral-600 font-sans space-y-1">
                 <p>
-                  Customer: <strong className="text-[#0A0A0A] font-semibold">{deleteTarget.client_name}</strong>
-                  {deleteTarget.project_name && deleteTarget.project_name !== deleteTarget.client_name && (
-                    <span className="text-neutral-500"> ({deleteTarget.project_name})</span>
-                  )}
+                  Project: <strong className="text-[#0A0A0A] font-semibold">{formatProjectName(deleteTarget.title, deleteTarget.surname, deleteTarget.product) || deleteTarget.project_name}</strong>
                 </p>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-neutral-100 border border-neutral-200 text-[10px] font-mono uppercase tracking-wider text-neutral-700">
                   <span>Status:</span>

@@ -23,7 +23,6 @@ import {
   Search,
   UserPlus,
   Sparkles,
-  Users,
   Building2,
   Phone,
   MapPin,
@@ -57,8 +56,8 @@ const SEED_CLIENTS: ConsultationClientItem[] = [
   },
   {
     id: 'seed-002',
-    name: 'Dr. Sanjay',
-    project_name: "Dr. Sanjay's Sanctum",
+    name: 'Dr. Sanjay Reddy',
+    project_name: "Dr. Reddy's Sanctum",
     phone: '+91 9845099887',
     location: 'Hyderabad, Jubilee Hills',
     status: 'proposal_sent',
@@ -157,7 +156,14 @@ export const AdminConsultationPage: React.FC = () => {
         if (!error && data) {
           data.forEach((row: any) => {
             const f = row.fields || {};
-            const proj = row.project_name || f.projectName || f.project_name || (f.surname ? formatProjectName(f.title, f.surname, f.product) : `${row.client_name || 'Client'}'s Sanctum`);
+            const proj = formatProjectName(
+              row.project_name || f.projectName || f.project_name || {
+                title: f.title,
+                surname: f.surname,
+                product: f.product || f.productType || 'Temple',
+                client_name: row.client_name || f.client
+              }
+            );
             clientList.push({
               id: row.id,
               name: row.client_name || f.client || 'Client',
@@ -179,7 +185,12 @@ export const AdminConsultationPage: React.FC = () => {
           clientList.push({
             id: c.id,
             name: c.name,
-            project_name: c.project_name || formatProjectName(c.title, c.surname, c.product),
+            project_name: formatProjectName(c.project_name || {
+              title: c.title,
+              surname: c.surname,
+              product: c.product || 'Temple',
+              client_name: c.name
+            }),
             phone: c.phone,
             location: c.location || 'India',
             status: 'draft',
@@ -424,9 +435,22 @@ export const AdminConsultationPage: React.FC = () => {
   };
 
   const activeProjectTitle =
-    state.fields.projectName ||
-    state.project_name ||
-    (state.fields.client ? `${state.fields.client}'s Sanctum` : 'Active Consultation');
+    (state.project_name && state.project_name.includes("'s") ? state.project_name : null) ||
+    (state.fields.projectName && state.fields.projectName.includes("'s") ? state.fields.projectName : null) ||
+    formatProjectName({
+      title: state.fields.title,
+      surname: state.fields.surname,
+      product: state.fields.product || state.fields.productType || 'Temple',
+      client_name: state.fields.client
+    });
+
+  useEffect(() => {
+    if (activeProjectTitle && activeProjectTitle !== 'Active Consultation' && activeProjectTitle !== "Client's Temple") {
+      document.title = `${activeProjectTitle} · Consultation`;
+    } else {
+      document.title = 'Consultation · Svvayam Admin';
+    }
+  }, [activeProjectTitle]);
 
   return (
     <div className="min-h-screen min-h-[100dvh] bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
@@ -454,9 +478,9 @@ export const AdminConsultationPage: React.FC = () => {
 
             <div className="bg-neutral-50 rounded-[14px] border border-neutral-200 p-4 space-y-3 font-mono text-xs">
               <div>
-                <span className="text-[10px] uppercase text-neutral-400 block font-sans">Customer & Project</span>
+                <span className="text-[10px] uppercase text-neutral-400 block font-sans">Project</span>
                 <span className="font-semibold text-neutral-900 font-sans text-xs">
-                  {credentialsModal.clientName} · {credentialsModal.projectName}
+                  {formatProjectName(credentialsModal.projectName || credentialsModal.clientName)}
                 </span>
               </div>
               <div className="flex items-center justify-between border-t border-neutral-200/80 pt-2.5">
@@ -608,11 +632,11 @@ export const AdminConsultationPage: React.FC = () => {
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <h2 className="font-display font-semibold text-base text-[#0A0A0A] group-hover:text-[#0E2A1C] transition-colors">
-                          {client.project_name}
+                          {formatProjectName(client.project_name || client.name)}
                         </h2>
                         <div className="flex items-center space-x-1.5 text-xs text-[#5C5C5C] font-sans mt-0.5">
-                          <Users className="w-3 h-3 text-neutral-400" />
-                          <span className="font-medium text-[#0A0A0A]">{client.name}</span>
+                          <MapPin className="w-3 h-3 text-neutral-400" />
+                          <span className="text-[#5C5C5C]">{client.location || (client.phone ? '•••• ' + client.phone.slice(-4) : 'India')}</span>
                         </div>
                       </div>
 
@@ -688,10 +712,6 @@ export const AdminConsultationPage: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-[#0A0A0A] shrink-0" />
                 <span className="font-semibold text-[#0A0A0A] font-display text-sm tracking-tight truncate">
                   {activeProjectTitle}
-                </span>
-                <span className="text-neutral-300">|</span>
-                <span className="text-[#5C5C5C] truncate">
-                  {state.fields.client || 'Client'}
                 </span>
                 {state.fields.location && (
                   <>

@@ -363,8 +363,9 @@ export const AdminDashboard: React.FC = () => {
       }
     }
 
+    const displayName = formatProjectName(consultation.title, consultation.surname, consultation.product) || consultation.project_name || 'Client Project';
     setToastMsg(
-      `Consultation for ${consultation.client_name} is now ${newStatus ? 'visible' : 'hidden'} in the Customer Portal.`
+      `Consultation for ${displayName} is now ${newStatus ? 'visible' : 'hidden'} in the Customer Portal.`
     );
   };
 
@@ -446,11 +447,15 @@ export const AdminDashboard: React.FC = () => {
     return consultations.filter((item) => {
       const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
       const q = searchQuery.toLowerCase().trim();
+      const projName = (item.project_name || formatProjectName(item.title, item.surname, item.product) || '').toLowerCase();
+      const surname = (item.surname || '').toLowerCase();
+      const product = (item.product || '').toLowerCase();
       const matchesSearch =
         q === '' ||
-        item.client_name.toLowerCase().includes(q) ||
-        (item.project_name && item.project_name.toLowerCase().includes(q)) ||
-        (item.surname && item.surname.toLowerCase().includes(q)) ||
+        projName.includes(q) ||
+        surname.includes(q) ||
+        product.includes(q) ||
+        (item.client_name && item.client_name.toLowerCase().includes(q)) ||
         item.client_phone.toLowerCase().includes(q) ||
         item.location.toLowerCase().includes(q) ||
         item.consultant.toLowerCase().includes(q);
@@ -474,8 +479,9 @@ export const AdminDashboard: React.FC = () => {
     setSyncingId(record.id);
     const result = await triggerSheetsSync();
     setSyncingId(null);
+    const displayName = formatProjectName(record.title, record.surname, record.product) || record.project_name || 'Client Project';
     if (result.success) {
-      setToastMsg(`Synced ${record.client_name} consultation row to Master Google Sheet!`);
+      setToastMsg(`Synced ${displayName} consultation row to Master Google Sheet!`);
     } else {
       setToastMsg(`Sync simulation logged: ${result.message || 'Credentials pending.'}`);
     }
@@ -672,10 +678,10 @@ export const AdminDashboard: React.FC = () => {
                         <tr key={item.id} className="hover:bg-neutral-50/50 transition-colors">
                           <td className="py-3 px-4">
                             <div className="font-semibold text-[#0A0A0A] font-sans">
-                              {item.project_name || item.client_name}
+                              {formatProjectName(item.title, item.surname, item.product) || item.project_name}
                             </div>
                             <div className="text-[11px] text-neutral-500 font-sans">
-                              {item.client_name}
+                              {item.location || (item.client_phone ? '•••• ' + item.client_phone.slice(-4) : '')}
                             </div>
                           </td>
                           <td className="py-3 px-4 font-mono text-neutral-600">
@@ -978,7 +984,7 @@ export const AdminDashboard: React.FC = () => {
                       )}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold truncate">{c.project_name || c.client_name}</span>
+                        <span className="font-semibold truncate">{formatProjectName(c)}</span>
                         <span className={cn(
                           "text-[10px] font-mono",
                           isSelected ? "text-neutral-400" : "text-neutral-500"
@@ -990,7 +996,7 @@ export const AdminDashboard: React.FC = () => {
                         "text-[11px] truncate mt-1",
                         isSelected ? "text-neutral-300" : "text-neutral-500"
                       )}>
-                        {c.client_name} · {c.client_phone}
+                        {c.location || (c.client_phone ? '•••• ' + c.client_phone.slice(-4) : '')}
                       </p>
 
                     </div>
@@ -1003,6 +1009,7 @@ export const AdminDashboard: React.FC = () => {
             <div className="md:col-span-2">
               <PortalChat
                 consultationId={selectedThreadConsultationId || consultations[0]?.id || 'seed-001'}
+                projectName={formatProjectName(consultations.find(c => c.id === (selectedThreadConsultationId || consultations[0]?.id)))}
                 currentUserRole="admin"
                 currentUserName={profile?.name || "Svvayam Studio"}
                 currentUserId={user?.id || 'admin-user'}
@@ -1019,8 +1026,8 @@ export const AdminDashboard: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setSelectedRecord(null)}
-          title={`Consultation Details: ${selectedRecord.project_name || selectedRecord.client_name}`}
-          subtitle={`Client: ${selectedRecord.client_name} • Location: ${selectedRecord.location} • Status: ${selectedRecord.status}`}
+          title={`Consultation Details: ${formatProjectName(selectedRecord)}`}
+          subtitle={`Project: ${formatProjectName(selectedRecord)} • Location: ${selectedRecord.location} • Status: ${selectedRecord.status}`}
           maxWidth="2xl"
         >
           <div className="space-y-4 text-xs font-sans">
@@ -1029,7 +1036,7 @@ export const AdminDashboard: React.FC = () => {
               <div>
                 <span className="font-medium text-neutral-500 block">Project Name</span>
                 <span className="font-semibold text-[#0A0A0A] font-serif text-sm">
-                  {selectedRecord.project_name || selectedRecord.client_name}
+                  {formatProjectName(selectedRecord)}
                 </span>
               </div>
               <div>
@@ -1177,7 +1184,7 @@ export const AdminDashboard: React.FC = () => {
               <div className="space-y-3">
                 <div className="pb-1">
                   <h4 className="text-xs font-semibold text-[#0A0A0A]">
-                    Manage 8-Stage Progress for {selectedRecord.client_name}
+                    Manage 8-Stage Progress for {formatProjectName(selectedRecord)}
                   </h4>
                   <p className="text-[11px] text-neutral-500">
                     Update milestone statuses below. Changes reflect instantly in the client’s portal view.
@@ -1259,6 +1266,7 @@ export const AdminDashboard: React.FC = () => {
               <div className="space-y-2">
                 <PortalChat
                   consultationId={selectedRecord.id}
+                  projectName={formatProjectName(selectedRecord)}
                   currentUserRole="admin"
                   currentUserName={profile?.name || "Svvayam Studio"}
                   currentUserId={user?.id || 'admin-user'}

@@ -33,16 +33,20 @@ export const Step1Purpose: React.FC = () => {
   const location: string = state.fields.location || '';
 
   const projectName =
-    state.fields.projectName ||
-    state.fields.project_name ||
-    state.project_name ||
-    (surname ? formatProjectName(title, surname, product) : clientName ? `${clientName}'s ${product}` : 'Sanctum Project');
+    (state.project_name && state.project_name.includes("'s") ? state.project_name : null) ||
+    (state.fields.projectName && state.fields.projectName.includes("'s") ? state.fields.projectName : null) ||
+    formatProjectName({
+      title: title,
+      surname: surname,
+      product: product,
+      client_name: clientName
+    });
 
   const selectedTypology = state.fields.dimensionType || 'dedicated_room';
   const selectedOrientation = state.fields.features || 'north_east';
   const consultDate = state.fields.date || new Date().toISOString().split('T')[0];
 
-  const hasClient = Boolean(clientName && clientName.trim().length > 0);
+  const hasClient = Boolean(clientName && clientName.trim().length > 0) || Boolean(state.project_name);
 
   return (
     <div className="space-y-8">
@@ -87,15 +91,15 @@ export const Step1Purpose: React.FC = () => {
               </p>
             </div>
 
-            {/* Read-only client summary chips */}
+            {/* Read-only project summary chips */}
             <div className="pt-2 border-t border-[#0E2A1C]/10 flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-sans">
               <div className="px-3 py-1 rounded-full bg-white border border-[#E5E5E5] text-[#0A0A0A] font-medium shadow-2xs">
-                Client: <strong>{title} {clientName}</strong>
+                Project: <strong>{projectName}</strong>
               </div>
 
               {phone && (
                 <div className="px-3 py-1 rounded-full bg-white border border-[#E5E5E5] text-[#0A0A0A] font-mono text-[11px] shadow-2xs">
-                  Mobile: <strong>{phone}</strong>
+                  Mobile: <strong>•••• {phone.replace(/\D/g, '').slice(-4)}</strong>
                 </div>
               )}
 

@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Logo } from '../ui/Logo';
 import { Modal } from '../ui/Modal';
 import { LogOut, User, ShieldCheck, Home, ArrowRight } from 'lucide-react';
+import { formatProjectName } from '../../lib/utils';
 
 export const Header: React.FC = () => {
   const { user, profile, isAdmin, isCustomer, logout } = useAuth();
@@ -63,10 +64,12 @@ export const Header: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-9 h-9 rounded-full flex items-center justify-center font-serif text-xs font-semibold bg-[#F4F4F4] text-[#0A0A0A] border border-[#ECECEC]"
-                    title={profile?.name || user.phone || 'Customer Account'}
+                    title={profile?.project_name ? formatProjectName(profile.project_name) : (profile?.name ? formatProjectName({ title: (profile as any).title, surname: (profile as any).surname, product: (profile as any).product, client_name: profile.name }) : 'Customer Account')}
                   >
                     <span>
-                      {(profile?.name
+                      {(profile?.project_name
+                        ? profile.project_name.slice(0, 2).toUpperCase()
+                        : profile?.name
                         ? profile.name.trim().split(/\s+/).map((p: string) => p[0]).join('').slice(0, 2).toUpperCase()
                         : 'CU')}
                     </span>

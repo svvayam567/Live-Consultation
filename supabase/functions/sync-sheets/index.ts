@@ -82,12 +82,13 @@ serve(async (req) => {
     }
 
     // Project naming format: "<Title> <Surname>'s <Product>"
-    const title = state?.fields?.title || "Mr.";
-    const surname = state?.fields?.surname || (state?.fields?.client ? state.fields.client.trim().split(/\s+/).pop() : "");
-    const product = state?.fields?.product || "Temple";
+    const rawTitle = (state?.fields?.title || "Mr.").trim();
+    const cleanTitle = rawTitle ? (rawTitle.endsWith(".") ? rawTitle : `${rawTitle}.`) : "Mr.";
+    const surname = (state?.fields?.surname || (state?.fields?.client ? state.fields.client.trim().split(/\s+/).pop() : "") || "Client").trim();
+    const product = (state?.fields?.product || state?.fields?.productType || "Temple").trim();
     const projectName = state?.project_name 
       || state?.fields?.projectName 
-      || (surname ? `${title} ${surname}'s ${product}` : `${product}`);
+      || `${cleanTitle} ${surname}'s ${product}`;
 
     // Prepare row data according to columns
     const rowValues = [

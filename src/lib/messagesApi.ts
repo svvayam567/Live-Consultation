@@ -1,6 +1,7 @@
 import { supabase, isSupabaseConfigured } from './supabase';
 import type { Message, CustomerConversation, SenderRole } from '../types/message';
 import { getRegisteredCustomers } from '../context/AuthContext';
+import { formatProjectName } from './utils';
 
 const LOCAL_STORAGE_MESSAGES_KEY = 'svvayam_messages_v2';
 export const MAX_MESSAGE_LENGTH = 2000;
@@ -207,13 +208,14 @@ export async function fetchAdminConversations(): Promise<CustomerConversation[]>
     try {
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, name, phone, project_name');
+        .select('id, name, phone, project_name, title, surname, product');
       if (Array.isArray(profiles)) {
         for (const p of profiles) {
+          const proj = p.project_name || formatProjectName({ title: p.title, surname: p.surname, product: p.product, client_name: p.name });
           profilesMap.set(p.id, {
             name: p.name || 'Valued Customer',
             phone: p.phone || '',
-            project_name: p.project_name
+            project_name: proj
           });
         }
       }
@@ -226,10 +228,11 @@ export async function fetchAdminConversations(): Promise<CustomerConversation[]>
   const registered = getRegisteredCustomers();
   for (const c of registered) {
     if (!profilesMap.has(c.id)) {
+      const proj = c.project_name || formatProjectName({ title: c.title, surname: c.surname, product: c.product, client_name: c.name });
       profilesMap.set(c.id, {
         name: c.name || 'Valued Customer',
         phone: c.phone || '',
-        project_name: c.project_name
+        project_name: proj
       });
     }
   }
@@ -254,7 +257,7 @@ export async function fetchAdminConversations(): Promise<CustomerConversation[]>
     const profile = profilesMap.get(customerId);
     const customerName = profile?.name || `Customer (${customerId.slice(0, 8)})`;
     const customerPhone = profile?.phone || '';
-    const projectName = profile?.project_name;
+    const projectName = formatProjectName(profile?.project_name || customerName);
 
     conversations.push({
       customer_id: customerId,

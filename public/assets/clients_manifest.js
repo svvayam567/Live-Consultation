@@ -2477,7 +2477,7 @@ window.SVVAYAM_CLIENTS_DATA = [
   },
   {
     "id": "rajasekhar-anantapur",
-    "name": "Mr. Rajasekhar Anantapur",
+    "name": "Mr. Rajasekhar",
     "folder": "Mr. Rajasekhar Anantapur",
     "sizeLabel": "Medium",
     "size": "9′0″ × 7′6″",
@@ -2580,7 +2580,7 @@ window.SVVAYAM_CLIENTS_DATA = [
         "count": 1
       }
     ],
-    "clientName": "Rajasekhar anantapur",
+    "clientName": "Rajasekhar",
     "sanctumTitle": "Carved Stone & Teak Sanctum"
   },
   {
@@ -2906,7 +2906,7 @@ window.SVVAYAM_CLIENTS_DATA = [
   },
   {
     "id": "chetan-thane",
-    "name": "Mr. Chetan Thane",
+    "name": "Mr. Chetan",
     "folder": "Mr. Chetan Thane",
     "sizeLabel": "Medium",
     "size": "8′0″ × 6′6″",
@@ -3008,7 +3008,7 @@ window.SVVAYAM_CLIENTS_DATA = [
         "count": 3
       }
     ],
-    "clientName": "Chetan thane",
+    "clientName": "Chetan",
     "sanctumTitle": "Teakwood Mandir Architecture"
   },
   {
@@ -3232,7 +3232,7 @@ window.SVVAYAM_CLIENTS_DATA = [
     "sizeLabel": "Medium",
     "size": "8′6″ × 6′6″",
     "material": "Teakwood & Stone",
-    "location": "Bangalore",
+    "location": "Texas, USA",
     "type": "Bespoke Teak & Stone Sanctum",
     "desc": "Bespoke Teakwood & Stone temple architecture and sanctum design.",
     "status": "Completed",

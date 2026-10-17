@@ -119,10 +119,14 @@ export const CustomerPortalPage: React.FC = () => {
 
             const rawRef = data.selected_reference || (Array.isArray(data.selected_refs) ? data.selected_refs[0] : null);
             const clientName = profile?.name || data.fields?.client || 'Valued Customer';
-            const projName = data.project_name
-              || data.fields?.projectName
-              || data.fields?.project_name
-              || (clientName.includes('Sharma') ? "Mrs. Sharma's Temple" : formatProjectName(data.fields?.title, data.fields?.surname || extractSurname(clientName), data.fields?.product || 'Temple'));
+            const projName = formatProjectName(
+              data.project_name || data.fields?.projectName || data.fields?.project_name || {
+                title: data.fields?.title || profile?.title,
+                surname: data.fields?.surname || profile?.surname || extractSurname(clientName),
+                product: data.fields?.product || data.fields?.productType || 'Temple',
+                client_name: clientName
+              }
+            );
 
             setPortalData({
               id: data.id,
@@ -230,9 +234,14 @@ export const CustomerPortalPage: React.FC = () => {
         ];
 
         const clientName = matchedConsultation.client_name || profile?.name || 'Mala Sharma';
-        const projName = matchedConsultation.project_name
-          || matchedConsultation.fields?.projectName
-          || (clientName.includes('Sharma') ? "Mrs. Sharma's Temple" : formatProjectName(matchedConsultation.fields?.title, matchedConsultation.fields?.surname || extractSurname(clientName), matchedConsultation.fields?.product || 'Temple'));
+        const projName = formatProjectName(
+          matchedConsultation.project_name || matchedConsultation.fields?.projectName || matchedConsultation.fields?.project_name || {
+            title: matchedConsultation.fields?.title || profile?.title,
+            surname: matchedConsultation.fields?.surname || profile?.surname || extractSurname(clientName),
+            product: matchedConsultation.fields?.product || matchedConsultation.fields?.productType || 'Temple',
+            client_name: clientName
+          }
+        );
 
         setPortalData({
           id: matchedConsultation.id,
@@ -298,7 +307,7 @@ export const CustomerPortalPage: React.FC = () => {
                 Your Project Portal is Being Prepared
               </h2>
               <p className="text-xs sm:text-sm text-[#5C5C5C] leading-relaxed max-w-md mx-auto font-sans">
-                Namaste {profile?.name || user?.phone}. Our temple architects and guild craftsmen are finalizing your consultation package, 3D renderings, and milestone timeline.
+                Namaste {profile?.title && profile?.surname ? `${profile.title} ${profile.surname}` : (profile?.surname || profile?.name || 'Valued Patron')}. Our temple architects and guild craftsmen are finalizing your consultation package, 3D renderings, and milestone timeline.
               </p>
             </div>
 
@@ -344,6 +353,23 @@ export const CustomerPortalPage: React.FC = () => {
   const fields = portalData.fields || {};
   const unreadUpdatesCount = portalData.updates.filter(u => !u.is_read).length;
 
+  const portalProjectName = portalData.project_name
+    ? formatProjectName(portalData.project_name)
+    : formatProjectName({
+        title: fields.title || profile?.title,
+        surname: fields.surname || profile?.surname || extractSurname(portalData.client_name || profile?.name || ''),
+        product: fields.product || fields.productType || 'Temple',
+        client_name: portalData.client_name || profile?.name
+      });
+
+  useEffect(() => {
+    if (portalProjectName && portalProjectName !== "Client's Temple") {
+      document.title = `${portalProjectName} · Client Portal`;
+    } else {
+      document.title = 'Sacred Portal · Svvayam';
+    }
+  }, [portalProjectName]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">
       <Header />
@@ -364,12 +390,9 @@ export const CustomerPortalPage: React.FC = () => {
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-display font-medium text-[#0A0A0A]">
-                {portalData.project_name || `${portalData.client_name}’s Sacred Sanctuary`}
+                {portalProjectName}
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-xs text-[#5C5C5C] mt-1 font-sans">
-                <div className="flex items-center gap-1.5 font-medium text-[#0A0A0A]">
-                  <span>Client: {portalData.client_name}</span>
-                </div>
                 <div className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-[#0E2A1C]" />
                   <span>{portalData.location}</span>
@@ -622,7 +645,7 @@ export const CustomerPortalPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
                   <div className="p-4 rounded-[14px] bg-[#FAFAFA] border border-[#ECECEC]">
                     <span className="text-[10px] text-neutral-400 uppercase font-mono block">Family Approvers</span>
-                    <p className="text-[#0A0A0A] font-medium mt-1">{fields.approvers || portalData.client_name}</p>
+                    <p className="text-[#0A0A0A] font-medium mt-1">{fields.approvers || portalProjectName}</p>
                   </div>
                   <div className="p-4 rounded-[14px] bg-[#FAFAFA] border border-[#ECECEC]">
                     <span className="text-[10px] text-neutral-400 uppercase font-mono block">Budget Range</span>
@@ -812,8 +835,8 @@ export const CustomerPortalPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <span className="text-neutral-400 text-[10px] uppercase font-mono block">Client & Location</span>
-                  <p className="font-medium text-[#0A0A0A]">{portalData.client_name} · {portalData.location}</p>
+                  <span className="text-neutral-400 text-[10px] uppercase font-mono block">Project & Location</span>
+                  <p className="font-medium text-[#0A0A0A]">{portalProjectName} · {portalData.location}</p>
                 </div>
                 <div>
                   <span className="text-neutral-400 text-[10px] uppercase font-mono block">Indicative Budget</span>
@@ -841,7 +864,7 @@ export const CustomerPortalPage: React.FC = () => {
             <div className="flex items-center justify-between border-b border-[#ECECEC] pb-4">
               <div>
                 <h3 className="text-lg font-display font-medium text-[#0A0A0A]">
-                  {portalData.project_name || portalData.client_name} — 8-Stage Creation Journey
+                  {portalProjectName} — 8-Stage Creation Journey
                 </h3>
 
                 <p className="text-xs text-[#5C5C5C] font-sans">
@@ -1016,9 +1039,9 @@ export const CustomerPortalPage: React.FC = () => {
             <PortalChat
               consultationId={portalData.id}
               customerId={user?.id}
-              projectName={portalData.project_name}
+              projectName={portalProjectName}
               currentUserRole="customer"
-              currentUserName={portalData.client_name}
+              currentUserName={portalProjectName}
               currentUserId={user?.id || 'customer-user'}
               prefillContext={messagePrefill}
               onClearPrefill={() => setMessagePrefill(null)}
@@ -1045,16 +1068,16 @@ export const CustomerPortalPage: React.FC = () => {
       <Modal
         isOpen={chatModalOpen}
         onClose={() => setChatModalOpen(false)}
-        title={portalData.project_name || "Direct Studio Inquiry"}
-        subtitle={`Live messaging with Svvayam architects for ${portalData.client_name}`}
+        title={portalProjectName || "Direct Studio Inquiry"}
+        subtitle={`Live messaging with Svvayam architects for ${portalProjectName}`}
         maxWidth="2xl"
       >
         <PortalChat
           consultationId={portalData.id}
           customerId={user?.id}
-          projectName={portalData.project_name}
+          projectName={portalProjectName}
           currentUserRole="customer"
-          currentUserName={portalData.client_name}
+          currentUserName={portalProjectName}
           currentUserId={user?.id || 'customer-user'}
           prefillContext={messagePrefill}
           onClearPrefill={() => setMessagePrefill(null)}

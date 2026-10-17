@@ -273,7 +273,7 @@ export const PortalChat: React.FC<PortalChatProps> = ({
               <MessageCircle className="w-4 h-4" />
             </div>
             <p className="text-xs text-[#0A0A0A] font-medium">
-              Namaste {currentUserName}! Welcome to your dedicated Svvayam sanctum portal.
+              Namaste {projectName || currentUserName}! Welcome to your dedicated Svvayam sanctum portal.
             </p>
             <p className="text-[11px] text-[#5C5C5C] max-w-sm mx-auto leading-relaxed">
               Our temple architects and master guild craftsmen are at your service. Feel free to ask questions about your requirements, layout or references here.
@@ -295,7 +295,7 @@ export const PortalChat: React.FC<PortalChatProps> = ({
 
             const senderLabel = isMe
               ? 'You'
-              : (msg.sender_role === 'client' ? (currentUserName || 'Customer') : 'Svvayam Studio (Admin)');
+              : (msg.sender_role === 'client' ? (projectName || currentUserName || 'Customer') : 'Svvayam Studio (Admin)');
 
             return (
               <div

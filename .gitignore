@@ -36,3 +36,4 @@ Thumbs.db
 *.tmp
 *.mp4
 public/assets/docs/*.pdf
+supabase/.temp/

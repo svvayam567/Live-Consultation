@@ -17,10 +17,9 @@ import {
   Send,
   Search,
   Check,
-  CheckCheck,
-  FolderKanban
+  CheckCheck
 } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import { cn, formatProjectName } from '../../lib/utils';
 
 export const AdminFloatingChat: React.FC = () => {
   const { user } = useAuth();
@@ -341,7 +340,7 @@ export const AdminFloatingChat: React.FC = () => {
                               ? "bg-[#0A0A0A] text-white ring-2 ring-rose-500 shadow-xs"
                               : "bg-neutral-100 text-[#0A0A0A] border border-[#ECECEC]"
                           )}>
-                            {conv.customer_name ? conv.customer_name.slice(0, 2).toUpperCase() : 'CU'}
+                            {(conv.project_name || conv.customer_name).slice(0, 2).toUpperCase()}
                           </div>
 
                           {/* Conversation Preview Details */}
@@ -351,26 +350,19 @@ export const AdminFloatingChat: React.FC = () => {
                                 "text-xs font-sans truncate",
                                 hasUnread ? "font-bold text-[#0A0A0A]" : "font-medium text-[#0A0A0A]"
                               )}>
-                                {conv.customer_name}
+                                {conv.project_name || formatProjectName(conv.customer_name)}
                               </h4>
                               <span className="text-[10px] font-mono text-neutral-400 shrink-0 ml-2">
                                 {formatMessageTime(conv.last_message.created_at)}
                               </span>
                             </div>
 
-                            {/* Project Badge / Phone */}
-                            <div className="flex items-center space-x-2 text-[10px] text-[#5C5C5C]">
-                              {conv.project_name ? (
-                                <span className="inline-flex items-center gap-1 font-mono bg-neutral-100 text-[#0A0A0A] px-2 py-0.5 rounded-full border border-neutral-200 truncate max-w-[180px]">
-                                  <FolderKanban className="w-2.5 h-2.5 text-neutral-500 shrink-0" />
-                                  <span className="truncate">{conv.project_name}</span>
-                                </span>
-                              ) : conv.customer_phone ? (
-                                <span className="font-mono text-neutral-400">
-                                  {conv.customer_phone}
-                                </span>
-                              ) : null}
-                            </div>
+                            {/* Masked Phone / Secondary Line */}
+                            {conv.customer_phone && (
+                              <div className="text-[11px] font-mono text-neutral-400 truncate">
+                                {'•••• ' + conv.customer_phone.replace(/\D/g, '').slice(-4)}
+                              </div>
+                            )}
 
                             {/* Last message text preview */}
                             <p className={cn(
@@ -420,20 +412,13 @@ export const AdminFloatingChat: React.FC = () => {
 
                     <div className="min-w-0">
                       <h3 className="font-sans font-semibold text-xs sm:text-sm text-[#0A0A0A] truncate">
-                        {selectedCustomer.customer_name}
+                        {selectedCustomer.project_name || formatProjectName(selectedCustomer.customer_name)}
                       </h3>
-                      <div className="flex items-center space-x-2 text-[10px] text-[#5C5C5C] truncate">
-                        {selectedCustomer.project_name && (
-                          <span className="font-mono text-[#0A0A0A] truncate">
-                            {selectedCustomer.project_name}
-                          </span>
-                        )}
-                        {selectedCustomer.customer_phone && (
-                          <span className="font-mono text-neutral-400">
-                            · {selectedCustomer.customer_phone}
-                          </span>
-                        )}
-                      </div>
+                      {selectedCustomer.customer_phone && (
+                        <div className="flex items-center space-x-2 text-[10px] text-neutral-400 font-mono truncate">
+                          {'•••• ' + selectedCustomer.customer_phone.replace(/\D/g, '').slice(-4)}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -479,7 +464,7 @@ export const AdminFloatingChat: React.FC = () => {
                         >
                           {/* Sender Label */}
                           <span className="text-[10px] font-sans text-neutral-400 mb-1 px-1">
-                            {isAdminMsg ? 'Svvayam Studio (You)' : selectedCustomer.customer_name}
+                            {isAdminMsg ? 'Svvayam Studio (You)' : (selectedCustomer.project_name || formatProjectName(selectedCustomer.customer_name))}
                           </span>
 
                           {/* Message Bubble */}

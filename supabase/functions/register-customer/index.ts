@@ -635,10 +635,11 @@ serve(async (req) => {
     const rawPhone = (payload.phone || "").trim();
     const rawPassword = (payload.password || "").trim();
     const location = (payload.location || "").trim();
-    const title = (payload.title || "Mr.").trim();
-    const surname = (payload.surname || (rawName ? rawName.trim().split(/\s+/).pop() : "") || "").trim();
+    const rawTitle = (payload.title || "Mr.").trim();
+    const cleanTitle = rawTitle.endsWith(".") ? rawTitle : `${rawTitle}.`;
+    const surname = (payload.surname || (rawName ? rawName.trim().split(/\s+/).pop() : "") || "Client").trim();
     const product = (payload.product || "Temple").trim();
-    const projectName = payload.project_name || (surname ? `${title} ${surname}'s ${product}` : product);
+    const projectName = payload.project_name || `${cleanTitle} ${surname}'s ${product}`;
 
     if (!rawName) {
       return jsonResponse({ success: false, error: "Customer full name is required." }, 400);

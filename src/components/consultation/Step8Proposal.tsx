@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useConsultation } from '../../context/ConsultationContext';
 import { PROPOSAL_SECTIONS, ENGAGEMENT_INCLUSIONS, DESIGN_JOURNEY_STEPS } from '../../lib/constants';
-import { money, indicativeAmount } from '../../lib/utils';
+import { money, indicativeAmount, formatProjectName } from '../../lib/utils';
 import { Logo } from '../ui/Logo';
 import { Button } from '../ui/Button';
 import { Toast } from '../ui/Toast';
@@ -260,13 +260,15 @@ export const Step8Proposal: React.FC = () => {
 
           <div className="text-left sm:text-right text-xs space-y-1 font-sans">
             <div className="font-semibold text-[#0A0A0A] text-sm font-sans">
-              {state.project_name || state.fields.projectName || state.fields.project_name || state.fields.client || 'Client Consultation'}
+              {formatProjectName(
+                state.project_name || state.fields.projectName || state.fields.project_name || {
+                  title: state.fields.title,
+                  surname: state.fields.surname,
+                  product: state.fields.product || state.fields.productType || 'Temple',
+                  client_name: state.fields.client
+                }
+              )}
             </div>
-            {state.fields.client && (state.project_name || state.fields.projectName || state.fields.project_name) && (
-              <div className="text-neutral-500 font-medium">
-                Client: {state.fields.client}
-              </div>
-            )}
             <div className="text-[#5C5C5C]">
               Location: {state.fields.location || 'Not specified'}
             </div>
