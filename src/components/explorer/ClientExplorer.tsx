@@ -3,11 +3,10 @@ import { useClientsData } from '../../lib/clientsData';
 import type { ClientProject } from '../../lib/clientsData';
 import { ProjectDetailModal } from './ProjectDetailModal';
 import type { SelectedReference } from '../../types/consultation';
-import { assetUrl } from '../../lib/utils';
+import { assetUrl, cn, formatProjectName } from '../../lib/utils';
 import { SegmentedTabs } from '../ui/SegmentedTabs';
 import { ViewToggle, type ViewMode } from '../ui/ViewToggle';
 import { Search, MapPin, Check, Plus, Layers, ArrowUpRight } from 'lucide-react';
-import { cn } from '../../lib/utils';
 
 interface ClientExplorerProps {
   selectionMode?: boolean;
@@ -33,8 +32,10 @@ export const ClientExplorer: React.FC<ClientExplorerProps> = ({
       const matchesScale =
         scaleFilter === 'All' ||
         project.sizeLabel.toLowerCase() === scaleFilter.toLowerCase();
+      const displayName = formatProjectName(project).toLowerCase();
       const matchesSearch =
         searchQuery === '' ||
+        displayName.includes(searchQuery.toLowerCase()) ||
         project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.material.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -61,7 +62,7 @@ export const ClientExplorer: React.FC<ClientExplorerProps> = ({
     if (isSelected(imgUrl)) {
       onRemoveReference?.(imgUrl);
     } else {
-      const caption = `${project.name} · Completed Sanctum`;
+      const caption = `${formatProjectName(project)} · Completed Sanctum`;
       onSelectReference?.({
         data: imgUrl,
         kind: 'Completed Svvayam project',
@@ -181,7 +182,7 @@ export const ClientExplorer: React.FC<ClientExplorerProps> = ({
                 <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                   <div>
                     <h3 className="text-base font-serif font-semibold text-[#0A0A0A] group-hover:underline">
-                      {project.name}
+                      {formatProjectName(project)}
                     </h3>
                     <p className="text-xs text-[#5C5C5C] line-clamp-2 mt-1 leading-relaxed font-sans">
                       {project.desc}
@@ -225,14 +226,14 @@ export const ClientExplorer: React.FC<ClientExplorerProps> = ({
                   <div className="w-14 h-14 rounded-[12px] bg-neutral-100 overflow-hidden shrink-0 border border-[#ECECEC]">
                     <img
                       src={heroUrl}
-                      alt={project.name}
+                      alt={formatProjectName(project)}
                       className="w-full h-full object-cover"
                     />
                   </div>
 
                   <div className="min-w-0">
                     <h3 className="text-sm sm:text-base font-serif font-semibold text-[#0A0A0A] truncate group-hover:underline">
-                      {project.name}
+                      {formatProjectName(project)}
                     </h3>
                     <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-[#5C5C5C] font-sans">
                       <span className="flex items-center gap-1">

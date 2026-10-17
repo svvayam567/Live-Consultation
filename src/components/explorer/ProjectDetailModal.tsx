@@ -3,7 +3,7 @@ import type { ClientProject } from '../../lib/clientsData';
 import type { SelectedReference } from '../../types/consultation';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { assetUrl } from '../../lib/utils';
+import { assetUrl, formatProjectName } from '../../lib/utils';
 import { Check, Plus, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 
 interface ProjectDetailModalProps {
@@ -44,7 +44,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
     if (isSelected(imgUrl)) {
       onRemoveReference?.(imgUrl);
     } else {
-      const caption = `${project.name} · ${currentStage?.title || 'Sanctum'}`;
+      const caption = `${formatProjectName(project)} · ${currentStage?.title || 'Sanctum'}`;
       onSelectReference?.({
         data: assetUrl(imgUrl),
         kind: 'Completed Svvayam project',
@@ -76,7 +76,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               </span>
             </div>
             <h2 className="text-lg sm:text-xl font-medium text-[#0A0A0A] mt-1">
-              {project.name}
+              {formatProjectName(project)}
             </h2>
             <div className="flex items-center space-x-3 text-xs text-neutral-500 mt-0.5">
               <span className="flex items-center gap-1">
@@ -158,7 +158,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           <div className="relative max-w-full max-h-[60vh] flex items-center justify-center">
             <img
               src={assetUrl(currentImage)}
-              alt={`${project.name} - ${currentStage?.title}`}
+              alt={`${formatProjectName(project)} - ${currentStage?.title}`}
               className="max-w-full max-h-[60vh] object-contain shadow-2xl rounded-sm"
             />
 
