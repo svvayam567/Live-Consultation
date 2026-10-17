@@ -114,7 +114,7 @@ export const LoginPage: React.FC = () => {
     setError(null);
     clearLockoutNotice();
 
-    const res = await signInAdmin(cleanEmail, adminPassword.trim());
+    const res = await signInAdmin(cleanEmail, adminPassword);
     setLoading(false);
 
     if (res.success) {
@@ -198,7 +198,10 @@ export const LoginPage: React.FC = () => {
                   +91
                 </span>
                 <input
+                  id="customer-phone"
+                  name="phone"
                   type="tel"
+                  autoComplete="tel"
                   value={customerPhone}
                   onChange={(e) => {
                     const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
@@ -207,8 +210,9 @@ export const LoginPage: React.FC = () => {
                   placeholder="9845012345"
                   maxLength={10}
                   required
+                  disabled={loading}
                   autoFocus
-                  className="flex-1 px-3.5 py-2.5 rounded-r-[12px] border border-[#E5E5E5] bg-white text-xs font-mono text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+                  className="flex-1 px-3.5 py-2.5 rounded-r-[12px] border border-[#E5E5E5] bg-white text-xs font-mono text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] disabled:opacity-60"
                 />
               </div>
               <p className="mt-1 text-[11px] text-neutral-400 font-mono">
@@ -217,21 +221,26 @@ export const LoginPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
+              <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5" htmlFor="customer-password">
                 Password
               </label>
               <div className="relative">
                 <input
+                  id="customer-password"
+                  name="password"
                   type={showCustomerPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   value={customerPassword}
                   onChange={(e) => setCustomerPassword(e.target.value)}
                   placeholder="Enter customer portal password"
                   required
-                  className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+                  disabled={loading}
+                  className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] disabled:opacity-60"
                 />
                 <button
                   type="button"
                   onClick={() => setShowCustomerPassword(!showCustomerPassword)}
+                  disabled={loading}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-[#0A0A0A] cursor-pointer"
                   title={showCustomerPassword ? 'Hide password' : 'Show password'}
                 >
@@ -248,7 +257,7 @@ export const LoginPage: React.FC = () => {
               variant="primary"
               size="lg"
               disabled={loading}
-              className="w-full relative group overflow-hidden border border-[#0A0A0A] bg-[#0A0A0A] text-white hover:bg-neutral-800 transition-colors shadow-xs cursor-pointer"
+              className="w-full relative group overflow-hidden border border-[#0A0A0A] bg-[#0A0A0A] text-white hover:bg-neutral-800 transition-colors shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <span className="flex items-center justify-center gap-1.5">
                 <span>{loading ? 'Verifying Customer...' : 'Sign In to Portal'}</span>
@@ -260,17 +269,21 @@ export const LoginPage: React.FC = () => {
           /* ADMIN LOGIN FORM: Email + Password ONLY (No phone, No OTP) */
           <form onSubmit={handleAdminSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
+              <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5" htmlFor="admin-email">
                 Admin Email Address
               </label>
               <input
+                id="admin-email"
+                name="email"
                 type="email"
+                autoComplete="username"
                 value={adminEmail}
                 onChange={(e) => setAdminEmail(e.target.value)}
                 placeholder="marketing@svvayam.com"
                 required
+                disabled={loading}
                 autoFocus
-                className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+                className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] disabled:opacity-60"
               />
               <p className="mt-1 text-[11px] text-neutral-400 font-mono">
                 Official Svvayam administrator email address
@@ -278,21 +291,26 @@ export const LoginPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5">
+              <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700 mb-1.5" htmlFor="admin-password">
                 Admin Password
               </label>
               <div className="relative">
                 <input
+                  id="admin-password"
+                  name="password"
                   type={showAdminPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   value={adminPassword}
                   onChange={(e) => setAdminPassword(e.target.value)}
                   placeholder="Enter administrator password"
                   required
-                  className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+                  disabled={loading}
+                  className="w-full px-3.5 py-2.5 pr-10 rounded-[12px] border border-[#E5E5E5] bg-white text-xs font-sans text-[#0A0A0A] focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] disabled:opacity-60"
                 />
                 <button
                   type="button"
                   onClick={() => setShowAdminPassword(!showAdminPassword)}
+                  disabled={loading}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-[#0A0A0A] cursor-pointer"
                   title={showAdminPassword ? 'Hide password' : 'Show password'}
                 >
@@ -309,7 +327,7 @@ export const LoginPage: React.FC = () => {
               variant="primary"
               size="lg"
               disabled={loading}
-              className="w-full relative group overflow-hidden border border-[#0A0A0A] bg-[#0A0A0A] text-white hover:bg-neutral-800 transition-colors shadow-xs cursor-pointer"
+              className="w-full relative group overflow-hidden border border-[#0A0A0A] bg-[#0A0A0A] text-white hover:bg-neutral-800 transition-colors shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <span className="flex items-center justify-center gap-1.5">
                 <span>{loading ? 'Authenticating Admin...' : 'Sign In as Administrator'}</span>

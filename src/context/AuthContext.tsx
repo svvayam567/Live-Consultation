@@ -384,78 +384,121 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!cleanEmail || !cleanEmail.includes('@')) {
       return { success: false, error: 'Please enter a valid email address.' };
     }
-    if (!password || password.trim().length === 0) {
+    if (!password || password.length === 0) {
       return { success: false, error: 'Please enter your password.' };
     }
 
     if (isSupabaseConfigured && supabase) {
+      const client = supabase;
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await client.auth.signInWithPassword({
           email: cleanEmail,
-          password: password.trim()
+          password: password
         });
 
-        let authUser = data?.user;
+        if (error) {
+          console.error('[Admin Auth] signInWithPassword error:', {
+            status: error.status,
+            name: error.name,
+            code: error.code,
+            message: error.message
+          });
 
-        if (error || !authUser) {
-          const errText = error?.message?.toLowerCase() || '';
-          if (errText.includes('banned') || errText.includes('disabled') || errText.includes('deactivated')) {
+          const msgLower = (error.message || '').toLowerCase();
+          const codeLower = (error.code || '').toLowerCase();
+
+          // Real invalid credentials
+          if (
+            codeLower === 'invalid_credentials' ||
+            codeLower === 'invalid_grant' ||
+            msgLower.includes('invalid login credentials') ||
+            msgLower.includes('invalid credentials')
+          ) {
+            return { success: false, error: 'Wrong email or password.' };
+          }
+
+          // Rate limit
+          if (
+            codeLower.includes('rate_limit') ||
+            codeLower.includes('too_many_requests') ||
+            msgLower.includes('rate limit') ||
+            msgLower.includes('too many') ||
+            error.status === 429
+          ) {
+            return { success: false, error: 'Too many attempts. Please wait a minute and try again.' };
+          }
+
+          // Unconfirmed email
+          if (
+            codeLower === 'email_not_confirmed' ||
+            msgLower.includes('email not confirmed')
+          ) {
             return {
               success: false,
-              error: 'This account is disabled. Contact the Svvayam owner.'
+              error: 'Email not confirmed. Please verify your email or contact the Svvayam owner.'
             };
           }
 
-          // If super admin and credentials failed (account not created yet in auth.users),
-          // attempt bootstrap registration with the entered credentials
-          if (cleanEmail === SUPER_ADMIN_EMAIL) {
-            try {
-              const { data: signUpData } = await supabase.auth.signUp({
-                email: cleanEmail,
-                password: password.trim(),
-                options: {
-                  data: {
-                    name: 'Svvayam Super Admin',
-                    role: 'super_admin'
-                  }
-                }
-              });
-
-              if (signUpData?.user) {
-                authUser = signUpData.user;
-                if (!signUpData.session) {
-                  // Attempt sign in if email was auto-confirmed
-                  const { data: retryAuth } = await supabase.auth.signInWithPassword({
-                    email: cleanEmail,
-                    password: password.trim()
-                  });
-                  if (retryAuth?.user) {
-                    authUser = retryAuth.user;
-                  }
-                }
-              }
-            } catch (bootErr) {
-              console.warn('Super admin bootstrap notice:', bootErr);
-            }
+          // Network error or unreachable backend
+          if (
+            msgLower.includes('failed to fetch') ||
+            msgLower.includes('network') ||
+            msgLower.includes('load failed') ||
+            (typeof navigator !== 'undefined' && !navigator.onLine)
+          ) {
+            return { success: false, error: 'Cannot reach the server. Check your internet and try again.' };
           }
 
-          if (!authUser) {
-            return {
-              success: false,
-              error: 'Wrong email or password.'
-            };
+          // Disabled account (banned)
+          if (
+            codeLower === 'user_banned' ||
+            msgLower.includes('banned') ||
+            msgLower.includes('disabled') ||
+            msgLower.includes('deactivated')
+          ) {
+            return { success: false, error: 'This account is disabled. Contact the Svvayam owner.' };
           }
+
+          // Fallback for unexpected auth errors
+          return {
+            success: false,
+            error: error.message || 'Wrong email or password.'
+          };
         }
 
-        // Fetch or create profile
-        let { data: profData } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', authUser.id)
-          .maybeSingle();
+        const authUser = data?.user;
+        if (!authUser) {
+          console.error('[Admin Auth] No user returned after authentication');
+          return { success: false, error: 'Cannot reach the server. Check your internet and try again.' };
+        }
 
+        // Fetch or create profile with retry
+        let profData: Profile | null = null;
+        let profError: any = null;
+
+        const fetchProfile = async () => {
+          return await client
+            .from('profiles')
+            .select('*')
+            .eq('id', authUser.id)
+            .maybeSingle();
+        };
+
+        const firstTry = await fetchProfile();
+        profData = firstTry.data;
+        profError = firstTry.error;
+
+        // If profile query was slightly slower than session, wait and retry once
+        if (!profData && !profError) {
+          await new Promise((resolve) => setTimeout(resolve, 350));
+          const retry = await fetchProfile();
+          profData = retry.data;
+          profError = retry.error;
+        }
+
+        // Lookup by email if not found by ID
         if (!profData) {
-          const { data: profByEmail } = await supabase
+          const { data: profByEmail, error: emailErr } = await client
             .from('profiles')
             .select('*')
             .ilike('email', cleanEmail)
@@ -463,13 +506,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             .maybeSingle();
           if (profByEmail) {
             profData = profByEmail;
+          } else if (emailErr) {
+            profError = emailErr;
           }
         }
 
-        // Ensure super_admin role profile is saved
-        if (cleanEmail === SUPER_ADMIN_EMAIL) {
+        // Self-healing: if super admin row is missing, provision it
+        if (cleanEmail === SUPER_ADMIN_EMAIL && !profData) {
           try {
-            await supabase.from('profiles').upsert({
+            await client.from('profiles').upsert({
               id: authUser.id,
               name: 'Svvayam Super Admin',
               email: cleanEmail,
@@ -477,9 +522,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               active: true,
               is_active: true
             }, { onConflict: 'id' });
-          } catch {
-            // Non-blocking fallback
+            const refetch = await fetchProfile();
+            profData = refetch.data;
+          } catch (e) {
+            console.error('[Admin Auth] Error creating super admin profile:', e);
           }
+        }
+
+        // If profile is still missing or has an error
+        if (!profData) {
+          console.error('[Admin Auth] Profile missing for user ID:', authUser.id, 'DB error:', profError);
+          await client.auth.signOut();
+          setUser(null);
+          setProfile(null);
+          return {
+            success: false,
+            error: 'Your account is not set up correctly. Contact the Svvayam owner.'
+          };
         }
 
         // ROLE CHECK: A customer MUST NOT be able to log in on the Admin tab!
@@ -488,19 +547,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const isAdminUser = isSuper || role === 'admin';
 
         if (!isAdminUser) {
-          await supabase.auth.signOut();
+          console.warn('[Admin Auth] Non-admin user attempted login on Admin tab. Role was:', role);
+          await client.auth.signOut();
           setUser(null);
           setProfile(null);
           return {
             success: false,
-            error: 'This account does not have administrator access. Please use the Customer tab.'
+            error: 'This is a customer account. Use the Customer tab.'
           };
         }
 
         // Check active / disabled status
         const isActive = profData?.active !== false && profData?.is_active !== false;
         if (!isActive) {
-          await supabase.auth.signOut();
+          console.warn('[Admin Auth] Disabled profile attempted admin login:', profData.id);
+          await client.auth.signOut();
           setUser(null);
           setProfile(null);
           return {
@@ -510,15 +571,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         const effectiveRole: UserRole = isSuper ? 'super_admin' : 'admin';
-        const effectiveProfile: Profile = profData || {
+        const effectiveProfile: Profile = {
+          ...profData,
           id: authUser.id,
-          name: isSuper ? 'Svvayam Super Admin' : (authUser.user_metadata?.name || 'Svvayam Admin'),
+          name: profData.name || (isSuper ? 'Svvayam Super Admin' : (authUser.user_metadata?.name || 'Svvayam Admin')),
           email: cleanEmail,
           role: effectiveRole,
           active: true,
           is_active: true,
-          must_change_password: Boolean(authUser.user_metadata?.must_change_password),
-          created_at: new Date().toISOString()
+          must_change_password: Boolean(profData.must_change_password ?? authUser.user_metadata?.must_change_password),
+          created_at: profData.created_at || new Date().toISOString()
         };
 
         setUser({ id: authUser.id, email: cleanEmail, phone: effectiveProfile.phone });
@@ -527,7 +589,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Audit log login
         try {
-          await supabase.from('admin_activity').insert({
+          await client.from('admin_activity').insert({
             actor_id: authUser.id,
             actor_name: effectiveProfile.name,
             action: 'login',
@@ -540,6 +602,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         return { success: true };
       } catch (err: any) {
+        console.error('[Admin Auth] Unexpected login exception:', err);
+        const msg = (err?.message || '').toLowerCase();
+        if (msg.includes('failed to fetch') || msg.includes('network') || (typeof navigator !== 'undefined' && !navigator.onLine)) {
+          return { success: false, error: 'Cannot reach the server. Check your internet and try again.' };
+        }
         return { success: false, error: err?.message || 'Login failed.' };
       }
     } else {
