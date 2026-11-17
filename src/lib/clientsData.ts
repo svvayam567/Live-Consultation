@@ -45,7 +45,7 @@ function hydrateCatalogProjects(projects: ClientProject[], _apiBase: string): Cl
     if (!seed) return p;
 
     const driveFolderId = p.driveFolderId || seed.folderId;
-    const priority = seed.priority || ((seed.hasDedicatedOverview || p.hasDedicatedOverview || p.hasOverview) ? 1 : (seed.photoCount > 0 ? 2 : 3));
+    const priority = seed.priority || ((seed.hasDedicatedOverview || p.hasDedicatedOverview || p.hasOverview) ? 1 : ((seed.photoCount ?? seed.imageCount ?? 0) > 0 ? 2 : 3));
     const hasDedicatedOverview = priority === 1;
 
     let heroImg = p.heroImg;

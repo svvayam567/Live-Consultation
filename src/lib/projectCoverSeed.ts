@@ -23,9 +23,12 @@ export interface FolderCoverSeed {
   coverId: string | null;
   coverUrl: string | null;
   hasDedicatedOverview: boolean;
+  priority?: 1 | 2 | 3;
+  photoCount?: number;
   imageCount: number;
   videoCount: number;
   totalMediaCount: number;
+  accessError?: string | null;
   media: GalleryMediaItem[];
   galleryUrls: string[];
 }
