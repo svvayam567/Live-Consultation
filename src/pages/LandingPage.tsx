@@ -6,6 +6,7 @@ import { AdminNav } from '../components/admin/AdminNav';
 import { Logo } from '../components/ui/Logo';
 import { VisualExploreModal } from '../components/explorer/VisualExploreModal';
 import { PresentationsDocsModal } from '../components/explorer/PresentationsDocsModal';
+import { useClientsData } from '../lib/clientsData';
 import { Button } from '../components/ui/Button';
 import { StatCard } from '../components/ui/StatCard';
 import { ArrowRight, Play, FileText, Globe } from 'lucide-react';
@@ -13,8 +14,11 @@ import { ArrowRight, Play, FileText, Globe } from 'lucide-react';
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, isAdmin, isCustomer } = useAuth();
+  const { clients } = useClientsData();
   const [visualModalOpen, setVisualModalOpen] = useState(false);
   const [docsModalOpen, setDocsModalOpen] = useState(false);
+
+  const totalProjectsCount = clients.length > 0 ? clients.length : 90;
 
   const handleStartConsultation = () => {
     if (!user) {
@@ -69,10 +73,11 @@ export const LandingPage: React.FC = () => {
             <Button
               variant="secondary"
               size="lg"
-              onClick={() => navigate('/client-explorer')}
-              className="w-full sm:w-auto px-6"
+              onClick={() => navigate('/project-explorer')}
+              className="w-full sm:w-auto px-6 uppercase tracking-wider"
+              aria-label={`Open Project Explorer (${totalProjectsCount} Projects)`}
             >
-              <span>Open Client Explorer (37 Projects)</span>
+              <span>{`OPEN PROJECT EXPLORER (${totalProjectsCount} PROJECTS)`}</span>
             </Button>
           </div>
 
@@ -91,7 +96,7 @@ export const LandingPage: React.FC = () => {
               className="px-4 py-2 rounded-full border border-[#ECECEC] hover:border-[#0A0A0A] bg-white text-[#5C5C5C] hover:text-[#0A0A0A] shadow-xs hover:shadow-sm transition-all flex items-center space-x-2 cursor-pointer font-medium"
             >
               <FileText className="w-3.5 h-3.5 text-[#0E2A1C]" />
-              <span>Presentations & Decks (59 Pages)</span>
+              <span>Presentations & Decks (4 Decks · 74 Pages)</span>
             </button>
           </div>
         </section>

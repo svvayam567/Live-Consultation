@@ -8,6 +8,14 @@ import { Toast } from '../../components/ui/Toast';
 import { Modal } from '../../components/ui/Modal';
 import { PortalChat } from '../../components/portal/PortalChat';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import {
+  isFirebaseConfigured,
+  fetchAllConsultations,
+  setConsultationPortalVisible,
+  updateConsultationInternalNotes,
+  updateConsultationStage,
+  deleteConsultationFromFirestore
+} from '../../lib/firebase';
 import { money, indicativeAmount, cn, formatProjectName } from '../../lib/utils';
 import type { ConsultationState, SelectedReference, CustomerRecord } from '../../types/consultation';
 import {
@@ -58,157 +66,6 @@ export interface ConsultationRecord {
   state?: any;
 }
 
-const SEED_CONSULTATIONS: ConsultationRecord[] = [
-  {
-    id: 'seed-001',
-    client_name: 'Mala Sharma',
-    project_name: "Mrs. Sharma's Temple",
-    title: 'Mrs.',
-    surname: 'Sharma',
-    product: 'Temple',
-    client_phone: '+91 9845012345',
-    location: 'Bengaluru, Indiranagar',
-    consultant: 'Svvayam Admin',
-    consultant_name: 'Svvayam Admin',
-    consultant_phone: '+91 8074257384',
-    estimate: '18 lakh',
-    status: 'draft',
-    date: '2026-10-08',
-    portal_visible: true,
-    internal_notes: 'North-East corner room. Makrana white marble base approved. Family prioritizes morning rituals.',
-    updated_at: new Date(Date.now() - 3600000 * 2).toISOString(),
-    current_step: 4,
-    selected_reference: {
-      data: '/assets/matrix/r0_c0.png',
-      caption: 'Classical Teakwood Sanctum with Makrana Marble Peetham',
-      kind: 'Selected reference',
-      source: 'grid',
-      slotIndex: 0
-    },
-    state: {
-      version: 1,
-      slide: 4,
-      project_name: "Mrs. Sharma's Temple",
-      fields: {
-        client: 'Mala Sharma',
-        title: 'Mrs.',
-        surname: 'Sharma',
-        product: 'Temple',
-        projectName: "Mrs. Sharma's Temple",
-        project_name: "Mrs. Sharma's Temple",
-        location: 'Bengaluru, Indiranagar',
-        date: '2026-10-08',
-        deity: 'Lord Venkateshwara, Devi Lakshmi & Lord Ganesha',
-        idol: 'Central Venkateshwara 24" brass; flanking deities 12" each',
-        rituals: 'Daily morning abhishekam, archana, and evening aarti',
-        dimensions: '8 ft (W) x 6 ft (D) x 9 ft (H)',
-        dimensionType: 'Dedicated sanctum room (ground floor, North-East corner)',
-        features: 'Shikhara dome, stepped sanctum peetham, integrated oil-wick brass vents, brass jali double doors',
-        scope: 'Comprehensive teakwood mandir with hand-carved pillars and brass repousse work',
-        materials: 'Grade A Burma Teakwood, Makrana White Marble platform, 24k gold leaf accents',
-        estimate: '18 lakh'
-      },
-      images: [],
-      gallery: Array(16).fill(null),
-      journey: Array(8).fill(null),
-      selected_reference: {
-        data: '/assets/matrix/r0_c0.png',
-        caption: 'Classical Teakwood Sanctum with Makrana Marble Peetham',
-        kind: 'Selected reference',
-        source: 'grid',
-        slotIndex: 0
-      }
-    }
-  },
-  {
-    id: 'seed-002',
-    client_name: 'Dr. Sanjay Reddy',
-    project_name: "Dr. Reddy's Sanctum",
-    title: 'Dr.',
-    surname: 'Reddy',
-    product: 'Sanctum',
-    client_phone: '+91 9701020304',
-    location: 'Hyderabad, Jubilee Hills',
-    consultant: 'Svvayam Admin',
-    consultant_name: 'Svvayam Admin',
-    consultant_phone: '+91 8074257384',
-    estimate: '25 lakh',
-    status: 'proposal_sent',
-    date: '2026-10-06',
-    portal_visible: true,
-    internal_notes: 'Double-height courtyard space. Requires custom acoustical dampening for vedic chanting.',
-    updated_at: new Date(Date.now() - 86400000 * 2).toISOString(),
-    current_step: 7,
-    selected_reference: {
-      data: '/assets/matrix/r1_c2.png',
-      caption: 'Ornate Dravidian Sanctum with Stepped Peetham & Brass Bell Grid',
-      kind: 'Selected reference',
-      source: 'grid',
-      slotIndex: 6
-    },
-    state: {
-      version: 1,
-      slide: 7,
-      project_name: "Dr. Reddy's Sanctum",
-      fields: {
-        client: 'Dr. Sanjay Reddy',
-        title: 'Dr.',
-        surname: 'Reddy',
-        product: 'Sanctum',
-        projectName: "Dr. Reddy's Sanctum",
-        project_name: "Dr. Reddy's Sanctum",
-        location: 'Hyderabad, Jubilee Hills',
-        date: '2026-10-06',
-        deity: 'Shiva Lingam & Parvati',
-        idol: '36" Black granite Lingam on panchaloha peetham',
-        rituals: 'Panchamrita abhishekam, Rudra homam on auspicious days',
-        dimensions: '12 ft (W) x 10 ft (D) x 14 ft (H)',
-        dimensionType: 'Dedicated courtyard sanctum with skylight integration',
-        features: 'Perforated stone jali, motorized brass bell array, water drainage channel',
-        scope: 'Monolithic granite and dark teak sanctum architecture',
-        materials: 'Sadahalli grey granite, hand-rubbed teakwood, unlacquered brass',
-        estimate: '25 lakh'
-      },
-      images: [],
-      gallery: Array(16).fill(null),
-      journey: Array(8).fill(null),
-      selected_reference: {
-        data: '/assets/matrix/r1_c2.png',
-        caption: 'Ornate Dravidian Sanctum with Stepped Peetham & Brass Bell Grid',
-        kind: 'Selected reference',
-        source: 'grid',
-        slotIndex: 6
-      }
-    }
-  },
-  {
-    id: 'seed-003',
-    client_name: 'Yuva Balakumaran',
-    project_name: "Mr. Balakumaran's Temple",
-    title: 'Mr.',
-    surname: 'Balakumaran',
-    product: 'Temple',
-    client_phone: '+91 9884011223',
-    location: 'Chennai, Adyar',
-    consultant: 'Svvayam Admin',
-    consultant_name: 'Svvayam Admin',
-    consultant_phone: '+91 8074257384',
-    estimate: '12 lakh',
-    status: 'completed',
-    date: '2026-09-28',
-    portal_visible: false,
-    internal_notes: 'Completed site installation. Auspicious Kumbhabhishekam ceremony conducted smoothly.',
-    updated_at: new Date(Date.now() - 86400000 * 10).toISOString(),
-    current_step: 7,
-    selected_reference: {
-      data: '/assets/matrix/r2_c1.png',
-      caption: 'Minimalist Monolithic Sanctum with Hidden Warm Illumination',
-      kind: 'Selected reference',
-      source: 'grid',
-      slotIndex: 9
-    }
-  }
-];
 
 export const AdminClientsPage: React.FC = () => {
   const { isAdmin, isLoading: authLoading, profile, user } = useAuth();
@@ -302,7 +159,18 @@ export const AdminClientsPage: React.FC = () => {
       let deleted = false;
       let failureReason = '';
 
-      if (isUuid && isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured) {
+        try {
+          const fbDel = await deleteConsultationFromFirestore(target.id);
+          if (fbDel) {
+            deleted = true;
+          }
+        } catch (fbDelErr: any) {
+          console.warn('[Firebase] deleteConsultationFromFirestore notice:', fbDelErr);
+        }
+      }
+
+      if (!deleted && isUuid && isSupabaseConfigured && supabase) {
         console.log('[Delete Consultation] Initiating deletion for UUID:', target.id, 'status:', target.status);
 
         // Method 1: Try secure RPC function (from migration 012)
@@ -503,7 +371,7 @@ export const AdminClientsPage: React.FC = () => {
 
   const highlightId = searchParams.get('highlight');
 
-  // Load consultations from Supabase or resilient local state
+  // Load consultations from Firebase / Supabase or resilient local state
   const loadConsultations = async () => {
     setLoadingConsultations(true);
     const deletedIds: string[] = (() => {
@@ -514,6 +382,20 @@ export const AdminClientsPage: React.FC = () => {
         return [];
       }
     })();
+
+    if (isFirebaseConfigured) {
+      try {
+        const remote = await fetchAllConsultations();
+        const activeList: ConsultationRecord[] = remote
+          .filter((item) => !deletedIds.includes(item.id))
+          .map(r => ({ ...r, date: r.date || '', portal_visible: Boolean(r.portal_visible) }));
+        setConsultations(activeList);
+        setLoadingConsultations(false);
+        return;
+      } catch (err) {
+        console.warn('[Firebase] fetchAllConsultations notice:', err);
+      }
+    }
 
     if (isSupabaseConfigured && supabase) {
       try {
@@ -581,13 +463,13 @@ export const AdminClientsPage: React.FC = () => {
       }
     }
 
-    // Fallback: Local storage check or default seed
+    // Fallback: Local storage check
     try {
       const stored = localStorage.getItem('svvayam_admin_consultations_v1');
       if (stored !== null) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          const filtered = parsed.filter((c: any) => !deletedIds.includes(c.id));
+          const filtered = parsed.filter((c: any) => !deletedIds.includes(c.id) && !String(c.id).startsWith('seed-'));
           setConsultations(filtered);
           setLoadingConsultations(false);
           return;
@@ -597,15 +479,13 @@ export const AdminClientsPage: React.FC = () => {
       // Ignored
     }
 
-    const remainingSeeds = SEED_CONSULTATIONS.filter((c) => !deletedIds.includes(c.id));
-    setConsultations(remainingSeeds);
-    localStorage.setItem('svvayam_admin_consultations_v1', JSON.stringify(remainingSeeds));
+    setConsultations([]);
     setLoadingConsultations(false);
   };
 
   // Load customer accounts
   const loadCustomers = () => {
-    const list = getRegisteredCustomers();
+    const list = getRegisteredCustomers().filter((c) => !String(c.id).startsWith('cust-00') && !String(c.id).startsWith('seed-'));
     setCustomers(list);
   };
 
@@ -629,6 +509,14 @@ export const AdminClientsPage: React.FC = () => {
 
     if (selectedRecord && selectedRecord.id === consultation.id) {
       setSelectedRecord({ ...selectedRecord, portal_visible: newStatus });
+    }
+
+    if (isFirebaseConfigured) {
+      try {
+        await setConsultationPortalVisible(consultation.id, newStatus);
+      } catch (err) {
+        console.warn('[Firebase] Visibility update error:', err);
+      }
     }
 
     if (isSupabaseConfigured && supabase) {
@@ -660,6 +548,14 @@ export const AdminClientsPage: React.FC = () => {
       setSelectedRecord({ ...selectedRecord, internal_notes: notes });
     }
 
+    if (isFirebaseConfigured) {
+      try {
+        await updateConsultationInternalNotes(consultationId, notes);
+      } catch (err) {
+        console.warn('[Firebase] Internal notes error:', err);
+      }
+    }
+
     if (isSupabaseConfigured && supabase) {
       try {
         await supabase
@@ -679,6 +575,14 @@ export const AdminClientsPage: React.FC = () => {
     setJourneyStages(prev =>
       prev.map((s, i) => i === stageIdx ? { ...s, status: newStatus } : s)
     );
+
+    if (isFirebaseConfigured && selectedRecord) {
+      try {
+        await updateConsultationStage(selectedRecord.id, stageIdx, newStatus);
+      } catch (err) {
+        console.warn('[Firebase] Journey stage update error:', err);
+      }
+    }
 
     if (isSupabaseConfigured && supabase && selectedRecord) {
       try {
@@ -757,7 +661,7 @@ export const AdminClientsPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <Users className="w-5 h-5 text-[#0A0A0A]" />
               <h1 className="text-xl sm:text-2xl font-medium text-[#0A0A0A]">
-                Client Explorer
+                Clients
               </h1>
             </div>
             <p className="text-xs text-neutral-500 font-sans">
@@ -907,8 +811,31 @@ export const AdminClientsPage: React.FC = () => {
                       </tr>
                     ) : filteredConsultations.length === 0 ? (
                       <tr>
-                        <td colSpan={10} className="py-8 text-center text-neutral-400">
-                          No matching consultation records found.
+                        <td colSpan={10} className="py-16 text-center">
+                          <div className="max-w-sm mx-auto space-y-3">
+                            <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center mx-auto text-neutral-400">
+                              <Users className="w-5 h-5" />
+                            </div>
+                            <p className="text-sm font-medium text-[#0A0A0A]">
+                              {consultations.length === 0 ? 'No clients registered yet.' : 'No matching consultation records found.'}
+                            </p>
+                            <p className="text-xs text-neutral-500 font-sans">
+                              {consultations.length === 0
+                                ? 'Register a new customer account or begin a live consultation to create client records.'
+                                : 'Try adjusting your search query or filters to find consultations.'}
+                            </p>
+                            {consultations.length === 0 && (
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={() => navigate('/admin/register')}
+                                className="text-xs bg-[#0A0A0A] text-white hover:bg-neutral-800 rounded-full cursor-pointer inline-flex items-center gap-1.5"
+                              >
+                                <UserPlus className="w-3.5 h-3.5 text-white" />
+                                <span>Register Customer</span>
+                              </Button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ) : (
@@ -1092,8 +1019,30 @@ export const AdminClientsPage: React.FC = () => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {customers.map((cust) => (
+            {customers.length === 0 ? (
+              <div className="p-12 border border-dashed border-neutral-300 rounded-[16px] text-center bg-neutral-50/50 space-y-3">
+                <div className="w-12 h-12 rounded-full bg-white border border-neutral-200 flex items-center justify-center mx-auto text-neutral-400 shadow-xs">
+                  <Users className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-medium text-[#0A0A0A]">No clients registered yet.</h4>
+                  <p className="text-xs text-neutral-500 font-sans max-w-sm mx-auto">
+                    Active customer accounts will appear here once registered with portal credentials.
+                  </p>
+                </div>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => navigate('/admin/register')}
+                  className="text-xs bg-[#0A0A0A] text-white hover:bg-neutral-800 rounded-full cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  <UserPlus className="w-3.5 h-3.5 text-white" />
+                  <span>Register Customer</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {customers.map((cust) => (
                 <div
                   key={cust.id}
                   className="p-5 rounded-[16px] border border-neutral-200 bg-white hover:border-[#0A0A0A] transition-all space-y-3 relative group shadow-xs"
@@ -1169,7 +1118,8 @@ export const AdminClientsPage: React.FC = () => {
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -1189,9 +1139,17 @@ export const AdminClientsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Thread list */}
-              <div className="space-y-2 md:col-span-1">
+            {consultations.length === 0 ? (
+              <div className="p-12 border border-dashed border-neutral-300 rounded-[16px] text-center bg-neutral-50/50 space-y-2">
+                <p className="text-sm font-medium text-[#0A0A0A]">No clients registered yet.</p>
+                <p className="text-xs text-neutral-500 font-sans">
+                  Direct message threads and inquiries will appear here once client sanctums are registered.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Thread list */}
+                <div className="space-y-2 md:col-span-1">
                 <span className="text-[10px] font-mono uppercase text-neutral-400 block pb-1">
                   Active Client Sanctums
                 </span>
@@ -1238,6 +1196,7 @@ export const AdminClientsPage: React.FC = () => {
                 )}
               </div>
             </div>
+            )}
           </div>
         )}
       </main>

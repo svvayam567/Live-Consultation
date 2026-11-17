@@ -1,7 +1,8 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
+const metaEnv = typeof import.meta !== 'undefined' ? (import.meta as any).env : undefined;
+const supabaseUrl = (metaEnv?.VITE_SUPABASE_URL as string) || '';
+const supabasePublishableKey = (metaEnv?.VITE_SUPABASE_PUBLISHABLE_KEY as string) || '';
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl && 
@@ -19,8 +20,3 @@ export const supabase: SupabaseClient | null = isSupabaseConfigured
       }
     })
   : null;
-
-// Initial admin phones list from env (comma-separated, e.g. "+918074257384,+919182424228")
-export const INITIAL_ADMIN_PHONES = (import.meta.env.VITE_INITIAL_ADMIN_PHONES || '+918074257384,+919182424228')
-  .split(',')
-  .map((p: string) => p.replace(/\s+/g, ''));

@@ -23,7 +23,8 @@ export const getStepValidation = (stepIndex: number, state: ConsultationState): 
 
   switch (stepIndex) {
     case 0: // Step 1: Purpose
-      if (!f.client?.trim()) {
+      const hasClientIdentity = Boolean(f.client?.trim() || state?.project_name?.trim() || f.projectName?.trim());
+      if (!hasClientIdentity) {
         missingItems.push({ field: 'client', label: 'Customer Name' });
       }
       if (!f.location?.trim()) {

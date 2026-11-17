@@ -6,7 +6,7 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProposalViewPage } from './pages/ProposalViewPage';
 import { CustomerPortalPage } from './pages/CustomerPortalPage';
-import { ClientExplorerPage } from './pages/ClientExplorerPage';
+import { ProjectExplorerPage } from './pages/ProjectExplorerPage';
 import { AdminClientsPage } from './pages/admin/AdminClientsPage';
 import { AdminRegisterPage } from './pages/admin/AdminRegisterPage';
 import { AdminConsultationPage } from './pages/admin/AdminConsultationPage';
@@ -155,28 +155,11 @@ const ProtectedShowcaseRoute: React.FC = () => {
   return <LandingPage />;
 };
 
-// Guard for Client Explorer (/client-explorer)
-const ProtectedExplorerRoute: React.FC = () => {
-  const { user, isAdmin, isLoading } = useAuth();
+
+// Redirect /client-explorer to /project-explorer preserving query parameters
+const RedirectClientExplorer: React.FC = () => {
   const location = useLocation();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center text-xs text-neutral-400 font-sans">
-        Loading explorer...
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to={`/?role=admin&redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
-  }
-
-  if (!isAdmin) {
-    return <Navigate to="/client" replace />;
-  }
-
-  return <ClientExplorerPage />;
+  return <Navigate to={`/project-explorer${location.search}`} replace />;
 };
 
 // Guard for Client Section (/client)
@@ -252,8 +235,9 @@ export const App: React.FC = () => {
             {/* Section 4: Team & Admin Management (Super Admin only) */}
             <Route path="/admin/team" element={<ProtectedAdminTeamRoute />} />
 
-            {/* Architectural 37 Projects Explorer */}
-            <Route path="/client-explorer" element={<ProtectedExplorerRoute />} />
+            {/* Architectural 90 Projects Explorer - Accessible to public visitors and staff */}
+            <Route path="/project-explorer" element={<ProjectExplorerPage />} />
+            <Route path="/client-explorer" element={<RedirectClientExplorer />} />
 
             {/* Customer Sanctum Portal */}
             <Route path="/client" element={<ProtectedClientRoute />} />

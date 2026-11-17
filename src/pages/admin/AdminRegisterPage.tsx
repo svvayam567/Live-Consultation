@@ -7,6 +7,14 @@ import { AdminNav } from '../../components/admin/AdminNav';
 import { Button } from '../../components/ui/Button';
 import { Toast } from '../../components/ui/Toast';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import {
+  isFirebaseConfigured,
+  createCustomerAccountIsolated,
+  saveConsultationToFirestore,
+  fetchAllConsultations,
+  db
+} from '../../lib/firebase';
+import { collection, query, where, getDocs, limit as firestoreLimit } from 'firebase/firestore';
 import { extractSurname, formatProjectName, cn } from '../../lib/utils';
 import type { CustomerTitle, CustomerProduct, CustomerRecord } from '../../types/consultation';
 import type { ConsultationRecord } from './AdminClientsPage';
@@ -118,7 +126,24 @@ export const AdminRegisterPage: React.FC = () => {
     const loadConsultations = async () => {
       const list: Array<{ id: string; client_name: string; project_name?: string; current_step?: number; client_phone?: string }> = [];
 
-      if (isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured) {
+        try {
+          const fbConsults = await fetchAllConsultations();
+          fbConsults.forEach(c => {
+            list.push({
+              id: c.id,
+              client_name: c.client_name || 'Untitled Consultation',
+              project_name: c.project_name,
+              current_step: c.current_step || 1,
+              client_phone: c.client_phone
+            });
+          });
+        } catch (fbErr) {
+          console.warn('[Firebase] Load consultations note:', fbErr);
+        }
+      }
+
+      if (isSupabaseConfigured && supabase && list.length === 0) {
         try {
           const { data } = await supabase
             .from('consultations')
@@ -353,7 +378,26 @@ export const AdminRegisterPage: React.FC = () => {
       // 1. Check if mobile number already exists in database or local cache (Prevent Duplicates)
       let existingClient: CustomerRecord | null = null;
 
-      if (isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured && db) {
+        try {
+          const profilesRef = collection(db, 'profiles');
+          const qPhone = query(profilesRef, where('phone', '==', formattedPhone), firestoreLimit(1));
+          const snap = await getDocs(qPhone);
+          if (!snap.empty) {
+            const docData = snap.docs[0].data();
+            existingClient = {
+              id: snap.docs[0].id,
+              name: docData.name || 'Valued Customer',
+              phone: docData.phone || formattedPhone,
+              project_name: docData.project_name
+            } as CustomerRecord;
+          }
+        } catch (fbQueryErr) {
+          console.warn('[Firebase] Profiles duplicate query note:', fbQueryErr);
+        }
+      }
+
+      if (!existingClient && isSupabaseConfigured && supabase) {
         try {
           const { data: profiles } = await supabase
             .from('profiles')
@@ -397,7 +441,39 @@ export const AdminRegisterPage: React.FC = () => {
       let createdProjectId: string | null = null;
       let usedEdgeFunction = false;
 
-      // Try Edge Function first if Supabase is active
+      // Try Firebase Registration first if Firebase is active
+      if (isFirebaseConfigured) {
+        try {
+          const fbRes = await createCustomerAccountIsolated({
+            phone: formattedPhone,
+            password: password.trim(),
+            name: name.trim(),
+            title,
+            surname: finalSurname,
+            product,
+            projectName: finalProjectName,
+            location: cleanLocation
+          });
+
+          if (fbRes.success && fbRes.userId) {
+            customerUserId = fbRes.userId;
+            usedEdgeFunction = true;
+          } else if (fbRes.error?.includes('already exists') || fbRes.error?.includes('email-already-in-use')) {
+            setExistingCustomerNotice({
+              id: customerUserId,
+              name: name.trim(),
+              phone: formattedPhone,
+              project_name: finalProjectName
+            });
+            setSubmitting(false);
+            return;
+          }
+        } catch (fbErr) {
+          console.warn('[Firebase] createCustomerAccountIsolated notice:', fbErr);
+        }
+      }
+
+      // Try Edge Function if Supabase is active and not already created
       if (isSupabaseConfigured && supabase) {
         try {
           const response = await supabase.functions.invoke('register-customer', {
@@ -694,6 +770,19 @@ export const AdminRegisterPage: React.FC = () => {
         localStorage.setItem('svvayam_admin_consultations_v1', JSON.stringify([newConsultRecord, ...list]));
       } catch (err) {
         console.warn('Storage save note:', err);
+      }
+
+      // If Firebase is configured, persist draft to Cloud Firestore
+      if (isFirebaseConfigured) {
+        try {
+          await saveConsultationToFirestore(newConsultState, {
+            id: profile?.id,
+            name: profile?.name,
+            phone: profile?.phone
+          });
+        } catch (fbErr) {
+          console.warn('[Firebase] Draft save to Firestore notice:', fbErr);
+        }
       }
 
       // Initialize ConsultationContext with this project and jump to Step 1

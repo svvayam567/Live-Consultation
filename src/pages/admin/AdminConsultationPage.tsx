@@ -15,7 +15,9 @@ import { Step7Journey } from '../../components/consultation/Step7Journey';
 import { Step8Proposal } from '../../components/consultation/Step8Proposal';
 import { Button } from '../../components/ui/Button';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { isFirebaseConfigured, fetchAllConsultations } from '../../lib/firebase';
 import { formatProjectName, cn } from '../../lib/utils';
+import { getStepValidation } from '../../lib/consultationValidation';
 import type { ConsultationState, CustomerRecord } from '../../types/consultation';
 import {
   ArrowLeft,
@@ -78,7 +80,6 @@ export const AdminConsultationPage: React.FC = () => {
   const {
     state,
     currentSlide,
-    nextSlide,
     prevSlide,
     totalSelectedCount,
     setSlide,
@@ -87,9 +88,10 @@ export const AdminConsultationPage: React.FC = () => {
     resetConsultation,
     incompleteSteps,
     areAllPreparationStepsComplete,
-    finalizeProposal
+    finalizeProposal,
+    saveCurrentState
   } = useConsultation();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -100,6 +102,8 @@ export const AdminConsultationPage: React.FC = () => {
   const [toastMsg, setToastMsg] = useState<string | null>(location.state?.notice || null);
   const [finalizingProposal, setFinalizingProposal] = useState(false);
   const [proposalSuccessModal, setProposalSuccessModal] = useState(false);
+  const [isSavingStep, setIsSavingStep] = useState(false);
+  const [step1Errors, setStep1Errors] = useState<{ location?: string; client?: string }>({});
 
   // One-time Customer Credentials confirmation state from registration
   const [credentialsModal, setCredentialsModal] = useState<{
@@ -127,18 +131,33 @@ export const AdminConsultationPage: React.FC = () => {
     prevSlideRef.current = currentSlide;
   }, [currentSlide]);
 
-  // Support ?step=1..8 query parameter without re-triggering on every render
+  const currentSlideRef = useRef(currentSlide);
+  currentSlideRef.current = currentSlide;
+
+  // Synchronize initial ?step=1..8 query parameter when it changes from the URL
   useEffect(() => {
     if (stepParam) {
       const s = parseInt(stepParam, 10);
       if (!isNaN(s) && s >= 1 && s <= 8) {
         const targetSlide = s - 1;
-        if (currentSlide !== targetSlide) {
+        if (currentSlideRef.current !== targetSlide) {
           setSlide(targetSlide);
         }
       }
     }
-  }, [stepParam, currentSlide, setSlide]);
+  }, [stepParam, setSlide]);
+
+  // Synchronize URL search params when currentSlide changes from wizard navigation
+  useEffect(() => {
+    const currentStepString = String(currentSlide + 1);
+    if (searchParams.get('step') !== currentStepString) {
+      setSearchParams(prev => {
+        const updated = new URLSearchParams(prev);
+        updated.set('step', currentStepString);
+        return updated;
+      }, { replace: true });
+    }
+  }, [currentSlide, searchParams, setSearchParams]);
 
   // Load client directory for selector
   const loadClientDirectory = async () => {
@@ -146,8 +165,35 @@ export const AdminConsultationPage: React.FC = () => {
     try {
       const clientList: ConsultationClientItem[] = [];
 
-      // 1. Fetch from Supabase consultations
-      if (isSupabaseConfigured && supabase) {
+      // 1. Fetch from Firebase / Supabase consultations
+      if (isFirebaseConfigured) {
+        try {
+          const remoteConsultations = await fetchAllConsultations();
+          remoteConsultations.forEach((row: any) => {
+            const f = row.fields || {};
+            const proj = formatProjectName(
+              row.project_name || f.projectName || f.project_name || {
+                title: f.title,
+                surname: f.surname,
+                product: f.product || f.productType || 'Temple',
+                client_name: row.client_name || f.client
+              }
+            );
+            clientList.push({
+              id: row.id,
+              name: row.client_name || f.client || 'Client',
+              project_name: proj,
+              phone: row.client_phone || f.phone || '',
+              location: f.location || 'India',
+              status: row.status || 'draft',
+              current_step: row.current_step || 1,
+              state: row.state
+            });
+          });
+        } catch (fbErr) {
+          console.warn('[Firebase] Consultation directory load notice:', fbErr);
+        }
+      } else if (isSupabaseConfigured && supabase) {
         const { data, error } = await supabase
           .from('consultations')
           .select('id, client_name, project_name, client_phone, fields, current_step, status, state')
@@ -223,6 +269,11 @@ export const AdminConsultationPage: React.FC = () => {
   const loadedIdRef = useRef<string | null>(null);
   useEffect(() => {
     if (idParam && loadedIdRef.current !== idParam) {
+      if (state.id === idParam) {
+        loadedIdRef.current = idParam;
+        setIsPickingClient(false);
+        return;
+      }
       try {
         const stored = localStorage.getItem('svvayam_admin_consultations_v1');
         if (stored) {
@@ -240,7 +291,7 @@ export const AdminConsultationPage: React.FC = () => {
         }
       } catch {}
     }
-  }, [idParam, stepParam, importSession, setSlide]);
+  }, [idParam, stepParam, importSession, setSlide, state.id]);
 
   // If ?client= query param is set, load that client's consultation once
   const loadedClientRef = useRef<string | null>(null);
@@ -248,6 +299,11 @@ export const AdminConsultationPage: React.FC = () => {
     if (clientParam && loadedClientRef.current !== clientParam) {
       if (clientParam === 'walk-in') {
         loadedClientRef.current = 'walk-in';
+        setIsPickingClient(false);
+        return;
+      }
+      if (state.client_id === clientParam && state.fields.client) {
+        loadedClientRef.current = clientParam;
         setIsPickingClient(false);
         return;
       }
@@ -387,9 +443,11 @@ export const AdminConsultationPage: React.FC = () => {
 
   // Step 4 (Slide index 4 = Examples) requires exactly 1 selected reference
   const isStep5Incomplete = currentSlide === 4 && totalSelectedCount !== 1;
-  const isNextDisabled = isStep5Incomplete || finalizingProposal;
+  const isNextDisabled = isStep5Incomplete || finalizingProposal || isSavingStep;
 
   const handleNextOrFinalize = async () => {
+    if (isSavingStep || finalizingProposal) return;
+
     if (currentSlide === 7) {
       if (!areAllPreparationStepsComplete) {
         if (incompleteSteps.length > 0) {
@@ -408,13 +466,49 @@ export const AdminConsultationPage: React.FC = () => {
       return;
     }
 
-    nextSlide();
+    // Step 1 Validation
+    if (currentSlide === 0) {
+      const validation = getStepValidation(0, state);
+      if (!validation.isComplete) {
+        const missing = validation.missingItems;
+        const fieldErrors: { [k: string]: string } = {};
+        missing.forEach(m => {
+          fieldErrors[m.field] = `${m.label} is required to continue`;
+        });
+        setStep1Errors(fieldErrors);
+        setToastMsg(`Please fill in required fields: ${missing.map(m => m.label).join(', ')}`);
+        const firstField = missing[0]?.field;
+        if (firstField) {
+          const el = document.getElementById(firstField) || document.querySelector(`[name="${firstField}"]`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            (el as HTMLElement).focus?.();
+          }
+        }
+        return;
+      }
+      setStep1Errors({});
+    }
+
+    // Save and advance to next slide
+    setIsSavingStep(true);
+    try {
+      const nextSlideIndex = currentSlide + 1;
+      await saveCurrentState({ ...state, slide: nextSlideIndex });
+      setSlide(nextSlideIndex);
+    } catch (saveErr: any) {
+      console.warn('Step save warning:', saveErr);
+      setToastMsg('Notice: Progress saved locally.');
+      setSlide(currentSlide + 1);
+    } finally {
+      setIsSavingStep(false);
+    }
   };
 
   const renderCurrentStep = () => {
     switch (currentSlide) {
       case 0:
-        return <Step1Purpose />;
+        return <Step1Purpose errors={step1Errors} />;
       case 1:
         return <Step2Worship />;
       case 2:
@@ -735,7 +829,7 @@ export const AdminConsultationPage: React.FC = () => {
                 <Link
                   to="/admin/clients"
                   className="px-2.5 py-1 rounded-full text-[11px] font-sans font-medium text-[#737373] hover:text-[#0A0A0A] hover:bg-neutral-100 transition-colors flex items-center gap-1"
-                  title="View all clients in Client Explorer"
+                  title="View all clients in Clients management"
                 >
                   <span>Clients</span>
                   <ExternalLink className="w-3 h-3" />
@@ -815,6 +909,11 @@ export const AdminConsultationPage: React.FC = () => {
                     <>
                       <span>Review proposal</span>
                       <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                    </>
+                  ) : isSavingStep ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 mr-1 animate-spin" />
+                      <span>Saving...</span>
                     </>
                   ) : (
                     <>

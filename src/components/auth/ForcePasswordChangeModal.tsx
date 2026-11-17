@@ -1,6 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { auth, db, isFirebaseConfigured, logAdminActivity } from '../../lib/firebase';
+import { updatePassword } from 'firebase/auth';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { Button } from '../ui/Button';
 import { Logo } from '../ui/Logo';
 import {
@@ -101,7 +104,26 @@ export const ForcePasswordChangeModal: React.FC = () => {
     setErrorMsg(null);
 
     try {
-      if (isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured && auth?.currentUser) {
+        await updatePassword(auth.currentUser, password.trim());
+        if (db && user?.id) {
+          const profRef = doc(db, 'profiles', user.id);
+          await updateDoc(profRef, {
+            must_change_password: false,
+            updated_at: serverTimestamp()
+          });
+        }
+        try {
+          await logAdminActivity({
+            actorId: user?.id,
+            actorName: profile?.name || user?.email,
+            action: 'admin_password_reset',
+            target: 'Updated initial temporary password to permanent password'
+          });
+        } catch {
+          // Non-blocking audit log
+        }
+      } else if (isSupabaseConfigured && supabase) {
         // 1. Update Auth password
         const { error: authErr } = await supabase.auth.updateUser({
           password: password.trim()

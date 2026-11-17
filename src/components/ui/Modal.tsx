@@ -11,6 +11,8 @@ export interface ModalProps {
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full';
   showCloseButton?: boolean;
   className?: string;
+  bodyClassName?: string;
+  preventCloseOnEsc?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -21,11 +23,16 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   maxWidth = '2xl',
   showCloseButton = true,
-  className
+  className,
+  bodyClassName,
+  preventCloseOnEsc = false
 }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        if (e.defaultPrevented || preventCloseOnEsc) return;
+        onClose();
+      }
     };
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -91,7 +98,7 @@ export const Modal: React.FC<ModalProps> = ({
             )}
           </div>
         )}
-        <div className="flex-1 overflow-y-auto p-6">{children}</div>
+        <div className={cn('flex-1 overflow-y-auto p-6', bodyClassName)}>{children}</div>
       </div>
     </div>
   );

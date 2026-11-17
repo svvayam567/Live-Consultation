@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { isFirebaseConfigured, createAdminUserIsolated } from '../../lib/firebase';
 import {
   ShieldCheck,
   Sparkles,
@@ -107,7 +108,16 @@ export const AddAdminModal: React.FC<AddAdminModalProps> = ({
     const finalPassword = password.trim();
 
     try {
-      if (isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured) {
+        const fbRes = await createAdminUserIsolated({
+          name: name.trim(),
+          email: cleanEmail,
+          password: finalPassword
+        });
+        if (!fbRes.success) {
+          throw new Error(fbRes.error || 'Failed to create administrator account in Firebase.');
+        }
+      } else if (isSupabaseConfigured && supabase) {
         const { data, error } = await supabase.functions.invoke('manage-admin', {
           body: {
             action: 'register_admin',

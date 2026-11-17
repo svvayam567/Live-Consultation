@@ -6,6 +6,13 @@ import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { Toast } from '../../components/ui/Toast';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import {
+  isFirebaseConfigured,
+  listAdminUsers,
+  toggleAdminActiveStatus,
+  deleteAdminUser,
+  fetchAdminActivityLogs
+} from '../../lib/firebase';
 import { cn } from '../../lib/utils';
 import type { AdminUserRecord, AdminActivityRecord, AdminActivityAction } from '../../types/consultation';
 import {
@@ -130,6 +137,24 @@ export const AdminTeamPage: React.FC = () => {
     else setLoading(true);
 
     try {
+      if (isFirebaseConfigured) {
+        try {
+          const [fetchedAdmins, fetchedLogs] = await Promise.all([
+            listAdminUsers(),
+            fetchAdminActivityLogs()
+          ]);
+          if (fetchedAdmins.length > 0) setAdmins(fetchedAdmins);
+          setActivityLogs(fetchedLogs);
+          if (fetchedAdmins.length > 0) {
+            if (isRefresh) setRefreshing(false);
+            else setLoading(false);
+            return;
+          }
+        } catch (fbErr) {
+          console.warn('[Firebase] Team loadData error, falling back:', fbErr);
+        }
+      }
+
       if (isSupabaseConfigured && supabase) {
         // Fetch via Edge Function or direct RPC/RLS
         let fetchedAdmins: AdminUserRecord[] = [];
@@ -357,7 +382,13 @@ export const AdminTeamPage: React.FC = () => {
 
     const nextActive = !adminItem.active;
     try {
-      if (isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured) {
+        await toggleAdminActiveStatus(
+          adminItem.id,
+          nextActive,
+          user?.id ? { id: user.id, name: profile?.name || 'Super Admin' } : undefined
+        );
+      } else if (isSupabaseConfigured && supabase) {
         let response = await supabase.functions.invoke('manage-admin', {
           body: {
             action: 'toggle_admin_active',
@@ -504,7 +535,12 @@ export const AdminTeamPage: React.FC = () => {
 
     setIsDeleting(true);
     try {
-      if (isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured) {
+        await deleteAdminUser(
+          targetAdminForDelete.id,
+          user?.id ? { id: user.id, name: profile?.name || 'Super Admin' } : undefined
+        );
+      } else if (isSupabaseConfigured && supabase) {
         let response = await supabase.functions.invoke('manage-admin', {
           body: {
             action: 'delete_admin',

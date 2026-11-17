@@ -1,4 +1,14 @@
 import { supabase, isSupabaseConfigured } from './supabase';
+import {
+  isFirebaseConfigured,
+  sendChatMessage,
+  fetchCustomerChatMessages,
+  fetchAdminChatConversations,
+  markChatAsReadByAdmin,
+  markChatAsReadByCustomer,
+  subscribeToCustomerChatMessages,
+  subscribeToAdminChatMessages
+} from './firebase';
 import type { Message, CustomerConversation, SenderRole } from '../types/message';
 import { getRegisteredCustomers } from '../context/AuthContext';
 import { formatProjectName } from './utils';
@@ -58,6 +68,15 @@ export async function sendMessage(params: {
   attachmentUrl?: string | null;
   attachmentName?: string | null;
 }): Promise<Message> {
+  // Delegate to Firebase when configured
+  if (isFirebaseConfigured) {
+    try {
+      return await sendChatMessage(params);
+    } catch (fbErr) {
+      console.warn('[Firebase] sendChatMessage notice, falling back:', fbErr);
+    }
+  }
+
   const trimmed = params.body ? params.body.trim() : '';
   if (!trimmed && !params.attachmentUrl) {
     throw new Error('Message cannot be empty');
@@ -129,6 +148,15 @@ export async function sendMessage(params: {
 export async function fetchCustomerMessages(customerId: string): Promise<Message[]> {
   if (!customerId) return [];
 
+  // Delegate to Firebase when configured
+  if (isFirebaseConfigured) {
+    try {
+      return await fetchCustomerChatMessages(customerId);
+    } catch (fbErr) {
+      console.warn('[Firebase] fetchCustomerMessages notice, falling back:', fbErr);
+    }
+  }
+
   let remoteMessages: Message[] = [];
 
   if (isSupabaseConfigured && supabase) {
@@ -169,6 +197,15 @@ export async function fetchCustomerMessages(customerId: string): Promise<Message
  * Fetches all conversations grouped by customer for the admin inbox.
  */
 export async function fetchAdminConversations(): Promise<CustomerConversation[]> {
+  // Delegate to Firebase when configured
+  if (isFirebaseConfigured) {
+    try {
+      return await fetchAdminChatConversations();
+    } catch (fbErr) {
+      console.warn('[Firebase] fetchAdminConversations notice, falling back:', fbErr);
+    }
+  }
+
   let allMessages: Message[] = [];
 
   if (isSupabaseConfigured && supabase) {
@@ -291,6 +328,14 @@ export async function getAdminTotalUnreadCount(): Promise<number> {
 export async function markAsReadByAdmin(customerId: string): Promise<void> {
   if (!customerId) return;
 
+  if (isFirebaseConfigured) {
+    try {
+      await markChatAsReadByAdmin(customerId);
+    } catch (fbErr) {
+      console.warn('[Firebase] markAsReadByAdmin notice, falling back:', fbErr);
+    }
+  }
+
   if (isSupabaseConfigured && supabase) {
     try {
       await supabase
@@ -324,6 +369,14 @@ export async function markAsReadByAdmin(customerId: string): Promise<void> {
 export async function markAsReadByCustomer(customerId: string): Promise<void> {
   if (!customerId) return;
 
+  if (isFirebaseConfigured) {
+    try {
+      await markChatAsReadByCustomer(customerId);
+    } catch (fbErr) {
+      console.warn('[Firebase] markAsReadByCustomer notice, falling back:', fbErr);
+    }
+  }
+
   if (isSupabaseConfigured && supabase) {
     try {
       await supabase
@@ -356,6 +409,10 @@ export async function markAsReadByCustomer(customerId: string): Promise<void> {
  * Falls back to polling every 3.5 seconds.
  */
 export function subscribeToAdminMessages(onChange: () => void): () => void {
+  if (isFirebaseConfigured) {
+    return subscribeToAdminChatMessages(onChange);
+  }
+
   let isUnsubscribed = false;
 
   const handleCustomEvent = () => {
@@ -407,6 +464,10 @@ export function subscribeToCustomerMessages(
   onChange: () => void
 ): () => void {
   if (!customerId) return () => {};
+  if (isFirebaseConfigured) {
+    return subscribeToCustomerChatMessages(customerId, onChange);
+  }
+
   let isUnsubscribed = false;
 
   const handleCustomEvent = () => {

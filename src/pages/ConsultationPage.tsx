@@ -12,27 +12,30 @@ import { Step6Scope } from '../components/consultation/Step6Scope';
 import { Step7Journey } from '../components/consultation/Step7Journey';
 import { Step8Proposal } from '../components/consultation/Step8Proposal';
 import { Button } from '../components/ui/Button';
-import { ArrowLeft, ArrowRight, Check, CheckCircle2, Sparkles, Copy } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, Sparkles, Copy, RefreshCw } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { getStepValidation } from '../lib/consultationValidation';
 
 export const ConsultationPage: React.FC = () => {
   const {
     state,
     currentSlide,
-    nextSlide,
     prevSlide,
     totalSelectedCount,
     setSlide,
     importSession,
     incompleteSteps,
     areAllPreparationStepsComplete,
-    finalizeProposal
+    finalizeProposal,
+    saveCurrentState
   } = useConsultation();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const idParam = searchParams.get('id');
   const stepParam = searchParams.get('step');
   const [finalizingProposal, setFinalizingProposal] = useState(false);
   const [proposalSuccessModal, setProposalSuccessModal] = useState(false);
+  const [isSavingStep, setIsSavingStep] = useState(false);
+  const [step1Errors, setStep1Errors] = useState<{ location?: string; client?: string }>({});
 
   // Track previous slide to scroll to top ONLY when user moves to a DIFFERENT step
   const prevSlideRef = useRef<number | null>(null);
@@ -49,6 +52,10 @@ export const ConsultationPage: React.FC = () => {
   const loadedIdRef = useRef<string | null>(null);
   useEffect(() => {
     if (idParam && loadedIdRef.current !== idParam) {
+      if (state.id === idParam) {
+        loadedIdRef.current = idParam;
+        return;
+      }
       try {
         const stored = localStorage.getItem('svvayam_admin_consultations_v1');
         if (stored) {
@@ -66,26 +73,43 @@ export const ConsultationPage: React.FC = () => {
         // Ignored
       }
     }
-  }, [idParam, stepParam, importSession, setSlide]);
+  }, [idParam, stepParam, importSession, setSlide, state.id]);
 
-  // Support ?step=1..8 query parameter without re-triggering on every render
+  const currentSlideRef = useRef(currentSlide);
+  currentSlideRef.current = currentSlide;
+
+  // Synchronize initial ?step=1..8 query parameter when it changes from the URL
   useEffect(() => {
     if (stepParam) {
       const s = parseInt(stepParam, 10);
       if (!isNaN(s) && s >= 1 && s <= 8) {
         const targetSlide = s - 1;
-        if (currentSlide !== targetSlide) {
+        if (currentSlideRef.current !== targetSlide) {
           setSlide(targetSlide);
         }
       }
     }
-  }, [stepParam, currentSlide, setSlide]);
+  }, [stepParam, setSlide]);
+
+  // Synchronize URL search params when currentSlide changes from wizard navigation
+  useEffect(() => {
+    const currentStepString = String(currentSlide + 1);
+    if (searchParams.get('step') !== currentStepString) {
+      setSearchParams(prev => {
+        const updated = new URLSearchParams(prev);
+        updated.set('step', currentStepString);
+        return updated;
+      }, { replace: true });
+    }
+  }, [currentSlide, searchParams, setSearchParams]);
 
   // Validation: Step 5 requires 1 reference
   const isStep5Incomplete = currentSlide === 4 && totalSelectedCount !== 1;
-  const isNextDisabled = isStep5Incomplete || finalizingProposal;
+  const isNextDisabled = isStep5Incomplete || finalizingProposal || isSavingStep;
 
   const handleNextOrFinalize = async () => {
+    if (isSavingStep || finalizingProposal) return;
+
     if (currentSlide === 7) {
       if (!areAllPreparationStepsComplete) {
         if (incompleteSteps.length > 0) {
@@ -102,13 +126,47 @@ export const ConsultationPage: React.FC = () => {
       return;
     }
 
-    nextSlide();
+    // Step 1 Validation
+    if (currentSlide === 0) {
+      const validation = getStepValidation(0, state);
+      if (!validation.isComplete) {
+        const missing = validation.missingItems;
+        const fieldErrors: { [k: string]: string } = {};
+        missing.forEach(m => {
+          fieldErrors[m.field] = `${m.label} is required to continue`;
+        });
+        setStep1Errors(fieldErrors);
+        const firstField = missing[0]?.field;
+        if (firstField) {
+          const el = document.getElementById(firstField) || document.querySelector(`[name="${firstField}"]`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            (el as HTMLElement).focus?.();
+          }
+        }
+        return;
+      }
+      setStep1Errors({});
+    }
+
+    // Save and advance to next slide
+    setIsSavingStep(true);
+    try {
+      const nextSlideIndex = currentSlide + 1;
+      await saveCurrentState({ ...state, slide: nextSlideIndex });
+      setSlide(nextSlideIndex);
+    } catch (saveErr) {
+      console.warn('Step save warning:', saveErr);
+      setSlide(currentSlide + 1);
+    } finally {
+      setIsSavingStep(false);
+    }
   };
 
   const renderCurrentStep = () => {
     switch (currentSlide) {
       case 0:
-        return <Step1Purpose />;
+        return <Step1Purpose errors={step1Errors} />;
       case 1:
         return <Step2Worship />;
       case 2:
@@ -199,6 +257,11 @@ export const ConsultationPage: React.FC = () => {
                 <>
                   <Sparkles className="w-3.5 h-3.5 mr-1 text-emerald-300" />
                   <span>{finalizingProposal ? 'Finalizing...' : 'Finalize Proposal'}</span>
+                </>
+              ) : isSavingStep ? (
+                <>
+                  <RefreshCw className="w-3.5 h-3.5 mr-1 animate-spin" />
+                  <span>Saving...</span>
                 </>
               ) : currentSlide === 6 ? (
                 <>

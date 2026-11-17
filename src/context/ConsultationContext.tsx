@@ -17,6 +17,7 @@ import {
 } from '../lib/constants';
 import { assetUrl, formatProjectName } from '../lib/utils';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { isFirebaseConfigured, saveConsultationToFirestore } from '../lib/firebase';
 import { useAuth } from './AuthContext';
 import {
   getAllStepsValidation,
@@ -33,6 +34,7 @@ interface ConsultationContextType {
   setSlide: (slide: number) => void;
   nextSlide: () => boolean;
   prevSlide: () => void;
+  saveCurrentState: (customState?: ConsultationState) => Promise<{ success: boolean; error?: string }>;
   // Step 3 images
   addImage: (image: ConsultationImage) => void;
   removeImage: (index: number) => void;
@@ -61,6 +63,9 @@ interface ConsultationContextType {
 }
 
 const ConsultationContext = createContext<ConsultationContextType | undefined>(undefined);
+
+// UUID validator to protect Postgres queries
+const isUuid = (str?: string) => Boolean(str && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(str));
 
 // Helper to normalize consultation state and migrate legacy multi-selection
 function normalizeConsultationState(parsed: any): ConsultationState {
@@ -205,6 +210,22 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
           localStorage.setItem(LOCAL_STORAGE_JOURNEY_KEY, JSON.stringify(nextState.journey));
         }
 
+        // If Firebase is configured, replicate state to Cloud Firestore
+        if (isFirebaseConfigured && user) {
+          try {
+            const res = await saveConsultationToFirestore(nextState, {
+              id: user.id,
+              name: profile?.name,
+              phone: profile?.phone
+            });
+            if (res.id && !nextState.id) {
+              setState(s => ({ ...s, id: res.id }));
+            }
+          } catch (fbErr) {
+            console.warn('[Firebase] Consultation debounced save notice:', fbErr);
+          }
+        }
+
         // If user is authenticated and Supabase is configured, save to Postgres
         if (isSupabaseConfigured && supabase && user) {
           const projName = formatProjectName(
@@ -234,7 +255,7 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
             updated_at: new Date().toISOString()
           };
 
-          if (nextState.id) {
+          if (isUuid(nextState.id)) {
             await supabase.from('consultations').update(payload).eq('id', nextState.id);
           } else {
             const { data } = await supabase.from('consultations').insert(payload).select('id').single();
@@ -586,6 +607,129 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return false;
   }, [persistState]);
 
+  // Immediate explicit save helper (bypasses debounce for wizard step transitions)
+  const saveCurrentState = useCallback(async (customState?: ConsultationState): Promise<{ success: boolean; error?: string }> => {
+    const targetState = customState || stateRef.current;
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    setSaveStatus('Saving...');
+    try {
+      // 1. Always save to localStorage immediately
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(targetState));
+      if (targetState.gallery?.some(Boolean)) {
+        localStorage.setItem(LOCAL_STORAGE_GRID_KEY, JSON.stringify(targetState.gallery));
+      }
+      if (targetState.journey?.some(Boolean)) {
+        localStorage.setItem(LOCAL_STORAGE_JOURNEY_KEY, JSON.stringify(targetState.journey));
+      }
+
+      // Also update admin consultations list in localStorage
+      try {
+        const adminKey = 'svvayam_admin_consultations_v1';
+        const stored = localStorage.getItem(adminKey);
+        const list: any[] = stored ? JSON.parse(stored) : [];
+        const consultId = targetState.id || 'draft-active';
+        const projName = formatProjectName(
+          targetState.project_name || targetState.fields.projectName || targetState.fields.project_name || {
+            title: targetState.fields.title,
+            surname: targetState.fields.surname,
+            product: targetState.fields.product || targetState.fields.productType || 'Temple',
+            client_name: targetState.fields.client
+          }
+        );
+        const idx = list.findIndex((c: any) => c.id === consultId || (targetState.client_id && c.client_id === targetState.client_id));
+        const updatedRecord = {
+          id: consultId,
+          client_name: targetState.fields.client || 'Client',
+          project_name: projName,
+          title: targetState.fields.title,
+          surname: targetState.fields.surname,
+          product: targetState.fields.product || 'Temple',
+          client_phone: targetState.fields.client_phone || targetState.fields.phone || '',
+          location: targetState.fields.location || '',
+          consultant: profile?.name || 'Svvayam Admin',
+          status: targetState.status || (targetState.slide === 7 ? 'completed' : 'draft'),
+          current_step: targetState.slide + 1,
+          updated_at: new Date().toISOString(),
+          state: targetState
+        };
+        if (idx !== -1) {
+          list[idx] = { ...list[idx], ...updatedRecord };
+        } else if (targetState.id) {
+          list.unshift(updatedRecord);
+        }
+        localStorage.setItem(adminKey, JSON.stringify(list));
+      } catch (err) {
+        console.warn('LocalStorage admin list update:', err);
+      }
+
+      // 2. If Firebase is configured, save to Cloud Firestore
+      if (isFirebaseConfigured) {
+        try {
+          const res = await saveConsultationToFirestore(targetState, {
+            id: user?.id,
+            name: profile?.name,
+            phone: profile?.phone
+          });
+          if (res.id && !targetState.id) {
+            targetState.id = res.id;
+            setState(s => ({ ...s, id: res.id }));
+          }
+        } catch (fbErr) {
+          console.warn('[Firebase] Consultation save notice:', fbErr);
+        }
+      }
+
+      // 3. If Supabase is configured and user is logged in, save to Postgres
+      if (isSupabaseConfigured && supabase && user) {
+        const projName = formatProjectName(
+          targetState.project_name || targetState.fields.projectName || targetState.fields.project_name || {
+            title: targetState.fields.title,
+            surname: targetState.fields.surname,
+            product: targetState.fields.product || targetState.fields.productType || 'Temple',
+            client_name: targetState.fields.client
+          }
+        );
+        const computedStatus = targetState.status || (targetState.slide === 7 ? 'completed' : 'draft');
+        const payload: any = {
+          created_by: user.id,
+          consultant_id: profile?.id || user.id || targetState.consultant_id || null,
+          consultant_name: profile?.name || targetState.consultant_name || 'Svvayam Admin',
+          project_id: isUuid(targetState.project_id) ? targetState.project_id : null,
+          client_id: isUuid(targetState.client_id) ? targetState.client_id : null,
+          project_name: projName,
+          client_name: targetState.fields.client || null,
+          client_phone: targetState.fields.client_phone || targetState.fields.phone || null,
+          fields: targetState.fields,
+          selected_reference: targetState.selected_reference,
+          selected_refs: targetState.selected_reference ? [targetState.selected_reference] : [],
+          current_step: targetState.slide + 1,
+          status: computedStatus,
+          portal_visible: true,
+          updated_at: new Date().toISOString()
+        };
+
+        if (isUuid(targetState.id)) {
+          const { error: updateErr } = await supabase.from('consultations').update(payload).eq('id', targetState.id);
+          if (updateErr) throw updateErr;
+        } else {
+          const { data, error: insertErr } = await supabase.from('consultations').insert(payload).select('id').single();
+          if (insertErr) throw insertErr;
+          if (data?.id) {
+            targetState.id = data.id;
+            setState(s => ({ ...s, id: data.id }));
+          }
+        }
+      }
+
+      setSaveStatus('Saved');
+      return { success: true };
+    } catch (err: any) {
+      console.warn('Save notice:', err);
+      setSaveStatus('Offline Saved');
+      return { success: true, error: err?.message };
+    }
+  }, [user, profile]);
+
   // Google Sheets sync caller
   const triggerSheetsSync = useCallback(async (): Promise<{ success: boolean; message?: string }> => {
     if (isSupabaseConfigured && supabase) {
@@ -639,7 +783,24 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         console.warn('LocalStorage save failed:', e);
       }
 
-      // 3. Persist to Supabase if available
+      // 3. Persist to Firebase if available
+      if (isFirebaseConfigured) {
+        try {
+          const res = await saveConsultationToFirestore(updatedState, {
+            id: user?.id,
+            name: profile?.name || updatedState.consultant_name,
+            phone: profile?.phone
+          });
+          if (res.id && !updatedState.id) {
+            updatedState.id = res.id;
+            setState(s => ({ ...s, id: res.id }));
+          }
+        } catch (fbErr) {
+          console.warn('[Firebase] Consultation completion update error:', fbErr);
+        }
+      }
+
+      // 4. Persist to Supabase if available
       if (isSupabaseConfigured && supabase) {
         try {
           const projName = formatProjectName(
@@ -753,6 +914,7 @@ export const ConsultationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setSlide,
       nextSlide,
       prevSlide,
+      saveCurrentState,
       addImage,
       removeImage,
       moveImage,

@@ -8,6 +8,7 @@ import { Toast } from '../components/ui/Toast';
 import { Modal } from '../components/ui/Modal';
 import { PortalChat } from '../components/portal/PortalChat';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { isFirebaseConfigured, fetchAllConsultations } from '../lib/firebase';
 import { money, indicativeAmount, extractSurname, formatProjectName, assetUrl, cn } from '../lib/utils';
 import {
   ShieldCheck,
@@ -238,9 +239,43 @@ export const AdminDashboard: React.FC = () => {
     { stage: 7, status: 'not_started' },
   ]);
 
-  // Load consultations from Supabase or resilient local state
+  // Load consultations from Firebase / Supabase or resilient local state
   const loadConsultations = async () => {
     setLoadingConsultations(true);
+
+    if (isFirebaseConfigured) {
+      try {
+        const remote = await fetchAllConsultations();
+        if (remote && remote.length > 0) {
+          const mapped: ConsultationRecord[] = remote.map((row: any) => ({
+            id: row.id,
+            client_id: row.client_id,
+            client_name: row.client_name || row.fields?.client || 'Client',
+            client_phone: row.client_phone || row.fields?.client_phone || '',
+            project_name: row.project_name || row.fields?.projectName || 'Sanctum Project',
+            title: row.fields?.title,
+            surname: row.fields?.surname,
+            product: row.fields?.product,
+            location: row.fields?.location || 'India',
+            consultant: row.consultant_name || 'Svvayam Admin',
+            consultant_phone: row.consultant_phone || '',
+            current_step: row.current_step || 1,
+            status: (row.status === 'completed' || row.status === 'proposal_sent') ? row.status : 'draft',
+            date: row.date || row.fields?.date || '',
+            fields: row.fields || {},
+            selected_reference: row.selected_reference,
+            portal_visible: Boolean(row.portal_visible),
+            updated_at: row.updated_at || new Date().toISOString()
+          }));
+          setConsultations(mapped);
+          setLoadingConsultations(false);
+          return;
+        }
+      } catch (fbErr) {
+        console.warn('[Firebase] loadConsultations notice:', fbErr);
+      }
+    }
+
     if (isSupabaseConfigured && supabase) {
       try {
         const { data, error } = await supabase
@@ -525,11 +560,11 @@ export const AdminDashboard: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigate('/client-explorer')}
+              onClick={() => navigate('/project-explorer')}
               className="text-xs cursor-pointer"
             >
               <Grid className="w-3.5 h-3.5 mr-1" />
-              <span>Client Explorer</span>
+              <span>Project Explorer</span>
             </Button>
 
             <Button

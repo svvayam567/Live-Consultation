@@ -32,8 +32,16 @@ public/assets/Svvayam Presentation footage*/
 assets/Svvayam Presentation footage*/
 *.zip
 Thumbs.db
+desktop.ini
+Desktop.ini
 *.db
 *.tmp
 *.mp4
 public/assets/docs/*.pdf
 supabase/.temp/
+tmp_chrome_*/
+scripts/tmp_chrome_*/
+.firebase/
+migration_backups/
+functions/lib/
+functions/node_modules/

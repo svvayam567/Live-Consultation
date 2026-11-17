@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { sendAdminPasswordResetEmail } from '../lib/firebase';
 import { Logo } from '../components/ui/Logo';
 import { Button } from '../components/ui/Button';
 import { User, ShieldCheck, Eye, EyeOff } from 'lucide-react';
@@ -33,6 +34,8 @@ export const LoginPage: React.FC = () => {
   const [adminEmail, setAdminEmail] = useState('marketing@svvayam.com');
   const [adminPassword, setAdminPassword] = useState('');
   const [showAdminPassword, setShowAdminPassword] = useState(false);
+  const [resetSent, setResetSent] = useState<string | null>(null);
+  const [isResetting, setIsResetting] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -112,6 +115,7 @@ export const LoginPage: React.FC = () => {
 
     setLoading(true);
     setError(null);
+    setResetSent(null);
     clearLockoutNotice();
 
     const res = await signInAdmin(cleanEmail, adminPassword);
@@ -120,7 +124,26 @@ export const LoginPage: React.FC = () => {
     if (res.success) {
       navigate(redirectUrl || '/showcase', { replace: true });
     } else {
-      setError(res.error || 'Wrong email or password.');
+      setError(res.error || 'Login failed.');
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    const cleanEmail = adminEmail.trim().toLowerCase();
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      setError('Please enter a valid administrator email address above to receive a password reset link.');
+      return;
+    }
+    setIsResetting(true);
+    setError(null);
+    setResetSent(null);
+
+    const res = await sendAdminPasswordResetEmail(cleanEmail);
+    setIsResetting(false);
+    if (res.success) {
+      setResetSent(`Password reset link dispatched to ${cleanEmail}. Please check your inbox and spam folder.`);
+    } else {
+      setError(res.error || 'Unable to send password reset email.');
     }
   };
 
@@ -317,10 +340,27 @@ export const LoginPage: React.FC = () => {
                   {showAdminPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              <p className="mt-1 text-[11px] text-neutral-400 font-mono">
-                Secure admin studio access credentials
-              </p>
+              <div className="flex items-center justify-between mt-1">
+                <p className="text-[11px] text-neutral-400 font-mono">
+                  Secure admin studio credentials
+                </p>
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  disabled={loading || isResetting}
+                  className="text-[11px] text-amber-700 hover:text-amber-900 font-medium hover:underline cursor-pointer transition-colors"
+                >
+                  {isResetting ? 'Sending reset link...' : 'Forgot password?'}
+                </button>
+              </div>
             </div>
+
+            {resetSent && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-[12px] text-xs text-emerald-800 leading-relaxed font-sans">
+                <span className="font-semibold block mb-0.5">Password Reset Dispatched</span>
+                {resetSent}
+              </div>
+            )}
 
             <Button
               type="submit"

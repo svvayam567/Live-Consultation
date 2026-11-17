@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useConsultation } from '../../context/ConsultationContext';
 import { Input, Textarea } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { formatProjectName, extractSurname } from '../../lib/utils';
 import type { CustomerTitle, CustomerProduct } from '../../types/consultation';
-import { Sparkles, CheckCircle2, UserPlus, Users, Compass, Home } from 'lucide-react';
+import { Sparkles, CheckCircle2, UserPlus, Users, Compass, Home, Paintbrush, Layers, Check } from 'lucide-react';
 
 const SPACE_TYPOLOGIES = [
   { id: 'dedicated_room', label: 'Dedicated Pooja Room', desc: 'Separate room built according to Vastu Shastra principles' },
@@ -21,7 +21,14 @@ const ORIENTATIONS = [
   { id: 'custom', label: 'Custom Architectural', desc: 'Site-specific orientation dictated by floor plan' }
 ];
 
-export const Step1Purpose: React.FC = () => {
+export interface Step1PurposeProps {
+  errors?: {
+    location?: string;
+    client?: string;
+  };
+}
+
+export const Step1Purpose: React.FC<Step1PurposeProps> = ({ errors = {} }) => {
   const { state, updateField } = useConsultation();
   const navigate = useNavigate();
 
@@ -42,11 +49,28 @@ export const Step1Purpose: React.FC = () => {
       client_name: clientName
     });
 
-  const selectedTypology = state.fields.dimensionType || 'dedicated_room';
-  const selectedOrientation = state.fields.features || 'north_east';
+  const selectedTypology = state.fields.spaceTypology || state.fields.dimensionType || 'Dedicated Pooja Room';
+  const selectedOrientation = state.fields.direction || state.fields.features || 'North-East (Ishanya)';
   const consultDate = state.fields.date || new Date().toISOString().split('T')[0];
 
   const hasClient = Boolean(clientName && clientName.trim().length > 0) || Boolean(state.project_name);
+
+  // Synchronize default selections into form state on mount so validation/saving always have the values
+  useEffect(() => {
+    if (!state.fields.dimensionType && !state.fields.spaceTypology) {
+      updateField('dimensionType', 'Dedicated Pooja Room');
+      updateField('spaceTypology', 'Dedicated Pooja Room');
+      updateField('spaceType', 'Dedicated Pooja Room');
+    }
+    if (!state.fields.features && !state.fields.direction) {
+      updateField('features', 'North-East (Ishanya)');
+      updateField('direction', 'North-East (Ishanya)');
+      updateField('orientation', 'North-East (Ishanya)');
+    }
+    if (!state.fields.date) {
+      updateField('date', new Date().toISOString().split('T')[0]);
+    }
+  }, [state.fields.dimensionType, state.fields.spaceTypology, state.fields.features, state.fields.direction, state.fields.date, updateField]);
 
   return (
     <div className="space-y-8">
@@ -125,19 +149,25 @@ export const Step1Purpose: React.FC = () => {
             {/* Project Location & Consultation Date */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
+                id="location"
+                name="location"
                 label="Project Location"
                 requiredDot={!state.fields.location?.trim()}
                 value={state.fields.location || ''}
                 onChange={(e) => updateField('location', e.target.value)}
                 placeholder="e.g. Bengaluru, Indiranagar"
                 helperText="City and neighborhood of the installation"
+                error={errors?.location}
               />
 
               <Input
+                id="consultation_date"
+                name="consultation_date"
                 label="Consultation Date (Optional)"
                 type="date"
                 value={consultDate}
                 onChange={(e) => updateField('date', e.target.value)}
+                helperText="Scheduled date for this divine design consultation"
               />
             </div>
 
@@ -146,7 +176,7 @@ export const Step1Purpose: React.FC = () => {
               <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
                 <span className="flex items-center gap-1.5">
                   <Home className="w-3.5 h-3.5 text-[#0E2A1C]" />
-                  <span>Space Typology (Optional)</span>
+                  <span>Dedicated Space / Space Selection</span>
                 </span>
               </label>
 
@@ -157,14 +187,21 @@ export const Step1Purpose: React.FC = () => {
                     <button
                       key={t.id}
                       type="button"
-                      onClick={() => updateField('dimensionType', t.label)}
+                      onClick={() => {
+                        updateField('dimensionType', t.label);
+                        updateField('spaceTypology', t.label);
+                        updateField('spaceType', t.label);
+                      }}
                       className={`p-3.5 rounded-[14px] border text-left transition-all cursor-pointer ${
                         isSelected
                           ? 'bg-[#FAFAFA] border-[#0A0A0A] ring-1 ring-[#0A0A0A] shadow-xs'
                           : 'border-[#ECECEC] bg-white hover:bg-neutral-50'
                       }`}
                     >
-                      <strong className="block text-[#0A0A0A] font-medium">{t.label}</strong>
+                      <div className="flex items-center justify-between">
+                        <strong className="block text-[#0A0A0A] font-medium">{t.label}</strong>
+                        {isSelected && <Check className="w-3.5 h-3.5 text-[#0E2A1C]" />}
+                      </div>
                       <span className="text-[11px] text-neutral-500 block mt-0.5">{t.desc}</span>
                     </button>
                   );
@@ -177,7 +214,7 @@ export const Step1Purpose: React.FC = () => {
               <label className="block text-xs font-mono uppercase tracking-wider text-neutral-700">
                 <span className="flex items-center gap-1.5">
                   <Compass className="w-3.5 h-3.5 text-[#0E2A1C]" />
-                  <span>Auspicious Direction / Orientation (Optional)</span>
+                  <span>Spatial Direction / Orientation</span>
                 </span>
               </label>
 
@@ -188,14 +225,21 @@ export const Step1Purpose: React.FC = () => {
                     <button
                       key={o.id}
                       type="button"
-                      onClick={() => updateField('features', o.label)}
+                      onClick={() => {
+                        updateField('features', o.label);
+                        updateField('direction', o.label);
+                        updateField('orientation', o.label);
+                      }}
                       className={`p-3.5 rounded-[14px] border text-left transition-all cursor-pointer ${
                         isSelected
                           ? 'bg-[#FAFAFA] border-[#0A0A0A] ring-1 ring-[#0A0A0A] shadow-xs'
                           : 'border-[#ECECEC] bg-white hover:bg-neutral-50'
                       }`}
                     >
-                      <strong className="block text-[#0A0A0A] font-medium">{o.label}</strong>
+                      <div className="flex items-center justify-between">
+                        <strong className="block text-[#0A0A0A] font-medium">{o.label}</strong>
+                        {isSelected && <Check className="w-3.5 h-3.5 text-[#0E2A1C]" />}
+                      </div>
                       <span className="text-[11px] text-neutral-500 block mt-0.5">{o.desc}</span>
                     </button>
                   );
@@ -203,14 +247,47 @@ export const Step1Purpose: React.FC = () => {
               </div>
             </div>
 
-            {/* Space Intentions & Notes */}
+            {/* Space Interiors & Finishes */}
+            <div>
+              <Input
+                id="space_interiors"
+                name="space_interiors"
+                label={
+                  <span className="flex items-center gap-1.5">
+                    <Paintbrush className="w-3.5 h-3.5 text-[#0E2A1C]" />
+                    <span>Space Interiors &amp; Finishes (Optional)</span>
+                  </span>
+                }
+                value={state.fields.spaceInteriors || state.fields.interiors || ''}
+                onChange={(e) => {
+                  updateField('spaceInteriors', e.target.value);
+                  updateField('interiors', e.target.value);
+                }}
+                placeholder="e.g. Italian marble flooring, teak wall paneling, warm ambient cove lighting"
+                helperText="Flooring, ceiling, wall surfaces, and aesthetic atmosphere"
+              />
+            </div>
+
+            {/* Internal Architecture Notes */}
             <div>
               <Textarea
-                label="Space Intentions & Initial Architectural Notes (Optional)"
-                value={state.fields.scope || ''}
-                onChange={(e) => updateField('scope', e.target.value)}
-                placeholder="e.g. Dedicated ground floor space, marble flooring prepared, ceiling height 10 ft, requires brass ventilation..."
+                id="architecture_notes"
+                name="architecture_notes"
+                label={
+                  <span className="flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-[#0E2A1C]" />
+                    <span>Internal Architecture Notes &amp; Sacred Requirements (Optional)</span>
+                  </span>
+                }
+                value={state.fields.architectureNotes || state.fields.notes || state.fields.scope || ''}
+                onChange={(e) => {
+                  updateField('architectureNotes', e.target.value);
+                  updateField('internal_notes', e.target.value);
+                  updateField('scope', e.target.value);
+                }}
+                placeholder="e.g. Dedicated ground floor space, ceiling height 10 ft, brass ventilation vents, double-door teak jali entrance..."
                 rows={3}
+                helperText="Structural details, ceiling heights, ventilation, and sacred requirements"
               />
             </div>
           </div>
@@ -230,7 +307,7 @@ export const Step1Purpose: React.FC = () => {
               No Client Project Configured
             </h3>
             <p className="text-xs sm:text-sm text-neutral-500 max-w-md mx-auto">
-              To conduct a personalized 8-step sacred consultation, register a new client or select an existing client from Client Explorer.
+              To conduct a personalized 8-step sacred consultation, register a new client or select an existing client from Clients.
             </p>
           </div>
 
@@ -252,8 +329,26 @@ export const Step1Purpose: React.FC = () => {
               className="text-xs rounded-full px-5 cursor-pointer"
             >
               <Users className="w-3.5 h-3.5 mr-1.5 text-neutral-600" />
-              <span>Choose from Client Explorer</span>
+              <span>Choose from Clients</span>
             </Button>
+          </div>
+
+          <div className="pt-4 border-t border-[#ECECEC] max-w-sm mx-auto text-left">
+            <Input
+              id="client"
+              name="client"
+              label="Or quick-start with Customer Name"
+              value={state.fields.client || ''}
+              onChange={(e) => {
+                updateField('client', e.target.value);
+                if (!state.project_name) {
+                  updateField('projectName', e.target.value);
+                }
+              }}
+              placeholder="e.g. Rajesh Sharma"
+              error={errors?.client}
+              helperText="Enter a client name to begin planning immediately"
+            />
           </div>
         </div>
       )}

@@ -1,0 +1,56 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return firestore.get(/databases/(default)/documents/profiles/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        getUserData().role == 'admin' || getUserData().role == 'super_admin'
+      );
+    }
+
+    // 1. Reference Grid (Public Portfolio / Call Reference)
+    match /reference-grid/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 2. Journey Assets (Public 8-Stage Educational & Construction Showcase)
+    match /journey/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 3. Client Architecture Explorer Portfolio Images (Public Portfolio)
+    match /client-projects/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 4. Consultation Uploads (Private Site Photos, Vastu Drawings, Blueprints)
+    match /consultation-uploads/{consultationId}/{allPaths=**} {
+      allow read: if isAdmin() || (
+        isAuthenticated() &&
+        firestore.get(/databases/(default)/documents/consultations/$(consultationId)).data.client_id == request.auth.uid
+      );
+      
+      allow write: if isAdmin() || (
+        isAuthenticated() &&
+        request.resource.size < 25 * 1024 * 1024 && // 25MB max per upload
+        request.resource.contentType.matches('image/.*|application/pdf|video/.*')
+      );
+    }
+
+    // Default deny for unclassified paths
+    match /{allPaths=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

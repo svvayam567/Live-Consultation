@@ -64,6 +64,7 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   label?: React.ReactNode;
   error?: string;
   helper?: string;
+  helperText?: string;
   requiredDot?: boolean;
 }
 
@@ -72,12 +73,14 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
   label,
   error,
   helper,
+  helperText,
   requiredDot,
   id,
   rows = 3,
   ...props
 }, ref) => {
   const inputId = id || props.name;
+  const helperMsg = helperText || helper;
 
   return (
     <div className="w-full space-y-1.5">
@@ -109,7 +112,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
         {...props}
       />
       {error && <p className="text-[11px] text-red-600">{error}</p>}
-      {helper && !error && <p className="text-[11px] text-neutral-500">{helper}</p>}
+      {helperMsg && !error && <p className="text-[11px] text-neutral-500">{helperMsg}</p>}
     </div>
   );
 });

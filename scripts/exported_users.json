@@ -1,0 +1,21 @@
+{"users": [
+{
+  "localId": "QCuAQI1tEHVGdeckDJjiJg25B8s2",
+  "email": "marketing@svvayam.com",
+  "emailVerified": true,
+  "passwordHash": "rtcZPoIyoWe54CStOpfsV7tLHNFSOUTiu24Le4LRUE8a16Ki56mtZ6q27hLVkxoBfn1RvuhQUtHxo7x8+XDOFg==",
+  "salt": "WUKmRI31jqJj0g==",
+  "lastSignedInAt": "1793616599374",
+  "createdAt": "1793615641063",
+  "providerUserInfo": []
+},
+{
+  "localId": "qZ8tq8YvYaRsB5vFSKLwa3ZWwqO2",
+  "email": "zero_supabase_test_1793617142940@svvayam.internal",
+  "emailVerified": false,
+  "passwordHash": "t5h37SDi5NINVLKyALLkAqAPl20gKfZmp1l6UTzJ6eBDOvvCJxuh2iKR3kBEdYQiAiVW2uvJiEdPMXlyiqOl0A==",
+  "salt": "XdFgNFcXL4yKjw==",
+  "lastSignedInAt": "1793617239263",
+  "createdAt": "1793617239263",
+  "providerUserInfo": []
+}]}

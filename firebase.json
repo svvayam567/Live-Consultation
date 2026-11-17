@@ -1,0 +1,69 @@
+{
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.mp4",
+      "**/*.MP4",
+      "**/*.mov",
+      "**/*.MOV",
+      "assets/Svvayam Presentation footage*/**",
+      "assets/clients/**",
+      "assets/clients_manifest.*"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|webp|avif|svg)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000, immutable"
+          }
+        ]
+      }
+    ]
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "storage": {
+      "port": 9199
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    }
+  }
+}

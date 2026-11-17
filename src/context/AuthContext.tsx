@@ -1,5 +1,14 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { supabase, isSupabaseConfigured, INITIAL_ADMIN_PHONES } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import {
+  isFirebaseConfigured,
+  signInAdminUser,
+  signInCustomerUser,
+  signOutUser,
+  subscribeToAuth,
+  db
+} from '../lib/firebase';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import type { Profile, UserRole, CustomerRecord } from '../types/consultation';
 import { normalizeToE164 } from '../lib/utils';
 
@@ -47,81 +56,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const LOCAL_STORAGE_AUTH_KEY = 'svvayam_auth_profile_v1';
 export const LOCAL_STORAGE_CUSTOMERS_KEY = 'svvayam_registered_customers_v1';
 
-export const SEED_CUSTOMERS: CustomerRecord[] = [
-  {
-    id: 'cust-001',
-    name: 'Mala Sharma',
-    title: 'Mrs.',
-    surname: 'Sharma',
-    product: 'Temple',
-    project_name: "Mrs. Sharma's Temple",
-    phone: '+919845012345',
-    location: 'Bengaluru, Indiranagar',
-    is_active: true,
-    consultation_id: 'seed-001',
-    portal_visible: true,
-    created_at: new Date(Date.now() - 86400000 * 5).toISOString()
-  },
-  {
-    id: 'cust-002',
-    name: 'Dr. Sanjay Reddy',
-    title: 'Dr.',
-    surname: 'Reddy',
-    product: 'Sanctum',
-    project_name: "Dr. Reddy's Sanctum",
-    phone: '+919701020304',
-    location: 'Hyderabad, Jubilee Hills',
-    is_active: true,
-    consultation_id: 'seed-002',
-    portal_visible: true,
-    created_at: new Date(Date.now() - 86400000 * 3).toISOString()
-  },
-  {
-    id: 'cust-003',
-    name: 'Yuva Balakumaran',
-    title: 'Mr.',
-    surname: 'Balakumaran',
-    product: 'Temple',
-    project_name: "Mr. Balakumaran's Temple",
-    phone: '+919444055667',
-    location: 'Chennai, Adyar',
-    is_active: true,
-    consultation_id: 'seed-003',
-    portal_visible: true,
-    created_at: new Date(Date.now() - 86400000 * 1).toISOString()
-  }
-];
+export const SEED_CUSTOMERS: CustomerRecord[] = [];
 
 export function getRegisteredCustomers(): CustomerRecord[] {
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_CUSTOMERS_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed)) return parsed;
     }
   } catch {
     // Ignore error
   }
-  localStorage.setItem(LOCAL_STORAGE_CUSTOMERS_KEY, JSON.stringify(SEED_CUSTOMERS));
-  return SEED_CUSTOMERS;
+  return [];
 }
 
 export function saveRegisteredCustomers(customers: CustomerRecord[]): void {
   localStorage.setItem(LOCAL_STORAGE_CUSTOMERS_KEY, JSON.stringify(customers));
-}
-
-export function isNumberInAdminList(phoneStr: string): boolean {
-  if (!phoneStr) return false;
-  const digits = phoneStr.replace(/[^0-9]/g, '');
-  if (!digits) return false;
-  return INITIAL_ADMIN_PHONES.some((adminPhone: string) => {
-    const adminDigits = adminPhone.replace(/[^0-9]/g, '');
-    return (
-      adminDigits === digits ||
-      adminDigits.slice(-10) === digits.slice(-10) ||
-      digits.endsWith(adminDigits.slice(-10))
-    );
-  });
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -172,6 +123,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setIsLoading(false);
           return;
         }
+      }
+
+      if (isFirebaseConfigured) {
+        // Handled by Firebase onAuthStateChanged listener below
+        return;
       }
 
       try {
@@ -335,6 +291,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       subscription = data.subscription;
     }
 
+    if (isFirebaseConfigured) {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('admin_test') === '1' || params.get('customer_test') === '1') {
+          return;
+        }
+      }
+
+      const unsub = subscribeToAuth((fbUser, fbProf) => {
+        if (fbUser && fbProf) {
+          setUser({ id: fbUser.uid, email: fbProf.email, phone: fbProf.phone });
+          setProfile(fbProf);
+        } else {
+          setUser(null);
+          setProfile(null);
+        }
+        setIsLoading(false);
+      }, (notice) => {
+        setLockoutNotice(notice);
+      });
+      return () => {
+        unsub();
+      };
+    }
+
     return () => {
       subscription?.unsubscribe();
     };
@@ -386,6 +367,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     if (!password || password.length === 0) {
       return { success: false, error: 'Please enter your password.' };
+    }
+
+    if (isFirebaseConfigured) {
+      const res = await signInAdminUser(cleanEmail, password);
+      if (res.success && res.user && res.profile) {
+        setUser({ id: res.user.uid, email: cleanEmail, phone: res.profile.phone });
+        setProfile(res.profile);
+        return { success: true };
+      }
+      return { success: false, error: res.error || 'Login failed.' };
     }
 
     if (isSupabaseConfigured && supabase) {
@@ -664,6 +655,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: false, error: 'Please enter your password.' };
     }
 
+    if (isFirebaseConfigured) {
+      const res = await signInCustomerUser(phone, password);
+      if (res.success && res.user && res.profile) {
+        setUser({ id: res.user.uid, phone: res.profile.phone });
+        setProfile(res.profile);
+        return { success: true };
+      }
+      return { success: false, error: res.error || 'Login failed.' };
+    }
+
     if (isSupabaseConfigured && supabase) {
       try {
         let authResult = await supabase.auth.signInWithPassword({
@@ -862,7 +863,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const refreshProfile = useCallback(async () => {
     if (!user?.id) return;
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured && db) {
+      try {
+        const snap = await getDoc(doc(db, 'profiles', user.id));
+        if (snap.exists()) {
+          const profData = snap.data() as Profile;
+          if (profData.active === false || profData.is_active === false) {
+            await signOutUser();
+            localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
+            setUser(null);
+            setProfile(null);
+            setLockoutNotice('Your account is disabled. Contact the Svvayam owner.');
+            return;
+          }
+          setProfile(profData);
+          return;
+        }
+      } catch (fbErr) {
+        console.warn('[Firestore] refreshProfile notice:', fbErr);
+      }
+    } else if (isSupabaseConfigured && supabase) {
       const { data: profData } = await supabase
         .from('profiles')
         .select('*')
@@ -895,7 +915,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const updated = { ...profile, name };
     setProfile(updated);
 
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured && db) {
+      try {
+        await updateDoc(doc(db, 'profiles', profile.id), {
+          name,
+          updated_at: serverTimestamp()
+        });
+      } catch (err) {
+        console.warn('[Firestore] updateProfileName notice:', err);
+      }
+      localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(updated));
+    } else if (isSupabaseConfigured && supabase) {
       await supabase.from('profiles').update({ name }).eq('id', profile.id);
     } else {
       localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(updated));
@@ -904,7 +934,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [profile]);
 
   const signOut = useCallback(async () => {
-    if (isSupabaseConfigured && supabase) {
+    if (isFirebaseConfigured) {
+      await signOutUser();
+    } else if (isSupabaseConfigured && supabase) {
       await supabase.auth.signOut();
     }
     localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
@@ -920,7 +952,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
   const isAdmin = Boolean(isSuperAdmin || role === 'admin');
   const isCustomer = Boolean(!isAdmin && (role === 'customer' || role === 'client'));
-  const mustChangePassword = Boolean(profile?.must_change_password);
+  const mustChangePassword = Boolean(profile?.must_change_password && !isSuperAdmin);
 
   return (
     <AuthContext.Provider value={{
@@ -942,7 +974,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updateProfileName,
       signOut,
       logout: signOut,
-      isMockMode: !isSupabaseConfigured
+      isMockMode: !isFirebaseConfigured && !isSupabaseConfigured
     }}>
       {children}
     </AuthContext.Provider>

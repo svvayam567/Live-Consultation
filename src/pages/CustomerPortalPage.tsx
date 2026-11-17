@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { isFirebaseConfigured, fetchCustomerConsultation } from '../lib/firebase';
 import { Header } from '../components/layout/Header';
 import { PortalChat } from '../components/portal/PortalChat';
 import { Button } from '../components/ui/Button';
@@ -78,7 +79,66 @@ export const CustomerPortalPage: React.FC = () => {
 
       const cleanPhone = (user.phone || '').replace(/[^0-9]/g, '');
 
-      // 1. Supabase Live Query
+      // 1. Firebase Firestore Live Query
+      if (isFirebaseConfigured) {
+        try {
+          const res = await fetchCustomerConsultation(user.id, user.phone || profile?.phone);
+          if (res && res.consultation) {
+            const data = res.consultation;
+            if (!data.portal_visible) {
+              setPortalData({
+                id: data.id,
+                client_name: profile?.name || data.fields?.client || 'Valued Customer',
+                client_phone: user.phone || profile?.phone || '',
+                location: data.fields?.location || 'Pending location',
+                date: data.fields?.date || new Date().toISOString().slice(0, 10),
+                status: data.status || 'draft',
+                current_step: data.current_step || 0,
+                portal_visible: false,
+                fields: {},
+                selected_reference: null,
+                stage_progress: [],
+                updates: []
+              });
+              setLoading(false);
+              return;
+            }
+
+            const rawRef = data.selected_reference || (Array.isArray(data.selected_refs) ? data.selected_refs[0] : null);
+            const clientName = profile?.name || data.fields?.client || 'Valued Customer';
+            const projName = formatProjectName(
+              data.project_name || data.fields?.projectName || data.fields?.project_name || {
+                title: data.fields?.title || profile?.title,
+                surname: data.fields?.surname || profile?.surname || extractSurname(clientName),
+                product: data.fields?.product || data.fields?.productType || 'Temple',
+                client_name: clientName
+              }
+            );
+
+            setPortalData({
+              id: data.id,
+              client_name: clientName,
+              project_name: projName,
+              client_phone: user.phone || profile?.phone || '',
+              location: data.fields?.location || 'Bengaluru, India',
+              date: data.fields?.date || new Date().toISOString().slice(0, 10),
+              status: data.status || 'draft',
+              current_step: data.current_step || 0,
+              portal_visible: true,
+              fields: data.fields || {},
+              selected_reference: rawRef,
+              stage_progress: (res.stages as JourneyStageProgress[]) || [],
+              updates: (res.updates as JourneyUpdate[]) || []
+            });
+            setLoading(false);
+            return;
+          }
+        } catch (fbErr) {
+          console.warn('[Firebase] Customer portal query notice:', fbErr);
+        }
+      }
+
+      // 2. Supabase Live Query
       if (isSupabaseConfigured && supabase) {
         try {
           // Query restricted customer consultation view or consultations table
@@ -277,6 +337,24 @@ export const CustomerPortalPage: React.FC = () => {
     setChatModalOpen(true);
   };
 
+  const portalFields = portalData?.fields || {};
+  const portalProjectName = portalData?.project_name
+    ? formatProjectName(portalData.project_name)
+    : formatProjectName({
+        title: portalFields.title || profile?.title,
+        surname: portalFields.surname || profile?.surname || extractSurname(portalData?.client_name || profile?.name || ''),
+        product: portalFields.product || portalFields.productType || 'Temple',
+        client_name: portalData?.client_name || profile?.name
+      });
+
+  useEffect(() => {
+    if (portalProjectName && portalProjectName !== "Client's Temple") {
+      document.title = `${portalProjectName} · Client Portal`;
+    } else {
+      document.title = 'Sacred Portal · Svvayam';
+    }
+  }, [portalProjectName]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex items-center justify-center text-xs text-[#5C5C5C] font-sans">
@@ -353,22 +431,6 @@ export const CustomerPortalPage: React.FC = () => {
   const fields = portalData.fields || {};
   const unreadUpdatesCount = portalData.updates.filter(u => !u.is_read).length;
 
-  const portalProjectName = portalData.project_name
-    ? formatProjectName(portalData.project_name)
-    : formatProjectName({
-        title: fields.title || profile?.title,
-        surname: fields.surname || profile?.surname || extractSurname(portalData.client_name || profile?.name || ''),
-        product: fields.product || fields.productType || 'Temple',
-        client_name: portalData.client_name || profile?.name
-      });
-
-  useEffect(() => {
-    if (portalProjectName && portalProjectName !== "Client's Temple") {
-      document.title = `${portalProjectName} · Client Portal`;
-    } else {
-      document.title = 'Sacred Portal · Svvayam';
-    }
-  }, [portalProjectName]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F4F4F4] to-[#E6E6E6] flex flex-col antialiased text-[#0A0A0A]">

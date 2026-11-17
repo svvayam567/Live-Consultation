@@ -1,0 +1,129 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data;
+    }
+
+    function isActive() {
+      return isAuthenticated() && (
+        !('active' in getUserData()) || getUserData().active != false
+      ) && (
+        !('is_active' in getUserData()) || getUserData().is_active != false
+      );
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'marketing@svvayam.com' ||
+        (isActive() && getUserData().role == 'super_admin')
+      );
+    }
+
+    function isAdmin() {
+      return isSuperAdmin() || (
+        isAuthenticated() && isActive() && (
+          getUserData().role == 'admin' || getUserData().role == 'super_admin'
+        )
+      );
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // 1. User Profiles
+    match /profiles/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Enforce that only authorized staff can create profiles, or marketing@svvayam.com on bootstrap
+      allow create: if isAdmin() || (
+        isAuthenticated() && request.auth.token.email == 'marketing@svvayam.com'
+      );
+      
+      // Only admins can change roles or disable accounts; users can only edit basic fields
+      allow update: if isAdmin() || (
+        isOwner(userId) &&
+        request.resource.data.role == resource.data.role &&
+        (!('active' in request.resource.data) || request.resource.data.active == resource.data.active) &&
+        (!('is_active' in request.resource.data) || request.resource.data.is_active == resource.data.is_active)
+      );
+      
+      allow delete: if isSuperAdmin();
+    }
+
+    // 2. Client Projects (Architectural Explorer Portfolio) - Public Read
+    match /client_projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 3. Customer Project Records
+    match /projects/{projectId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.client_id == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
+    // 4. Consultations & 8-Step Wizard Data
+    match /consultations/{consultationId} {
+      allow read: if isAdmin() || (
+        isAuthenticated() && (
+          resource.data.client_id == request.auth.uid ||
+          (resource.data.portal_visible == true && resource.data.client_id == request.auth.uid)
+        )
+      );
+      allow create: if isAdmin() || isAuthenticated();
+      allow update: if isAdmin() || (isAuthenticated() && resource.data.client_id == request.auth.uid);
+      allow delete: if isAdmin();
+
+      // Subcollections: Journey stage progress & updates
+      match /stages/{stageId} {
+        allow read: if isAdmin() || (
+          isAuthenticated() && get(/databases/$(database)/documents/consultations/$(consultationId)).data.client_id == request.auth.uid
+        );
+        allow write: if isAdmin();
+      }
+
+      match /updates/{updateId} {
+        allow read: if isAdmin() || (
+          isAuthenticated() && get(/databases/$(database)/documents/consultations/$(consultationId)).data.client_id == request.auth.uid
+        );
+        allow write: if isAdmin();
+      }
+    }
+
+    // 5. Unified Customer-Admin Messaging
+    match /messages/{messageId} {
+      allow read: if isAdmin() || (
+        isAuthenticated() && resource.data.customer_id == request.auth.uid
+      );
+      
+      allow create: if isAdmin() || (
+        isAuthenticated() &&
+        request.resource.data.customer_id == request.auth.uid &&
+        request.resource.data.sender_role == 'client'
+      );
+      
+      allow update: if isAdmin() || (
+        isAuthenticated() &&
+        resource.data.customer_id == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read_by_customer'])
+      );
+      
+      allow delete: if isAdmin();
+    }
+
+    // 6. Append-Only Admin Activity Audit Log
+    match /admin_activity/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false; // Append-only audit integrity
+    }
+  }
+}

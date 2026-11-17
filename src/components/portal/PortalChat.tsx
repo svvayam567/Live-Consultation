@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { isFirebaseConfigured, uploadConsultationFile } from '../../lib/firebase';
 import type { Message, SenderRole } from '../../types/message';
 import {
   fetchCustomerMessages,
@@ -164,7 +165,16 @@ export const PortalChat: React.FC<PortalChatProps> = ({
     if (attachment) {
       attachmentName = attachment.name;
 
-      if (isSupabaseConfigured && supabase) {
+      if (isFirebaseConfigured) {
+        try {
+          const fbUpload = await uploadConsultationFile(effectiveCustomerId, attachment.file, attachment.file.name);
+          if (fbUpload.success && fbUpload.url) {
+            uploadedUrl = fbUpload.url;
+          }
+        } catch (err) {
+          console.warn('[Firebase Storage] Attachment upload fallback:', err);
+        }
+      } else if (isSupabaseConfigured && supabase) {
         try {
           const fileExt = attachment.file.name.split('.').pop();
           const filePath = `${effectiveCustomerId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
