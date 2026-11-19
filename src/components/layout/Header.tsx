@@ -102,7 +102,7 @@ export const Header: React.FC = () => {
       <Modal
         isOpen={chooserOpen}
         onClose={() => setChooserOpen(false)}
-        title="Sign In to Svvayam"
+        title="Sign In to Svvayam Onboarding"
         subtitle="Select your account type to continue. Sign up is by invitation only."
         maxWidth="md"
       >
@@ -146,7 +146,7 @@ export const Header: React.FC = () => {
                 <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:text-[#0A0A0A] transition-colors" />
               </div>
               <p className="text-xs text-[#5C5C5C] mt-1 leading-relaxed">
-                Live consultation workflow console, client onboarding, proposal generator, and project asset management.
+                Svvayam Onboarding workspace, client consultation console, proposal generator, and project asset management.
               </p>
             </div>
           </button>

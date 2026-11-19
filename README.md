@@ -1,4 +1,4 @@
-# Svvayam Live Consultation Web Application
+# Svvayam Onboarding Web Application
 
 A production-ready web application designed for **Svvayam** (Bespoke Pooja Rooms & Sacred Temple Architecture, India). This system empowers **any team member** to conduct customer onboarding calls with confidence, removing dependency on the founders while delivering a calm, ultra-premium client experience.
 

@@ -1,6 +1,6 @@
 # Testing & Quality Verification Guide
 
-This document provides a walkthrough for verifying the **Svvayam Live Consultation Web Application** locally and in staging.
+This document provides a walkthrough for verifying the **Svvayam Onboarding Web Application** locally and in staging.
 
 ---
 

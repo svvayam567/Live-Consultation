@@ -40,6 +40,11 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Set page title
+  useEffect(() => {
+    document.title = 'Svvayam Onboarding';
+  }, []);
+
   // Sync role with query param if it changes
   useEffect(() => {
     const r = searchParams.get('role');
@@ -156,6 +161,9 @@ export const LoginPage: React.FC = () => {
             <Logo className="h-8 object-contain mx-auto" />
           </div>
           <div className="space-y-1">
+            <h1 className="text-base font-medium text-[#0A0A0A] font-serif tracking-wide">
+              Svvayam Onboarding
+            </h1>
             <p className="text-xs text-[#5C5C5C] font-sans tracking-wide leading-relaxed">
               Bespoke Sacred Architecture for Discerning Homes.
             </p>
