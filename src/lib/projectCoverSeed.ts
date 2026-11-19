@@ -1,5 +1,5 @@
 // Auto-generated seed file for Svvayam Project Explorer
-// 73 client folders, overview-first sorting, continuous gallery with photo + video sync
+// 81 client folders, overview-first sorting, last-photo fallback thumbnail, forward gallery photo + video sync
 
 export interface GalleryMediaItem {
   id: string;
@@ -22,9 +22,10 @@ export interface FolderCoverSeed {
   dimensions?: string;
   coverId: string | null;
   coverUrl: string | null;
+  coverName?: string | null;
   hasDedicatedOverview: boolean;
-  priority?: 1 | 2 | 3;
-  photoCount?: number;
+  priority: 1 | 2 | 3;
+  photoCount: number;
   imageCount: number;
   videoCount: number;
   totalMediaCount: number;
@@ -34,6 +35,1060 @@ export interface FolderCoverSeed {
 }
 
 export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
+  "1Q_MwPdYxPcqZ2e_rFBgzWC1B0FjooKQ1": {
+    "folderId": "1Q_MwPdYxPcqZ2e_rFBgzWC1B0FjooKQ1",
+    "folderName": "Aditi Pratap",
+    "sheetProjectId": "SV-087",
+    "customerName": "Ms. Aditi Pratap",
+    "location": "Gurugram",
+    "structureType": "Farmhouse Temple",
+    "designDetail": "Minimal",
+    "dimensions": "W 7.5 × D 7.5 × H 9.4 ft",
+    "coverId": "18pO1Bwr8qnGtpQYHG0Nys0S--Nhntc36",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18pO1Bwr8qnGtpQYHG0Nys0S--Nhntc36&v=2",
+    "coverName": "4.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 5,
+    "imageCount": 5,
+    "videoCount": 0,
+    "totalMediaCount": 5,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1VKHBkQW5007voYWe5KK3-3sniQVvFTTZ",
+        "name": "0.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VKHBkQW5007voYWe5KK3-3sniQVvFTTZ&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1LHHnL18zZ3T5vJOjysrxp5v8hpLy7ekS",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1LHHnL18zZ3T5vJOjysrxp5v8hpLy7ekS&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1934tEMg-B64d8VP5w5IR5EFYAirxnxkQ",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1934tEMg-B64d8VP5w5IR5EFYAirxnxkQ&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1oqKln2anR3xkK9R9fR7KOSNyrxNTEgRp",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oqKln2anR3xkK9R9fR7KOSNyrxNTEgRp&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "18pO1Bwr8qnGtpQYHG0Nys0S--Nhntc36",
+        "name": "4.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18pO1Bwr8qnGtpQYHG0Nys0S--Nhntc36&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VKHBkQW5007voYWe5KK3-3sniQVvFTTZ&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1LHHnL18zZ3T5vJOjysrxp5v8hpLy7ekS&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1934tEMg-B64d8VP5w5IR5EFYAirxnxkQ&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oqKln2anR3xkK9R9fR7KOSNyrxNTEgRp&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18pO1Bwr8qnGtpQYHG0Nys0S--Nhntc36&v=2"
+    ]
+  },
+  "sv-087": {
+    "folderId": "1km5ahXFAtHczYzMojZh5v3D_wsue1GzQ",
+    "folderName": "Ms. Aditi Pratap",
+    "sheetProjectId": "SV-087",
+    "customerName": "Ms. Aditi Pratap",
+    "location": "Gurugram",
+    "structureType": "Farmhouse Temple",
+    "designDetail": "Minimal",
+    "dimensions": "W 7.5 × D 7.5 × H 9.4 ft",
+    "coverId": "1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL&v=2",
+    "coverName": "overview.jpg",
+    "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
+    "imageCount": 4,
+    "videoCount": 0,
+    "totalMediaCount": 4,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL",
+        "name": "overview.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1YwH8EOkRwj6s8BWWcav7gTdjnG_YgKm7",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YwH8EOkRwj6s8BWWcav7gTdjnG_YgKm7&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1M4q3AijfHKvHw64NBZZzJr2SJm6Oeryn",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q3AijfHKvHw64NBZZzJr2SJm6Oeryn&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1HQrzGYRIse-rywm6-DLOOnbfU8RC11zZ",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HQrzGYRIse-rywm6-DLOOnbfU8RC11zZ&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YwH8EOkRwj6s8BWWcav7gTdjnG_YgKm7&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q3AijfHKvHw64NBZZzJr2SJm6Oeryn&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HQrzGYRIse-rywm6-DLOOnbfU8RC11zZ&v=2"
+    ]
+  },
+  "1qqblVlUTNJjWY3tPg6l7D6_gm9o1QFUT": {
+    "folderId": "1qqblVlUTNJjWY3tPg6l7D6_gm9o1QFUT",
+    "folderName": "Anoop Vaidya",
+    "sheetProjectId": "SV-086",
+    "customerName": "Mr. Anoop Vaidya",
+    "location": "Chennai",
+    "structureType": "Freestanding Enclosure",
+    "designDetail": "Heavy",
+    "dimensions": "W 5.6 × D 6 × H 9.4 ft",
+    "coverId": "1UKziPlAcS2xjWAfpbiuvGRrmxn45_xcI",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UKziPlAcS2xjWAfpbiuvGRrmxn45_xcI&v=2",
+    "coverName": "6.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 6,
+    "imageCount": 6,
+    "videoCount": 0,
+    "totalMediaCount": 6,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1bPnSVIOfndJWZLDZlaU16DLjo_kYTTHu",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bPnSVIOfndJWZLDZlaU16DLjo_kYTTHu&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1oPQ52Lf6el8vQds3M7gi8c6HC1_pfCkF",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oPQ52Lf6el8vQds3M7gi8c6HC1_pfCkF&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "14-NIo1EbR3x-I5Jykn-EPQ_g-Zw_0C-q",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14-NIo1EbR3x-I5Jykn-EPQ_g-Zw_0C-q&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1TvHHEgMc0W3fLZD1P2yK7okjtKq9cyBj",
+        "name": "4.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TvHHEgMc0W3fLZD1P2yK7okjtKq9cyBj&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1Hq3jMA2ySsBa-F1Hfi_Tmuq3FIT3uFNI",
+        "name": "5.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Hq3jMA2ySsBa-F1Hfi_Tmuq3FIT3uFNI&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1UKziPlAcS2xjWAfpbiuvGRrmxn45_xcI",
+        "name": "6.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UKziPlAcS2xjWAfpbiuvGRrmxn45_xcI&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bPnSVIOfndJWZLDZlaU16DLjo_kYTTHu&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oPQ52Lf6el8vQds3M7gi8c6HC1_pfCkF&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14-NIo1EbR3x-I5Jykn-EPQ_g-Zw_0C-q&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TvHHEgMc0W3fLZD1P2yK7okjtKq9cyBj&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Hq3jMA2ySsBa-F1Hfi_Tmuq3FIT3uFNI&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UKziPlAcS2xjWAfpbiuvGRrmxn45_xcI&v=2"
+    ]
+  },
+  "sv-086": {
+    "folderId": "1EAkYRgUO2fbiKdvrta78s-_YJ6uxZ8WV",
+    "folderName": "Mr. Anoop Vaidya",
+    "sheetProjectId": "SV-086",
+    "customerName": "Mr. Anoop Vaidya",
+    "location": "Chennai",
+    "structureType": "Freestanding Enclosure",
+    "designDetail": "Heavy",
+    "dimensions": "W 5.6 × D 6 × H 9.4 ft",
+    "coverId": "15lahsvuVVrz09FhnyFyjqvy-WluUCSGx",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15lahsvuVVrz09FhnyFyjqvy-WluUCSGx&v=2",
+    "coverName": "6.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 6,
+    "imageCount": 6,
+    "videoCount": 0,
+    "totalMediaCount": 6,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1nGO4am-VndTVXoLZ19E3HyZqggLqS6P1",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nGO4am-VndTVXoLZ19E3HyZqggLqS6P1&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1cFHnAt3ZNzscClhHwwCkf3y2IRCL2rYh",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cFHnAt3ZNzscClhHwwCkf3y2IRCL2rYh&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1x7BJnzyNmYvzxqKSqqP0uAmBJjAEKRaR",
+        "name": "4.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x7BJnzyNmYvzxqKSqqP0uAmBJjAEKRaR&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "12t2UVlpfnQoQ4qPOpFVGrn3wXI-sPKQH",
+        "name": "5.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12t2UVlpfnQoQ4qPOpFVGrn3wXI-sPKQH&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "15lahsvuVVrz09FhnyFyjqvy-WluUCSGx",
+        "name": "6.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15lahsvuVVrz09FhnyFyjqvy-WluUCSGx&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nGO4am-VndTVXoLZ19E3HyZqggLqS6P1&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cFHnAt3ZNzscClhHwwCkf3y2IRCL2rYh&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x7BJnzyNmYvzxqKSqqP0uAmBJjAEKRaR&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12t2UVlpfnQoQ4qPOpFVGrn3wXI-sPKQH&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15lahsvuVVrz09FhnyFyjqvy-WluUCSGx&v=2"
+    ]
+  },
+  "1MVc2f21P1beW4YoTIF9yFtmiqGO_Nvi3": {
+    "folderId": "1MVc2f21P1beW4YoTIF9yFtmiqGO_Nvi3",
+    "folderName": "Deepthi Kunchey",
+    "sheetProjectId": "SV-009",
+    "customerName": "Ms. Deepthi Kunchey",
+    "location": "Texas",
+    "structureType": "Wall Unit",
+    "designDetail": "Moderate",
+    "dimensions": "W 5.8 × D 2 × H 7.9 ft",
+    "coverId": "1mTsiYvoHME8w7Bqexc8E2Ot5TjSHh3VJ",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mTsiYvoHME8w7Bqexc8E2Ot5TjSHh3VJ&v=2",
+    "coverName": "2.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
+    "imageCount": 2,
+    "videoCount": 0,
+    "totalMediaCount": 2,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1BVbN4G84CPDCFbZle7h68otOm-5NVOQG",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BVbN4G84CPDCFbZle7h68otOm-5NVOQG&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1mTsiYvoHME8w7Bqexc8E2Ot5TjSHh3VJ",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mTsiYvoHME8w7Bqexc8E2Ot5TjSHh3VJ&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BVbN4G84CPDCFbZle7h68otOm-5NVOQG&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mTsiYvoHME8w7Bqexc8E2Ot5TjSHh3VJ&v=2"
+    ]
+  },
+  "sv-009": {
+    "folderId": "12bXvEhuWia0kbHfWvZ3_Kr3oLoqe2bSC",
+    "folderName": "Ms. Deepthi Kunchey",
+    "sheetProjectId": "SV-009",
+    "customerName": "Ms. Deepthi Kunchey",
+    "location": "Texas",
+    "structureType": "Wall Unit",
+    "designDetail": "Moderate",
+    "dimensions": "W 5.8 × D 2 × H 7.9 ft",
+    "coverId": "1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn&v=2",
+    "coverName": "1.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 1,
+    "imageCount": 1,
+    "videoCount": 0,
+    "totalMediaCount": 1,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn&v=2"
+    ]
+  },
+  "10u_MzsZ_yHL_T385ZxhkGrZtbK2eSnLr": {
+    "folderId": "10u_MzsZ_yHL_T385ZxhkGrZtbK2eSnLr",
+    "folderName": "Gayatri Barath",
+    "sheetProjectId": "SV-081",
+    "customerName": "Ms. Gayatri Barath",
+    "location": "Chennai",
+    "structureType": "Open pooja Mandap",
+    "designDetail": "Moderate",
+    "dimensions": "W 10.8 × D 11.7 × H 8.9 ft",
+    "coverId": "1eGpYfVRqp4uSzevZq_hrL_14Ol2IPclg",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGpYfVRqp4uSzevZq_hrL_14Ol2IPclg&v=2",
+    "coverName": "3.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
+    "imageCount": 3,
+    "videoCount": 0,
+    "totalMediaCount": 3,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1Ij-Pegr6LiTYcyyNAl6uPhzpNxyb-QBv",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ij-Pegr6LiTYcyyNAl6uPhzpNxyb-QBv&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1I8u9AnHoVKYR-e3AwEXiSZgUlqn3t0BA",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I8u9AnHoVKYR-e3AwEXiSZgUlqn3t0BA&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1eGpYfVRqp4uSzevZq_hrL_14Ol2IPclg",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGpYfVRqp4uSzevZq_hrL_14Ol2IPclg&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ij-Pegr6LiTYcyyNAl6uPhzpNxyb-QBv&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I8u9AnHoVKYR-e3AwEXiSZgUlqn3t0BA&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGpYfVRqp4uSzevZq_hrL_14Ol2IPclg&v=2"
+    ]
+  },
+  "sv-081": {
+    "folderId": "14M0iY_SWgDXTFlmehZooHEo-M3b7V_Gq",
+    "folderName": "Ms. Gayatri Barath",
+    "sheetProjectId": "SV-081",
+    "customerName": "Ms. Gayatri Barath",
+    "location": "Chennai",
+    "structureType": "Open pooja Mandap",
+    "designDetail": "Moderate",
+    "dimensions": "W 10.8 × D 11.7 × H 8.9 ft",
+    "coverId": "1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc&v=2",
+    "coverName": "3.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
+    "imageCount": 3,
+    "videoCount": 0,
+    "totalMediaCount": 3,
+    "accessError": null,
+    "media": [
+      {
+        "id": "15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1KOnFTs37TrtEhWu72EFiR-4ufj3LDbYD",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KOnFTs37TrtEhWu72EFiR-4ufj3LDbYD&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KOnFTs37TrtEhWu72EFiR-4ufj3LDbYD&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc&v=2"
+    ]
+  },
+  "1xokk_2gpJj-MT11Gq4RmPL6zqcmAYLCX": {
+    "folderId": "1xokk_2gpJj-MT11Gq4RmPL6zqcmAYLCX",
+    "folderName": "Kavya Sundaraja",
+    "sheetProjectId": "SV-078",
+    "customerName": "Ms. Kavya Sundaraja",
+    "location": "Bengaluru",
+    "structureType": "Freestanding Enclosure",
+    "designDetail": "Heavy",
+    "dimensions": "W 8.3 × D 13.6 × H 11.5 ft",
+    "coverId": "1Ap0skbb-wFs2TjCzMh9znavcmsnvpW4C",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ap0skbb-wFs2TjCzMh9znavcmsnvpW4C&v=2",
+    "coverName": "7.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 7,
+    "imageCount": 7,
+    "videoCount": 0,
+    "totalMediaCount": 7,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1dryHa7Gtr-6pjfPMDeXGgK8JKr5DcNNa",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dryHa7Gtr-6pjfPMDeXGgK8JKr5DcNNa&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1oUvOFPQtIcUI3jUkTcWNrVrfaZMMXOCF",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oUvOFPQtIcUI3jUkTcWNrVrfaZMMXOCF&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1aXQ_JN12f-YXsa6-1ZQkyOggLd0ivuw2",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aXQ_JN12f-YXsa6-1ZQkyOggLd0ivuw2&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "13NfIAiG52uI3Xcr5aufdx3KLmJOy3G5y",
+        "name": "4.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13NfIAiG52uI3Xcr5aufdx3KLmJOy3G5y&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1eILhyEHNNgUVs4Tt9UMLeMGrE3HMJRSc",
+        "name": "5.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eILhyEHNNgUVs4Tt9UMLeMGrE3HMJRSc&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1xxR0OYOw2JQcNqYrI6FK10sKGMolKXfy",
+        "name": "6.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xxR0OYOw2JQcNqYrI6FK10sKGMolKXfy&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1Ap0skbb-wFs2TjCzMh9znavcmsnvpW4C",
+        "name": "7.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ap0skbb-wFs2TjCzMh9znavcmsnvpW4C&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dryHa7Gtr-6pjfPMDeXGgK8JKr5DcNNa&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oUvOFPQtIcUI3jUkTcWNrVrfaZMMXOCF&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aXQ_JN12f-YXsa6-1ZQkyOggLd0ivuw2&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13NfIAiG52uI3Xcr5aufdx3KLmJOy3G5y&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eILhyEHNNgUVs4Tt9UMLeMGrE3HMJRSc&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xxR0OYOw2JQcNqYrI6FK10sKGMolKXfy&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ap0skbb-wFs2TjCzMh9znavcmsnvpW4C&v=2"
+    ]
+  },
+  "sv-078": {
+    "folderId": "1vA_cfHKD-NKW6H_XtR5Q2yOtiJ5h38li",
+    "folderName": "Ms. Kavya Sundaraja",
+    "sheetProjectId": "SV-078",
+    "customerName": "Ms. Kavya Sundaraja",
+    "location": "Bengaluru",
+    "structureType": "Freestanding Enclosure",
+    "designDetail": "Heavy",
+    "dimensions": "W 8.3 × D 13.6 × H 11.5 ft",
+    "coverId": "1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj&v=2",
+    "coverName": "3.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
+    "imageCount": 3,
+    "videoCount": 0,
+    "totalMediaCount": 3,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1KsrqtBugXed8YTMoFqcyglcGv0O2hr2Y",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KsrqtBugXed8YTMoFqcyglcGv0O2hr2Y&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KsrqtBugXed8YTMoFqcyglcGv0O2hr2Y&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj&v=2"
+    ]
+  },
+  "1ZMW3rpk5ULTmNtpVlhb3uE_qLUJdZfRo": {
+    "folderId": "1ZMW3rpk5ULTmNtpVlhb3uE_qLUJdZfRo",
+    "folderName": "Raksha",
+    "sheetProjectId": "SV-019",
+    "customerName": "Ms. Raksha",
+    "location": "Bengaluru",
+    "structureType": "Freestanding Unit",
+    "designDetail": "Heavy",
+    "dimensions": "W 4 × D 4 × H 4.6 ft",
+    "coverId": "1AxNIhQSAj3VetxJSwxC5wPRThYxiI_DL",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AxNIhQSAj3VetxJSwxC5wPRThYxiI_DL&v=2",
+    "coverName": "4.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 4,
+    "imageCount": 4,
+    "videoCount": 0,
+    "totalMediaCount": 4,
+    "accessError": null,
+    "media": [
+      {
+        "id": "19oMsyd4ur7IcsOwLwddxj57B0Gvz0c_G",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19oMsyd4ur7IcsOwLwddxj57B0Gvz0c_G&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1ja5SDUsOxEAKtIXKhTJVWS9m2EVjgbfU",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ja5SDUsOxEAKtIXKhTJVWS9m2EVjgbfU&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1ivxKIYsnURNP4NU0ev2QMPkF4hxXWM7o",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ivxKIYsnURNP4NU0ev2QMPkF4hxXWM7o&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1AxNIhQSAj3VetxJSwxC5wPRThYxiI_DL",
+        "name": "4.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AxNIhQSAj3VetxJSwxC5wPRThYxiI_DL&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19oMsyd4ur7IcsOwLwddxj57B0Gvz0c_G&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ja5SDUsOxEAKtIXKhTJVWS9m2EVjgbfU&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ivxKIYsnURNP4NU0ev2QMPkF4hxXWM7o&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AxNIhQSAj3VetxJSwxC5wPRThYxiI_DL&v=2"
+    ]
+  },
+  "sv-019": {
+    "folderId": "1BbGgfcC7IhJz5u4aFm8sld3Sl1PExmnA",
+    "folderName": "Ms. Raksha",
+    "sheetProjectId": "SV-019",
+    "customerName": "Ms. Raksha",
+    "location": "Bengaluru",
+    "structureType": "Freestanding Unit",
+    "designDetail": "Heavy",
+    "dimensions": "W 4 × D 4 × H 4.6 ft",
+    "coverId": "1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh&v=2",
+    "coverName": "2.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
+    "imageCount": 2,
+    "videoCount": 0,
+    "totalMediaCount": 2,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh&v=2"
+    ]
+  },
+  "1eaZhsVTX6WAHknV7ju26JkZkIXcxtw3I": {
+    "folderId": "1eaZhsVTX6WAHknV7ju26JkZkIXcxtw3I",
+    "folderName": "Rutuja Pawar",
+    "sheetProjectId": "SV-088",
+    "customerName": "Ms. Rutuja Pawar",
+    "location": "Mumbai",
+    "structureType": "Freestanding Enclosure",
+    "designDetail": "Moderate",
+    "dimensions": "W 6.5 × D 2.5 × H 6.5 ft",
+    "coverId": "1WpAQthmhXcOjO2t-nCdnyJr8WcV9ta1a",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WpAQthmhXcOjO2t-nCdnyJr8WcV9ta1a&v=2",
+    "coverName": "4.jpg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 4,
+    "imageCount": 4,
+    "videoCount": 0,
+    "totalMediaCount": 4,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1OzAf2-6bpH2Y2CE9giZ4lpNBNCD5Iat2",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OzAf2-6bpH2Y2CE9giZ4lpNBNCD5Iat2&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1WpqBKFhizRxajeWsdMbqKmmKBJkztkkE",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WpqBKFhizRxajeWsdMbqKmmKBJkztkkE&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1aiy88whA5v1ss3zgwfO4HEUXYfcLzOOa",
+        "name": "3.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aiy88whA5v1ss3zgwfO4HEUXYfcLzOOa&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1WpAQthmhXcOjO2t-nCdnyJr8WcV9ta1a",
+        "name": "4.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WpAQthmhXcOjO2t-nCdnyJr8WcV9ta1a&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OzAf2-6bpH2Y2CE9giZ4lpNBNCD5Iat2&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WpqBKFhizRxajeWsdMbqKmmKBJkztkkE&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aiy88whA5v1ss3zgwfO4HEUXYfcLzOOa&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WpAQthmhXcOjO2t-nCdnyJr8WcV9ta1a&v=2"
+    ]
+  },
+  "sv-088": {
+    "folderId": "1B5HgT0RudzYrwQu1Qgb3q00rd1zmtvZO",
+    "folderName": "Ms. Rutuja Pawar",
+    "sheetProjectId": "SV-088",
+    "customerName": "Ms. Rutuja Pawar",
+    "location": "Mumbai",
+    "structureType": "Freestanding Enclosure",
+    "designDetail": "Moderate",
+    "dimensions": "W 6.5 × D 2.5 × H 6.5 ft",
+    "coverId": "1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv&v=2",
+    "coverName": "3.jpeg",
+    "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
+    "imageCount": 3,
+    "videoCount": 2,
+    "totalMediaCount": 5,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1cVMZxNhA56IIZSC3vPvnKQb_GvR-K2aM",
+        "name": "2.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cVMZxNhA56IIZSC3vPvnKQb_GvR-K2aM&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv",
+        "name": "3.jpeg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi",
+        "name": "4.mp4",
+        "type": "video",
+        "mimeType": "video/mp4",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi&v=10",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH",
+        "name": "5.mp4",
+        "type": "video",
+        "mimeType": "video/mp4",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH&v=9",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cVMZxNhA56IIZSC3vPvnKQb_GvR-K2aM&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH&v=9"
+    ]
+  },
+  "12A4BLpb6qB3AmT5igMOCjX8jMxTbnvoL": {
+    "folderId": "12A4BLpb6qB3AmT5igMOCjX8jMxTbnvoL",
+    "folderName": "Mr. Dnyaneshwar",
+    "sheetProjectId": "SV-028",
+    "customerName": "Mr. Dnyaneshwar",
+    "location": "Nanded",
+    "structureType": "Complete Pooja Room",
+    "designDetail": "Moderate",
+    "dimensions": "W 5.8 × D 5 × H 9.3 ft",
+    "coverId": "1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp&v=2",
+    "coverName": "overview.avif",
+    "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
+    "imageCount": 6,
+    "videoCount": 0,
+    "totalMediaCount": 6,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp",
+        "name": "overview.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1dFUdSxPqUcj63RUm6N2Ul2uF8vqDeTmO",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dFUdSxPqUcj63RUm6N2Ul2uF8vqDeTmO&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "19mb0V9dhPVgeCEH0RLxtM4Qm7S00SPlk",
+        "name": "1a.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19mb0V9dhPVgeCEH0RLxtM4Qm7S00SPlk&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "16bJAiMthS4sfgPHDQspxzDq2ESzrPXVP",
+        "name": "1b.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16bJAiMthS4sfgPHDQspxzDq2ESzrPXVP&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1_yPJLkqEvj4hR-_VCkVXbtMY8hK-SLlb",
+        "name": "2.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_yPJLkqEvj4hR-_VCkVXbtMY8hK-SLlb&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1-kxLRbj4wqkVx818J6UwB2-oQjQJ8BU8",
+        "name": "3.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-kxLRbj4wqkVx818J6UwB2-oQjQJ8BU8&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dFUdSxPqUcj63RUm6N2Ul2uF8vqDeTmO&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19mb0V9dhPVgeCEH0RLxtM4Qm7S00SPlk&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16bJAiMthS4sfgPHDQspxzDq2ESzrPXVP&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_yPJLkqEvj4hR-_VCkVXbtMY8hK-SLlb&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-kxLRbj4wqkVx818J6UwB2-oQjQJ8BU8&v=2"
+    ]
+  },
+  "sv-028": {
+    "folderId": "12A4BLpb6qB3AmT5igMOCjX8jMxTbnvoL",
+    "folderName": "Mr. Dnyaneshwar",
+    "sheetProjectId": "SV-028",
+    "customerName": "Mr. Dnyaneshwar",
+    "location": "Nanded",
+    "structureType": "Complete Pooja Room",
+    "designDetail": "Moderate",
+    "dimensions": "W 5.8 × D 5 × H 9.3 ft",
+    "coverId": "1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp&v=2",
+    "coverName": "overview.avif",
+    "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
+    "imageCount": 6,
+    "videoCount": 0,
+    "totalMediaCount": 6,
+    "accessError": null,
+    "media": [
+      {
+        "id": "1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp",
+        "name": "overview.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1dFUdSxPqUcj63RUm6N2Ul2uF8vqDeTmO",
+        "name": "1.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dFUdSxPqUcj63RUm6N2Ul2uF8vqDeTmO&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "19mb0V9dhPVgeCEH0RLxtM4Qm7S00SPlk",
+        "name": "1a.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19mb0V9dhPVgeCEH0RLxtM4Qm7S00SPlk&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "16bJAiMthS4sfgPHDQspxzDq2ESzrPXVP",
+        "name": "1b.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16bJAiMthS4sfgPHDQspxzDq2ESzrPXVP&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1_yPJLkqEvj4hR-_VCkVXbtMY8hK-SLlb",
+        "name": "2.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_yPJLkqEvj4hR-_VCkVXbtMY8hK-SLlb&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
+      {
+        "id": "1-kxLRbj4wqkVx818J6UwB2-oQjQJ8BU8",
+        "name": "3.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-kxLRbj4wqkVx818J6UwB2-oQjQJ8BU8&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      }
+    ],
+    "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OtXwyfCDy3wnzXyNV0yCNVgOgq9Eiptp&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dFUdSxPqUcj63RUm6N2Ul2uF8vqDeTmO&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19mb0V9dhPVgeCEH0RLxtM4Qm7S00SPlk&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16bJAiMthS4sfgPHDQspxzDq2ESzrPXVP&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_yPJLkqEvj4hR-_VCkVXbtMY8hK-SLlb&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-kxLRbj4wqkVx818J6UwB2-oQjQJ8BU8&v=2"
+    ]
+  },
   "1H5MO3GNEoDF-3BvFw8tKi1vB0pVkhJ21": {
     "folderId": "1H5MO3GNEoDF-3BvFw8tKi1vB0pVkhJ21",
     "folderName": "Mr.Yuva Balakumaran",
@@ -42,13 +1097,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Erode",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 6.7 × D 8 × H 9.6 ft",
     "coverId": "1fIak8gvWYnSnH2gCvNkztCh4qto2z_it",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fIak8gvWYnSnH2gCvNkztCh4qto2z_it&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1fIak8gvWYnSnH2gCvNkztCh4qto2z_it",
@@ -122,13 +1181,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Erode",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 6.7 × D 8 × H 9.6 ft",
     "coverId": "1fIak8gvWYnSnH2gCvNkztCh4qto2z_it",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fIak8gvWYnSnH2gCvNkztCh4qto2z_it&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1fIak8gvWYnSnH2gCvNkztCh4qto2z_it",
@@ -202,13 +1265,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Anantapur",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.4 × D 7.8 × H 10 ft",
     "coverId": "13WeLo_RKBqMwfcYO5G2EaeAUY1kHV8TP",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13WeLo_RKBqMwfcYO5G2EaeAUY1kHV8TP&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 9,
     "totalMediaCount": 13,
+    "accessError": null,
     "media": [
       {
         "id": "13WeLo_RKBqMwfcYO5G2EaeAUY1kHV8TP",
@@ -251,7 +1318,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dITCKbTc3AdegK5t_Go3FpLiyl6jQjyd&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dITCKbTc3AdegK5t_Go3FpLiyl6jQjyd&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -260,7 +1327,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13F9dChDSPBQYsxXuC7EreW-82sGlZUqL&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13F9dChDSPBQYsxXuC7EreW-82sGlZUqL&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -269,7 +1336,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TAc0mtQlYG5NUlCtcZqq3NbyWfvtPdlD&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TAc0mtQlYG5NUlCtcZqq3NbyWfvtPdlD&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -278,7 +1345,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dvkH_VlJlO6paBUOmVMWDHtFcKTINsiC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dvkH_VlJlO6paBUOmVMWDHtFcKTINsiC&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -287,7 +1354,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UGp0YRxEbB4lP7A3_5h1XX9Md8kjh1nP&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UGp0YRxEbB4lP7A3_5h1XX9Md8kjh1nP&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -296,7 +1363,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1amXodwanzZ4YJk43n9cTiWkuHNNfi8j-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1amXodwanzZ4YJk43n9cTiWkuHNNfi8j-&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -305,7 +1372,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RmEdlF_xjuXqybMgWhAN2vNe-deDhWnY&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RmEdlF_xjuXqybMgWhAN2vNe-deDhWnY&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -314,7 +1381,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1n9BCoiUwLAnX7vkt28BiXeEmVzPWYNSY&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1n9BCoiUwLAnX7vkt28BiXeEmVzPWYNSY&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -323,7 +1390,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1H4kLY1B1I1yfW1y7GSlhkTk6m98xmZID&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1H4kLY1B1I1yfW1y7GSlhkTk6m98xmZID&v=10",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -333,15 +1400,15 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19_5m2qFpVD0w2oEd8OBPjNejR9KfwJl4&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16udQsX9o5GlxvWoLLXRyb4mcHnnHaaZV&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1EOcqD3JD833uRGUC2QPkGKQV5TrLOy7f&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dITCKbTc3AdegK5t_Go3FpLiyl6jQjyd&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13F9dChDSPBQYsxXuC7EreW-82sGlZUqL&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TAc0mtQlYG5NUlCtcZqq3NbyWfvtPdlD&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dvkH_VlJlO6paBUOmVMWDHtFcKTINsiC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UGp0YRxEbB4lP7A3_5h1XX9Md8kjh1nP&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1amXodwanzZ4YJk43n9cTiWkuHNNfi8j-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RmEdlF_xjuXqybMgWhAN2vNe-deDhWnY&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1n9BCoiUwLAnX7vkt28BiXeEmVzPWYNSY&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1H4kLY1B1I1yfW1y7GSlhkTk6m98xmZID&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dITCKbTc3AdegK5t_Go3FpLiyl6jQjyd&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13F9dChDSPBQYsxXuC7EreW-82sGlZUqL&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TAc0mtQlYG5NUlCtcZqq3NbyWfvtPdlD&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dvkH_VlJlO6paBUOmVMWDHtFcKTINsiC&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UGp0YRxEbB4lP7A3_5h1XX9Md8kjh1nP&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1amXodwanzZ4YJk43n9cTiWkuHNNfi8j-&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RmEdlF_xjuXqybMgWhAN2vNe-deDhWnY&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1n9BCoiUwLAnX7vkt28BiXeEmVzPWYNSY&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1H4kLY1B1I1yfW1y7GSlhkTk6m98xmZID&v=10"
     ]
   },
   "sv-033": {
@@ -352,13 +1419,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Anantapur",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.4 × D 7.8 × H 10 ft",
     "coverId": "13WeLo_RKBqMwfcYO5G2EaeAUY1kHV8TP",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13WeLo_RKBqMwfcYO5G2EaeAUY1kHV8TP&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 9,
     "totalMediaCount": 13,
+    "accessError": null,
     "media": [
       {
         "id": "13WeLo_RKBqMwfcYO5G2EaeAUY1kHV8TP",
@@ -401,7 +1472,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dITCKbTc3AdegK5t_Go3FpLiyl6jQjyd&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dITCKbTc3AdegK5t_Go3FpLiyl6jQjyd&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -410,7 +1481,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13F9dChDSPBQYsxXuC7EreW-82sGlZUqL&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13F9dChDSPBQYsxXuC7EreW-82sGlZUqL&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -419,7 +1490,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TAc0mtQlYG5NUlCtcZqq3NbyWfvtPdlD&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TAc0mtQlYG5NUlCtcZqq3NbyWfvtPdlD&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -428,7 +1499,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dvkH_VlJlO6paBUOmVMWDHtFcKTINsiC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dvkH_VlJlO6paBUOmVMWDHtFcKTINsiC&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -437,7 +1508,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UGp0YRxEbB4lP7A3_5h1XX9Md8kjh1nP&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UGp0YRxEbB4lP7A3_5h1XX9Md8kjh1nP&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -446,7 +1517,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1amXodwanzZ4YJk43n9cTiWkuHNNfi8j-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1amXodwanzZ4YJk43n9cTiWkuHNNfi8j-&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -455,7 +1526,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RmEdlF_xjuXqybMgWhAN2vNe-deDhWnY&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RmEdlF_xjuXqybMgWhAN2vNe-deDhWnY&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -464,7 +1535,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1n9BCoiUwLAnX7vkt28BiXeEmVzPWYNSY&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1n9BCoiUwLAnX7vkt28BiXeEmVzPWYNSY&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -473,7 +1544,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.MOV",
         "type": "video",
         "mimeType": "video/quicktime",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1H4kLY1B1I1yfW1y7GSlhkTk6m98xmZID&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1H4kLY1B1I1yfW1y7GSlhkTk6m98xmZID&v=10",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -483,15 +1554,15 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19_5m2qFpVD0w2oEd8OBPjNejR9KfwJl4&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16udQsX9o5GlxvWoLLXRyb4mcHnnHaaZV&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1EOcqD3JD833uRGUC2QPkGKQV5TrLOy7f&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dITCKbTc3AdegK5t_Go3FpLiyl6jQjyd&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13F9dChDSPBQYsxXuC7EreW-82sGlZUqL&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TAc0mtQlYG5NUlCtcZqq3NbyWfvtPdlD&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dvkH_VlJlO6paBUOmVMWDHtFcKTINsiC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UGp0YRxEbB4lP7A3_5h1XX9Md8kjh1nP&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1amXodwanzZ4YJk43n9cTiWkuHNNfi8j-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RmEdlF_xjuXqybMgWhAN2vNe-deDhWnY&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1n9BCoiUwLAnX7vkt28BiXeEmVzPWYNSY&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1H4kLY1B1I1yfW1y7GSlhkTk6m98xmZID&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dITCKbTc3AdegK5t_Go3FpLiyl6jQjyd&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13F9dChDSPBQYsxXuC7EreW-82sGlZUqL&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1TAc0mtQlYG5NUlCtcZqq3NbyWfvtPdlD&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dvkH_VlJlO6paBUOmVMWDHtFcKTINsiC&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UGp0YRxEbB4lP7A3_5h1XX9Md8kjh1nP&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1amXodwanzZ4YJk43n9cTiWkuHNNfi8j-&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RmEdlF_xjuXqybMgWhAN2vNe-deDhWnY&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1n9BCoiUwLAnX7vkt28BiXeEmVzPWYNSY&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1H4kLY1B1I1yfW1y7GSlhkTk6m98xmZID&v=10"
     ]
   },
   "17lD10QgvFAYMpRFvWs5xFwnwp_GGwqfE": {
@@ -502,13 +1573,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 6 × D 6 × H 11.3 ft",
     "coverId": "1boG6HFRkcAQjw_Wth1wOiDyayRxi4uk1",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1boG6HFRkcAQjw_Wth1wOiDyayRxi4uk1&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 1,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1boG6HFRkcAQjw_Wth1wOiDyayRxi4uk1",
@@ -587,7 +1662,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q7S9CS9bCW6wlrJwGNom0d0kntiN3u&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q7S9CS9bCW6wlrJwGNom0d0kntiN3u&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -601,7 +1676,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pcL1jpVJH0_w9ltpufNX0WGdDvvQK_Nr&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VOYZFHwLzA3EsrG5wS9MzqpwiN7IiY2g&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CMVftO_AVbcUkwqQ9Bl4B1HtAZc8_3xS&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q7S9CS9bCW6wlrJwGNom0d0kntiN3u&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q7S9CS9bCW6wlrJwGNom0d0kntiN3u&v=11"
     ]
   },
   "sv-022": {
@@ -612,13 +1687,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 6 × D 6 × H 11.3 ft",
     "coverId": "1boG6HFRkcAQjw_Wth1wOiDyayRxi4uk1",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1boG6HFRkcAQjw_Wth1wOiDyayRxi4uk1&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 1,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1boG6HFRkcAQjw_Wth1wOiDyayRxi4uk1",
@@ -697,7 +1776,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q7S9CS9bCW6wlrJwGNom0d0kntiN3u&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q7S9CS9bCW6wlrJwGNom0d0kntiN3u&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -711,7 +1790,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pcL1jpVJH0_w9ltpufNX0WGdDvvQK_Nr&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VOYZFHwLzA3EsrG5wS9MzqpwiN7IiY2g&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CMVftO_AVbcUkwqQ9Bl4B1HtAZc8_3xS&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q7S9CS9bCW6wlrJwGNom0d0kntiN3u&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q7S9CS9bCW6wlrJwGNom0d0kntiN3u&v=11"
     ]
   },
   "14syFvt22uPDan3GngEm-vbdrY7D2eRko": {
@@ -722,13 +1801,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.1 × D 5 × H 9.4 ft",
     "coverId": "1KaoIgd5eS3Zbypltqwv-InSWSrxBdcYE",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KaoIgd5eS3Zbypltqwv-InSWSrxBdcYE&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1KaoIgd5eS3Zbypltqwv-InSWSrxBdcYE",
@@ -802,13 +1885,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.1 × D 5 × H 9.4 ft",
     "coverId": "1KaoIgd5eS3Zbypltqwv-InSWSrxBdcYE",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KaoIgd5eS3Zbypltqwv-InSWSrxBdcYE&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1KaoIgd5eS3Zbypltqwv-InSWSrxBdcYE",
@@ -879,16 +1966,20 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "folderName": "Ms.Shraddha Vispute",
     "sheetProjectId": "SV-092",
     "customerName": "Ms.Shraddha Vispute",
-    "location": "",
-    "structureType": "",
-    "designDetail": "",
-    "dimensions": "",
+    "location": "Mumbai",
+    "structureType": "Freestanding Unit",
+    "designDetail": "Heavy",
+    "dimensions": "W 15 × D 5.8 × H 9.6 ft",
     "coverId": "11hnZsEZ2276DNt7CbYfzhmWZnoj3sL2U",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11hnZsEZ2276DNt7CbYfzhmWZnoj3sL2U&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 5,
     "imageCount": 5,
     "videoCount": 0,
     "totalMediaCount": 5,
+    "accessError": null,
     "media": [
       {
         "id": "11hnZsEZ2276DNt7CbYfzhmWZnoj3sL2U",
@@ -949,16 +2040,20 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "folderName": "Ms.Shraddha Vispute",
     "sheetProjectId": "SV-092",
     "customerName": "Ms.Shraddha Vispute",
-    "location": "",
-    "structureType": "",
-    "designDetail": "",
-    "dimensions": "",
+    "location": "Mumbai",
+    "structureType": "Freestanding Unit",
+    "designDetail": "Heavy",
+    "dimensions": "W 15 × D 5.8 × H 9.6 ft",
     "coverId": "11hnZsEZ2276DNt7CbYfzhmWZnoj3sL2U",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11hnZsEZ2276DNt7CbYfzhmWZnoj3sL2U&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 5,
     "imageCount": 5,
     "videoCount": 0,
     "totalMediaCount": 5,
+    "accessError": null,
     "media": [
       {
         "id": "11hnZsEZ2276DNt7CbYfzhmWZnoj3sL2U",
@@ -1022,13 +2117,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.5 × D 5.2 × H 10 ft",
     "coverId": "1VgB1J_PwcOi3TkxB1zFPplTu86jJOI19",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VgB1J_PwcOi3TkxB1zFPplTu86jJOI19&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1VgB1J_PwcOi3TkxB1zFPplTu86jJOI19",
@@ -1142,13 +2241,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.5 × D 5.2 × H 10 ft",
     "coverId": "1VgB1J_PwcOi3TkxB1zFPplTu86jJOI19",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VgB1J_PwcOi3TkxB1zFPplTu86jJOI19&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1VgB1J_PwcOi3TkxB1zFPplTu86jJOI19",
@@ -1262,13 +2365,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.6 × D 8.2 × H 9.2 ft",
     "coverId": "1IfBAuJMeQIeKf8z7V4I9wbm5Wkashwlz",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IfBAuJMeQIeKf8z7V4I9wbm5Wkashwlz&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 1,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1IfBAuJMeQIeKf8z7V4I9wbm5Wkashwlz",
@@ -1338,7 +2445,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=123gIeqanN1QoHya8-A27MYvSQ79iyfkh&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=123gIeqanN1QoHya8-A27MYvSQ79iyfkh&v=10",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -1351,7 +2458,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Y2oKewZs4AF2sNgBUuP5fCZupFT308ga&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YGsk_lcAFhGp6IFezR_6i_LKX1e4QALh&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q_RTKQP3urAcq5ZFH867kQqU7YPG5Nz0&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=123gIeqanN1QoHya8-A27MYvSQ79iyfkh&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=123gIeqanN1QoHya8-A27MYvSQ79iyfkh&v=10"
     ]
   },
   "sv-047": {
@@ -1362,13 +2469,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.6 × D 8.2 × H 9.2 ft",
     "coverId": "1IfBAuJMeQIeKf8z7V4I9wbm5Wkashwlz",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IfBAuJMeQIeKf8z7V4I9wbm5Wkashwlz&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 1,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1IfBAuJMeQIeKf8z7V4I9wbm5Wkashwlz",
@@ -1438,7 +2549,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=123gIeqanN1QoHya8-A27MYvSQ79iyfkh&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=123gIeqanN1QoHya8-A27MYvSQ79iyfkh&v=10",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -1451,7 +2562,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Y2oKewZs4AF2sNgBUuP5fCZupFT308ga&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YGsk_lcAFhGp6IFezR_6i_LKX1e4QALh&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q_RTKQP3urAcq5ZFH867kQqU7YPG5Nz0&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=123gIeqanN1QoHya8-A27MYvSQ79iyfkh&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=123gIeqanN1QoHya8-A27MYvSQ79iyfkh&v=10"
     ]
   },
   "1MWpbHMi2_iiEWfRO_9I4foInKeHWwBsA": {
@@ -1462,13 +2573,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengal",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "15d2mC1Ri5T1RBZwmxO8y0E80TqQTCL7S",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15d2mC1Ri5T1RBZwmxO8y0E80TqQTCL7S&v=2",
+    "dimensions": "W 5.5 × D 8.8 × H 8.2 ft",
+    "coverId": "1Q0da_TBEV73zJV-by5KrbehfQjdJUict",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q0da_TBEV73zJV-by5KrbehfQjdJUict&v=2",
+    "coverName": "7.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 0,
     "totalMediaCount": 7,
+    "accessError": null,
     "media": [
       {
         "id": "15d2mC1Ri5T1RBZwmxO8y0E80TqQTCL7S",
@@ -1552,13 +2667,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengal",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "15d2mC1Ri5T1RBZwmxO8y0E80TqQTCL7S",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15d2mC1Ri5T1RBZwmxO8y0E80TqQTCL7S&v=2",
+    "dimensions": "W 5.5 × D 8.8 × H 8.2 ft",
+    "coverId": "1Q0da_TBEV73zJV-by5KrbehfQjdJUict",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q0da_TBEV73zJV-by5KrbehfQjdJUict&v=2",
+    "coverName": "7.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 0,
     "totalMediaCount": 7,
+    "accessError": null,
     "media": [
       {
         "id": "15d2mC1Ri5T1RBZwmxO8y0E80TqQTCL7S",
@@ -1642,13 +2761,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Salem",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "17Dd4JycdkkiOnCgOXcF_og2DHqIBX1Zx",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17Dd4JycdkkiOnCgOXcF_og2DHqIBX1Zx&v=2",
+    "dimensions": "W 6 × D 5 × H 11 ft",
+    "coverId": "1wZP_gsFjWOEG5s2LJ1MGdVntD57o2xkU",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wZP_gsFjWOEG5s2LJ1MGdVntD57o2xkU&v=2",
+    "coverName": "1 (6).jpeg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "17Dd4JycdkkiOnCgOXcF_og2DHqIBX1Zx",
@@ -1722,13 +2845,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Salem",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "17Dd4JycdkkiOnCgOXcF_og2DHqIBX1Zx",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17Dd4JycdkkiOnCgOXcF_og2DHqIBX1Zx&v=2",
+    "dimensions": "W 6 × D 5 × H 11 ft",
+    "coverId": "1wZP_gsFjWOEG5s2LJ1MGdVntD57o2xkU",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wZP_gsFjWOEG5s2LJ1MGdVntD57o2xkU&v=2",
+    "coverName": "1 (6).jpeg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "17Dd4JycdkkiOnCgOXcF_og2DHqIBX1Zx",
@@ -1802,13 +2929,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5.5 × D 5 × H 8.2 ft",
     "coverId": "1ccIxI_-rGsq4HqXtME9DuJVWElI2jTvt",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ccIxI_-rGsq4HqXtME9DuJVWElI2jTvt&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 0,
     "totalMediaCount": 7,
+    "accessError": null,
     "media": [
       {
         "id": "1ccIxI_-rGsq4HqXtME9DuJVWElI2jTvt",
@@ -1892,13 +3023,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5.5 × D 5 × H 8.2 ft",
     "coverId": "1ccIxI_-rGsq4HqXtME9DuJVWElI2jTvt",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ccIxI_-rGsq4HqXtME9DuJVWElI2jTvt&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 0,
     "totalMediaCount": 7,
+    "accessError": null,
     "media": [
       {
         "id": "1ccIxI_-rGsq4HqXtME9DuJVWElI2jTvt",
@@ -1982,13 +3117,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.5 × D 5.8 × H 10 ft",
     "coverId": "1UgLzAbXqp-2VwT5eLpIrYEAZuASBuynD",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UgLzAbXqp-2VwT5eLpIrYEAZuASBuynD&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 11,
     "imageCount": 11,
     "videoCount": 0,
     "totalMediaCount": 11,
+    "accessError": null,
     "media": [
       {
         "id": "1UgLzAbXqp-2VwT5eLpIrYEAZuASBuynD",
@@ -2112,13 +3251,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.5 × D 5.8 × H 10 ft",
     "coverId": "1UgLzAbXqp-2VwT5eLpIrYEAZuASBuynD",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UgLzAbXqp-2VwT5eLpIrYEAZuASBuynD&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 11,
     "imageCount": 11,
     "videoCount": 0,
     "totalMediaCount": 11,
+    "accessError": null,
     "media": [
       {
         "id": "1UgLzAbXqp-2VwT5eLpIrYEAZuASBuynD",
@@ -2242,13 +3385,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1MAjC5_We59wn5-6QqLbMeILWVlXuQ7PZ",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1MAjC5_We59wn5-6QqLbMeILWVlXuQ7PZ&v=2",
+    "dimensions": "W 4.8 × D 7.3 × H 1 ft",
+    "coverId": "1rJ9oWkO4Ubfu7itMbm2PTHLRD5QFDHRI",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rJ9oWkO4Ubfu7itMbm2PTHLRD5QFDHRI&v=2",
+    "coverName": "7.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 0,
     "totalMediaCount": 7,
+    "accessError": null,
     "media": [
       {
         "id": "1MAjC5_We59wn5-6QqLbMeILWVlXuQ7PZ",
@@ -2332,13 +3479,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1MAjC5_We59wn5-6QqLbMeILWVlXuQ7PZ",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1MAjC5_We59wn5-6QqLbMeILWVlXuQ7PZ&v=2",
+    "dimensions": "W 4.8 × D 7.3 × H 1 ft",
+    "coverId": "1rJ9oWkO4Ubfu7itMbm2PTHLRD5QFDHRI",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rJ9oWkO4Ubfu7itMbm2PTHLRD5QFDHRI&v=2",
+    "coverName": "7.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 0,
     "totalMediaCount": 7,
+    "accessError": null,
     "media": [
       {
         "id": "1MAjC5_We59wn5-6QqLbMeILWVlXuQ7PZ",
@@ -2422,26 +3573,30 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Dubai",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.2 × D 6.5 × H 9.7 ft",
     "coverId": "1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=3",
+    "coverName": "1.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 1,
     "imageCount": 1,
     "videoCount": 0,
     "totalMediaCount": 1,
+    "accessError": null,
     "media": [
       {
         "id": "1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO",
         "name": "1.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=3"
     ]
   },
   "sv-046": {
@@ -2452,26 +3607,30 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Dubai",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.2 × D 6.5 × H 9.7 ft",
     "coverId": "1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=3",
+    "coverName": "1.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 1,
     "imageCount": 1,
     "videoCount": 0,
     "totalMediaCount": 1,
+    "accessError": null,
     "media": [
       {
         "id": "1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO",
         "name": "1.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pvh15ZmpcKSgYyKFOSygcYHh3_eOn9lO&v=3"
     ]
   },
   "1LaqmwogGVbEclYQye4T-CojsMQM2JMCi": {
@@ -2482,14 +3641,27 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1WRNjvTxlt1TjduEYle_67hRpxOaMM3Fi",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WRNjvTxlt1TjduEYle_67hRpxOaMM3Fi&v=2",
-    "hasDedicatedOverview": false,
-    "imageCount": 6,
+    "dimensions": "W 7.2 × D 5.1 × H 8.5 ft",
+    "coverId": "1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY&v=2",
+    "coverName": "overview.jpg",
+    "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 5,
+    "imageCount": 5,
     "videoCount": 0,
-    "totalMediaCount": 6,
+    "totalMediaCount": 5,
+    "accessError": null,
     "media": [
+      {
+        "id": "1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY",
+        "name": "overview.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
       {
         "id": "1WRNjvTxlt1TjduEYle_67hRpxOaMM3Fi",
         "name": "0.png",
@@ -2525,33 +3697,14 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JTnJTPAcK0G-ehBmIHumtB8o39_xi7qW&v=2",
         "isSubfolder": false,
         "subfolder": null
-      },
-      {
-        "id": "1w9h--2u1xUizOf-25OIbdtvi_oWYJsgx",
-        "name": "5.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1w9h--2u1xUizOf-25OIbdtvi_oWYJsgx&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1O4fERkaY-iA9X5_eyLDX9PNpy5uAfvCM",
-        "name": "6.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O4fERkaY-iA9X5_eyLDX9PNpy5uAfvCM&v=2",
-        "isSubfolder": false,
-        "subfolder": null
       }
     ],
     "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WRNjvTxlt1TjduEYle_67hRpxOaMM3Fi&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WoeLqLoHifOcBbekxtypzIdZiTOC5rJJ&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1odsra_ICl9KX0ozIn0Y8Q74hIqA0_Zsy&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JTnJTPAcK0G-ehBmIHumtB8o39_xi7qW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1w9h--2u1xUizOf-25OIbdtvi_oWYJsgx&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O4fERkaY-iA9X5_eyLDX9PNpy5uAfvCM&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JTnJTPAcK0G-ehBmIHumtB8o39_xi7qW&v=2"
     ]
   },
   "sv-056": {
@@ -2562,14 +3715,27 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1WRNjvTxlt1TjduEYle_67hRpxOaMM3Fi",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WRNjvTxlt1TjduEYle_67hRpxOaMM3Fi&v=2",
-    "hasDedicatedOverview": false,
-    "imageCount": 6,
+    "dimensions": "W 7.2 × D 5.1 × H 8.5 ft",
+    "coverId": "1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY&v=2",
+    "coverName": "overview.jpg",
+    "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 5,
+    "imageCount": 5,
     "videoCount": 0,
-    "totalMediaCount": 6,
+    "totalMediaCount": 5,
+    "accessError": null,
     "media": [
+      {
+        "id": "1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY",
+        "name": "overview.jpg",
+        "type": "image",
+        "mimeType": "image/jpeg",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY&v=2",
+        "isSubfolder": false,
+        "subfolder": null
+      },
       {
         "id": "1WRNjvTxlt1TjduEYle_67hRpxOaMM3Fi",
         "name": "0.png",
@@ -2605,33 +3771,14 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JTnJTPAcK0G-ehBmIHumtB8o39_xi7qW&v=2",
         "isSubfolder": false,
         "subfolder": null
-      },
-      {
-        "id": "1w9h--2u1xUizOf-25OIbdtvi_oWYJsgx",
-        "name": "5.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1w9h--2u1xUizOf-25OIbdtvi_oWYJsgx&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1O4fERkaY-iA9X5_eyLDX9PNpy5uAfvCM",
-        "name": "6.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O4fERkaY-iA9X5_eyLDX9PNpy5uAfvCM&v=2",
-        "isSubfolder": false,
-        "subfolder": null
       }
     ],
     "galleryUrls": [
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yb_nIymMVJsrj_19vu5IR6zRfJ3YOKDY&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WRNjvTxlt1TjduEYle_67hRpxOaMM3Fi&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WoeLqLoHifOcBbekxtypzIdZiTOC5rJJ&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1odsra_ICl9KX0ozIn0Y8Q74hIqA0_Zsy&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JTnJTPAcK0G-ehBmIHumtB8o39_xi7qW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1w9h--2u1xUizOf-25OIbdtvi_oWYJsgx&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O4fERkaY-iA9X5_eyLDX9PNpy5uAfvCM&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JTnJTPAcK0G-ehBmIHumtB8o39_xi7qW&v=2"
     ]
   },
   "1koBLItGlkLylFyeMgkoqXuVxqpKn0wwq": {
@@ -2642,13 +3789,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.1 × D 5 × H 8.8 ft",
     "coverId": "1Ws4cQ8SEKkWxVfpyRktT94-jQmbGqr58",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ws4cQ8SEKkWxVfpyRktT94-jQmbGqr58&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1Ws4cQ8SEKkWxVfpyRktT94-jQmbGqr58",
@@ -2722,13 +3873,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.1 × D 5 × H 8.8 ft",
     "coverId": "1Ws4cQ8SEKkWxVfpyRktT94-jQmbGqr58",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ws4cQ8SEKkWxVfpyRktT94-jQmbGqr58&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1Ws4cQ8SEKkWxVfpyRktT94-jQmbGqr58",
@@ -2802,13 +3957,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "U S A",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1bYRY8j9EcZaad1trG8gJz-lXXVFyhzxb",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bYRY8j9EcZaad1trG8gJz-lXXVFyhzxb&v=2",
+    "dimensions": "W 7.2 × D 7.2 × H 10 ft",
+    "coverId": "1lHZwFgsEwPGuhX7aRKWR8uYcT_ftlVy0",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lHZwFgsEwPGuhX7aRKWR8uYcT_ftlVy0&v=2",
+    "coverName": "4.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1bYRY8j9EcZaad1trG8gJz-lXXVFyhzxb",
@@ -2862,13 +4021,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "U S A",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1bYRY8j9EcZaad1trG8gJz-lXXVFyhzxb",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bYRY8j9EcZaad1trG8gJz-lXXVFyhzxb&v=2",
+    "dimensions": "W 7.2 × D 7.2 × H 10 ft",
+    "coverId": "1lHZwFgsEwPGuhX7aRKWR8uYcT_ftlVy0",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lHZwFgsEwPGuhX7aRKWR8uYcT_ftlVy0&v=2",
+    "coverName": "4.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1bYRY8j9EcZaad1trG8gJz-lXXVFyhzxb",
@@ -2922,13 +4085,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "U S A",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1UexMAqBNL-QEtIs2Gd8sYHXHIJriv3cx",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UexMAqBNL-QEtIs2Gd8sYHXHIJriv3cx&v=2",
+    "dimensions": "W 6.6 × D 1.7 × H 9 ft",
+    "coverId": "1D8DplmyzFu9_2g_482IV666f0PPBFqxo",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1D8DplmyzFu9_2g_482IV666f0PPBFqxo&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "1UexMAqBNL-QEtIs2Gd8sYHXHIJriv3cx",
@@ -2962,13 +4129,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "U S A",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1UexMAqBNL-QEtIs2Gd8sYHXHIJriv3cx",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UexMAqBNL-QEtIs2Gd8sYHXHIJriv3cx&v=2",
+    "dimensions": "W 6.6 × D 1.7 × H 9 ft",
+    "coverId": "1D8DplmyzFu9_2g_482IV666f0PPBFqxo",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1D8DplmyzFu9_2g_482IV666f0PPBFqxo&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "1UexMAqBNL-QEtIs2Gd8sYHXHIJriv3cx",
@@ -3002,13 +4173,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Seattle",
     "structureType": "Existing Room Frontage",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.2 × D 3.2 × H 8.3 ft",
     "coverId": "1OvjhA0T-CevirRNdZRIN2o7qp1vDSzBG",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OvjhA0T-CevirRNdZRIN2o7qp1vDSzBG&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 0,
     "totalMediaCount": 7,
+    "accessError": null,
     "media": [
       {
         "id": "1OvjhA0T-CevirRNdZRIN2o7qp1vDSzBG",
@@ -3092,13 +4267,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Seattle",
     "structureType": "Existing Room Frontage",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.2 × D 3.2 × H 8.3 ft",
     "coverId": "1OvjhA0T-CevirRNdZRIN2o7qp1vDSzBG",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OvjhA0T-CevirRNdZRIN2o7qp1vDSzBG&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 0,
     "totalMediaCount": 7,
+    "accessError": null,
     "media": [
       {
         "id": "1OvjhA0T-CevirRNdZRIN2o7qp1vDSzBG",
@@ -3182,13 +4361,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Hyderabad",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1NC6DAVgiDDkR95eKAVjojPhoy5yt48aW",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NC6DAVgiDDkR95eKAVjojPhoy5yt48aW&v=2",
+    "dimensions": "W 6.6 × D 4.1 × H 9.4 ft",
+    "coverId": "1nfmuC702Q7o6_thhW8zSO_M60uePEgF-",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfmuC702Q7o6_thhW8zSO_M60uePEgF-&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "1NC6DAVgiDDkR95eKAVjojPhoy5yt48aW",
@@ -3232,13 +4415,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Hyderabad",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1NC6DAVgiDDkR95eKAVjojPhoy5yt48aW",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NC6DAVgiDDkR95eKAVjojPhoy5yt48aW&v=2",
+    "dimensions": "W 6.6 × D 4.1 × H 9.4 ft",
+    "coverId": "1nfmuC702Q7o6_thhW8zSO_M60uePEgF-",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfmuC702Q7o6_thhW8zSO_M60uePEgF-&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "1NC6DAVgiDDkR95eKAVjojPhoy5yt48aW",
@@ -3282,13 +4469,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Coimbatore",
     "structureType": "Existing Room Frontage",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1a9RZmmxdonEkmPLax50i743SKZj4BTNX",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1a9RZmmxdonEkmPLax50i743SKZj4BTNX&v=2",
+    "dimensions": "W 11 × D 5 × H 8.5 ft",
+    "coverId": "1j0JpsSb_xaexWFRSIFeT5nD-nLAxqFOX",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1j0JpsSb_xaexWFRSIFeT5nD-nLAxqFOX&v=2",
+    "coverName": "9.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1a9RZmmxdonEkmPLax50i743SKZj4BTNX",
@@ -3392,13 +4583,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Coimbatore",
     "structureType": "Existing Room Frontage",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1a9RZmmxdonEkmPLax50i743SKZj4BTNX",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1a9RZmmxdonEkmPLax50i743SKZj4BTNX&v=2",
+    "dimensions": "W 11 × D 5 × H 8.5 ft",
+    "coverId": "1j0JpsSb_xaexWFRSIFeT5nD-nLAxqFOX",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1j0JpsSb_xaexWFRSIFeT5nD-nLAxqFOX&v=2",
+    "coverName": "9.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1a9RZmmxdonEkmPLax50i743SKZj4BTNX",
@@ -3502,13 +4697,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5 × D 6 × H 8.8 ft",
     "coverId": "103keIRiAHgmrQNXPxozutQdOw4f5s1zH",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=103keIRiAHgmrQNXPxozutQdOw4f5s1zH&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 26,
     "imageCount": 26,
     "videoCount": 0,
     "totalMediaCount": 26,
+    "accessError": null,
     "media": [
       {
         "id": "103keIRiAHgmrQNXPxozutQdOw4f5s1zH",
@@ -3782,13 +4981,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5 × D 6 × H 8.8 ft",
     "coverId": "103keIRiAHgmrQNXPxozutQdOw4f5s1zH",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=103keIRiAHgmrQNXPxozutQdOw4f5s1zH&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 26,
     "imageCount": 26,
     "videoCount": 0,
     "totalMediaCount": 26,
+    "accessError": null,
     "media": [
       {
         "id": "103keIRiAHgmrQNXPxozutQdOw4f5s1zH",
@@ -4062,13 +5265,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "RamanthaPuram / Rameswaram",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1p-Wn2Mps4GrS4rSBhiDQFS_CKg0Xzg4U",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1p-Wn2Mps4GrS4rSBhiDQFS_CKg0Xzg4U&v=2",
+    "dimensions": "W 10 × D 3.9 × H 9 ft",
+    "coverId": "1QZFroJDmiLhoWzrnRpaVf7ZrllC7PaKe",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QZFroJDmiLhoWzrnRpaVf7ZrllC7PaKe&v=2",
+    "coverName": "7.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1p-Wn2Mps4GrS4rSBhiDQFS_CKg0Xzg4U",
@@ -4162,13 +5369,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "RamanthaPuram / Rameswaram",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1p-Wn2Mps4GrS4rSBhiDQFS_CKg0Xzg4U",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1p-Wn2Mps4GrS4rSBhiDQFS_CKg0Xzg4U&v=2",
+    "dimensions": "W 10 × D 3.9 × H 9 ft",
+    "coverId": "1QZFroJDmiLhoWzrnRpaVf7ZrllC7PaKe",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QZFroJDmiLhoWzrnRpaVf7ZrllC7PaKe&v=2",
+    "coverName": "7.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1p-Wn2Mps4GrS4rSBhiDQFS_CKg0Xzg4U",
@@ -4262,13 +5473,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Pune",
     "structureType": "Freestanding Unit",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 4 × D 3.6 × H 7 ft",
     "coverId": "10h1fMq1pmC5i3HWLJ_mPCSuyMiBCwG0D",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10h1fMq1pmC5i3HWLJ_mPCSuyMiBCwG0D&v=2",
+    "coverName": "1.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 1,
     "imageCount": 1,
     "videoCount": 0,
     "totalMediaCount": 1,
+    "accessError": null,
     "media": [
       {
         "id": "10h1fMq1pmC5i3HWLJ_mPCSuyMiBCwG0D",
@@ -4292,13 +5507,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Pune",
     "structureType": "Freestanding Unit",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 4 × D 3.6 × H 7 ft",
     "coverId": "10h1fMq1pmC5i3HWLJ_mPCSuyMiBCwG0D",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10h1fMq1pmC5i3HWLJ_mPCSuyMiBCwG0D&v=2",
+    "coverName": "1.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 1,
     "imageCount": 1,
     "videoCount": 0,
     "totalMediaCount": 1,
+    "accessError": null,
     "media": [
       {
         "id": "10h1fMq1pmC5i3HWLJ_mPCSuyMiBCwG0D",
@@ -4322,13 +5541,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "19j8bj91SRcgW74HtCgN0ZJbJtRyRANaq",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19j8bj91SRcgW74HtCgN0ZJbJtRyRANaq&v=2",
+    "dimensions": "W 6.8 × D 2 × H 8.3 ft",
+    "coverId": "1qUVTYsTCcR0wbB1RfdBMEt5yZPaKPmyP",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qUVTYsTCcR0wbB1RfdBMEt5yZPaKPmyP&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "19j8bj91SRcgW74HtCgN0ZJbJtRyRANaq",
@@ -4362,13 +5585,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "19j8bj91SRcgW74HtCgN0ZJbJtRyRANaq",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19j8bj91SRcgW74HtCgN0ZJbJtRyRANaq&v=2",
+    "dimensions": "W 6.8 × D 2 × H 8.3 ft",
+    "coverId": "1qUVTYsTCcR0wbB1RfdBMEt5yZPaKPmyP",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qUVTYsTCcR0wbB1RfdBMEt5yZPaKPmyP&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "19j8bj91SRcgW74HtCgN0ZJbJtRyRANaq",
@@ -4402,13 +5629,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "17nOJz932mQhXLITj52KIoeboZwQ16cTo",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17nOJz932mQhXLITj52KIoeboZwQ16cTo&v=2",
+    "dimensions": "W 6 × D 8 × H 10.4 ft",
+    "coverId": "1Giag5GyAvhNwDxDr4oA2G-26K7GxfDDM",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Giag5GyAvhNwDxDr4oA2G-26K7GxfDDM&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "17nOJz932mQhXLITj52KIoeboZwQ16cTo",
@@ -4442,13 +5673,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "17nOJz932mQhXLITj52KIoeboZwQ16cTo",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17nOJz932mQhXLITj52KIoeboZwQ16cTo&v=2",
+    "dimensions": "W 6 × D 8 × H 10.4 ft",
+    "coverId": "1Giag5GyAvhNwDxDr4oA2G-26K7GxfDDM",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Giag5GyAvhNwDxDr4oA2G-26K7GxfDDM&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "17nOJz932mQhXLITj52KIoeboZwQ16cTo",
@@ -4482,13 +5717,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Freestanding Unit",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "14IcheoFPq8mLFoZLqA1OKTjN2JLJYgCk",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14IcheoFPq8mLFoZLqA1OKTjN2JLJYgCk&v=2",
+    "dimensions": "W 7.1 × D 3.6 × H 8.1 ft",
+    "coverId": "1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA&v=2",
+    "coverName": "39.avif",
     "hasDedicatedOverview": false,
-    "imageCount": 5,
+    "priority": 2,
+    "photoCount": 6,
+    "imageCount": 6,
     "videoCount": 0,
-    "totalMediaCount": 5,
+    "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "14IcheoFPq8mLFoZLqA1OKTjN2JLJYgCk",
@@ -4534,6 +5773,15 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g7_byIZu5rfLLEF-qs4LMKR4JB-oLgUg&v=2",
         "isSubfolder": false,
         "subfolder": null
+      },
+      {
+        "id": "1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA",
+        "name": "39.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA&v=2",
+        "isSubfolder": false,
+        "subfolder": null
       }
     ],
     "galleryUrls": [
@@ -4541,7 +5789,8 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PJ7kQUMIvzPE8j9XtinItgJKvGWkluYq&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1MyUuE9EYFjClckviWQqf8DWTYKLOsqmj&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sz9ip-XhUcxIB57t8ukhPeHlXydOdCbp&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g7_byIZu5rfLLEF-qs4LMKR4JB-oLgUg&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g7_byIZu5rfLLEF-qs4LMKR4JB-oLgUg&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA&v=2"
     ]
   },
   "sv-036": {
@@ -4552,13 +5801,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Freestanding Unit",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "14IcheoFPq8mLFoZLqA1OKTjN2JLJYgCk",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14IcheoFPq8mLFoZLqA1OKTjN2JLJYgCk&v=2",
+    "dimensions": "W 7.1 × D 3.6 × H 8.1 ft",
+    "coverId": "1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA&v=2",
+    "coverName": "39.avif",
     "hasDedicatedOverview": false,
-    "imageCount": 5,
+    "priority": 2,
+    "photoCount": 6,
+    "imageCount": 6,
     "videoCount": 0,
-    "totalMediaCount": 5,
+    "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "14IcheoFPq8mLFoZLqA1OKTjN2JLJYgCk",
@@ -4604,6 +5857,15 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g7_byIZu5rfLLEF-qs4LMKR4JB-oLgUg&v=2",
         "isSubfolder": false,
         "subfolder": null
+      },
+      {
+        "id": "1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA",
+        "name": "39.avif",
+        "type": "image",
+        "mimeType": "image/avif",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA&v=2",
+        "isSubfolder": false,
+        "subfolder": null
       }
     ],
     "galleryUrls": [
@@ -4611,7 +5873,8 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PJ7kQUMIvzPE8j9XtinItgJKvGWkluYq&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1MyUuE9EYFjClckviWQqf8DWTYKLOsqmj&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sz9ip-XhUcxIB57t8ukhPeHlXydOdCbp&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g7_byIZu5rfLLEF-qs4LMKR4JB-oLgUg&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g7_byIZu5rfLLEF-qs4LMKR4JB-oLgUg&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1etdikNaNyHqoVeZdbPVDv2C3Up7d-DzA&v=2"
     ]
   },
   "1j6fcLWEsiqbwRUxMWCwySxB-uqYs-JAG": {
@@ -4622,13 +5885,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "10I2KunvuZCfYV-cOHEJnXELLVy9HZ_rY",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10I2KunvuZCfYV-cOHEJnXELLVy9HZ_rY&v=2",
+    "dimensions": "W 5.7 × D 14.5 × H 7.8 ft",
+    "coverId": "12YEdupaNWCgtQ-kAOW9Y6ftNj4W6oCzf",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12YEdupaNWCgtQ-kAOW9Y6ftNj4W6oCzf&v=2",
+    "coverName": "4.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 5,
     "imageCount": 5,
     "videoCount": 0,
     "totalMediaCount": 5,
+    "accessError": null,
     "media": [
       {
         "id": "10I2KunvuZCfYV-cOHEJnXELLVy9HZ_rY",
@@ -4692,13 +5959,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "10I2KunvuZCfYV-cOHEJnXELLVy9HZ_rY",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10I2KunvuZCfYV-cOHEJnXELLVy9HZ_rY&v=2",
+    "dimensions": "W 5.7 × D 14.5 × H 7.8 ft",
+    "coverId": "12YEdupaNWCgtQ-kAOW9Y6ftNj4W6oCzf",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12YEdupaNWCgtQ-kAOW9Y6ftNj4W6oCzf&v=2",
+    "coverName": "4.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 5,
     "imageCount": 5,
     "videoCount": 0,
     "totalMediaCount": 5,
+    "accessError": null,
     "media": [
       {
         "id": "10I2KunvuZCfYV-cOHEJnXELLVy9HZ_rY",
@@ -4762,13 +6033,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1c6bzd4XKF2OTt8hQGzSuWmpyGm_4JHVv",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c6bzd4XKF2OTt8hQGzSuWmpyGm_4JHVv&v=2",
+    "dimensions": "W 5 × D 3 × H 9.9 ft",
+    "coverId": "1z7pGkyxfrvdu-l0RXr6dpa95FJOPTg7N",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z7pGkyxfrvdu-l0RXr6dpa95FJOPTg7N&v=2",
+    "coverName": "Screenshot 2026-11-07 132524.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1c6bzd4XKF2OTt8hQGzSuWmpyGm_4JHVv",
@@ -4842,13 +6117,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1c6bzd4XKF2OTt8hQGzSuWmpyGm_4JHVv",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c6bzd4XKF2OTt8hQGzSuWmpyGm_4JHVv&v=2",
+    "dimensions": "W 5 × D 3 × H 9.9 ft",
+    "coverId": "1z7pGkyxfrvdu-l0RXr6dpa95FJOPTg7N",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z7pGkyxfrvdu-l0RXr6dpa95FJOPTg7N&v=2",
+    "coverName": "Screenshot 2026-11-07 132524.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1c6bzd4XKF2OTt8hQGzSuWmpyGm_4JHVv",
@@ -4922,13 +6201,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 5.3 × D 5.6 × H 7.6 ft",
     "coverId": "1NT3bh-2sLlNI-0I8qd1d_Oct-GMvFn0S",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NT3bh-2sLlNI-0I8qd1d_Oct-GMvFn0S&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1NT3bh-2sLlNI-0I8qd1d_Oct-GMvFn0S",
@@ -5002,13 +6285,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 5.3 × D 5.6 × H 7.6 ft",
     "coverId": "1NT3bh-2sLlNI-0I8qd1d_Oct-GMvFn0S",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NT3bh-2sLlNI-0I8qd1d_Oct-GMvFn0S&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1NT3bh-2sLlNI-0I8qd1d_Oct-GMvFn0S",
@@ -5082,20 +6369,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Puttaparthi",
     "structureType": "Wall Unit",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 5.3 × D 2.7 × H 8.9 ft",
     "coverId": "15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=3",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj",
         "name": "overview.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5128,7 +6419,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=3",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZGe_eZhzYjUjAbQH0YXb9GlCgGgrJ3io&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B59p07H0bHtEP9Ux_gjXG2kAHQpjW8XU&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gts-uc2LOYRueRGpHUVKbP1n8xUEwG0u&v=2"
@@ -5142,20 +6433,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Puttaparthi",
     "structureType": "Wall Unit",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 5.3 × D 2.7 × H 8.9 ft",
     "coverId": "15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=3",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj",
         "name": "overview.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5188,7 +6483,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15JcVO9v0Lm8R6QapBGfkGTGTjxR5Wvqj&v=3",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZGe_eZhzYjUjAbQH0YXb9GlCgGgrJ3io&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B59p07H0bHtEP9Ux_gjXG2kAHQpjW8XU&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gts-uc2LOYRueRGpHUVKbP1n8xUEwG0u&v=2"
@@ -5202,73 +6497,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Gurugram",
     "structureType": "Farmhouse Temple",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 7.5 × D 7.5 × H 9.4 ft",
     "coverId": "1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
-    "media": [
-      {
-        "id": "1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL",
-        "name": "overview.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1YwH8EOkRwj6s8BWWcav7gTdjnG_YgKm7",
-        "name": "1.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YwH8EOkRwj6s8BWWcav7gTdjnG_YgKm7&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1M4q3AijfHKvHw64NBZZzJr2SJm6Oeryn",
-        "name": "2.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q3AijfHKvHw64NBZZzJr2SJm6Oeryn&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1HQrzGYRIse-rywm6-DLOOnbfU8RC11zZ",
-        "name": "3.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HQrzGYRIse-rywm6-DLOOnbfU8RC11zZ&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      }
-    ],
-    "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YwH8EOkRwj6s8BWWcav7gTdjnG_YgKm7&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1M4q3AijfHKvHw64NBZZzJr2SJm6Oeryn&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HQrzGYRIse-rywm6-DLOOnbfU8RC11zZ&v=2"
-    ]
-  },
-  "sv-087": {
-    "folderId": "1km5ahXFAtHczYzMojZh5v3D_wsue1GzQ",
-    "folderName": "Ms. Aditi Pratap",
-    "sheetProjectId": "SV-087",
-    "customerName": "Ms. Aditi Pratap",
-    "location": "Gurugram",
-    "structureType": "Farmhouse Temple",
-    "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL&v=2",
-    "hasDedicatedOverview": true,
-    "imageCount": 4,
-    "videoCount": 0,
-    "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1B_l-inpyQeltY_DQV1i2jd2unJp1bJsL",
@@ -5322,20 +6561,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 8 × D 8.7 × H 10.8 ft",
     "coverId": "1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=3",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 31,
     "imageCount": 31,
     "videoCount": 0,
     "totalMediaCount": 31,
+    "accessError": null,
     "media": [
       {
         "id": "1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp",
         "name": "overview.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5344,7 +6587,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R883wnyyFaoZsD-P5oy5CI7Dy5ol5n-P&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R883wnyyFaoZsD-P5oy5CI7Dy5ol5n-P&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5353,7 +6596,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E-kdSehfe8Sx458Tha4J_RpqQO1hilNn&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E-kdSehfe8Sx458Tha4J_RpqQO1hilNn&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5362,7 +6605,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10o-FeS9gn_YIvq4k1TzMe-dHrnD6t-0V&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10o-FeS9gn_YIvq4k1TzMe-dHrnD6t-0V&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5371,7 +6614,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZdYzSjz0Zwka8dwpqNI79q_PY60jySx3&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZdYzSjz0Zwka8dwpqNI79q_PY60jySx3&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5380,7 +6623,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CheQ05Om6_XR9uVmNsJNhqRY-aJWQCm-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CheQ05Om6_XR9uVmNsJNhqRY-aJWQCm-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5389,7 +6632,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GKOBFJQGlycusQ4hx_5Nl1GJedbJKYJX&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GKOBFJQGlycusQ4hx_5Nl1GJedbJKYJX&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5398,7 +6641,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qEPlkwhSghrBhSVJu1sCiBqIq3VdgSi5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qEPlkwhSghrBhSVJu1sCiBqIq3VdgSi5&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5407,7 +6650,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pl5ShIYENnG4JoAZmMmQV_6CiDk30exL&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pl5ShIYENnG4JoAZmMmQV_6CiDk30exL&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5416,7 +6659,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eFupUHOdRyDUYmkWFV69GT3hEV77BNVd&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eFupUHOdRyDUYmkWFV69GT3hEV77BNVd&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5425,7 +6668,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RBRolKJRY84XpO8ATRP4YnWfUJMKIjog&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RBRolKJRY84XpO8ATRP4YnWfUJMKIjog&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5434,7 +6677,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11RUC4ZJUYeBEPHgwqXf0N6m5RphQah4D&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11RUC4ZJUYeBEPHgwqXf0N6m5RphQah4D&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5443,7 +6686,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18811jGL4lcPgc_-RB6rql3NGdidlK0No&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18811jGL4lcPgc_-RB6rql3NGdidlK0No&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5452,7 +6695,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ane0RL3HvhKO6tCOPEC9ju4i7gcE1L2M&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ane0RL3HvhKO6tCOPEC9ju4i7gcE1L2M&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5461,7 +6704,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGIHOqi9NMXKKO8zPj8qmoH7tpYGgNO6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGIHOqi9NMXKKO8zPj8qmoH7tpYGgNO6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5470,7 +6713,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12w6C7xvXqkhBLhknlz7LJ5ov4yxH5lAl&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12w6C7xvXqkhBLhknlz7LJ5ov4yxH5lAl&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5479,7 +6722,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHz7LYEzrlL7N4-ssHBuW1k3fvAIZMCJ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHz7LYEzrlL7N4-ssHBuW1k3fvAIZMCJ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5488,7 +6731,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sv3KsUDEEAKaUqiqv3nmI9539wJlXJQW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sv3KsUDEEAKaUqiqv3nmI9539wJlXJQW&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5497,7 +6740,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FpXr_keGiZg8wY7DDf-OVDjRdahjl07e&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FpXr_keGiZg8wY7DDf-OVDjRdahjl07e&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5506,7 +6749,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "19.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18PpsR6_ifZB8OqULPTGHxREHxpy3MGI0&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18PpsR6_ifZB8OqULPTGHxREHxpy3MGI0&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5515,7 +6758,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "20.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bJz3yKU9jDvFQv_hvrQapdEenC5CLKe6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bJz3yKU9jDvFQv_hvrQapdEenC5CLKe6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5524,7 +6767,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "21.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wzX4LgvoV9scv0moXO_ufUGC0Kv5ZEu&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wzX4LgvoV9scv0moXO_ufUGC0Kv5ZEu&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5533,7 +6776,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "22.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t-ecfUPIuEXs6RS7ez2bFIgs2jK8O3Iq&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t-ecfUPIuEXs6RS7ez2bFIgs2jK8O3Iq&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5542,7 +6785,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "23.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=185PGjMZLlbNA7AtYtR9st4ZQNoqtYvND&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=185PGjMZLlbNA7AtYtR9st4ZQNoqtYvND&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5551,7 +6794,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "24.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1er1NgN5rXmP2mGdaD2sc0BysrSGm_xdt&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1er1NgN5rXmP2mGdaD2sc0BysrSGm_xdt&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5560,7 +6803,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "25.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gE716hvv_hK9_qmslOlfOprJIJEz9PWB&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gE716hvv_hK9_qmslOlfOprJIJEz9PWB&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5569,7 +6812,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "26.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HluxuaG5Ndu1ufZl9RuKcTQWf8woXD_R&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HluxuaG5Ndu1ufZl9RuKcTQWf8woXD_R&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5578,7 +6821,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "27.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11jGwWtfFvzoH2z1fTeZv_vsRXKm6Jtfg&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11jGwWtfFvzoH2z1fTeZv_vsRXKm6Jtfg&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5587,7 +6830,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "28.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CEGkpOXxxBI8sAVdZuBA70w0jvoSHl5B&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CEGkpOXxxBI8sAVdZuBA70w0jvoSHl5B&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5596,7 +6839,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "29.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IiGLd2c5wN26iuXmc79oxNsExq7KIAMC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IiGLd2c5wN26iuXmc79oxNsExq7KIAMC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5605,43 +6848,43 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "31.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O7v6q2lba6FOemZIreC7D74imAkpC1VN&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O7v6q2lba6FOemZIreC7D74imAkpC1VN&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R883wnyyFaoZsD-P5oy5CI7Dy5ol5n-P&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E-kdSehfe8Sx458Tha4J_RpqQO1hilNn&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10o-FeS9gn_YIvq4k1TzMe-dHrnD6t-0V&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZdYzSjz0Zwka8dwpqNI79q_PY60jySx3&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CheQ05Om6_XR9uVmNsJNhqRY-aJWQCm-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GKOBFJQGlycusQ4hx_5Nl1GJedbJKYJX&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qEPlkwhSghrBhSVJu1sCiBqIq3VdgSi5&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pl5ShIYENnG4JoAZmMmQV_6CiDk30exL&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eFupUHOdRyDUYmkWFV69GT3hEV77BNVd&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RBRolKJRY84XpO8ATRP4YnWfUJMKIjog&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11RUC4ZJUYeBEPHgwqXf0N6m5RphQah4D&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18811jGL4lcPgc_-RB6rql3NGdidlK0No&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ane0RL3HvhKO6tCOPEC9ju4i7gcE1L2M&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGIHOqi9NMXKKO8zPj8qmoH7tpYGgNO6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12w6C7xvXqkhBLhknlz7LJ5ov4yxH5lAl&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHz7LYEzrlL7N4-ssHBuW1k3fvAIZMCJ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sv3KsUDEEAKaUqiqv3nmI9539wJlXJQW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FpXr_keGiZg8wY7DDf-OVDjRdahjl07e&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18PpsR6_ifZB8OqULPTGHxREHxpy3MGI0&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bJz3yKU9jDvFQv_hvrQapdEenC5CLKe6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wzX4LgvoV9scv0moXO_ufUGC0Kv5ZEu&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t-ecfUPIuEXs6RS7ez2bFIgs2jK8O3Iq&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=185PGjMZLlbNA7AtYtR9st4ZQNoqtYvND&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1er1NgN5rXmP2mGdaD2sc0BysrSGm_xdt&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gE716hvv_hK9_qmslOlfOprJIJEz9PWB&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HluxuaG5Ndu1ufZl9RuKcTQWf8woXD_R&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11jGwWtfFvzoH2z1fTeZv_vsRXKm6Jtfg&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CEGkpOXxxBI8sAVdZuBA70w0jvoSHl5B&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IiGLd2c5wN26iuXmc79oxNsExq7KIAMC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O7v6q2lba6FOemZIreC7D74imAkpC1VN&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R883wnyyFaoZsD-P5oy5CI7Dy5ol5n-P&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E-kdSehfe8Sx458Tha4J_RpqQO1hilNn&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10o-FeS9gn_YIvq4k1TzMe-dHrnD6t-0V&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZdYzSjz0Zwka8dwpqNI79q_PY60jySx3&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CheQ05Om6_XR9uVmNsJNhqRY-aJWQCm-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GKOBFJQGlycusQ4hx_5Nl1GJedbJKYJX&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qEPlkwhSghrBhSVJu1sCiBqIq3VdgSi5&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pl5ShIYENnG4JoAZmMmQV_6CiDk30exL&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eFupUHOdRyDUYmkWFV69GT3hEV77BNVd&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RBRolKJRY84XpO8ATRP4YnWfUJMKIjog&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11RUC4ZJUYeBEPHgwqXf0N6m5RphQah4D&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18811jGL4lcPgc_-RB6rql3NGdidlK0No&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ane0RL3HvhKO6tCOPEC9ju4i7gcE1L2M&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGIHOqi9NMXKKO8zPj8qmoH7tpYGgNO6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12w6C7xvXqkhBLhknlz7LJ5ov4yxH5lAl&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHz7LYEzrlL7N4-ssHBuW1k3fvAIZMCJ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sv3KsUDEEAKaUqiqv3nmI9539wJlXJQW&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FpXr_keGiZg8wY7DDf-OVDjRdahjl07e&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18PpsR6_ifZB8OqULPTGHxREHxpy3MGI0&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bJz3yKU9jDvFQv_hvrQapdEenC5CLKe6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wzX4LgvoV9scv0moXO_ufUGC0Kv5ZEu&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t-ecfUPIuEXs6RS7ez2bFIgs2jK8O3Iq&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=185PGjMZLlbNA7AtYtR9st4ZQNoqtYvND&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1er1NgN5rXmP2mGdaD2sc0BysrSGm_xdt&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gE716hvv_hK9_qmslOlfOprJIJEz9PWB&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HluxuaG5Ndu1ufZl9RuKcTQWf8woXD_R&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11jGwWtfFvzoH2z1fTeZv_vsRXKm6Jtfg&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CEGkpOXxxBI8sAVdZuBA70w0jvoSHl5B&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IiGLd2c5wN26iuXmc79oxNsExq7KIAMC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O7v6q2lba6FOemZIreC7D74imAkpC1VN&v=3"
     ]
   },
   "sv-075": {
@@ -5652,20 +6895,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 8 × D 8.7 × H 10.8 ft",
     "coverId": "1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=3",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 31,
     "imageCount": 31,
     "videoCount": 0,
     "totalMediaCount": 31,
+    "accessError": null,
     "media": [
       {
         "id": "1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp",
         "name": "overview.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5674,7 +6921,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R883wnyyFaoZsD-P5oy5CI7Dy5ol5n-P&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R883wnyyFaoZsD-P5oy5CI7Dy5ol5n-P&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5683,7 +6930,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E-kdSehfe8Sx458Tha4J_RpqQO1hilNn&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E-kdSehfe8Sx458Tha4J_RpqQO1hilNn&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5692,7 +6939,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10o-FeS9gn_YIvq4k1TzMe-dHrnD6t-0V&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10o-FeS9gn_YIvq4k1TzMe-dHrnD6t-0V&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5701,7 +6948,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZdYzSjz0Zwka8dwpqNI79q_PY60jySx3&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZdYzSjz0Zwka8dwpqNI79q_PY60jySx3&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5710,7 +6957,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CheQ05Om6_XR9uVmNsJNhqRY-aJWQCm-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CheQ05Om6_XR9uVmNsJNhqRY-aJWQCm-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5719,7 +6966,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GKOBFJQGlycusQ4hx_5Nl1GJedbJKYJX&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GKOBFJQGlycusQ4hx_5Nl1GJedbJKYJX&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5728,7 +6975,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qEPlkwhSghrBhSVJu1sCiBqIq3VdgSi5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qEPlkwhSghrBhSVJu1sCiBqIq3VdgSi5&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5737,7 +6984,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pl5ShIYENnG4JoAZmMmQV_6CiDk30exL&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pl5ShIYENnG4JoAZmMmQV_6CiDk30exL&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5746,7 +6993,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eFupUHOdRyDUYmkWFV69GT3hEV77BNVd&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eFupUHOdRyDUYmkWFV69GT3hEV77BNVd&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5755,7 +7002,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RBRolKJRY84XpO8ATRP4YnWfUJMKIjog&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RBRolKJRY84XpO8ATRP4YnWfUJMKIjog&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5764,7 +7011,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11RUC4ZJUYeBEPHgwqXf0N6m5RphQah4D&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11RUC4ZJUYeBEPHgwqXf0N6m5RphQah4D&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5773,7 +7020,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18811jGL4lcPgc_-RB6rql3NGdidlK0No&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18811jGL4lcPgc_-RB6rql3NGdidlK0No&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5782,7 +7029,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ane0RL3HvhKO6tCOPEC9ju4i7gcE1L2M&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ane0RL3HvhKO6tCOPEC9ju4i7gcE1L2M&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5791,7 +7038,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGIHOqi9NMXKKO8zPj8qmoH7tpYGgNO6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGIHOqi9NMXKKO8zPj8qmoH7tpYGgNO6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5800,7 +7047,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12w6C7xvXqkhBLhknlz7LJ5ov4yxH5lAl&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12w6C7xvXqkhBLhknlz7LJ5ov4yxH5lAl&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5809,7 +7056,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHz7LYEzrlL7N4-ssHBuW1k3fvAIZMCJ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHz7LYEzrlL7N4-ssHBuW1k3fvAIZMCJ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5818,7 +7065,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sv3KsUDEEAKaUqiqv3nmI9539wJlXJQW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sv3KsUDEEAKaUqiqv3nmI9539wJlXJQW&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5827,7 +7074,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FpXr_keGiZg8wY7DDf-OVDjRdahjl07e&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FpXr_keGiZg8wY7DDf-OVDjRdahjl07e&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5836,7 +7083,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "19.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18PpsR6_ifZB8OqULPTGHxREHxpy3MGI0&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18PpsR6_ifZB8OqULPTGHxREHxpy3MGI0&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5845,7 +7092,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "20.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bJz3yKU9jDvFQv_hvrQapdEenC5CLKe6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bJz3yKU9jDvFQv_hvrQapdEenC5CLKe6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5854,7 +7101,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "21.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wzX4LgvoV9scv0moXO_ufUGC0Kv5ZEu&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wzX4LgvoV9scv0moXO_ufUGC0Kv5ZEu&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5863,7 +7110,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "22.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t-ecfUPIuEXs6RS7ez2bFIgs2jK8O3Iq&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t-ecfUPIuEXs6RS7ez2bFIgs2jK8O3Iq&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5872,7 +7119,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "23.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=185PGjMZLlbNA7AtYtR9st4ZQNoqtYvND&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=185PGjMZLlbNA7AtYtR9st4ZQNoqtYvND&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5881,7 +7128,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "24.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1er1NgN5rXmP2mGdaD2sc0BysrSGm_xdt&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1er1NgN5rXmP2mGdaD2sc0BysrSGm_xdt&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5890,7 +7137,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "25.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gE716hvv_hK9_qmslOlfOprJIJEz9PWB&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gE716hvv_hK9_qmslOlfOprJIJEz9PWB&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5899,7 +7146,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "26.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HluxuaG5Ndu1ufZl9RuKcTQWf8woXD_R&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HluxuaG5Ndu1ufZl9RuKcTQWf8woXD_R&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5908,7 +7155,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "27.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11jGwWtfFvzoH2z1fTeZv_vsRXKm6Jtfg&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11jGwWtfFvzoH2z1fTeZv_vsRXKm6Jtfg&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5917,7 +7164,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "28.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CEGkpOXxxBI8sAVdZuBA70w0jvoSHl5B&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CEGkpOXxxBI8sAVdZuBA70w0jvoSHl5B&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5926,7 +7173,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "29.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IiGLd2c5wN26iuXmc79oxNsExq7KIAMC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IiGLd2c5wN26iuXmc79oxNsExq7KIAMC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -5935,43 +7182,43 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "31.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O7v6q2lba6FOemZIreC7D74imAkpC1VN&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O7v6q2lba6FOemZIreC7D74imAkpC1VN&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R883wnyyFaoZsD-P5oy5CI7Dy5ol5n-P&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E-kdSehfe8Sx458Tha4J_RpqQO1hilNn&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10o-FeS9gn_YIvq4k1TzMe-dHrnD6t-0V&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZdYzSjz0Zwka8dwpqNI79q_PY60jySx3&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CheQ05Om6_XR9uVmNsJNhqRY-aJWQCm-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GKOBFJQGlycusQ4hx_5Nl1GJedbJKYJX&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qEPlkwhSghrBhSVJu1sCiBqIq3VdgSi5&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pl5ShIYENnG4JoAZmMmQV_6CiDk30exL&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eFupUHOdRyDUYmkWFV69GT3hEV77BNVd&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RBRolKJRY84XpO8ATRP4YnWfUJMKIjog&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11RUC4ZJUYeBEPHgwqXf0N6m5RphQah4D&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18811jGL4lcPgc_-RB6rql3NGdidlK0No&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ane0RL3HvhKO6tCOPEC9ju4i7gcE1L2M&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGIHOqi9NMXKKO8zPj8qmoH7tpYGgNO6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12w6C7xvXqkhBLhknlz7LJ5ov4yxH5lAl&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHz7LYEzrlL7N4-ssHBuW1k3fvAIZMCJ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sv3KsUDEEAKaUqiqv3nmI9539wJlXJQW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FpXr_keGiZg8wY7DDf-OVDjRdahjl07e&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18PpsR6_ifZB8OqULPTGHxREHxpy3MGI0&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bJz3yKU9jDvFQv_hvrQapdEenC5CLKe6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wzX4LgvoV9scv0moXO_ufUGC0Kv5ZEu&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t-ecfUPIuEXs6RS7ez2bFIgs2jK8O3Iq&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=185PGjMZLlbNA7AtYtR9st4ZQNoqtYvND&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1er1NgN5rXmP2mGdaD2sc0BysrSGm_xdt&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gE716hvv_hK9_qmslOlfOprJIJEz9PWB&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HluxuaG5Ndu1ufZl9RuKcTQWf8woXD_R&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11jGwWtfFvzoH2z1fTeZv_vsRXKm6Jtfg&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CEGkpOXxxBI8sAVdZuBA70w0jvoSHl5B&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IiGLd2c5wN26iuXmc79oxNsExq7KIAMC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O7v6q2lba6FOemZIreC7D74imAkpC1VN&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wpZJWPQaomxGenZCoZqUNFlXQ3H_cMp&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R883wnyyFaoZsD-P5oy5CI7Dy5ol5n-P&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E-kdSehfe8Sx458Tha4J_RpqQO1hilNn&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10o-FeS9gn_YIvq4k1TzMe-dHrnD6t-0V&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZdYzSjz0Zwka8dwpqNI79q_PY60jySx3&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CheQ05Om6_XR9uVmNsJNhqRY-aJWQCm-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GKOBFJQGlycusQ4hx_5Nl1GJedbJKYJX&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qEPlkwhSghrBhSVJu1sCiBqIq3VdgSi5&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pl5ShIYENnG4JoAZmMmQV_6CiDk30exL&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eFupUHOdRyDUYmkWFV69GT3hEV77BNVd&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RBRolKJRY84XpO8ATRP4YnWfUJMKIjog&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11RUC4ZJUYeBEPHgwqXf0N6m5RphQah4D&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18811jGL4lcPgc_-RB6rql3NGdidlK0No&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ane0RL3HvhKO6tCOPEC9ju4i7gcE1L2M&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eGIHOqi9NMXKKO8zPj8qmoH7tpYGgNO6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12w6C7xvXqkhBLhknlz7LJ5ov4yxH5lAl&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHz7LYEzrlL7N4-ssHBuW1k3fvAIZMCJ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sv3KsUDEEAKaUqiqv3nmI9539wJlXJQW&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FpXr_keGiZg8wY7DDf-OVDjRdahjl07e&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18PpsR6_ifZB8OqULPTGHxREHxpy3MGI0&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bJz3yKU9jDvFQv_hvrQapdEenC5CLKe6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_wzX4LgvoV9scv0moXO_ufUGC0Kv5ZEu&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t-ecfUPIuEXs6RS7ez2bFIgs2jK8O3Iq&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=185PGjMZLlbNA7AtYtR9st4ZQNoqtYvND&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1er1NgN5rXmP2mGdaD2sc0BysrSGm_xdt&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gE716hvv_hK9_qmslOlfOprJIJEz9PWB&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HluxuaG5Ndu1ufZl9RuKcTQWf8woXD_R&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11jGwWtfFvzoH2z1fTeZv_vsRXKm6Jtfg&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1CEGkpOXxxBI8sAVdZuBA70w0jvoSHl5B&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IiGLd2c5wN26iuXmc79oxNsExq7KIAMC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O7v6q2lba6FOemZIreC7D74imAkpC1VN&v=3"
     ]
   },
   "1B5HgT0RudzYrwQu1Qgb3q00rd1zmtvZO": {
@@ -5982,13 +7229,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Mumbai",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW&v=2",
+    "dimensions": "W 6.5 × D 2.5 × H 6.5 ft",
+    "coverId": "1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv&v=2",
+    "coverName": "3.jpeg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 2,
     "totalMediaCount": 5,
+    "accessError": null,
     "media": [
       {
         "id": "1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW",
@@ -6022,7 +7273,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6031,7 +7282,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH&v=9",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -6040,78 +7291,8 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cVMZxNhA56IIZSC3vPvnKQb_GvR-K2aM&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH&v=2"
-    ]
-  },
-  "sv-088": {
-    "folderId": "1B5HgT0RudzYrwQu1Qgb3q00rd1zmtvZO",
-    "folderName": "Ms. Rutuja Pawar",
-    "sheetProjectId": "SV-088",
-    "customerName": "Ms. Rutuja Pawar",
-    "location": "Mumbai",
-    "structureType": "Freestanding Enclosure",
-    "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW&v=2",
-    "hasDedicatedOverview": false,
-    "imageCount": 3,
-    "videoCount": 2,
-    "totalMediaCount": 5,
-    "media": [
-      {
-        "id": "1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW",
-        "name": "1.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1cVMZxNhA56IIZSC3vPvnKQb_GvR-K2aM",
-        "name": "2.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cVMZxNhA56IIZSC3vPvnKQb_GvR-K2aM&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv",
-        "name": "3.jpeg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi",
-        "name": "4.mp4",
-        "type": "video",
-        "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH",
-        "name": "5.mp4",
-        "type": "video",
-        "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      }
-    ],
-    "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zA3Mr4r73MB0STahcy2v-dUnKPux-LcW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cVMZxNhA56IIZSC3vPvnKQb_GvR-K2aM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1bFrrjh9UMVd30ZVC_XQ1yU5kzYLJIiPv&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z_nkjcuSQ-R59hfepsTs5VZOTsjg0Dbi&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h93Oc4NFi4SpG7RnPf_gwMlatfXo3CWH&v=9"
     ]
   },
   "1-UpLSdpEKiMlFT0ja8nFyXAW36CgZV-H": {
@@ -6122,20 +7303,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Pune",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=2",
+    "dimensions": "W 11.5 × D 9.1 × H 10.8 ft",
+    "coverId": "1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=3",
+    "coverName": "4587bbbc-40a4-419d-944e-caff797eb095.avif",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-",
         "name": "2.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6144,7 +7329,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u4oXG0EBpy6BZRSTmbO8EDj0vQwWQrcs&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u4oXG0EBpy6BZRSTmbO8EDj0vQwWQrcs&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6153,7 +7338,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vK_J-Mdf4yfCY6PPdmaAOBzcwqdSj5lh&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vK_J-Mdf4yfCY6PPdmaAOBzcwqdSj5lh&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6162,7 +7347,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10IrV-J-e671SpHXSkEwPCe8clX8WbIMi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10IrV-J-e671SpHXSkEwPCe8clX8WbIMi&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6171,7 +7356,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G8vVu_hK3htCIzRBk5dmP9iw0MDyHUyM&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G8vVu_hK3htCIzRBk5dmP9iw0MDyHUyM&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6180,7 +7365,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14Q6vkqcMjonZBYpyiGlBAz87ZeZ3c2yf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14Q6vkqcMjonZBYpyiGlBAz87ZeZ3c2yf&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6189,7 +7374,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xbSq-Gh2QjlcfQhIza1d_UEQAAXa46_1&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xbSq-Gh2QjlcfQhIza1d_UEQAAXa46_1&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6198,7 +7383,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pNxeKk9neHXXxM831FZNJp3ozEJsMeFZ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pNxeKk9neHXXxM831FZNJp3ozEJsMeFZ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6207,21 +7392,21 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4587bbbc-40a4-419d-944e-caff797eb095.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=3",
         "isSubfolder": true,
         "subfolder": "CONCEPT"
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u4oXG0EBpy6BZRSTmbO8EDj0vQwWQrcs&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vK_J-Mdf4yfCY6PPdmaAOBzcwqdSj5lh&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10IrV-J-e671SpHXSkEwPCe8clX8WbIMi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G8vVu_hK3htCIzRBk5dmP9iw0MDyHUyM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14Q6vkqcMjonZBYpyiGlBAz87ZeZ3c2yf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xbSq-Gh2QjlcfQhIza1d_UEQAAXa46_1&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pNxeKk9neHXXxM831FZNJp3ozEJsMeFZ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u4oXG0EBpy6BZRSTmbO8EDj0vQwWQrcs&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vK_J-Mdf4yfCY6PPdmaAOBzcwqdSj5lh&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10IrV-J-e671SpHXSkEwPCe8clX8WbIMi&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G8vVu_hK3htCIzRBk5dmP9iw0MDyHUyM&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14Q6vkqcMjonZBYpyiGlBAz87ZeZ3c2yf&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xbSq-Gh2QjlcfQhIza1d_UEQAAXa46_1&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pNxeKk9neHXXxM831FZNJp3ozEJsMeFZ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=3"
     ]
   },
   "sv-084": {
@@ -6232,20 +7417,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Pune",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=2",
+    "dimensions": "W 11.5 × D 9.1 × H 10.8 ft",
+    "coverId": "1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=3",
+    "coverName": "4587bbbc-40a4-419d-944e-caff797eb095.avif",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-",
         "name": "2.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6254,7 +7443,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u4oXG0EBpy6BZRSTmbO8EDj0vQwWQrcs&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u4oXG0EBpy6BZRSTmbO8EDj0vQwWQrcs&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6263,7 +7452,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vK_J-Mdf4yfCY6PPdmaAOBzcwqdSj5lh&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vK_J-Mdf4yfCY6PPdmaAOBzcwqdSj5lh&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6272,7 +7461,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10IrV-J-e671SpHXSkEwPCe8clX8WbIMi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10IrV-J-e671SpHXSkEwPCe8clX8WbIMi&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6281,7 +7470,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G8vVu_hK3htCIzRBk5dmP9iw0MDyHUyM&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G8vVu_hK3htCIzRBk5dmP9iw0MDyHUyM&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6290,7 +7479,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14Q6vkqcMjonZBYpyiGlBAz87ZeZ3c2yf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14Q6vkqcMjonZBYpyiGlBAz87ZeZ3c2yf&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6299,7 +7488,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xbSq-Gh2QjlcfQhIza1d_UEQAAXa46_1&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xbSq-Gh2QjlcfQhIza1d_UEQAAXa46_1&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6308,7 +7497,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pNxeKk9neHXXxM831FZNJp3ozEJsMeFZ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pNxeKk9neHXXxM831FZNJp3ozEJsMeFZ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6317,21 +7506,21 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4587bbbc-40a4-419d-944e-caff797eb095.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=3",
         "isSubfolder": true,
         "subfolder": "CONCEPT"
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u4oXG0EBpy6BZRSTmbO8EDj0vQwWQrcs&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vK_J-Mdf4yfCY6PPdmaAOBzcwqdSj5lh&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10IrV-J-e671SpHXSkEwPCe8clX8WbIMi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G8vVu_hK3htCIzRBk5dmP9iw0MDyHUyM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14Q6vkqcMjonZBYpyiGlBAz87ZeZ3c2yf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xbSq-Gh2QjlcfQhIza1d_UEQAAXa46_1&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pNxeKk9neHXXxM831FZNJp3ozEJsMeFZ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e5YMYT3UTXtGVTyF_Qdv4dMi-MLGqLo-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u4oXG0EBpy6BZRSTmbO8EDj0vQwWQrcs&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vK_J-Mdf4yfCY6PPdmaAOBzcwqdSj5lh&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10IrV-J-e671SpHXSkEwPCe8clX8WbIMi&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G8vVu_hK3htCIzRBk5dmP9iw0MDyHUyM&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14Q6vkqcMjonZBYpyiGlBAz87ZeZ3c2yf&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xbSq-Gh2QjlcfQhIza1d_UEQAAXa46_1&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pNxeKk9neHXXxM831FZNJp3ozEJsMeFZ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZPL7Oq5WvNpjZNUC85L2oznyU1Z9X8ht&v=3"
     ]
   },
   "1vXIyubyLkQk8EGviywLaCKAyFEL1BsJ0": {
@@ -6342,20 +7531,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Hosur",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 5.8 × D 5.8 × H 9.5 ft",
     "coverId": "1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=4",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 25,
     "imageCount": 25,
     "videoCount": 0,
     "totalMediaCount": 25,
+    "accessError": null,
     "media": [
       {
         "id": "1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf",
         "name": "overview.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6364,7 +7557,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15PP86n3Ff6dBAmfUgsgijzcwg3JQ7b1f&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15PP86n3Ff6dBAmfUgsgijzcwg3JQ7b1f&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6373,7 +7566,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R-_yFs4AADQg03_15Jbiu_jwLTGpjxLR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R-_yFs4AADQg03_15Jbiu_jwLTGpjxLR&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6382,7 +7575,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OeYxoxqHkl6GYygwNhnronCKRJoZghzR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OeYxoxqHkl6GYygwNhnronCKRJoZghzR&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6391,7 +7584,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17olJQfT_gFRogZ9tKr1ObyIY_lhD4vL_&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17olJQfT_gFRogZ9tKr1ObyIY_lhD4vL_&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6400,7 +7593,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OM1aISisefhaeOw6keaFQiSR1fzKjgSO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OM1aISisefhaeOw6keaFQiSR1fzKjgSO&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6409,7 +7602,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-VMoOBEZa3ifA88gy927ZvoWlKRDxYaZ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-VMoOBEZa3ifA88gy927ZvoWlKRDxYaZ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6418,7 +7611,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fwH__bYFF8zaAMVWXdFLtu7U76cVN3Q2&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fwH__bYFF8zaAMVWXdFLtu7U76cVN3Q2&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6427,7 +7620,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nF2mVhJSxP9FiDSXMiMor5I9Bvhm2crF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nF2mVhJSxP9FiDSXMiMor5I9Bvhm2crF&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6436,7 +7629,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z0NqYGM-y8xMUzNIdBoYVurUvQbEoKxM&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z0NqYGM-y8xMUzNIdBoYVurUvQbEoKxM&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6445,7 +7638,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lPkUQlCV8eQZbwKeN-Rz6VsZuGgkkxK0&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lPkUQlCV8eQZbwKeN-Rz6VsZuGgkkxK0&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6454,7 +7647,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rspp46DCkq9dr-ZtZos6acsocJO4qMlC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rspp46DCkq9dr-ZtZos6acsocJO4qMlC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6463,7 +7656,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BCNRdakhmQBi8bdD-WfoL2ET4B5QI-FF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BCNRdakhmQBi8bdD-WfoL2ET4B5QI-FF&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6472,7 +7665,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iT2_b2rG7dgoWTn3o3RoxsWAPXQJCdKl&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iT2_b2rG7dgoWTn3o3RoxsWAPXQJCdKl&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6481,7 +7674,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UqJF9vft8fDsmNqEsa5ss6NYwiHfu7YG&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UqJF9vft8fDsmNqEsa5ss6NYwiHfu7YG&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6490,7 +7683,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ILW_4QBnMj1sKL7ZHUrZcI_a3i0gnIvm&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ILW_4QBnMj1sKL7ZHUrZcI_a3i0gnIvm&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6499,7 +7692,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z7aS8WM3wLwNrZTbcHeCdrBnZWlu4nXo&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z7aS8WM3wLwNrZTbcHeCdrBnZWlu4nXo&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6508,7 +7701,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMmtzQ5LuBVUS6I32LlL4xpw6BWnggR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMmtzQ5LuBVUS6I32LlL4xpw6BWnggR&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6517,7 +7710,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "19.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10A1o_XaP9YbFucX61nt_7aVTIj_D5UMN&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10A1o_XaP9YbFucX61nt_7aVTIj_D5UMN&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6526,7 +7719,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "20.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1upDUumyFT1ULTyAPdLW4OkcTcuTNvtlq&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1upDUumyFT1ULTyAPdLW4OkcTcuTNvtlq&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6535,7 +7728,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "22.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mtn-pT1KQHOgJLTjAdhL_vE4V0v2QHCn&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mtn-pT1KQHOgJLTjAdhL_vE4V0v2QHCn&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6544,7 +7737,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "23.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gQVdJHmT_A8ta-q-0F7m3fmty-avPXqP&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gQVdJHmT_A8ta-q-0F7m3fmty-avPXqP&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6553,7 +7746,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "24.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=181_eRJHtHeTqtsGMepemQ6IGWUpKZKod&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=181_eRJHtHeTqtsGMepemQ6IGWUpKZKod&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6562,7 +7755,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "25.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c5PdxD293hTvNOS69k5vaW5EjWhsLKye&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c5PdxD293hTvNOS69k5vaW5EjWhsLKye&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6571,37 +7764,37 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "26.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11bByA_kXOluuD9IpC6_CzvtHNZZdwjWR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11bByA_kXOluuD9IpC6_CzvtHNZZdwjWR&v=4",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15PP86n3Ff6dBAmfUgsgijzcwg3JQ7b1f&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R-_yFs4AADQg03_15Jbiu_jwLTGpjxLR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OeYxoxqHkl6GYygwNhnronCKRJoZghzR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17olJQfT_gFRogZ9tKr1ObyIY_lhD4vL_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OM1aISisefhaeOw6keaFQiSR1fzKjgSO&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-VMoOBEZa3ifA88gy927ZvoWlKRDxYaZ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fwH__bYFF8zaAMVWXdFLtu7U76cVN3Q2&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nF2mVhJSxP9FiDSXMiMor5I9Bvhm2crF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z0NqYGM-y8xMUzNIdBoYVurUvQbEoKxM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lPkUQlCV8eQZbwKeN-Rz6VsZuGgkkxK0&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rspp46DCkq9dr-ZtZos6acsocJO4qMlC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BCNRdakhmQBi8bdD-WfoL2ET4B5QI-FF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iT2_b2rG7dgoWTn3o3RoxsWAPXQJCdKl&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UqJF9vft8fDsmNqEsa5ss6NYwiHfu7YG&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ILW_4QBnMj1sKL7ZHUrZcI_a3i0gnIvm&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z7aS8WM3wLwNrZTbcHeCdrBnZWlu4nXo&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMmtzQ5LuBVUS6I32LlL4xpw6BWnggR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10A1o_XaP9YbFucX61nt_7aVTIj_D5UMN&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1upDUumyFT1ULTyAPdLW4OkcTcuTNvtlq&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mtn-pT1KQHOgJLTjAdhL_vE4V0v2QHCn&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gQVdJHmT_A8ta-q-0F7m3fmty-avPXqP&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=181_eRJHtHeTqtsGMepemQ6IGWUpKZKod&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c5PdxD293hTvNOS69k5vaW5EjWhsLKye&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11bByA_kXOluuD9IpC6_CzvtHNZZdwjWR&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15PP86n3Ff6dBAmfUgsgijzcwg3JQ7b1f&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R-_yFs4AADQg03_15Jbiu_jwLTGpjxLR&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OeYxoxqHkl6GYygwNhnronCKRJoZghzR&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17olJQfT_gFRogZ9tKr1ObyIY_lhD4vL_&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OM1aISisefhaeOw6keaFQiSR1fzKjgSO&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-VMoOBEZa3ifA88gy927ZvoWlKRDxYaZ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fwH__bYFF8zaAMVWXdFLtu7U76cVN3Q2&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nF2mVhJSxP9FiDSXMiMor5I9Bvhm2crF&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z0NqYGM-y8xMUzNIdBoYVurUvQbEoKxM&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lPkUQlCV8eQZbwKeN-Rz6VsZuGgkkxK0&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rspp46DCkq9dr-ZtZos6acsocJO4qMlC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BCNRdakhmQBi8bdD-WfoL2ET4B5QI-FF&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iT2_b2rG7dgoWTn3o3RoxsWAPXQJCdKl&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UqJF9vft8fDsmNqEsa5ss6NYwiHfu7YG&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ILW_4QBnMj1sKL7ZHUrZcI_a3i0gnIvm&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z7aS8WM3wLwNrZTbcHeCdrBnZWlu4nXo&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMmtzQ5LuBVUS6I32LlL4xpw6BWnggR&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10A1o_XaP9YbFucX61nt_7aVTIj_D5UMN&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1upDUumyFT1ULTyAPdLW4OkcTcuTNvtlq&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mtn-pT1KQHOgJLTjAdhL_vE4V0v2QHCn&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gQVdJHmT_A8ta-q-0F7m3fmty-avPXqP&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=181_eRJHtHeTqtsGMepemQ6IGWUpKZKod&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c5PdxD293hTvNOS69k5vaW5EjWhsLKye&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11bByA_kXOluuD9IpC6_CzvtHNZZdwjWR&v=4"
     ]
   },
   "sv-068": {
@@ -6612,20 +7805,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Hosur",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 5.8 × D 5.8 × H 9.5 ft",
     "coverId": "1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=4",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 25,
     "imageCount": 25,
     "videoCount": 0,
     "totalMediaCount": 25,
+    "accessError": null,
     "media": [
       {
         "id": "1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf",
         "name": "overview.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6634,7 +7831,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15PP86n3Ff6dBAmfUgsgijzcwg3JQ7b1f&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15PP86n3Ff6dBAmfUgsgijzcwg3JQ7b1f&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6643,7 +7840,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R-_yFs4AADQg03_15Jbiu_jwLTGpjxLR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R-_yFs4AADQg03_15Jbiu_jwLTGpjxLR&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6652,7 +7849,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OeYxoxqHkl6GYygwNhnronCKRJoZghzR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OeYxoxqHkl6GYygwNhnronCKRJoZghzR&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6661,7 +7858,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17olJQfT_gFRogZ9tKr1ObyIY_lhD4vL_&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17olJQfT_gFRogZ9tKr1ObyIY_lhD4vL_&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6670,7 +7867,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OM1aISisefhaeOw6keaFQiSR1fzKjgSO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OM1aISisefhaeOw6keaFQiSR1fzKjgSO&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6679,7 +7876,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-VMoOBEZa3ifA88gy927ZvoWlKRDxYaZ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-VMoOBEZa3ifA88gy927ZvoWlKRDxYaZ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6688,7 +7885,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fwH__bYFF8zaAMVWXdFLtu7U76cVN3Q2&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fwH__bYFF8zaAMVWXdFLtu7U76cVN3Q2&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6697,7 +7894,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nF2mVhJSxP9FiDSXMiMor5I9Bvhm2crF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nF2mVhJSxP9FiDSXMiMor5I9Bvhm2crF&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6706,7 +7903,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z0NqYGM-y8xMUzNIdBoYVurUvQbEoKxM&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z0NqYGM-y8xMUzNIdBoYVurUvQbEoKxM&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6715,7 +7912,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lPkUQlCV8eQZbwKeN-Rz6VsZuGgkkxK0&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lPkUQlCV8eQZbwKeN-Rz6VsZuGgkkxK0&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6724,7 +7921,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rspp46DCkq9dr-ZtZos6acsocJO4qMlC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rspp46DCkq9dr-ZtZos6acsocJO4qMlC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6733,7 +7930,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BCNRdakhmQBi8bdD-WfoL2ET4B5QI-FF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BCNRdakhmQBi8bdD-WfoL2ET4B5QI-FF&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6742,7 +7939,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iT2_b2rG7dgoWTn3o3RoxsWAPXQJCdKl&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iT2_b2rG7dgoWTn3o3RoxsWAPXQJCdKl&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6751,7 +7948,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UqJF9vft8fDsmNqEsa5ss6NYwiHfu7YG&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UqJF9vft8fDsmNqEsa5ss6NYwiHfu7YG&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6760,7 +7957,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ILW_4QBnMj1sKL7ZHUrZcI_a3i0gnIvm&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ILW_4QBnMj1sKL7ZHUrZcI_a3i0gnIvm&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6769,7 +7966,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z7aS8WM3wLwNrZTbcHeCdrBnZWlu4nXo&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z7aS8WM3wLwNrZTbcHeCdrBnZWlu4nXo&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6778,7 +7975,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMmtzQ5LuBVUS6I32LlL4xpw6BWnggR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMmtzQ5LuBVUS6I32LlL4xpw6BWnggR&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6787,7 +7984,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "19.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10A1o_XaP9YbFucX61nt_7aVTIj_D5UMN&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10A1o_XaP9YbFucX61nt_7aVTIj_D5UMN&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6796,7 +7993,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "20.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1upDUumyFT1ULTyAPdLW4OkcTcuTNvtlq&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1upDUumyFT1ULTyAPdLW4OkcTcuTNvtlq&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6805,7 +8002,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "22.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mtn-pT1KQHOgJLTjAdhL_vE4V0v2QHCn&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mtn-pT1KQHOgJLTjAdhL_vE4V0v2QHCn&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6814,7 +8011,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "23.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gQVdJHmT_A8ta-q-0F7m3fmty-avPXqP&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gQVdJHmT_A8ta-q-0F7m3fmty-avPXqP&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6823,7 +8020,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "24.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=181_eRJHtHeTqtsGMepemQ6IGWUpKZKod&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=181_eRJHtHeTqtsGMepemQ6IGWUpKZKod&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6832,7 +8029,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "25.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c5PdxD293hTvNOS69k5vaW5EjWhsLKye&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c5PdxD293hTvNOS69k5vaW5EjWhsLKye&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -6841,37 +8038,37 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "26.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11bByA_kXOluuD9IpC6_CzvtHNZZdwjWR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11bByA_kXOluuD9IpC6_CzvtHNZZdwjWR&v=4",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15PP86n3Ff6dBAmfUgsgijzcwg3JQ7b1f&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R-_yFs4AADQg03_15Jbiu_jwLTGpjxLR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OeYxoxqHkl6GYygwNhnronCKRJoZghzR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17olJQfT_gFRogZ9tKr1ObyIY_lhD4vL_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OM1aISisefhaeOw6keaFQiSR1fzKjgSO&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-VMoOBEZa3ifA88gy927ZvoWlKRDxYaZ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fwH__bYFF8zaAMVWXdFLtu7U76cVN3Q2&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nF2mVhJSxP9FiDSXMiMor5I9Bvhm2crF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z0NqYGM-y8xMUzNIdBoYVurUvQbEoKxM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lPkUQlCV8eQZbwKeN-Rz6VsZuGgkkxK0&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rspp46DCkq9dr-ZtZos6acsocJO4qMlC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BCNRdakhmQBi8bdD-WfoL2ET4B5QI-FF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iT2_b2rG7dgoWTn3o3RoxsWAPXQJCdKl&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UqJF9vft8fDsmNqEsa5ss6NYwiHfu7YG&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ILW_4QBnMj1sKL7ZHUrZcI_a3i0gnIvm&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z7aS8WM3wLwNrZTbcHeCdrBnZWlu4nXo&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMmtzQ5LuBVUS6I32LlL4xpw6BWnggR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10A1o_XaP9YbFucX61nt_7aVTIj_D5UMN&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1upDUumyFT1ULTyAPdLW4OkcTcuTNvtlq&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mtn-pT1KQHOgJLTjAdhL_vE4V0v2QHCn&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gQVdJHmT_A8ta-q-0F7m3fmty-avPXqP&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=181_eRJHtHeTqtsGMepemQ6IGWUpKZKod&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c5PdxD293hTvNOS69k5vaW5EjWhsLKye&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11bByA_kXOluuD9IpC6_CzvtHNZZdwjWR&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1g_alKFCazHMS7mV3f6hX-mXjJeMWduyf&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15PP86n3Ff6dBAmfUgsgijzcwg3JQ7b1f&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1R-_yFs4AADQg03_15Jbiu_jwLTGpjxLR&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OeYxoxqHkl6GYygwNhnronCKRJoZghzR&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17olJQfT_gFRogZ9tKr1ObyIY_lhD4vL_&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OM1aISisefhaeOw6keaFQiSR1fzKjgSO&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-VMoOBEZa3ifA88gy927ZvoWlKRDxYaZ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fwH__bYFF8zaAMVWXdFLtu7U76cVN3Q2&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nF2mVhJSxP9FiDSXMiMor5I9Bvhm2crF&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1z0NqYGM-y8xMUzNIdBoYVurUvQbEoKxM&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lPkUQlCV8eQZbwKeN-Rz6VsZuGgkkxK0&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rspp46DCkq9dr-ZtZos6acsocJO4qMlC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1BCNRdakhmQBi8bdD-WfoL2ET4B5QI-FF&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iT2_b2rG7dgoWTn3o3RoxsWAPXQJCdKl&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UqJF9vft8fDsmNqEsa5ss6NYwiHfu7YG&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ILW_4QBnMj1sKL7ZHUrZcI_a3i0gnIvm&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z7aS8WM3wLwNrZTbcHeCdrBnZWlu4nXo&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMmtzQ5LuBVUS6I32LlL4xpw6BWnggR&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10A1o_XaP9YbFucX61nt_7aVTIj_D5UMN&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1upDUumyFT1ULTyAPdLW4OkcTcuTNvtlq&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mtn-pT1KQHOgJLTjAdhL_vE4V0v2QHCn&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gQVdJHmT_A8ta-q-0F7m3fmty-avPXqP&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=181_eRJHtHeTqtsGMepemQ6IGWUpKZKod&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1c5PdxD293hTvNOS69k5vaW5EjWhsLKye&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11bByA_kXOluuD9IpC6_CzvtHNZZdwjWR&v=4"
     ]
   },
   "166rTzN2Rb1WysAAUHGisgCmHGmQIcFud": {
@@ -6882,13 +8079,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1xZgE9uikJmjQGRuloXixIuDvmsGqtlhF",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xZgE9uikJmjQGRuloXixIuDvmsGqtlhF&v=2",
+    "dimensions": "W 8.8 × D 9.3 × H 14.1 ft",
+    "coverId": "1PUyRe5kRluPCv6bpMelsafZ2k-3tSm2F",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PUyRe5kRluPCv6bpMelsafZ2k-3tSm2F&v=2",
+    "coverName": "5.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1xZgE9uikJmjQGRuloXixIuDvmsGqtlhF",
@@ -6942,13 +8143,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1xZgE9uikJmjQGRuloXixIuDvmsGqtlhF",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1xZgE9uikJmjQGRuloXixIuDvmsGqtlhF&v=2",
+    "dimensions": "W 8.8 × D 9.3 × H 14.1 ft",
+    "coverId": "1PUyRe5kRluPCv6bpMelsafZ2k-3tSm2F",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PUyRe5kRluPCv6bpMelsafZ2k-3tSm2F&v=2",
+    "coverName": "5.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1xZgE9uikJmjQGRuloXixIuDvmsGqtlhF",
@@ -7002,63 +8207,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_&v=2",
+    "dimensions": "W 8.3 × D 13.6 × H 11.5 ft",
+    "coverId": "1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
-    "media": [
-      {
-        "id": "1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_",
-        "name": "1.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1KsrqtBugXed8YTMoFqcyglcGv0O2hr2Y",
-        "name": "2.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KsrqtBugXed8YTMoFqcyglcGv0O2hr2Y&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj",
-        "name": "3.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      }
-    ],
-    "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KsrqtBugXed8YTMoFqcyglcGv0O2hr2Y&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZBq9vn6LSLHvoZg5Yt0iwmkQW8CNKHuj&v=2"
-    ]
-  },
-  "sv-078": {
-    "folderId": "1vA_cfHKD-NKW6H_XtR5Q2yOtiJ5h38li",
-    "folderName": "Ms. Kavya Sundaraja",
-    "sheetProjectId": "SV-078",
-    "customerName": "Ms. Kavya Sundaraja",
-    "location": "Bengaluru",
-    "structureType": "Freestanding Enclosure",
-    "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_&v=2",
-    "hasDedicatedOverview": false,
-    "imageCount": 3,
-    "videoCount": 0,
-    "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "1atJRKWA9JVG5cxqfJxbdRacC7AUmmpN_",
@@ -7102,13 +8261,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Existing Room Frontage",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.1 × D 2 × H 11.2 ft",
     "coverId": "1vv41KfKukRCtGiAhF9KVWOc28gvpe1RQ",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vv41KfKukRCtGiAhF9KVWOc28gvpe1RQ&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1vv41KfKukRCtGiAhF9KVWOc28gvpe1RQ",
@@ -7202,13 +8365,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Existing Room Frontage",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7.1 × D 2 × H 11.2 ft",
     "coverId": "1vv41KfKukRCtGiAhF9KVWOc28gvpe1RQ",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vv41KfKukRCtGiAhF9KVWOc28gvpe1RQ&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1vv41KfKukRCtGiAhF9KVWOc28gvpe1RQ",
@@ -7302,63 +8469,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y&v=2",
+    "dimensions": "W 10.8 × D 11.7 × H 8.9 ft",
+    "coverId": "1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
-    "media": [
-      {
-        "id": "15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y",
-        "name": "1.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1KOnFTs37TrtEhWu72EFiR-4ufj3LDbYD",
-        "name": "2.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KOnFTs37TrtEhWu72EFiR-4ufj3LDbYD&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc",
-        "name": "3.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      }
-    ],
-    "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KOnFTs37TrtEhWu72EFiR-4ufj3LDbYD&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1E9Xe163yItBRzEVLcJoIcQJomvbOkXFc&v=2"
-    ]
-  },
-  "sv-081": {
-    "folderId": "14M0iY_SWgDXTFlmehZooHEo-M3b7V_Gq",
-    "folderName": "Ms. Gayatri Barath",
-    "sheetProjectId": "SV-081",
-    "customerName": "Ms. Gayatri Barath",
-    "location": "Chennai",
-    "structureType": "Open pooja Mandap",
-    "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y&v=2",
-    "hasDedicatedOverview": false,
-    "imageCount": 3,
-    "videoCount": 0,
-    "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "15btZNmPgaOJSxvQ8GdZvpAu4kIx0qv4y",
@@ -7402,13 +8523,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "London",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 11 × D 9.9 × H 7.2 ft",
     "coverId": "1OSlr7eoPfmviYNKiJ2uq55Shouy2-T5G",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OSlr7eoPfmviYNKiJ2uq55Shouy2-T5G&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1OSlr7eoPfmviYNKiJ2uq55Shouy2-T5G",
@@ -7522,13 +8647,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "London",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 11 × D 9.9 × H 7.2 ft",
     "coverId": "1OSlr7eoPfmviYNKiJ2uq55Shouy2-T5G",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OSlr7eoPfmviYNKiJ2uq55Shouy2-T5G&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1OSlr7eoPfmviYNKiJ2uq55Shouy2-T5G",
@@ -7642,13 +8771,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Salem",
     "structureType": "Public Temple",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 7 × D 7 × H 7 ft",
     "coverId": "1NQSSWTpSEqumuMtyKuiWk23Osz47p0kz",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NQSSWTpSEqumuMtyKuiWk23Osz47p0kz&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1NQSSWTpSEqumuMtyKuiWk23Osz47p0kz",
@@ -7702,13 +8835,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Salem",
     "structureType": "Public Temple",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 7 × D 7 × H 7 ft",
     "coverId": "1NQSSWTpSEqumuMtyKuiWk23Osz47p0kz",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NQSSWTpSEqumuMtyKuiWk23Osz47p0kz&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1NQSSWTpSEqumuMtyKuiWk23Osz47p0kz",
@@ -7762,20 +8899,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chintamani",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=2",
+    "dimensions": "W 4.6 × D 5.5 × H 9.3 ft",
+    "coverId": "1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=3",
+    "coverName": "10.png",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5",
         "name": "1.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7784,7 +8925,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1enLVY3UmTzhOT4t1weY1g4qf63UN53be&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1enLVY3UmTzhOT4t1weY1g4qf63UN53be&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7793,7 +8934,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13tqPUUyiS2LMdV70Ffvb0t-MLMpdcSln&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13tqPUUyiS2LMdV70Ffvb0t-MLMpdcSln&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7802,7 +8943,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sOu21Re5H9zAVo9dD5-naLapRQWfFG46&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sOu21Re5H9zAVo9dD5-naLapRQWfFG46&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7811,7 +8952,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B2txQg12fWlAPn9aZuK75RnRildqyxCe&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B2txQg12fWlAPn9aZuK75RnRildqyxCe&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7820,7 +8961,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yEvG3GZqii8faAQeGm9mZXxf8NaQfUei&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yEvG3GZqii8faAQeGm9mZXxf8NaQfUei&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7829,7 +8970,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u5_6SlCgB_v95mwnbU5qXoVswI4ZuQQK&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u5_6SlCgB_v95mwnbU5qXoVswI4ZuQQK&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7838,7 +8979,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zoeCzLT5-wtO9Va9Cdym9Q4pTKcBBWP5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zoeCzLT5-wtO9Va9Cdym9Q4pTKcBBWP5&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7847,7 +8988,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yq6osZ45yMk_D7otqbULwvHKUdJTotYo&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yq6osZ45yMk_D7otqbULwvHKUdJTotYo&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7856,22 +8997,22 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1enLVY3UmTzhOT4t1weY1g4qf63UN53be&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13tqPUUyiS2LMdV70Ffvb0t-MLMpdcSln&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sOu21Re5H9zAVo9dD5-naLapRQWfFG46&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B2txQg12fWlAPn9aZuK75RnRildqyxCe&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yEvG3GZqii8faAQeGm9mZXxf8NaQfUei&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u5_6SlCgB_v95mwnbU5qXoVswI4ZuQQK&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zoeCzLT5-wtO9Va9Cdym9Q4pTKcBBWP5&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yq6osZ45yMk_D7otqbULwvHKUdJTotYo&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1enLVY3UmTzhOT4t1weY1g4qf63UN53be&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13tqPUUyiS2LMdV70Ffvb0t-MLMpdcSln&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sOu21Re5H9zAVo9dD5-naLapRQWfFG46&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B2txQg12fWlAPn9aZuK75RnRildqyxCe&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yEvG3GZqii8faAQeGm9mZXxf8NaQfUei&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u5_6SlCgB_v95mwnbU5qXoVswI4ZuQQK&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zoeCzLT5-wtO9Va9Cdym9Q4pTKcBBWP5&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yq6osZ45yMk_D7otqbULwvHKUdJTotYo&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=3"
     ]
   },
   "sv-082": {
@@ -7882,20 +9023,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chintamani",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=2",
+    "dimensions": "W 4.6 × D 5.5 × H 9.3 ft",
+    "coverId": "1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=3",
+    "coverName": "10.png",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5",
         "name": "1.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7904,7 +9049,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1enLVY3UmTzhOT4t1weY1g4qf63UN53be&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1enLVY3UmTzhOT4t1weY1g4qf63UN53be&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7913,7 +9058,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13tqPUUyiS2LMdV70Ffvb0t-MLMpdcSln&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13tqPUUyiS2LMdV70Ffvb0t-MLMpdcSln&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7922,7 +9067,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sOu21Re5H9zAVo9dD5-naLapRQWfFG46&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sOu21Re5H9zAVo9dD5-naLapRQWfFG46&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7931,7 +9076,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B2txQg12fWlAPn9aZuK75RnRildqyxCe&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B2txQg12fWlAPn9aZuK75RnRildqyxCe&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7940,7 +9085,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yEvG3GZqii8faAQeGm9mZXxf8NaQfUei&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yEvG3GZqii8faAQeGm9mZXxf8NaQfUei&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7949,7 +9094,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u5_6SlCgB_v95mwnbU5qXoVswI4ZuQQK&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u5_6SlCgB_v95mwnbU5qXoVswI4ZuQQK&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7958,7 +9103,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zoeCzLT5-wtO9Va9Cdym9Q4pTKcBBWP5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zoeCzLT5-wtO9Va9Cdym9Q4pTKcBBWP5&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7967,7 +9112,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yq6osZ45yMk_D7otqbULwvHKUdJTotYo&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yq6osZ45yMk_D7otqbULwvHKUdJTotYo&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -7976,22 +9121,22 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1enLVY3UmTzhOT4t1weY1g4qf63UN53be&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13tqPUUyiS2LMdV70Ffvb0t-MLMpdcSln&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sOu21Re5H9zAVo9dD5-naLapRQWfFG46&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B2txQg12fWlAPn9aZuK75RnRildqyxCe&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yEvG3GZqii8faAQeGm9mZXxf8NaQfUei&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u5_6SlCgB_v95mwnbU5qXoVswI4ZuQQK&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zoeCzLT5-wtO9Va9Cdym9Q4pTKcBBWP5&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yq6osZ45yMk_D7otqbULwvHKUdJTotYo&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1tB2xd9sP2FmnHOnjacCYDLyrqpVEQwT5&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1enLVY3UmTzhOT4t1weY1g4qf63UN53be&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13tqPUUyiS2LMdV70Ffvb0t-MLMpdcSln&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sOu21Re5H9zAVo9dD5-naLapRQWfFG46&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1B2txQg12fWlAPn9aZuK75RnRildqyxCe&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yEvG3GZqii8faAQeGm9mZXxf8NaQfUei&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1u5_6SlCgB_v95mwnbU5qXoVswI4ZuQQK&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1zoeCzLT5-wtO9Va9Cdym9Q4pTKcBBWP5&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yq6osZ45yMk_D7otqbULwvHKUdJTotYo&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1mndA_JaYmuk3MYKTlw507cJkfSfaL0K5&v=3"
     ]
   },
   "1FMvrQ1Z6d9EfVzpOnFwoL1-rCtXygRBI": {
@@ -8002,13 +9147,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 11.1 × D 8.7 × H 10.4 ft",
     "coverId": "1I-8O85ZgZu0vM5horo1jjLy8kBkq-jKJ",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-8O85ZgZu0vM5horo1jjLy8kBkq-jKJ&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1I-8O85ZgZu0vM5horo1jjLy8kBkq-jKJ",
@@ -8102,13 +9251,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 11.1 × D 8.7 × H 10.4 ft",
     "coverId": "1I-8O85ZgZu0vM5horo1jjLy8kBkq-jKJ",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-8O85ZgZu0vM5horo1jjLy8kBkq-jKJ&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1I-8O85ZgZu0vM5horo1jjLy8kBkq-jKJ",
@@ -8202,13 +9355,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 6 × D 10.5 × H 6.6 ft",
     "coverId": "136mkmzNMCbWUDNPJ6nLSRvCA1eLJbFm9",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=136mkmzNMCbWUDNPJ6nLSRvCA1eLJbFm9&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 2,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "136mkmzNMCbWUDNPJ6nLSRvCA1eLJbFm9",
@@ -8260,7 +9417,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cewIysvvVgwPKo3EncXsdOQDcTPQfO2C&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cewIysvvVgwPKo3EncXsdOQDcTPQfO2C&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8269,7 +9426,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nPFXLUn0sYkoiOwvdoSxkWxOkjOhY7jL&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nPFXLUn0sYkoiOwvdoSxkWxOkjOhY7jL&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8278,7 +9435,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eT1BoZm78TZAXRnmUmp2heHrUjSo48hU&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eT1BoZm78TZAXRnmUmp2heHrUjSo48hU&v=9",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8287,7 +9444,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12BWIb_gWvqeA6UgkLu-hbXNQeDu8nSlW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12BWIb_gWvqeA6UgkLu-hbXNQeDu8nSlW&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -8298,10 +9455,10 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1De-DvFtOcTmOWf8u7wFA8-joVJAlLnCA&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Y2Hb2122gbHNdYDzDAH7ky36GlypqO9m&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P_PlpP7i_T-PoT-f9PTJoY8QzCpzIH8h&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cewIysvvVgwPKo3EncXsdOQDcTPQfO2C&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nPFXLUn0sYkoiOwvdoSxkWxOkjOhY7jL&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eT1BoZm78TZAXRnmUmp2heHrUjSo48hU&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12BWIb_gWvqeA6UgkLu-hbXNQeDu8nSlW&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cewIysvvVgwPKo3EncXsdOQDcTPQfO2C&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nPFXLUn0sYkoiOwvdoSxkWxOkjOhY7jL&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eT1BoZm78TZAXRnmUmp2heHrUjSo48hU&v=9",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12BWIb_gWvqeA6UgkLu-hbXNQeDu8nSlW&v=11"
     ]
   },
   "sv-085": {
@@ -8312,13 +9469,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 6 × D 10.5 × H 6.6 ft",
     "coverId": "136mkmzNMCbWUDNPJ6nLSRvCA1eLJbFm9",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=136mkmzNMCbWUDNPJ6nLSRvCA1eLJbFm9&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 7,
     "imageCount": 7,
     "videoCount": 2,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "136mkmzNMCbWUDNPJ6nLSRvCA1eLJbFm9",
@@ -8370,7 +9531,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cewIysvvVgwPKo3EncXsdOQDcTPQfO2C&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cewIysvvVgwPKo3EncXsdOQDcTPQfO2C&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8379,7 +9540,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nPFXLUn0sYkoiOwvdoSxkWxOkjOhY7jL&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nPFXLUn0sYkoiOwvdoSxkWxOkjOhY7jL&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8388,7 +9549,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eT1BoZm78TZAXRnmUmp2heHrUjSo48hU&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eT1BoZm78TZAXRnmUmp2heHrUjSo48hU&v=9",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8397,7 +9558,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12BWIb_gWvqeA6UgkLu-hbXNQeDu8nSlW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12BWIb_gWvqeA6UgkLu-hbXNQeDu8nSlW&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -8408,10 +9569,10 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1De-DvFtOcTmOWf8u7wFA8-joVJAlLnCA&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Y2Hb2122gbHNdYDzDAH7ky36GlypqO9m&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P_PlpP7i_T-PoT-f9PTJoY8QzCpzIH8h&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cewIysvvVgwPKo3EncXsdOQDcTPQfO2C&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nPFXLUn0sYkoiOwvdoSxkWxOkjOhY7jL&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eT1BoZm78TZAXRnmUmp2heHrUjSo48hU&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12BWIb_gWvqeA6UgkLu-hbXNQeDu8nSlW&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cewIysvvVgwPKo3EncXsdOQDcTPQfO2C&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nPFXLUn0sYkoiOwvdoSxkWxOkjOhY7jL&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eT1BoZm78TZAXRnmUmp2heHrUjSo48hU&v=9",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12BWIb_gWvqeA6UgkLu-hbXNQeDu8nSlW&v=11"
     ]
   },
   "1vy7M5eCuw72cP9jYiKcT_e_AvjueoES1": {
@@ -8422,20 +9583,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Pune",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 14.1 × D 6.3 × H 27.9 ft",
     "coverId": "1znH3lfHMfP8OQMr774SuaOislKm_68Fs",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=3",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1znH3lfHMfP8OQMr774SuaOislKm_68Fs",
         "name": "overview.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8444,7 +9609,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dF7WALf8kOHbkWV-OxIF3U00tn5F2KWP&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dF7WALf8kOHbkWV-OxIF3U00tn5F2KWP&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8453,7 +9618,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1A_YQrjAM-zy6TvV8y_MpWV_a_XYlXLVO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1A_YQrjAM-zy6TvV8y_MpWV_a_XYlXLVO&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8462,7 +9627,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=145oTeqrvXbGgUS0TQSdr_Id--5H1i98Y&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=145oTeqrvXbGgUS0TQSdr_Id--5H1i98Y&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8471,7 +9636,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x2MTNdE_9nm5uLMeKLUIx92NLXoV44pF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x2MTNdE_9nm5uLMeKLUIx92NLXoV44pF&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8480,7 +9645,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aEoWsGSoqO4GRKnZyzRJkoYYj1chmGSO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aEoWsGSoqO4GRKnZyzRJkoYYj1chmGSO&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8489,7 +9654,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O-ffgNdRIYw3hr-hzOpFt4JzlckZqKu6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O-ffgNdRIYw3hr-hzOpFt4JzlckZqKu6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8498,7 +9663,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1misjSZ_QSHoipVgstfvHugz-gkJozmdA&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1misjSZ_QSHoipVgstfvHugz-gkJozmdA&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8507,7 +9672,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gV4ES9LFPkG8Qlp1khsyhgkgN9-2Xcp9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gV4ES9LFPkG8Qlp1khsyhgkgN9-2Xcp9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8516,22 +9681,22 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHEnXeEPUhpDgWUfiqbn9c2CXmcMBioF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHEnXeEPUhpDgWUfiqbn9c2CXmcMBioF&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dF7WALf8kOHbkWV-OxIF3U00tn5F2KWP&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1A_YQrjAM-zy6TvV8y_MpWV_a_XYlXLVO&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=145oTeqrvXbGgUS0TQSdr_Id--5H1i98Y&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x2MTNdE_9nm5uLMeKLUIx92NLXoV44pF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aEoWsGSoqO4GRKnZyzRJkoYYj1chmGSO&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O-ffgNdRIYw3hr-hzOpFt4JzlckZqKu6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1misjSZ_QSHoipVgstfvHugz-gkJozmdA&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gV4ES9LFPkG8Qlp1khsyhgkgN9-2Xcp9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHEnXeEPUhpDgWUfiqbn9c2CXmcMBioF&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dF7WALf8kOHbkWV-OxIF3U00tn5F2KWP&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1A_YQrjAM-zy6TvV8y_MpWV_a_XYlXLVO&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=145oTeqrvXbGgUS0TQSdr_Id--5H1i98Y&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x2MTNdE_9nm5uLMeKLUIx92NLXoV44pF&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aEoWsGSoqO4GRKnZyzRJkoYYj1chmGSO&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O-ffgNdRIYw3hr-hzOpFt4JzlckZqKu6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1misjSZ_QSHoipVgstfvHugz-gkJozmdA&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gV4ES9LFPkG8Qlp1khsyhgkgN9-2Xcp9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHEnXeEPUhpDgWUfiqbn9c2CXmcMBioF&v=3"
     ]
   },
   "sv-091": {
@@ -8542,20 +9707,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Pune",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 14.1 × D 6.3 × H 27.9 ft",
     "coverId": "1znH3lfHMfP8OQMr774SuaOislKm_68Fs",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=3",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1znH3lfHMfP8OQMr774SuaOislKm_68Fs",
         "name": "overview.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8564,7 +9733,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dF7WALf8kOHbkWV-OxIF3U00tn5F2KWP&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dF7WALf8kOHbkWV-OxIF3U00tn5F2KWP&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8573,7 +9742,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1A_YQrjAM-zy6TvV8y_MpWV_a_XYlXLVO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1A_YQrjAM-zy6TvV8y_MpWV_a_XYlXLVO&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8582,7 +9751,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=145oTeqrvXbGgUS0TQSdr_Id--5H1i98Y&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=145oTeqrvXbGgUS0TQSdr_Id--5H1i98Y&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8591,7 +9760,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x2MTNdE_9nm5uLMeKLUIx92NLXoV44pF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x2MTNdE_9nm5uLMeKLUIx92NLXoV44pF&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8600,7 +9769,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aEoWsGSoqO4GRKnZyzRJkoYYj1chmGSO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aEoWsGSoqO4GRKnZyzRJkoYYj1chmGSO&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8609,7 +9778,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O-ffgNdRIYw3hr-hzOpFt4JzlckZqKu6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O-ffgNdRIYw3hr-hzOpFt4JzlckZqKu6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8618,7 +9787,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1misjSZ_QSHoipVgstfvHugz-gkJozmdA&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1misjSZ_QSHoipVgstfvHugz-gkJozmdA&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8627,7 +9796,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gV4ES9LFPkG8Qlp1khsyhgkgN9-2Xcp9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gV4ES9LFPkG8Qlp1khsyhgkgN9-2Xcp9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8636,22 +9805,22 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHEnXeEPUhpDgWUfiqbn9c2CXmcMBioF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHEnXeEPUhpDgWUfiqbn9c2CXmcMBioF&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dF7WALf8kOHbkWV-OxIF3U00tn5F2KWP&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1A_YQrjAM-zy6TvV8y_MpWV_a_XYlXLVO&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=145oTeqrvXbGgUS0TQSdr_Id--5H1i98Y&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x2MTNdE_9nm5uLMeKLUIx92NLXoV44pF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aEoWsGSoqO4GRKnZyzRJkoYYj1chmGSO&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O-ffgNdRIYw3hr-hzOpFt4JzlckZqKu6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1misjSZ_QSHoipVgstfvHugz-gkJozmdA&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gV4ES9LFPkG8Qlp1khsyhgkgN9-2Xcp9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHEnXeEPUhpDgWUfiqbn9c2CXmcMBioF&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1znH3lfHMfP8OQMr774SuaOislKm_68Fs&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1dF7WALf8kOHbkWV-OxIF3U00tn5F2KWP&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1A_YQrjAM-zy6TvV8y_MpWV_a_XYlXLVO&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=145oTeqrvXbGgUS0TQSdr_Id--5H1i98Y&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x2MTNdE_9nm5uLMeKLUIx92NLXoV44pF&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1aEoWsGSoqO4GRKnZyzRJkoYYj1chmGSO&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O-ffgNdRIYw3hr-hzOpFt4JzlckZqKu6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1misjSZ_QSHoipVgstfvHugz-gkJozmdA&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gV4ES9LFPkG8Qlp1khsyhgkgN9-2Xcp9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HHEnXeEPUhpDgWUfiqbn9c2CXmcMBioF&v=3"
     ]
   },
   "1lgqRX6Ls2y53T8GjyFnVtGL9vWVfonez": {
@@ -8662,20 +9831,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Thanjavur",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=2",
+    "dimensions": "W 8 × D 7.5 × H 10 ft",
+    "coverId": "1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=3",
+    "coverName": "9.png",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi",
         "name": "1.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8684,7 +9857,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jyF9zWOg_b8CbYSc7ZHuCgqLDHB5jAgm&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jyF9zWOg_b8CbYSc7ZHuCgqLDHB5jAgm&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8693,7 +9866,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HJm-uC-nQvdsd1l2Fzh0Pu3R6FA5UAYC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HJm-uC-nQvdsd1l2Fzh0Pu3R6FA5UAYC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8702,7 +9875,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uSlWKFX2ftazS2WJmTQ7eJzFOWuwj2X9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uSlWKFX2ftazS2WJmTQ7eJzFOWuwj2X9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8711,7 +9884,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1m2HzwbqLmzKrHPS7lItuuJKHIw9sZRjd&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1m2HzwbqLmzKrHPS7lItuuJKHIw9sZRjd&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8720,7 +9893,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v4eNBbIqb_FdkSspfS4D_KyREHsC5SXi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v4eNBbIqb_FdkSspfS4D_KyREHsC5SXi&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8729,7 +9902,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iDuuG2XblHk9bvCQaOlMI2SzNoK_zYrz&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iDuuG2XblHk9bvCQaOlMI2SzNoK_zYrz&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8738,7 +9911,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q1uq-iteNYPHxGPB02_j8fZ4bxXoMDbZ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q1uq-iteNYPHxGPB02_j8fZ4bxXoMDbZ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8747,21 +9920,21 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jyF9zWOg_b8CbYSc7ZHuCgqLDHB5jAgm&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HJm-uC-nQvdsd1l2Fzh0Pu3R6FA5UAYC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uSlWKFX2ftazS2WJmTQ7eJzFOWuwj2X9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1m2HzwbqLmzKrHPS7lItuuJKHIw9sZRjd&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v4eNBbIqb_FdkSspfS4D_KyREHsC5SXi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iDuuG2XblHk9bvCQaOlMI2SzNoK_zYrz&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q1uq-iteNYPHxGPB02_j8fZ4bxXoMDbZ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jyF9zWOg_b8CbYSc7ZHuCgqLDHB5jAgm&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HJm-uC-nQvdsd1l2Fzh0Pu3R6FA5UAYC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uSlWKFX2ftazS2WJmTQ7eJzFOWuwj2X9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1m2HzwbqLmzKrHPS7lItuuJKHIw9sZRjd&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v4eNBbIqb_FdkSspfS4D_KyREHsC5SXi&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iDuuG2XblHk9bvCQaOlMI2SzNoK_zYrz&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q1uq-iteNYPHxGPB02_j8fZ4bxXoMDbZ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=3"
     ]
   },
   "sv-089": {
@@ -8772,20 +9945,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Thanjavur",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=2",
+    "dimensions": "W 8 × D 7.5 × H 10 ft",
+    "coverId": "1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=3",
+    "coverName": "9.png",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi",
         "name": "1.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8794,7 +9971,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jyF9zWOg_b8CbYSc7ZHuCgqLDHB5jAgm&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jyF9zWOg_b8CbYSc7ZHuCgqLDHB5jAgm&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8803,7 +9980,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HJm-uC-nQvdsd1l2Fzh0Pu3R6FA5UAYC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HJm-uC-nQvdsd1l2Fzh0Pu3R6FA5UAYC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8812,7 +9989,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uSlWKFX2ftazS2WJmTQ7eJzFOWuwj2X9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uSlWKFX2ftazS2WJmTQ7eJzFOWuwj2X9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8821,7 +9998,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1m2HzwbqLmzKrHPS7lItuuJKHIw9sZRjd&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1m2HzwbqLmzKrHPS7lItuuJKHIw9sZRjd&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8830,7 +10007,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v4eNBbIqb_FdkSspfS4D_KyREHsC5SXi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v4eNBbIqb_FdkSspfS4D_KyREHsC5SXi&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8839,7 +10016,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iDuuG2XblHk9bvCQaOlMI2SzNoK_zYrz&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iDuuG2XblHk9bvCQaOlMI2SzNoK_zYrz&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8848,7 +10025,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q1uq-iteNYPHxGPB02_j8fZ4bxXoMDbZ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q1uq-iteNYPHxGPB02_j8fZ4bxXoMDbZ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -8857,21 +10034,21 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jyF9zWOg_b8CbYSc7ZHuCgqLDHB5jAgm&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HJm-uC-nQvdsd1l2Fzh0Pu3R6FA5UAYC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uSlWKFX2ftazS2WJmTQ7eJzFOWuwj2X9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1m2HzwbqLmzKrHPS7lItuuJKHIw9sZRjd&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v4eNBbIqb_FdkSspfS4D_KyREHsC5SXi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iDuuG2XblHk9bvCQaOlMI2SzNoK_zYrz&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q1uq-iteNYPHxGPB02_j8fZ4bxXoMDbZ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xim2zwy-CHyfmO51zelSTS6xBQ4PPVPi&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jyF9zWOg_b8CbYSc7ZHuCgqLDHB5jAgm&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HJm-uC-nQvdsd1l2Fzh0Pu3R6FA5UAYC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uSlWKFX2ftazS2WJmTQ7eJzFOWuwj2X9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1m2HzwbqLmzKrHPS7lItuuJKHIw9sZRjd&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v4eNBbIqb_FdkSspfS4D_KyREHsC5SXi&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1iDuuG2XblHk9bvCQaOlMI2SzNoK_zYrz&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Q1uq-iteNYPHxGPB02_j8fZ4bxXoMDbZ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YxwwFzP_YesVZqhMhwYjO_QkuEzwjOgB&v=3"
     ]
   },
   "1jw-oatI68S2gFwdWzjSGBhTWlpFhoRyf": {
@@ -8882,13 +10059,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1JQK4zF4WkHp8eSXF2B6sZIKqigSfd0co",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQK4zF4WkHp8eSXF2B6sZIKqigSfd0co&v=2",
+    "dimensions": "W 8.3 × D 9.9 × H 9 ft",
+    "coverId": "1JJYzN2Py2QWv_lpc2dRsiW0bme-tfT5E",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JJYzN2Py2QWv_lpc2dRsiW0bme-tfT5E&v=2",
+    "coverName": "6.png",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 5,
     "imageCount": 5,
     "videoCount": 0,
     "totalMediaCount": 5,
+    "accessError": null,
     "media": [
       {
         "id": "1JQK4zF4WkHp8eSXF2B6sZIKqigSfd0co",
@@ -8952,13 +10133,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1JQK4zF4WkHp8eSXF2B6sZIKqigSfd0co",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQK4zF4WkHp8eSXF2B6sZIKqigSfd0co&v=2",
+    "dimensions": "W 8.3 × D 9.9 × H 9 ft",
+    "coverId": "1JJYzN2Py2QWv_lpc2dRsiW0bme-tfT5E",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JJYzN2Py2QWv_lpc2dRsiW0bme-tfT5E&v=2",
+    "coverName": "6.png",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 5,
     "imageCount": 5,
     "videoCount": 0,
     "totalMediaCount": 5,
+    "accessError": null,
     "media": [
       {
         "id": "1JQK4zF4WkHp8eSXF2B6sZIKqigSfd0co",
@@ -9022,20 +10207,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Satna",
     "structureType": "Farmhouse Temple",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=2",
+    "dimensions": "W 13.3 × D 19.2 × H 22.8 ft",
+    "coverId": "1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=3",
+    "coverName": "fINAL.jpeg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 16,
     "imageCount": 16,
     "videoCount": 2,
     "totalMediaCount": 18,
+    "accessError": null,
     "media": [
       {
         "id": "1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk",
         "name": "1.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9044,7 +10233,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11lfgRBv1DrjQAulmBpHSRy4oudSi3IPu&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11lfgRBv1DrjQAulmBpHSRy4oudSi3IPu&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9053,7 +10242,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PQSNJo_NOtrS2xd1fcwqYyvxSzUmUmOw&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PQSNJo_NOtrS2xd1fcwqYyvxSzUmUmOw&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9062,7 +10251,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IXyBg78pKTJz0hPDp8uPFPcI1Z9Zru_T&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IXyBg78pKTJz0hPDp8uPFPcI1Z9Zru_T&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9071,7 +10260,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oSNdgQpxQQQyh4CUijLFmZyw-Zt2qDw5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oSNdgQpxQQQyh4CUijLFmZyw-Zt2qDw5&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9080,7 +10269,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hqtKrgeLzadUzza-Ve7M33rsiwnY5ZrQ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hqtKrgeLzadUzza-Ve7M33rsiwnY5ZrQ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9089,7 +10278,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1swOfF0_imgq3R9DEER3oaxIyC4vNZCrV&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1swOfF0_imgq3R9DEER3oaxIyC4vNZCrV&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9098,7 +10287,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e4d8pJdEp0kiOcGZZQL6ud6rsAFAITF-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e4d8pJdEp0kiOcGZZQL6ud6rsAFAITF-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9107,7 +10296,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10QB44-4_qleu-HEBPKxdHaoHwsJPmzLC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10QB44-4_qleu-HEBPKxdHaoHwsJPmzLC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9116,7 +10305,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WqAFD0t5L003aEDSIhvjsTu3t5ciU-rr&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WqAFD0t5L003aEDSIhvjsTu3t5ciU-rr&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9125,7 +10314,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l23IEtnLhGgtfCqyDo9I7V5k0jwC7XOM&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l23IEtnLhGgtfCqyDo9I7V5k0jwC7XOM&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9134,7 +10323,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1X6qGpzGPQsC6iMZ6B-2RT4K-mVZ8XgzM&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1X6qGpzGPQsC6iMZ6B-2RT4K-mVZ8XgzM&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9143,7 +10332,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l0WqRj7wDiBDZehoR1fQygCs4HVl7jqb&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l0WqRj7wDiBDZehoR1fQygCs4HVl7jqb&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9152,7 +10341,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Wld1d3zBy6YKQ_SrwrN-SIhFQBJOQgh9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Wld1d3zBy6YKQ_SrwrN-SIhFQBJOQgh9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9161,7 +10350,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-LX7c1RBzcoNhWWgchOvq66zUqbFKsth&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-LX7c1RBzcoNhWWgchOvq66zUqbFKsth&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9170,7 +10359,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "fINAL.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9179,7 +10368,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=193B2xc2eI1hF8hq7GhS19KOg7c-rexwV&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=193B2xc2eI1hF8hq7GhS19KOg7c-rexwV&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9188,30 +10377,30 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qunCFNnFw8CFjvLANhXODcqqIO_UrxVe&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qunCFNnFw8CFjvLANhXODcqqIO_UrxVe&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11lfgRBv1DrjQAulmBpHSRy4oudSi3IPu&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PQSNJo_NOtrS2xd1fcwqYyvxSzUmUmOw&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IXyBg78pKTJz0hPDp8uPFPcI1Z9Zru_T&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oSNdgQpxQQQyh4CUijLFmZyw-Zt2qDw5&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hqtKrgeLzadUzza-Ve7M33rsiwnY5ZrQ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1swOfF0_imgq3R9DEER3oaxIyC4vNZCrV&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e4d8pJdEp0kiOcGZZQL6ud6rsAFAITF-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10QB44-4_qleu-HEBPKxdHaoHwsJPmzLC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WqAFD0t5L003aEDSIhvjsTu3t5ciU-rr&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l23IEtnLhGgtfCqyDo9I7V5k0jwC7XOM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1X6qGpzGPQsC6iMZ6B-2RT4K-mVZ8XgzM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l0WqRj7wDiBDZehoR1fQygCs4HVl7jqb&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Wld1d3zBy6YKQ_SrwrN-SIhFQBJOQgh9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-LX7c1RBzcoNhWWgchOvq66zUqbFKsth&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=193B2xc2eI1hF8hq7GhS19KOg7c-rexwV&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qunCFNnFw8CFjvLANhXODcqqIO_UrxVe&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11lfgRBv1DrjQAulmBpHSRy4oudSi3IPu&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PQSNJo_NOtrS2xd1fcwqYyvxSzUmUmOw&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IXyBg78pKTJz0hPDp8uPFPcI1Z9Zru_T&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oSNdgQpxQQQyh4CUijLFmZyw-Zt2qDw5&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hqtKrgeLzadUzza-Ve7M33rsiwnY5ZrQ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1swOfF0_imgq3R9DEER3oaxIyC4vNZCrV&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e4d8pJdEp0kiOcGZZQL6ud6rsAFAITF-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10QB44-4_qleu-HEBPKxdHaoHwsJPmzLC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WqAFD0t5L003aEDSIhvjsTu3t5ciU-rr&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l23IEtnLhGgtfCqyDo9I7V5k0jwC7XOM&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1X6qGpzGPQsC6iMZ6B-2RT4K-mVZ8XgzM&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l0WqRj7wDiBDZehoR1fQygCs4HVl7jqb&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Wld1d3zBy6YKQ_SrwrN-SIhFQBJOQgh9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-LX7c1RBzcoNhWWgchOvq66zUqbFKsth&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=193B2xc2eI1hF8hq7GhS19KOg7c-rexwV&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qunCFNnFw8CFjvLANhXODcqqIO_UrxVe&v=11"
     ]
   },
   "sv-074": {
@@ -9222,20 +10411,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Satna",
     "structureType": "Farmhouse Temple",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=2",
+    "dimensions": "W 13.3 × D 19.2 × H 22.8 ft",
+    "coverId": "1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=3",
+    "coverName": "fINAL.jpeg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 16,
     "imageCount": 16,
     "videoCount": 2,
     "totalMediaCount": 18,
+    "accessError": null,
     "media": [
       {
         "id": "1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk",
         "name": "1.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9244,7 +10437,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11lfgRBv1DrjQAulmBpHSRy4oudSi3IPu&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11lfgRBv1DrjQAulmBpHSRy4oudSi3IPu&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9253,7 +10446,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PQSNJo_NOtrS2xd1fcwqYyvxSzUmUmOw&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PQSNJo_NOtrS2xd1fcwqYyvxSzUmUmOw&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9262,7 +10455,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IXyBg78pKTJz0hPDp8uPFPcI1Z9Zru_T&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IXyBg78pKTJz0hPDp8uPFPcI1Z9Zru_T&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9271,7 +10464,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oSNdgQpxQQQyh4CUijLFmZyw-Zt2qDw5&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oSNdgQpxQQQyh4CUijLFmZyw-Zt2qDw5&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9280,7 +10473,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hqtKrgeLzadUzza-Ve7M33rsiwnY5ZrQ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hqtKrgeLzadUzza-Ve7M33rsiwnY5ZrQ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9289,7 +10482,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1swOfF0_imgq3R9DEER3oaxIyC4vNZCrV&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1swOfF0_imgq3R9DEER3oaxIyC4vNZCrV&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9298,7 +10491,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e4d8pJdEp0kiOcGZZQL6ud6rsAFAITF-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e4d8pJdEp0kiOcGZZQL6ud6rsAFAITF-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9307,7 +10500,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10QB44-4_qleu-HEBPKxdHaoHwsJPmzLC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10QB44-4_qleu-HEBPKxdHaoHwsJPmzLC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9316,7 +10509,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WqAFD0t5L003aEDSIhvjsTu3t5ciU-rr&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WqAFD0t5L003aEDSIhvjsTu3t5ciU-rr&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9325,7 +10518,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l23IEtnLhGgtfCqyDo9I7V5k0jwC7XOM&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l23IEtnLhGgtfCqyDo9I7V5k0jwC7XOM&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9334,7 +10527,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1X6qGpzGPQsC6iMZ6B-2RT4K-mVZ8XgzM&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1X6qGpzGPQsC6iMZ6B-2RT4K-mVZ8XgzM&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9343,7 +10536,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l0WqRj7wDiBDZehoR1fQygCs4HVl7jqb&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l0WqRj7wDiBDZehoR1fQygCs4HVl7jqb&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9352,7 +10545,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Wld1d3zBy6YKQ_SrwrN-SIhFQBJOQgh9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Wld1d3zBy6YKQ_SrwrN-SIhFQBJOQgh9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9361,7 +10554,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-LX7c1RBzcoNhWWgchOvq66zUqbFKsth&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-LX7c1RBzcoNhWWgchOvq66zUqbFKsth&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9370,7 +10563,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "fINAL.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9379,7 +10572,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=193B2xc2eI1hF8hq7GhS19KOg7c-rexwV&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=193B2xc2eI1hF8hq7GhS19KOg7c-rexwV&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9388,30 +10581,30 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qunCFNnFw8CFjvLANhXODcqqIO_UrxVe&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qunCFNnFw8CFjvLANhXODcqqIO_UrxVe&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11lfgRBv1DrjQAulmBpHSRy4oudSi3IPu&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PQSNJo_NOtrS2xd1fcwqYyvxSzUmUmOw&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IXyBg78pKTJz0hPDp8uPFPcI1Z9Zru_T&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oSNdgQpxQQQyh4CUijLFmZyw-Zt2qDw5&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hqtKrgeLzadUzza-Ve7M33rsiwnY5ZrQ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1swOfF0_imgq3R9DEER3oaxIyC4vNZCrV&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e4d8pJdEp0kiOcGZZQL6ud6rsAFAITF-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10QB44-4_qleu-HEBPKxdHaoHwsJPmzLC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WqAFD0t5L003aEDSIhvjsTu3t5ciU-rr&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l23IEtnLhGgtfCqyDo9I7V5k0jwC7XOM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1X6qGpzGPQsC6iMZ6B-2RT4K-mVZ8XgzM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l0WqRj7wDiBDZehoR1fQygCs4HVl7jqb&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Wld1d3zBy6YKQ_SrwrN-SIhFQBJOQgh9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-LX7c1RBzcoNhWWgchOvq66zUqbFKsth&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=193B2xc2eI1hF8hq7GhS19KOg7c-rexwV&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qunCFNnFw8CFjvLANhXODcqqIO_UrxVe&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cmT4XeJ49wc9UvDL1e7Vr-I4hl9aUquk&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11lfgRBv1DrjQAulmBpHSRy4oudSi3IPu&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1PQSNJo_NOtrS2xd1fcwqYyvxSzUmUmOw&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1IXyBg78pKTJz0hPDp8uPFPcI1Z9Zru_T&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1oSNdgQpxQQQyh4CUijLFmZyw-Zt2qDw5&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hqtKrgeLzadUzza-Ve7M33rsiwnY5ZrQ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1swOfF0_imgq3R9DEER3oaxIyC4vNZCrV&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1e4d8pJdEp0kiOcGZZQL6ud6rsAFAITF-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10QB44-4_qleu-HEBPKxdHaoHwsJPmzLC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WqAFD0t5L003aEDSIhvjsTu3t5ciU-rr&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l23IEtnLhGgtfCqyDo9I7V5k0jwC7XOM&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1X6qGpzGPQsC6iMZ6B-2RT4K-mVZ8XgzM&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l0WqRj7wDiBDZehoR1fQygCs4HVl7jqb&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Wld1d3zBy6YKQ_SrwrN-SIhFQBJOQgh9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-LX7c1RBzcoNhWWgchOvq66zUqbFKsth&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1rAGnkmBmTnQtmcMNa-B83u-KQ21VriOx&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=193B2xc2eI1hF8hq7GhS19KOg7c-rexwV&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qunCFNnFw8CFjvLANhXODcqqIO_UrxVe&v=11"
     ]
   },
   "1I5zyyIJGz3ZCRwv5cGxh9TjdH5SZXXOr": {
@@ -9422,20 +10615,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=2",
+    "dimensions": "W 9 × D 10.2 × H 12 ft",
+    "coverId": "1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=3",
+    "coverName": "16.JPG",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 16,
     "imageCount": 16,
     "videoCount": 0,
     "totalMediaCount": 16,
+    "accessError": null,
     "media": [
       {
         "id": "1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r",
         "name": "1.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9444,7 +10641,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13UoUWUGyPwugAW7OHHbpEFiZdV-jaka4&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13UoUWUGyPwugAW7OHHbpEFiZdV-jaka4&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9453,7 +10650,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r4L7QGbort-TXPjtqcN1ODEEPJmgTmle&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r4L7QGbort-TXPjtqcN1ODEEPJmgTmle&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9462,7 +10659,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G_3U6nLEe9eAHo9lgtuLKCatHx2dM55F&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G_3U6nLEe9eAHo9lgtuLKCatHx2dM55F&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9471,7 +10668,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gY5DMcDDDdXef_K7eLuoptTq-8xUz0qK&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gY5DMcDDDdXef_K7eLuoptTq-8xUz0qK&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9480,7 +10677,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DVZp-2po2j3j9akk-vHLRTbWftatiVZl&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DVZp-2po2j3j9akk-vHLRTbWftatiVZl&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9489,7 +10686,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wpkmLqOtSL-3ngAzabQ0FoLbHt2hUi6p&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wpkmLqOtSL-3ngAzabQ0FoLbHt2hUi6p&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9498,7 +10695,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kD8k6QDPeArSLF5cRteouY9jSj0yGP2Y&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kD8k6QDPeArSLF5cRteouY9jSj0yGP2Y&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9507,7 +10704,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xjq1Vig85ksF1jUyab28UCR-7awhz0gz&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xjq1Vig85ksF1jUyab28UCR-7awhz0gz&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9516,7 +10713,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=151ke46qp0wPb4AAs7gA2WcT-sT4p6btt&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=151ke46qp0wPb4AAs7gA2WcT-sT4p6btt&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9525,7 +10722,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KUN8qLoE0l_-1835Yh_slUpPx3yfW6Mk&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KUN8qLoE0l_-1835Yh_slUpPx3yfW6Mk&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9534,7 +10731,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1refErIfTOPZs2rHV03gzKz5qlcfWZfj4&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1refErIfTOPZs2rHV03gzKz5qlcfWZfj4&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9543,7 +10740,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhSbZVzS-bK6zOu-IE8wo5Z8iWQezoZf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhSbZVzS-bK6zOu-IE8wo5Z8iWQezoZf&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9552,7 +10749,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19ILKoV1e3tjk8RvL8ZRet3Qqk4UbLRhU&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19ILKoV1e3tjk8RvL8ZRet3Qqk4UbLRhU&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9561,7 +10758,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pLs9GsJ5spomag0ybnG_fabp-8lhvz9G&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pLs9GsJ5spomag0ybnG_fabp-8lhvz9G&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9570,28 +10767,28 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13UoUWUGyPwugAW7OHHbpEFiZdV-jaka4&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r4L7QGbort-TXPjtqcN1ODEEPJmgTmle&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G_3U6nLEe9eAHo9lgtuLKCatHx2dM55F&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gY5DMcDDDdXef_K7eLuoptTq-8xUz0qK&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DVZp-2po2j3j9akk-vHLRTbWftatiVZl&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wpkmLqOtSL-3ngAzabQ0FoLbHt2hUi6p&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kD8k6QDPeArSLF5cRteouY9jSj0yGP2Y&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xjq1Vig85ksF1jUyab28UCR-7awhz0gz&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=151ke46qp0wPb4AAs7gA2WcT-sT4p6btt&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KUN8qLoE0l_-1835Yh_slUpPx3yfW6Mk&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1refErIfTOPZs2rHV03gzKz5qlcfWZfj4&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhSbZVzS-bK6zOu-IE8wo5Z8iWQezoZf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19ILKoV1e3tjk8RvL8ZRet3Qqk4UbLRhU&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pLs9GsJ5spomag0ybnG_fabp-8lhvz9G&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13UoUWUGyPwugAW7OHHbpEFiZdV-jaka4&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r4L7QGbort-TXPjtqcN1ODEEPJmgTmle&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G_3U6nLEe9eAHo9lgtuLKCatHx2dM55F&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gY5DMcDDDdXef_K7eLuoptTq-8xUz0qK&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DVZp-2po2j3j9akk-vHLRTbWftatiVZl&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wpkmLqOtSL-3ngAzabQ0FoLbHt2hUi6p&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kD8k6QDPeArSLF5cRteouY9jSj0yGP2Y&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xjq1Vig85ksF1jUyab28UCR-7awhz0gz&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=151ke46qp0wPb4AAs7gA2WcT-sT4p6btt&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KUN8qLoE0l_-1835Yh_slUpPx3yfW6Mk&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1refErIfTOPZs2rHV03gzKz5qlcfWZfj4&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhSbZVzS-bK6zOu-IE8wo5Z8iWQezoZf&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19ILKoV1e3tjk8RvL8ZRet3Qqk4UbLRhU&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pLs9GsJ5spomag0ybnG_fabp-8lhvz9G&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=3"
     ]
   },
   "sv-083": {
@@ -9602,20 +10799,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=2",
+    "dimensions": "W 9 × D 10.2 × H 12 ft",
+    "coverId": "1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=3",
+    "coverName": "16.JPG",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 16,
     "imageCount": 16,
     "videoCount": 0,
     "totalMediaCount": 16,
+    "accessError": null,
     "media": [
       {
         "id": "1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r",
         "name": "1.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9624,7 +10825,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13UoUWUGyPwugAW7OHHbpEFiZdV-jaka4&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13UoUWUGyPwugAW7OHHbpEFiZdV-jaka4&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9633,7 +10834,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r4L7QGbort-TXPjtqcN1ODEEPJmgTmle&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r4L7QGbort-TXPjtqcN1ODEEPJmgTmle&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9642,7 +10843,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G_3U6nLEe9eAHo9lgtuLKCatHx2dM55F&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G_3U6nLEe9eAHo9lgtuLKCatHx2dM55F&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9651,7 +10852,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gY5DMcDDDdXef_K7eLuoptTq-8xUz0qK&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gY5DMcDDDdXef_K7eLuoptTq-8xUz0qK&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9660,7 +10861,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DVZp-2po2j3j9akk-vHLRTbWftatiVZl&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DVZp-2po2j3j9akk-vHLRTbWftatiVZl&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9669,7 +10870,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wpkmLqOtSL-3ngAzabQ0FoLbHt2hUi6p&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wpkmLqOtSL-3ngAzabQ0FoLbHt2hUi6p&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9678,7 +10879,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kD8k6QDPeArSLF5cRteouY9jSj0yGP2Y&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kD8k6QDPeArSLF5cRteouY9jSj0yGP2Y&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9687,7 +10888,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xjq1Vig85ksF1jUyab28UCR-7awhz0gz&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xjq1Vig85ksF1jUyab28UCR-7awhz0gz&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9696,7 +10897,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=151ke46qp0wPb4AAs7gA2WcT-sT4p6btt&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=151ke46qp0wPb4AAs7gA2WcT-sT4p6btt&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9705,7 +10906,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KUN8qLoE0l_-1835Yh_slUpPx3yfW6Mk&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KUN8qLoE0l_-1835Yh_slUpPx3yfW6Mk&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9714,7 +10915,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1refErIfTOPZs2rHV03gzKz5qlcfWZfj4&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1refErIfTOPZs2rHV03gzKz5qlcfWZfj4&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9723,7 +10924,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhSbZVzS-bK6zOu-IE8wo5Z8iWQezoZf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhSbZVzS-bK6zOu-IE8wo5Z8iWQezoZf&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9732,7 +10933,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19ILKoV1e3tjk8RvL8ZRet3Qqk4UbLRhU&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19ILKoV1e3tjk8RvL8ZRet3Qqk4UbLRhU&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9741,7 +10942,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pLs9GsJ5spomag0ybnG_fabp-8lhvz9G&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pLs9GsJ5spomag0ybnG_fabp-8lhvz9G&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9750,28 +10951,28 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13UoUWUGyPwugAW7OHHbpEFiZdV-jaka4&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r4L7QGbort-TXPjtqcN1ODEEPJmgTmle&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G_3U6nLEe9eAHo9lgtuLKCatHx2dM55F&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gY5DMcDDDdXef_K7eLuoptTq-8xUz0qK&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DVZp-2po2j3j9akk-vHLRTbWftatiVZl&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wpkmLqOtSL-3ngAzabQ0FoLbHt2hUi6p&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kD8k6QDPeArSLF5cRteouY9jSj0yGP2Y&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xjq1Vig85ksF1jUyab28UCR-7awhz0gz&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=151ke46qp0wPb4AAs7gA2WcT-sT4p6btt&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KUN8qLoE0l_-1835Yh_slUpPx3yfW6Mk&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1refErIfTOPZs2rHV03gzKz5qlcfWZfj4&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhSbZVzS-bK6zOu-IE8wo5Z8iWQezoZf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19ILKoV1e3tjk8RvL8ZRet3Qqk4UbLRhU&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pLs9GsJ5spomag0ybnG_fabp-8lhvz9G&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1uiEMUnQxKao-bJczpUWtqCY3Amo9rq8r&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13UoUWUGyPwugAW7OHHbpEFiZdV-jaka4&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r4L7QGbort-TXPjtqcN1ODEEPJmgTmle&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1G_3U6nLEe9eAHo9lgtuLKCatHx2dM55F&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1gY5DMcDDDdXef_K7eLuoptTq-8xUz0qK&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DVZp-2po2j3j9akk-vHLRTbWftatiVZl&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wpkmLqOtSL-3ngAzabQ0FoLbHt2hUi6p&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kD8k6QDPeArSLF5cRteouY9jSj0yGP2Y&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Xjq1Vig85ksF1jUyab28UCR-7awhz0gz&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=151ke46qp0wPb4AAs7gA2WcT-sT4p6btt&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1KUN8qLoE0l_-1835Yh_slUpPx3yfW6Mk&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1refErIfTOPZs2rHV03gzKz5qlcfWZfj4&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhSbZVzS-bK6zOu-IE8wo5Z8iWQezoZf&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19ILKoV1e3tjk8RvL8ZRet3Qqk4UbLRhU&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pLs9GsJ5spomag0ybnG_fabp-8lhvz9G&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Sa7WYcPAsVAfrd7pf-xnK1I5g7gRzXQS&v=3"
     ]
   },
   "18u7espZBhth6opprF9HRmk4q5CfJ2sJU": {
@@ -9782,20 +10983,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Farmhouse Temple",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.6 × D 8.5 × H 12.6 ft",
     "coverId": "1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=4",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 5,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC",
         "name": "overview.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9813,7 +11018,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kE-V14IZmHrvJ4vllFmeDSwE1Mq9zdnE&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kE-V14IZmHrvJ4vllFmeDSwE1Mq9zdnE&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9822,7 +11027,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h7nrDy2bcXxYSpJr49IKpijAWrOByayI&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h7nrDy2bcXxYSpJr49IKpijAWrOByayI&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9831,7 +11036,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z6l2IKrKihCVRYEVqyEL99jg81DCezn9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z6l2IKrKihCVRYEVqyEL99jg81DCezn9&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9840,7 +11045,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1whkPlnbDdAwAZkusSK6SX7RRMpwB61l6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1whkPlnbDdAwAZkusSK6SX7RRMpwB61l6&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9849,7 +11054,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_NLsOotEwH7p01QZKwAdigBttCI84tTl&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_NLsOotEwH7p01QZKwAdigBttCI84tTl&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9858,20 +11063,20 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQFWUr17vv03-c5qPWOLMPcsr7FRT3z1&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQFWUr17vv03-c5qPWOLMPcsr7FRT3z1&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=4",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x4AmuHY4-of1Uedi1nXXq9aZwVaWbvRV&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kE-V14IZmHrvJ4vllFmeDSwE1Mq9zdnE&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h7nrDy2bcXxYSpJr49IKpijAWrOByayI&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z6l2IKrKihCVRYEVqyEL99jg81DCezn9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1whkPlnbDdAwAZkusSK6SX7RRMpwB61l6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_NLsOotEwH7p01QZKwAdigBttCI84tTl&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQFWUr17vv03-c5qPWOLMPcsr7FRT3z1&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kE-V14IZmHrvJ4vllFmeDSwE1Mq9zdnE&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h7nrDy2bcXxYSpJr49IKpijAWrOByayI&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z6l2IKrKihCVRYEVqyEL99jg81DCezn9&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1whkPlnbDdAwAZkusSK6SX7RRMpwB61l6&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_NLsOotEwH7p01QZKwAdigBttCI84tTl&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQFWUr17vv03-c5qPWOLMPcsr7FRT3z1&v=11"
     ]
   },
   "sv-073": {
@@ -9882,20 +11087,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Farmhouse Temple",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 6.6 × D 8.5 × H 12.6 ft",
     "coverId": "1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=4",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 5,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC",
         "name": "overview.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9913,7 +11122,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kE-V14IZmHrvJ4vllFmeDSwE1Mq9zdnE&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kE-V14IZmHrvJ4vllFmeDSwE1Mq9zdnE&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9922,7 +11131,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h7nrDy2bcXxYSpJr49IKpijAWrOByayI&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h7nrDy2bcXxYSpJr49IKpijAWrOByayI&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9931,7 +11140,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z6l2IKrKihCVRYEVqyEL99jg81DCezn9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z6l2IKrKihCVRYEVqyEL99jg81DCezn9&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9940,7 +11149,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1whkPlnbDdAwAZkusSK6SX7RRMpwB61l6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1whkPlnbDdAwAZkusSK6SX7RRMpwB61l6&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9949,7 +11158,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_NLsOotEwH7p01QZKwAdigBttCI84tTl&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_NLsOotEwH7p01QZKwAdigBttCI84tTl&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -9958,20 +11167,20 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQFWUr17vv03-c5qPWOLMPcsr7FRT3z1&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQFWUr17vv03-c5qPWOLMPcsr7FRT3z1&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1DzzQVZQ8mEgnOhhxP4T3PNNxplGu-lWC&v=4",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x4AmuHY4-of1Uedi1nXXq9aZwVaWbvRV&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kE-V14IZmHrvJ4vllFmeDSwE1Mq9zdnE&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h7nrDy2bcXxYSpJr49IKpijAWrOByayI&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z6l2IKrKihCVRYEVqyEL99jg81DCezn9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1whkPlnbDdAwAZkusSK6SX7RRMpwB61l6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_NLsOotEwH7p01QZKwAdigBttCI84tTl&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQFWUr17vv03-c5qPWOLMPcsr7FRT3z1&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kE-V14IZmHrvJ4vllFmeDSwE1Mq9zdnE&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1h7nrDy2bcXxYSpJr49IKpijAWrOByayI&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Z6l2IKrKihCVRYEVqyEL99jg81DCezn9&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1whkPlnbDdAwAZkusSK6SX7RRMpwB61l6&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_NLsOotEwH7p01QZKwAdigBttCI84tTl&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1JQFWUr17vv03-c5qPWOLMPcsr7FRT3z1&v=11"
     ]
   },
   "184SqSJi0H5uTb4eIXmMC7vRFCh7z6nzX": {
@@ -9982,20 +11191,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 6.2 × D 2 × H 9 ft",
     "coverId": "1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=3",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 23,
     "imageCount": 23,
     "videoCount": 3,
     "totalMediaCount": 26,
+    "accessError": null,
     "media": [
       {
         "id": "1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m",
         "name": "overview.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10004,7 +11217,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O3numJwO_0xIi8daqwnlWI3CcukqCzmm&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O3numJwO_0xIi8daqwnlWI3CcukqCzmm&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10013,7 +11226,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P09X2pXRCpbEizYBpRMqKwCiegRmS3iW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P09X2pXRCpbEizYBpRMqKwCiegRmS3iW&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10022,7 +11235,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vnXDOmWPnDtTBv7C8ZascRV83EwXUzo_&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vnXDOmWPnDtTBv7C8ZascRV83EwXUzo_&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10031,7 +11244,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1APatdjhwnJH_HG7k9oelDMblIgtYsBII&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1APatdjhwnJH_HG7k9oelDMblIgtYsBII&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10040,7 +11253,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Tj8jXKs71q3wlqJarPKBv2VQmDlzuUcW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Tj8jXKs71q3wlqJarPKBv2VQmDlzuUcW&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10049,7 +11262,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10WRmYT_Y-9AaAN5GzAHOO8FNzvYvGq0m&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10WRmYT_Y-9AaAN5GzAHOO8FNzvYvGq0m&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10058,7 +11271,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Jn82Sa3rhM1lC7OZnIV2QegAUjummLMJ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Jn82Sa3rhM1lC7OZnIV2QegAUjummLMJ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10067,7 +11280,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-Rh0ENdV2pmPo4HwQBrzcecM_zU9h5H&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-Rh0ENdV2pmPo4HwQBrzcecM_zU9h5H&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10076,7 +11289,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v6hmCz0Nz7vTi2DfAeacACiaQw7bFsyE&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v6hmCz0Nz7vTi2DfAeacACiaQw7bFsyE&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10085,7 +11298,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1L4RaosIxP1nWQKQujzsuDps2Y5taWFZp&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1L4RaosIxP1nWQKQujzsuDps2Y5taWFZp&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10094,7 +11307,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vDNQ0XXEXtRqDnkuXhDVfWP4u5rh1LxI&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vDNQ0XXEXtRqDnkuXhDVfWP4u5rh1LxI&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10103,7 +11316,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-sfpkeL1MOstTJ_5w01JPYEMuTxy4Lj-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-sfpkeL1MOstTJ_5w01JPYEMuTxy4Lj-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10112,7 +11325,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l_7IM5WGseWQj4M73z2WbP0ov5FDEoWA&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l_7IM5WGseWQj4M73z2WbP0ov5FDEoWA&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10121,7 +11334,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18P58zsONI0kmL1W2A1JdMiV0Q6FK15ib&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18P58zsONI0kmL1W2A1JdMiV0Q6FK15ib&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10130,7 +11343,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1quVVXb0sZZ7YPdQZCC9QzJgu5Xw2yI5M&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1quVVXb0sZZ7YPdQZCC9QzJgu5Xw2yI5M&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10139,7 +11352,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AD6O_J2y1GMFKE6JGIgldAn7PXR1oIgJ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AD6O_J2y1GMFKE6JGIgldAn7PXR1oIgJ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10148,7 +11361,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Vf_aOJR4xdqrkcZjv5i7-kEBXB2DYABX&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Vf_aOJR4xdqrkcZjv5i7-kEBXB2DYABX&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10157,7 +11370,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ClhPFl8K5IUVdV_K8jWDo61nQ4pL4pH_&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ClhPFl8K5IUVdV_K8jWDo61nQ4pL4pH_&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10166,7 +11379,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "22.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1txNzh8BFYfo9Bj0HvWfKOnXtiXI446os&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1txNzh8BFYfo9Bj0HvWfKOnXtiXI446os&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10175,7 +11388,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "23.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1N-R4i5sKhnFWEMgeNp0S9MEYi1bzrboe&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1N-R4i5sKhnFWEMgeNp0S9MEYi1bzrboe&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10184,7 +11397,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "24.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1S7mcSP-plF02EmtGhIR9ZeCk0cdHy_r9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1S7mcSP-plF02EmtGhIR9ZeCk0cdHy_r9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10193,7 +11406,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "25.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VqaOJclTPfOTgjDDrF_uKRXqajoQf6uT&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VqaOJclTPfOTgjDDrF_uKRXqajoQf6uT&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10202,7 +11415,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "19.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pR1u9iA39GjR2FOC5TO0qxGuOGooXdlW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pR1u9iA39GjR2FOC5TO0qxGuOGooXdlW&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10211,7 +11424,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "20.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11t8IAEYd0PfqaezrDchZizyh21w1kNrW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11t8IAEYd0PfqaezrDchZizyh21w1kNrW&v=12",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10220,38 +11433,38 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "21.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ylYy1n8jslyYoqZOROI-bpt2FWNB8rh4&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ylYy1n8jslyYoqZOROI-bpt2FWNB8rh4&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O3numJwO_0xIi8daqwnlWI3CcukqCzmm&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P09X2pXRCpbEizYBpRMqKwCiegRmS3iW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vnXDOmWPnDtTBv7C8ZascRV83EwXUzo_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1APatdjhwnJH_HG7k9oelDMblIgtYsBII&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Tj8jXKs71q3wlqJarPKBv2VQmDlzuUcW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10WRmYT_Y-9AaAN5GzAHOO8FNzvYvGq0m&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Jn82Sa3rhM1lC7OZnIV2QegAUjummLMJ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-Rh0ENdV2pmPo4HwQBrzcecM_zU9h5H&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v6hmCz0Nz7vTi2DfAeacACiaQw7bFsyE&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1L4RaosIxP1nWQKQujzsuDps2Y5taWFZp&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vDNQ0XXEXtRqDnkuXhDVfWP4u5rh1LxI&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-sfpkeL1MOstTJ_5w01JPYEMuTxy4Lj-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l_7IM5WGseWQj4M73z2WbP0ov5FDEoWA&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18P58zsONI0kmL1W2A1JdMiV0Q6FK15ib&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1quVVXb0sZZ7YPdQZCC9QzJgu5Xw2yI5M&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AD6O_J2y1GMFKE6JGIgldAn7PXR1oIgJ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Vf_aOJR4xdqrkcZjv5i7-kEBXB2DYABX&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ClhPFl8K5IUVdV_K8jWDo61nQ4pL4pH_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1txNzh8BFYfo9Bj0HvWfKOnXtiXI446os&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1N-R4i5sKhnFWEMgeNp0S9MEYi1bzrboe&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1S7mcSP-plF02EmtGhIR9ZeCk0cdHy_r9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VqaOJclTPfOTgjDDrF_uKRXqajoQf6uT&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pR1u9iA39GjR2FOC5TO0qxGuOGooXdlW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11t8IAEYd0PfqaezrDchZizyh21w1kNrW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ylYy1n8jslyYoqZOROI-bpt2FWNB8rh4&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O3numJwO_0xIi8daqwnlWI3CcukqCzmm&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P09X2pXRCpbEizYBpRMqKwCiegRmS3iW&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vnXDOmWPnDtTBv7C8ZascRV83EwXUzo_&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1APatdjhwnJH_HG7k9oelDMblIgtYsBII&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Tj8jXKs71q3wlqJarPKBv2VQmDlzuUcW&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10WRmYT_Y-9AaAN5GzAHOO8FNzvYvGq0m&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Jn82Sa3rhM1lC7OZnIV2QegAUjummLMJ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-Rh0ENdV2pmPo4HwQBrzcecM_zU9h5H&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v6hmCz0Nz7vTi2DfAeacACiaQw7bFsyE&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1L4RaosIxP1nWQKQujzsuDps2Y5taWFZp&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vDNQ0XXEXtRqDnkuXhDVfWP4u5rh1LxI&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-sfpkeL1MOstTJ_5w01JPYEMuTxy4Lj-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l_7IM5WGseWQj4M73z2WbP0ov5FDEoWA&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18P58zsONI0kmL1W2A1JdMiV0Q6FK15ib&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1quVVXb0sZZ7YPdQZCC9QzJgu5Xw2yI5M&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AD6O_J2y1GMFKE6JGIgldAn7PXR1oIgJ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Vf_aOJR4xdqrkcZjv5i7-kEBXB2DYABX&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ClhPFl8K5IUVdV_K8jWDo61nQ4pL4pH_&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1txNzh8BFYfo9Bj0HvWfKOnXtiXI446os&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1N-R4i5sKhnFWEMgeNp0S9MEYi1bzrboe&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1S7mcSP-plF02EmtGhIR9ZeCk0cdHy_r9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VqaOJclTPfOTgjDDrF_uKRXqajoQf6uT&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pR1u9iA39GjR2FOC5TO0qxGuOGooXdlW&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11t8IAEYd0PfqaezrDchZizyh21w1kNrW&v=12",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ylYy1n8jslyYoqZOROI-bpt2FWNB8rh4&v=11"
     ]
   },
   "sv-072": {
@@ -10262,20 +11475,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 6.2 × D 2 × H 9 ft",
     "coverId": "1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=2",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=3",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 23,
     "imageCount": 23,
     "videoCount": 3,
     "totalMediaCount": 26,
+    "accessError": null,
     "media": [
       {
         "id": "1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m",
         "name": "overview.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10284,7 +11501,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "1.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O3numJwO_0xIi8daqwnlWI3CcukqCzmm&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O3numJwO_0xIi8daqwnlWI3CcukqCzmm&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10293,7 +11510,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P09X2pXRCpbEizYBpRMqKwCiegRmS3iW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P09X2pXRCpbEizYBpRMqKwCiegRmS3iW&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10302,7 +11519,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vnXDOmWPnDtTBv7C8ZascRV83EwXUzo_&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vnXDOmWPnDtTBv7C8ZascRV83EwXUzo_&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10311,7 +11528,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1APatdjhwnJH_HG7k9oelDMblIgtYsBII&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1APatdjhwnJH_HG7k9oelDMblIgtYsBII&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10320,7 +11537,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Tj8jXKs71q3wlqJarPKBv2VQmDlzuUcW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Tj8jXKs71q3wlqJarPKBv2VQmDlzuUcW&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10329,7 +11546,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10WRmYT_Y-9AaAN5GzAHOO8FNzvYvGq0m&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10WRmYT_Y-9AaAN5GzAHOO8FNzvYvGq0m&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10338,7 +11555,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Jn82Sa3rhM1lC7OZnIV2QegAUjummLMJ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Jn82Sa3rhM1lC7OZnIV2QegAUjummLMJ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10347,7 +11564,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-Rh0ENdV2pmPo4HwQBrzcecM_zU9h5H&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-Rh0ENdV2pmPo4HwQBrzcecM_zU9h5H&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10356,7 +11573,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v6hmCz0Nz7vTi2DfAeacACiaQw7bFsyE&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v6hmCz0Nz7vTi2DfAeacACiaQw7bFsyE&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10365,7 +11582,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1L4RaosIxP1nWQKQujzsuDps2Y5taWFZp&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1L4RaosIxP1nWQKQujzsuDps2Y5taWFZp&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10374,7 +11591,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vDNQ0XXEXtRqDnkuXhDVfWP4u5rh1LxI&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vDNQ0XXEXtRqDnkuXhDVfWP4u5rh1LxI&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10383,7 +11600,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-sfpkeL1MOstTJ_5w01JPYEMuTxy4Lj-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-sfpkeL1MOstTJ_5w01JPYEMuTxy4Lj-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10392,7 +11609,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l_7IM5WGseWQj4M73z2WbP0ov5FDEoWA&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l_7IM5WGseWQj4M73z2WbP0ov5FDEoWA&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10401,7 +11618,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18P58zsONI0kmL1W2A1JdMiV0Q6FK15ib&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18P58zsONI0kmL1W2A1JdMiV0Q6FK15ib&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10410,7 +11627,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "15.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1quVVXb0sZZ7YPdQZCC9QzJgu5Xw2yI5M&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1quVVXb0sZZ7YPdQZCC9QzJgu5Xw2yI5M&v=4",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10419,7 +11636,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "16.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AD6O_J2y1GMFKE6JGIgldAn7PXR1oIgJ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AD6O_J2y1GMFKE6JGIgldAn7PXR1oIgJ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10428,7 +11645,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "17.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Vf_aOJR4xdqrkcZjv5i7-kEBXB2DYABX&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Vf_aOJR4xdqrkcZjv5i7-kEBXB2DYABX&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10437,7 +11654,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "18.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ClhPFl8K5IUVdV_K8jWDo61nQ4pL4pH_&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ClhPFl8K5IUVdV_K8jWDo61nQ4pL4pH_&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10446,7 +11663,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "22.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1txNzh8BFYfo9Bj0HvWfKOnXtiXI446os&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1txNzh8BFYfo9Bj0HvWfKOnXtiXI446os&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10455,7 +11672,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "23.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1N-R4i5sKhnFWEMgeNp0S9MEYi1bzrboe&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1N-R4i5sKhnFWEMgeNp0S9MEYi1bzrboe&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10464,7 +11681,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "24.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1S7mcSP-plF02EmtGhIR9ZeCk0cdHy_r9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1S7mcSP-plF02EmtGhIR9ZeCk0cdHy_r9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10473,7 +11690,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "25.avif",
         "type": "image",
         "mimeType": "image/avif",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VqaOJclTPfOTgjDDrF_uKRXqajoQf6uT&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VqaOJclTPfOTgjDDrF_uKRXqajoQf6uT&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10482,7 +11699,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "19.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pR1u9iA39GjR2FOC5TO0qxGuOGooXdlW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pR1u9iA39GjR2FOC5TO0qxGuOGooXdlW&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10491,7 +11708,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "20.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11t8IAEYd0PfqaezrDchZizyh21w1kNrW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11t8IAEYd0PfqaezrDchZizyh21w1kNrW&v=12",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -10500,38 +11717,38 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "21.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ylYy1n8jslyYoqZOROI-bpt2FWNB8rh4&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ylYy1n8jslyYoqZOROI-bpt2FWNB8rh4&v=11",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O3numJwO_0xIi8daqwnlWI3CcukqCzmm&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P09X2pXRCpbEizYBpRMqKwCiegRmS3iW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vnXDOmWPnDtTBv7C8ZascRV83EwXUzo_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1APatdjhwnJH_HG7k9oelDMblIgtYsBII&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Tj8jXKs71q3wlqJarPKBv2VQmDlzuUcW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10WRmYT_Y-9AaAN5GzAHOO8FNzvYvGq0m&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Jn82Sa3rhM1lC7OZnIV2QegAUjummLMJ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-Rh0ENdV2pmPo4HwQBrzcecM_zU9h5H&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v6hmCz0Nz7vTi2DfAeacACiaQw7bFsyE&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1L4RaosIxP1nWQKQujzsuDps2Y5taWFZp&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vDNQ0XXEXtRqDnkuXhDVfWP4u5rh1LxI&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-sfpkeL1MOstTJ_5w01JPYEMuTxy4Lj-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l_7IM5WGseWQj4M73z2WbP0ov5FDEoWA&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18P58zsONI0kmL1W2A1JdMiV0Q6FK15ib&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1quVVXb0sZZ7YPdQZCC9QzJgu5Xw2yI5M&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AD6O_J2y1GMFKE6JGIgldAn7PXR1oIgJ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Vf_aOJR4xdqrkcZjv5i7-kEBXB2DYABX&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ClhPFl8K5IUVdV_K8jWDo61nQ4pL4pH_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1txNzh8BFYfo9Bj0HvWfKOnXtiXI446os&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1N-R4i5sKhnFWEMgeNp0S9MEYi1bzrboe&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1S7mcSP-plF02EmtGhIR9ZeCk0cdHy_r9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VqaOJclTPfOTgjDDrF_uKRXqajoQf6uT&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pR1u9iA39GjR2FOC5TO0qxGuOGooXdlW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11t8IAEYd0PfqaezrDchZizyh21w1kNrW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ylYy1n8jslyYoqZOROI-bpt2FWNB8rh4&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1kSBlrShOfrWXEfzMUdgNF7PSC1DFsW6m&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1O3numJwO_0xIi8daqwnlWI3CcukqCzmm&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1P09X2pXRCpbEizYBpRMqKwCiegRmS3iW&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vnXDOmWPnDtTBv7C8ZascRV83EwXUzo_&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1APatdjhwnJH_HG7k9oelDMblIgtYsBII&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Tj8jXKs71q3wlqJarPKBv2VQmDlzuUcW&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10WRmYT_Y-9AaAN5GzAHOO8FNzvYvGq0m&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Jn82Sa3rhM1lC7OZnIV2QegAUjummLMJ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1I-Rh0ENdV2pmPo4HwQBrzcecM_zU9h5H&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1v6hmCz0Nz7vTi2DfAeacACiaQw7bFsyE&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1L4RaosIxP1nWQKQujzsuDps2Y5taWFZp&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1vDNQ0XXEXtRqDnkuXhDVfWP4u5rh1LxI&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-sfpkeL1MOstTJ_5w01JPYEMuTxy4Lj-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l_7IM5WGseWQj4M73z2WbP0ov5FDEoWA&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=18P58zsONI0kmL1W2A1JdMiV0Q6FK15ib&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1quVVXb0sZZ7YPdQZCC9QzJgu5Xw2yI5M&v=4",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1AD6O_J2y1GMFKE6JGIgldAn7PXR1oIgJ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Vf_aOJR4xdqrkcZjv5i7-kEBXB2DYABX&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ClhPFl8K5IUVdV_K8jWDo61nQ4pL4pH_&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1txNzh8BFYfo9Bj0HvWfKOnXtiXI446os&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1N-R4i5sKhnFWEMgeNp0S9MEYi1bzrboe&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1S7mcSP-plF02EmtGhIR9ZeCk0cdHy_r9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VqaOJclTPfOTgjDDrF_uKRXqajoQf6uT&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pR1u9iA39GjR2FOC5TO0qxGuOGooXdlW&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11t8IAEYd0PfqaezrDchZizyh21w1kNrW&v=12",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ylYy1n8jslyYoqZOROI-bpt2FWNB8rh4&v=11"
     ]
   },
   "1H64Mjbh7GD7IfQvudSP7oAMoQCcWXPGJ": {
@@ -10542,13 +11759,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Existing Room Frontage",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5.4 × D 2.9 × H 10.6 ft",
     "coverId": "1OGUuFs7ZDvfI4ThWRC4mPCurqzwmkAfV",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OGUuFs7ZDvfI4ThWRC4mPCurqzwmkAfV&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1OGUuFs7ZDvfI4ThWRC4mPCurqzwmkAfV",
@@ -10622,13 +11843,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Existing Room Frontage",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5.4 × D 2.9 × H 10.6 ft",
     "coverId": "1OGUuFs7ZDvfI4ThWRC4mPCurqzwmkAfV",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OGUuFs7ZDvfI4ThWRC4mPCurqzwmkAfV&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1OGUuFs7ZDvfI4ThWRC4mPCurqzwmkAfV",
@@ -10702,13 +11927,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Hyderabad",
     "structureType": "Freestanding Unit",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 4.3 × D 1.7 × H 8.5 ft",
     "coverId": "1Pj_zOGuDHEGORFLs6rslCC5jhfSaE8wh",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pj_zOGuDHEGORFLs6rslCC5jhfSaE8wh&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 13,
     "imageCount": 13,
     "videoCount": 0,
     "totalMediaCount": 13,
+    "accessError": null,
     "media": [
       {
         "id": "1Pj_zOGuDHEGORFLs6rslCC5jhfSaE8wh",
@@ -10852,13 +12081,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Hyderabad",
     "structureType": "Freestanding Unit",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 4.3 × D 1.7 × H 8.5 ft",
     "coverId": "1Pj_zOGuDHEGORFLs6rslCC5jhfSaE8wh",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Pj_zOGuDHEGORFLs6rslCC5jhfSaE8wh&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 13,
     "imageCount": 13,
     "videoCount": 0,
     "totalMediaCount": 13,
+    "accessError": null,
     "media": [
       {
         "id": "1Pj_zOGuDHEGORFLs6rslCC5jhfSaE8wh",
@@ -11002,20 +12235,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Thane",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=2",
+    "dimensions": "W 12.2 × D 4.6 × H 10.9 ft",
+    "coverId": "1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=3",
+    "coverName": "14.jpeg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 14,
     "imageCount": 14,
     "videoCount": 0,
     "totalMediaCount": 14,
+    "accessError": null,
     "media": [
       {
         "id": "1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC",
         "name": "1.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11024,7 +12261,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eRqUaVnOBmKbEkosDgbfy5nJ54zl4NK2&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eRqUaVnOBmKbEkosDgbfy5nJ54zl4NK2&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11033,7 +12270,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ajgug3N2k0j-A6whxMcwiPTxgrEUgGyz&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ajgug3N2k0j-A6whxMcwiPTxgrEUgGyz&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11042,7 +12279,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1stUzKX6Y4y38Ms-ZETciw4iRSq9jEqMm&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1stUzKX6Y4y38Ms-ZETciw4iRSq9jEqMm&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11051,7 +12288,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17MvaOr86bjMHmvzTdon5JKzYIe_BcH_6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17MvaOr86bjMHmvzTdon5JKzYIe_BcH_6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11060,7 +12297,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMJNSizuR6FpBpGYNSlQ5t1RU8lmq36&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMJNSizuR6FpBpGYNSlQ5t1RU8lmq36&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11069,7 +12306,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HMd0ue0uHp3IYkmKn3nOEDdBvkvX-Ktf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HMd0ue0uHp3IYkmKn3nOEDdBvkvX-Ktf&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11078,7 +12315,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jiIdFsQ7aDpH8rxdcUnzFNktjc9T8HV_&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jiIdFsQ7aDpH8rxdcUnzFNktjc9T8HV_&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11087,7 +12324,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hQ1VlN6lFWQUGS0yRbWDj2HKFiGOjLI9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hQ1VlN6lFWQUGS0yRbWDj2HKFiGOjLI9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11096,7 +12333,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-KDlXCuCrWUILjt2OQxQy0AIyTQ86ztF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-KDlXCuCrWUILjt2OQxQy0AIyTQ86ztF&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11105,7 +12342,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfBBQhuYn8Y0MJA3DX43Q80mF6J5f68C&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfBBQhuYn8Y0MJA3DX43Q80mF6J5f68C&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11114,7 +12351,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qPl7sKMDeOmmJDvBovCwKjQu5B2aTLGW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qPl7sKMDeOmmJDvBovCwKjQu5B2aTLGW&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11123,7 +12360,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T6plSv-6zpQ1M0K4lOq8ffY0RZUNLKTB&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T6plSv-6zpQ1M0K4lOq8ffY0RZUNLKTB&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11132,26 +12369,26 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eRqUaVnOBmKbEkosDgbfy5nJ54zl4NK2&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ajgug3N2k0j-A6whxMcwiPTxgrEUgGyz&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1stUzKX6Y4y38Ms-ZETciw4iRSq9jEqMm&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17MvaOr86bjMHmvzTdon5JKzYIe_BcH_6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMJNSizuR6FpBpGYNSlQ5t1RU8lmq36&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HMd0ue0uHp3IYkmKn3nOEDdBvkvX-Ktf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jiIdFsQ7aDpH8rxdcUnzFNktjc9T8HV_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hQ1VlN6lFWQUGS0yRbWDj2HKFiGOjLI9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-KDlXCuCrWUILjt2OQxQy0AIyTQ86ztF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfBBQhuYn8Y0MJA3DX43Q80mF6J5f68C&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qPl7sKMDeOmmJDvBovCwKjQu5B2aTLGW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T6plSv-6zpQ1M0K4lOq8ffY0RZUNLKTB&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eRqUaVnOBmKbEkosDgbfy5nJ54zl4NK2&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ajgug3N2k0j-A6whxMcwiPTxgrEUgGyz&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1stUzKX6Y4y38Ms-ZETciw4iRSq9jEqMm&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17MvaOr86bjMHmvzTdon5JKzYIe_BcH_6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMJNSizuR6FpBpGYNSlQ5t1RU8lmq36&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HMd0ue0uHp3IYkmKn3nOEDdBvkvX-Ktf&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jiIdFsQ7aDpH8rxdcUnzFNktjc9T8HV_&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hQ1VlN6lFWQUGS0yRbWDj2HKFiGOjLI9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-KDlXCuCrWUILjt2OQxQy0AIyTQ86ztF&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfBBQhuYn8Y0MJA3DX43Q80mF6J5f68C&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qPl7sKMDeOmmJDvBovCwKjQu5B2aTLGW&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T6plSv-6zpQ1M0K4lOq8ffY0RZUNLKTB&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=3"
     ]
   },
   "sv-071": {
@@ -11162,20 +12399,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Thane",
     "structureType": "Complete Pooja Room",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=2",
+    "dimensions": "W 12.2 × D 4.6 × H 10.9 ft",
+    "coverId": "1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=3",
+    "coverName": "14.jpeg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 14,
     "imageCount": 14,
     "videoCount": 0,
     "totalMediaCount": 14,
+    "accessError": null,
     "media": [
       {
         "id": "1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC",
         "name": "1.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11184,7 +12425,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eRqUaVnOBmKbEkosDgbfy5nJ54zl4NK2&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eRqUaVnOBmKbEkosDgbfy5nJ54zl4NK2&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11193,7 +12434,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ajgug3N2k0j-A6whxMcwiPTxgrEUgGyz&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ajgug3N2k0j-A6whxMcwiPTxgrEUgGyz&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11202,7 +12443,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1stUzKX6Y4y38Ms-ZETciw4iRSq9jEqMm&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1stUzKX6Y4y38Ms-ZETciw4iRSq9jEqMm&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11211,7 +12452,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17MvaOr86bjMHmvzTdon5JKzYIe_BcH_6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17MvaOr86bjMHmvzTdon5JKzYIe_BcH_6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11220,7 +12461,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMJNSizuR6FpBpGYNSlQ5t1RU8lmq36&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMJNSizuR6FpBpGYNSlQ5t1RU8lmq36&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11229,7 +12470,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HMd0ue0uHp3IYkmKn3nOEDdBvkvX-Ktf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HMd0ue0uHp3IYkmKn3nOEDdBvkvX-Ktf&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11238,7 +12479,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jiIdFsQ7aDpH8rxdcUnzFNktjc9T8HV_&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jiIdFsQ7aDpH8rxdcUnzFNktjc9T8HV_&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11247,7 +12488,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hQ1VlN6lFWQUGS0yRbWDj2HKFiGOjLI9&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hQ1VlN6lFWQUGS0yRbWDj2HKFiGOjLI9&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11256,7 +12497,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-KDlXCuCrWUILjt2OQxQy0AIyTQ86ztF&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-KDlXCuCrWUILjt2OQxQy0AIyTQ86ztF&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11265,7 +12506,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "11.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfBBQhuYn8Y0MJA3DX43Q80mF6J5f68C&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfBBQhuYn8Y0MJA3DX43Q80mF6J5f68C&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11274,7 +12515,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "12.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qPl7sKMDeOmmJDvBovCwKjQu5B2aTLGW&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qPl7sKMDeOmmJDvBovCwKjQu5B2aTLGW&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11283,7 +12524,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "13.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T6plSv-6zpQ1M0K4lOq8ffY0RZUNLKTB&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T6plSv-6zpQ1M0K4lOq8ffY0RZUNLKTB&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11292,26 +12533,26 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "14.jpeg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eRqUaVnOBmKbEkosDgbfy5nJ54zl4NK2&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ajgug3N2k0j-A6whxMcwiPTxgrEUgGyz&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1stUzKX6Y4y38Ms-ZETciw4iRSq9jEqMm&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17MvaOr86bjMHmvzTdon5JKzYIe_BcH_6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMJNSizuR6FpBpGYNSlQ5t1RU8lmq36&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HMd0ue0uHp3IYkmKn3nOEDdBvkvX-Ktf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jiIdFsQ7aDpH8rxdcUnzFNktjc9T8HV_&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hQ1VlN6lFWQUGS0yRbWDj2HKFiGOjLI9&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-KDlXCuCrWUILjt2OQxQy0AIyTQ86ztF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfBBQhuYn8Y0MJA3DX43Q80mF6J5f68C&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qPl7sKMDeOmmJDvBovCwKjQu5B2aTLGW&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T6plSv-6zpQ1M0K4lOq8ffY0RZUNLKTB&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1RvuCj9haklNZW6vMpZ12FLKC9SPBpIhC&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eRqUaVnOBmKbEkosDgbfy5nJ54zl4NK2&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Ajgug3N2k0j-A6whxMcwiPTxgrEUgGyz&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1stUzKX6Y4y38Ms-ZETciw4iRSq9jEqMm&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=17MvaOr86bjMHmvzTdon5JKzYIe_BcH_6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19bMJNSizuR6FpBpGYNSlQ5t1RU8lmq36&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HMd0ue0uHp3IYkmKn3nOEDdBvkvX-Ktf&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jiIdFsQ7aDpH8rxdcUnzFNktjc9T8HV_&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1hQ1VlN6lFWQUGS0yRbWDj2HKFiGOjLI9&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1-KDlXCuCrWUILjt2OQxQy0AIyTQ86ztF&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nfBBQhuYn8Y0MJA3DX43Q80mF6J5f68C&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qPl7sKMDeOmmJDvBovCwKjQu5B2aTLGW&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T6plSv-6zpQ1M0K4lOq8ffY0RZUNLKTB&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Nv2-ZNWT0l3b2l9A0a0NmbMuqrIhnQCO&v=3"
     ]
   },
   "1EAkYRgUO2fbiKdvrta78s-_YJ6uxZ8WV": {
@@ -11322,93 +12563,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk&v=2",
+    "dimensions": "W 5.6 × D 6 × H 9.4 ft",
+    "coverId": "15lahsvuVVrz09FhnyFyjqvy-WluUCSGx",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15lahsvuVVrz09FhnyFyjqvy-WluUCSGx&v=2",
+    "coverName": "6.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 6,
     "imageCount": 6,
     "videoCount": 0,
     "totalMediaCount": 6,
-    "media": [
-      {
-        "id": "1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk",
-        "name": "1.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1nGO4am-VndTVXoLZ19E3HyZqggLqS6P1",
-        "name": "2.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nGO4am-VndTVXoLZ19E3HyZqggLqS6P1&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1cFHnAt3ZNzscClhHwwCkf3y2IRCL2rYh",
-        "name": "3.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cFHnAt3ZNzscClhHwwCkf3y2IRCL2rYh&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1x7BJnzyNmYvzxqKSqqP0uAmBJjAEKRaR",
-        "name": "4.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x7BJnzyNmYvzxqKSqqP0uAmBJjAEKRaR&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "12t2UVlpfnQoQ4qPOpFVGrn3wXI-sPKQH",
-        "name": "5.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12t2UVlpfnQoQ4qPOpFVGrn3wXI-sPKQH&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "15lahsvuVVrz09FhnyFyjqvy-WluUCSGx",
-        "name": "6.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15lahsvuVVrz09FhnyFyjqvy-WluUCSGx&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      }
-    ],
-    "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nGO4am-VndTVXoLZ19E3HyZqggLqS6P1&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1cFHnAt3ZNzscClhHwwCkf3y2IRCL2rYh&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1x7BJnzyNmYvzxqKSqqP0uAmBJjAEKRaR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=12t2UVlpfnQoQ4qPOpFVGrn3wXI-sPKQH&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15lahsvuVVrz09FhnyFyjqvy-WluUCSGx&v=2"
-    ]
-  },
-  "sv-086": {
-    "folderId": "1EAkYRgUO2fbiKdvrta78s-_YJ6uxZ8WV",
-    "folderName": "Mr. Anoop Vaidya",
-    "sheetProjectId": "SV-086",
-    "customerName": "Mr. Anoop Vaidya",
-    "location": "Chennai",
-    "structureType": "Freestanding Enclosure",
-    "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk&v=2",
-    "hasDedicatedOverview": false,
-    "imageCount": 6,
-    "videoCount": 0,
-    "totalMediaCount": 6,
+    "accessError": null,
     "media": [
       {
         "id": "1itOHVFXx5tc9J8I6VKvglhFV_1BYnlZk",
@@ -11482,20 +12647,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=2",
+    "dimensions": "W 7.8 × D 10 × H 12.6 ft",
+    "coverId": "1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=3",
+    "coverName": "10.JPG",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj",
         "name": "1.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11504,7 +12673,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Rk6K3pT19Q5yGvvX7_k4crEGJo_GTXly&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Rk6K3pT19Q5yGvvX7_k4crEGJo_GTXly&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11513,7 +12682,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T_mdmhV6ZDo0KXbK9Tyn1TFtUPTVFO_c&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T_mdmhV6ZDo0KXbK9Tyn1TFtUPTVFO_c&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11522,7 +12691,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pBGwbbkettIEDX48jEtngKUDNRKwsOZ0&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pBGwbbkettIEDX48jEtngKUDNRKwsOZ0&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11531,7 +12700,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wgqWQ3xckpiDYP_zPbm-5ooGGR9cd_TR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wgqWQ3xckpiDYP_zPbm-5ooGGR9cd_TR&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11540,7 +12709,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WuEFNHQ8PwkIVIiHA4FyXEPtPPf40Yw6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WuEFNHQ8PwkIVIiHA4FyXEPtPPf40Yw6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11549,7 +12718,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OAgcsH2KoKYdbYk7llSpAzF1_LVthgeJ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OAgcsH2KoKYdbYk7llSpAzF1_LVthgeJ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11558,7 +12727,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QWZA_wIuUy7NpC01_acuvBhLQfxtYcwf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QWZA_wIuUy7NpC01_acuvBhLQfxtYcwf&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11567,7 +12736,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhS4ezsANaVLOEUnUgnsXHGer1D8YIE-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhS4ezsANaVLOEUnUgnsXHGer1D8YIE-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11576,22 +12745,22 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Rk6K3pT19Q5yGvvX7_k4crEGJo_GTXly&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T_mdmhV6ZDo0KXbK9Tyn1TFtUPTVFO_c&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pBGwbbkettIEDX48jEtngKUDNRKwsOZ0&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wgqWQ3xckpiDYP_zPbm-5ooGGR9cd_TR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WuEFNHQ8PwkIVIiHA4FyXEPtPPf40Yw6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OAgcsH2KoKYdbYk7llSpAzF1_LVthgeJ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QWZA_wIuUy7NpC01_acuvBhLQfxtYcwf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhS4ezsANaVLOEUnUgnsXHGer1D8YIE-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Rk6K3pT19Q5yGvvX7_k4crEGJo_GTXly&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T_mdmhV6ZDo0KXbK9Tyn1TFtUPTVFO_c&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pBGwbbkettIEDX48jEtngKUDNRKwsOZ0&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wgqWQ3xckpiDYP_zPbm-5ooGGR9cd_TR&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WuEFNHQ8PwkIVIiHA4FyXEPtPPf40Yw6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OAgcsH2KoKYdbYk7llSpAzF1_LVthgeJ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QWZA_wIuUy7NpC01_acuvBhLQfxtYcwf&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhS4ezsANaVLOEUnUgnsXHGer1D8YIE-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=3"
     ]
   },
   "sv-079": {
@@ -11602,20 +12771,24 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=2",
+    "dimensions": "W 7.8 × D 10 × H 12.6 ft",
+    "coverId": "1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=3",
+    "coverName": "10.JPG",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 10,
     "imageCount": 10,
     "videoCount": 0,
     "totalMediaCount": 10,
+    "accessError": null,
     "media": [
       {
         "id": "1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj",
         "name": "1.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11624,7 +12797,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "2.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Rk6K3pT19Q5yGvvX7_k4crEGJo_GTXly&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Rk6K3pT19Q5yGvvX7_k4crEGJo_GTXly&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11633,7 +12806,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "3.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T_mdmhV6ZDo0KXbK9Tyn1TFtUPTVFO_c&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T_mdmhV6ZDo0KXbK9Tyn1TFtUPTVFO_c&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11642,7 +12815,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pBGwbbkettIEDX48jEtngKUDNRKwsOZ0&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pBGwbbkettIEDX48jEtngKUDNRKwsOZ0&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11651,7 +12824,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wgqWQ3xckpiDYP_zPbm-5ooGGR9cd_TR&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wgqWQ3xckpiDYP_zPbm-5ooGGR9cd_TR&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11660,7 +12833,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.png",
         "type": "image",
         "mimeType": "image/png",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WuEFNHQ8PwkIVIiHA4FyXEPtPPf40Yw6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WuEFNHQ8PwkIVIiHA4FyXEPtPPf40Yw6&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11669,7 +12842,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OAgcsH2KoKYdbYk7llSpAzF1_LVthgeJ&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OAgcsH2KoKYdbYk7llSpAzF1_LVthgeJ&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11678,7 +12851,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QWZA_wIuUy7NpC01_acuvBhLQfxtYcwf&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QWZA_wIuUy7NpC01_acuvBhLQfxtYcwf&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11687,7 +12860,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhS4ezsANaVLOEUnUgnsXHGer1D8YIE-&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhS4ezsANaVLOEUnUgnsXHGer1D8YIE-&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11696,22 +12869,22 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "10.JPG",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=3",
         "isSubfolder": false,
         "subfolder": null
       }
     ],
     "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Rk6K3pT19Q5yGvvX7_k4crEGJo_GTXly&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T_mdmhV6ZDo0KXbK9Tyn1TFtUPTVFO_c&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pBGwbbkettIEDX48jEtngKUDNRKwsOZ0&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wgqWQ3xckpiDYP_zPbm-5ooGGR9cd_TR&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WuEFNHQ8PwkIVIiHA4FyXEPtPPf40Yw6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OAgcsH2KoKYdbYk7llSpAzF1_LVthgeJ&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QWZA_wIuUy7NpC01_acuvBhLQfxtYcwf&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhS4ezsANaVLOEUnUgnsXHGer1D8YIE-&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WWhUgG8cZdRVSAe7GYXmLbw7ZNHLOXYj&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Rk6K3pT19Q5yGvvX7_k4crEGJo_GTXly&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1T_mdmhV6ZDo0KXbK9Tyn1TFtUPTVFO_c&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pBGwbbkettIEDX48jEtngKUDNRKwsOZ0&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wgqWQ3xckpiDYP_zPbm-5ooGGR9cd_TR&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WuEFNHQ8PwkIVIiHA4FyXEPtPPf40Yw6&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1OAgcsH2KoKYdbYk7llSpAzF1_LVthgeJ&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QWZA_wIuUy7NpC01_acuvBhLQfxtYcwf&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1UhS4ezsANaVLOEUnUgnsXHGer1D8YIE-&v=3",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VBDdlrnhyfvTXaYBEWtg3SAPpqfYfeFc&v=3"
     ]
   },
   "14U1kVkdGHz_PgUvyvPsrVKcGseFXH08h": {
@@ -11722,13 +12895,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Texas",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 4 × D 1.5 × H 4.5 ft",
     "coverId": null,
     "coverUrl": null,
+    "coverName": null,
     "hasDedicatedOverview": false,
+    "priority": 3,
+    "photoCount": 0,
     "imageCount": 0,
     "videoCount": 0,
     "totalMediaCount": 0,
+    "accessError": null,
     "media": [],
     "galleryUrls": []
   },
@@ -11740,13 +12917,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Texas",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 4 × D 1.5 × H 4.5 ft",
     "coverId": null,
     "coverUrl": null,
+    "coverName": null,
     "hasDedicatedOverview": false,
+    "priority": 3,
+    "photoCount": 0,
     "imageCount": 0,
     "videoCount": 0,
     "totalMediaCount": 0,
+    "accessError": null,
     "media": [],
     "galleryUrls": []
   },
@@ -11758,13 +12939,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5.7 × D 2.1 × H 7.8 ft",
     "coverId": "1wRO-v0hFY5_IUkih96jZK_2dj9g98C8I",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wRO-v0hFY5_IUkih96jZK_2dj9g98C8I&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 5,
     "totalMediaCount": 14,
+    "accessError": null,
     "media": [
       {
         "id": "1wRO-v0hFY5_IUkih96jZK_2dj9g98C8I",
@@ -11852,7 +13037,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sUEqoelt-1t9wQZf2oANwHtC0QZKxpAi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sUEqoelt-1t9wQZf2oANwHtC0QZKxpAi&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11861,7 +13046,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r67Qx3mth1LewfbUNdg6uIC3WT3j2gK6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r67Qx3mth1LewfbUNdg6uIC3WT3j2gK6&v=9",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11870,7 +13055,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NoqdJEDxXmvCIpnn5jtfNw1jAUtNpUDh&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NoqdJEDxXmvCIpnn5jtfNw1jAUtNpUDh&v=9",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11879,7 +13064,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15h0MELOpxcxu3HnZLI4ZP-cx6qXHeNGY&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15h0MELOpxcxu3HnZLI4ZP-cx6qXHeNGY&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -11888,7 +13073,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qrtA9UfDNNvO97_bDEfnpCFKSBDEBLWG&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qrtA9UfDNNvO97_bDEfnpCFKSBDEBLWG&v=10",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -11903,11 +13088,11 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pO4wRsm-PBuhaAv7Jtu80iZMy1AGZqwm&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yehSe0qa44VnnyHQzhhk9cbNwcytO3DW&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10rM0277BIF5QIZ31ADU53CnSnXetQWLM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sUEqoelt-1t9wQZf2oANwHtC0QZKxpAi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r67Qx3mth1LewfbUNdg6uIC3WT3j2gK6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NoqdJEDxXmvCIpnn5jtfNw1jAUtNpUDh&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15h0MELOpxcxu3HnZLI4ZP-cx6qXHeNGY&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qrtA9UfDNNvO97_bDEfnpCFKSBDEBLWG&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sUEqoelt-1t9wQZf2oANwHtC0QZKxpAi&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r67Qx3mth1LewfbUNdg6uIC3WT3j2gK6&v=9",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NoqdJEDxXmvCIpnn5jtfNw1jAUtNpUDh&v=9",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15h0MELOpxcxu3HnZLI4ZP-cx6qXHeNGY&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qrtA9UfDNNvO97_bDEfnpCFKSBDEBLWG&v=10"
     ]
   },
   "sv-003": {
@@ -11918,13 +13103,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5.7 × D 2.1 × H 7.8 ft",
     "coverId": "1wRO-v0hFY5_IUkih96jZK_2dj9g98C8I",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wRO-v0hFY5_IUkih96jZK_2dj9g98C8I&v=2",
+    "coverName": "overview.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 5,
     "totalMediaCount": 14,
+    "accessError": null,
     "media": [
       {
         "id": "1wRO-v0hFY5_IUkih96jZK_2dj9g98C8I",
@@ -12012,7 +13201,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "5.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sUEqoelt-1t9wQZf2oANwHtC0QZKxpAi&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sUEqoelt-1t9wQZf2oANwHtC0QZKxpAi&v=11",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -12021,7 +13210,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r67Qx3mth1LewfbUNdg6uIC3WT3j2gK6&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r67Qx3mth1LewfbUNdg6uIC3WT3j2gK6&v=9",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -12030,7 +13219,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "7.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NoqdJEDxXmvCIpnn5jtfNw1jAUtNpUDh&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NoqdJEDxXmvCIpnn5jtfNw1jAUtNpUDh&v=9",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -12039,7 +13228,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "8.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15h0MELOpxcxu3HnZLI4ZP-cx6qXHeNGY&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15h0MELOpxcxu3HnZLI4ZP-cx6qXHeNGY&v=10",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -12048,7 +13237,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "9.mp4",
         "type": "video",
         "mimeType": "video/mp4",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qrtA9UfDNNvO97_bDEfnpCFKSBDEBLWG&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qrtA9UfDNNvO97_bDEfnpCFKSBDEBLWG&v=10",
         "isSubfolder": false,
         "subfolder": null
       }
@@ -12063,11 +13252,11 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1pO4wRsm-PBuhaAv7Jtu80iZMy1AGZqwm&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1yehSe0qa44VnnyHQzhhk9cbNwcytO3DW&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10rM0277BIF5QIZ31ADU53CnSnXetQWLM&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sUEqoelt-1t9wQZf2oANwHtC0QZKxpAi&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r67Qx3mth1LewfbUNdg6uIC3WT3j2gK6&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NoqdJEDxXmvCIpnn5jtfNw1jAUtNpUDh&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15h0MELOpxcxu3HnZLI4ZP-cx6qXHeNGY&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qrtA9UfDNNvO97_bDEfnpCFKSBDEBLWG&v=2"
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1sUEqoelt-1t9wQZf2oANwHtC0QZKxpAi&v=11",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1r67Qx3mth1LewfbUNdg6uIC3WT3j2gK6&v=9",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NoqdJEDxXmvCIpnn5jtfNw1jAUtNpUDh&v=9",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15h0MELOpxcxu3HnZLI4ZP-cx6qXHeNGY&v=10",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qrtA9UfDNNvO97_bDEfnpCFKSBDEBLWG&v=10"
     ]
   },
   "1beRrWMouzvdWrJ5qwmTQsTu3SXOU-AUp": {
@@ -12078,13 +13267,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 8 × D 10 × H 5 ft",
     "coverId": "19H4prW_nvsWy0U4n9SRTbO6nRJcpx2se",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19H4prW_nvsWy0U4n9SRTbO6nRJcpx2se&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "19H4prW_nvsWy0U4n9SRTbO6nRJcpx2se",
@@ -12188,13 +13381,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 8 × D 10 × H 5 ft",
     "coverId": "19H4prW_nvsWy0U4n9SRTbO6nRJcpx2se",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=19H4prW_nvsWy0U4n9SRTbO6nRJcpx2se&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "19H4prW_nvsWy0U4n9SRTbO6nRJcpx2se",
@@ -12298,53 +13495,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Unit",
     "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj&v=2",
+    "dimensions": "W 4 × D 4 × H 4.6 ft",
+    "coverId": "1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
-    "media": [
-      {
-        "id": "1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj",
-        "name": "1.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      },
-      {
-        "id": "1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh",
-        "name": "2.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      }
-    ],
-    "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ODQIXUmsDruFTEExC_Gs6cvhmG_1ysbh&v=2"
-    ]
-  },
-  "sv-019": {
-    "folderId": "1BbGgfcC7IhJz5u4aFm8sld3Sl1PExmnA",
-    "folderName": "Ms. Raksha",
-    "sheetProjectId": "SV-019",
-    "customerName": "Ms. Raksha",
-    "location": "Bengaluru",
-    "structureType": "Freestanding Unit",
-    "designDetail": "Heavy",
-    "dimensions": "",
-    "coverId": "1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj&v=2",
-    "hasDedicatedOverview": false,
-    "imageCount": 2,
-    "videoCount": 0,
-    "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "1t7uTzFatsuR-4JYGwrBa8syCakVdU7oj",
@@ -12378,13 +13539,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Wall Unit",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 6 × D 10 × H 8 ft",
     "coverId": "1eacwXg_wG9rczToTOS1U5y9uT4Xeq2rB",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eacwXg_wG9rczToTOS1U5y9uT4Xeq2rB&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1eacwXg_wG9rczToTOS1U5y9uT4Xeq2rB",
@@ -12418,7 +13583,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HeelxwaDJQ_fSLw0Ij_KSV3l_YN4KqGV&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HeelxwaDJQ_fSLw0Ij_KSV3l_YN4KqGV&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -12463,7 +13628,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eacwXg_wG9rczToTOS1U5y9uT4Xeq2rB&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lMYQTaqgDIdmpOr8uJb1JVoUdNHBUWjB&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13MbxxykjWRxSe7kTHnIYgDpycAMXHaCF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HeelxwaDJQ_fSLw0Ij_KSV3l_YN4KqGV&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HeelxwaDJQ_fSLw0Ij_KSV3l_YN4KqGV&v=3",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qwTWrelxG31XlrrzqxluJ4Y8-VC7-97o&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16QFPuu8oxUMeoJ3FwjZAU_TTu1usQAee&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14uyr0PfRzz2MCVgO4U-y3ot-r_eJPeqZ&v=2",
@@ -12478,13 +13643,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Wall Unit",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 6 × D 10 × H 8 ft",
     "coverId": "1eacwXg_wG9rczToTOS1U5y9uT4Xeq2rB",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eacwXg_wG9rczToTOS1U5y9uT4Xeq2rB&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1eacwXg_wG9rczToTOS1U5y9uT4Xeq2rB",
@@ -12518,7 +13687,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "4.jpg",
         "type": "image",
         "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HeelxwaDJQ_fSLw0Ij_KSV3l_YN4KqGV&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HeelxwaDJQ_fSLw0Ij_KSV3l_YN4KqGV&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -12563,7 +13732,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eacwXg_wG9rczToTOS1U5y9uT4Xeq2rB&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1lMYQTaqgDIdmpOr8uJb1JVoUdNHBUWjB&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=13MbxxykjWRxSe7kTHnIYgDpycAMXHaCF&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HeelxwaDJQ_fSLw0Ij_KSV3l_YN4KqGV&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1HeelxwaDJQ_fSLw0Ij_KSV3l_YN4KqGV&v=3",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1qwTWrelxG31XlrrzqxluJ4Y8-VC7-97o&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16QFPuu8oxUMeoJ3FwjZAU_TTu1usQAee&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=14uyr0PfRzz2MCVgO4U-y3ot-r_eJPeqZ&v=2",
@@ -12578,13 +13747,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Nasik",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7 × D 7 × H 8.1 ft",
     "coverId": "1eWJEqswwjSwCsulfUuOi5qPgb5PXd8GH",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eWJEqswwjSwCsulfUuOi5qPgb5PXd8GH&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1eWJEqswwjSwCsulfUuOi5qPgb5PXd8GH",
@@ -12638,13 +13811,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Nasik",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 7 × D 7 × H 8.1 ft",
     "coverId": "1eWJEqswwjSwCsulfUuOi5qPgb5PXd8GH",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1eWJEqswwjSwCsulfUuOi5qPgb5PXd8GH&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "1eWJEqswwjSwCsulfUuOi5qPgb5PXd8GH",
@@ -12698,13 +13875,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 4 × D 1.8 × H 4.9 ft",
     "coverId": "1_UjI-IKs9ZO-9FLRV6Vpn_D_gq0Ra-ZQ",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_UjI-IKs9ZO-9FLRV6Vpn_D_gq0Ra-ZQ&v=2",
+    "coverName": "OVERVIEW.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 18,
     "imageCount": 18,
     "videoCount": 0,
     "totalMediaCount": 18,
+    "accessError": null,
     "media": [
       {
         "id": "1_UjI-IKs9ZO-9FLRV6Vpn_D_gq0Ra-ZQ",
@@ -12898,13 +14079,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Open pooja Mandap",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 4 × D 1.8 × H 4.9 ft",
     "coverId": "1_UjI-IKs9ZO-9FLRV6Vpn_D_gq0Ra-ZQ",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1_UjI-IKs9ZO-9FLRV6Vpn_D_gq0Ra-ZQ&v=2",
+    "coverName": "OVERVIEW.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 18,
     "imageCount": 18,
     "videoCount": 0,
     "totalMediaCount": 18,
+    "accessError": null,
     "media": [
       {
         "id": "1_UjI-IKs9ZO-9FLRV6Vpn_D_gq0Ra-ZQ",
@@ -13098,43 +14283,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Texas",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
+    "dimensions": "W 5.8 × D 2 × H 7.9 ft",
     "coverId": "1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn&v=2",
+    "coverName": "1.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 1,
     "imageCount": 1,
     "videoCount": 0,
     "totalMediaCount": 1,
-    "media": [
-      {
-        "id": "1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn",
-        "name": "1.jpg",
-        "type": "image",
-        "mimeType": "image/jpeg",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn&v=2",
-        "isSubfolder": false,
-        "subfolder": null
-      }
-    ],
-    "galleryUrls": [
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn&v=2"
-    ]
-  },
-  "sv-009": {
-    "folderId": "12bXvEhuWia0kbHfWvZ3_Kr3oLoqe2bSC",
-    "folderName": "Ms. Deepthi Kunchey",
-    "sheetProjectId": "SV-009",
-    "customerName": "Ms. Deepthi Kunchey",
-    "location": "Texas",
-    "structureType": "Wall Unit",
-    "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn&v=2",
-    "hasDedicatedOverview": false,
-    "imageCount": 1,
-    "videoCount": 0,
-    "totalMediaCount": 1,
+    "accessError": null,
     "media": [
       {
         "id": "1GtXaeLNf0fyRKIzfqh9ELpJ4utnV-Wbn",
@@ -13158,13 +14317,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Coimbatore",
     "structureType": "Existing Room Frontage",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 4.5 × D 1 × H 9.6 ft",
     "coverId": "1F9baubCWo5bvPR6KkpBh4gzY4Qx4vpTI",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1F9baubCWo5bvPR6KkpBh4gzY4Qx4vpTI&v=2",
+    "coverName": "OVERVIEW.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 12,
     "imageCount": 12,
     "videoCount": 0,
     "totalMediaCount": 12,
+    "accessError": null,
     "media": [
       {
         "id": "1F9baubCWo5bvPR6KkpBh4gzY4Qx4vpTI",
@@ -13234,7 +14397,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6a.webp",
         "type": "image",
         "mimeType": "image/webp",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jPTLJQUK4t98ezcV17ib3lAwZf4mPUws&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jPTLJQUK4t98ezcV17ib3lAwZf4mPUws&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -13283,7 +14446,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fkGZ5sgUe-D0273HY6LGDHxZq3IdCxbb&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l3j8O2YOvbrDXXXV5-W6rslzD62K8_Rh&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1by7t1ze2DGYBV2z2lIr3M9BKnAwRuH00&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jPTLJQUK4t98ezcV17ib3lAwZf4mPUws&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jPTLJQUK4t98ezcV17ib3lAwZf4mPUws&v=3",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15TumNtO7Fi1nxzBOEBtz9NcU69ntLcM7&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QlwMJaXx549POz0rf71yaPGzjLLs7dp-&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WV1PveJP6nBLeFd1-1omWy3bpIo6zKIM&v=2",
@@ -13298,13 +14461,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Coimbatore",
     "structureType": "Existing Room Frontage",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 4.5 × D 1 × H 9.6 ft",
     "coverId": "1F9baubCWo5bvPR6KkpBh4gzY4Qx4vpTI",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1F9baubCWo5bvPR6KkpBh4gzY4Qx4vpTI&v=2",
+    "coverName": "OVERVIEW.png",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 12,
     "imageCount": 12,
     "videoCount": 0,
     "totalMediaCount": 12,
+    "accessError": null,
     "media": [
       {
         "id": "1F9baubCWo5bvPR6KkpBh4gzY4Qx4vpTI",
@@ -13374,7 +14541,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
         "name": "6a.webp",
         "type": "image",
         "mimeType": "image/webp",
-        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jPTLJQUK4t98ezcV17ib3lAwZf4mPUws&v=2",
+        "url": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jPTLJQUK4t98ezcV17ib3lAwZf4mPUws&v=3",
         "isSubfolder": false,
         "subfolder": null
       },
@@ -13423,7 +14590,7 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1fkGZ5sgUe-D0273HY6LGDHxZq3IdCxbb&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1l3j8O2YOvbrDXXXV5-W6rslzD62K8_Rh&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1by7t1ze2DGYBV2z2lIr3M9BKnAwRuH00&v=2",
-      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jPTLJQUK4t98ezcV17ib3lAwZf4mPUws&v=2",
+      "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1jPTLJQUK4t98ezcV17ib3lAwZf4mPUws&v=3",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=15TumNtO7Fi1nxzBOEBtz9NcU69ntLcM7&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1QlwMJaXx549POz0rf71yaPGzjLLs7dp-&v=2",
       "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WV1PveJP6nBLeFd1-1omWy3bpIo6zKIM&v=2",
@@ -13438,13 +14605,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1WrdxLBS5c5OTv4YQ_GwK_uCWlfXRIW5N",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WrdxLBS5c5OTv4YQ_GwK_uCWlfXRIW5N&v=2",
+    "dimensions": "W 4 × D 2.5 × H 7.8 ft",
+    "coverId": "1ykOtKFsErJqalMCOh-VjOMgNwQDrwxyf",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ykOtKFsErJqalMCOh-VjOMgNwQDrwxyf&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "1WrdxLBS5c5OTv4YQ_GwK_uCWlfXRIW5N",
@@ -13478,13 +14649,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1WrdxLBS5c5OTv4YQ_GwK_uCWlfXRIW5N",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1WrdxLBS5c5OTv4YQ_GwK_uCWlfXRIW5N&v=2",
+    "dimensions": "W 4 × D 2.5 × H 7.8 ft",
+    "coverId": "1ykOtKFsErJqalMCOh-VjOMgNwQDrwxyf",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ykOtKFsErJqalMCOh-VjOMgNwQDrwxyf&v=2",
+    "coverName": "2.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 2,
     "imageCount": 2,
     "videoCount": 0,
     "totalMediaCount": 2,
+    "accessError": null,
     "media": [
       {
         "id": "1WrdxLBS5c5OTv4YQ_GwK_uCWlfXRIW5N",
@@ -13518,13 +14693,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Hyderabad",
     "structureType": "Complete Pooja Room",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1VVn2UGHVdYw0_zMof9R7jGTemBfe8COH",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VVn2UGHVdYw0_zMof9R7jGTemBfe8COH&v=2",
+    "dimensions": "W 3.8 × D 0.5 × H 8.1 ft",
+    "coverId": "1ZvZyoeaGpXsGADE9Lm9nLqngzYCrzr1P",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZvZyoeaGpXsGADE9Lm9nLqngzYCrzr1P&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "1VVn2UGHVdYw0_zMof9R7jGTemBfe8COH",
@@ -13568,13 +14747,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Hyderabad",
     "structureType": "Complete Pooja Room",
     "designDetail": "Minimal",
-    "dimensions": "",
-    "coverId": "1VVn2UGHVdYw0_zMof9R7jGTemBfe8COH",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1VVn2UGHVdYw0_zMof9R7jGTemBfe8COH&v=2",
+    "dimensions": "W 3.8 × D 0.5 × H 8.1 ft",
+    "coverId": "1ZvZyoeaGpXsGADE9Lm9nLqngzYCrzr1P",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1ZvZyoeaGpXsGADE9Lm9nLqngzYCrzr1P&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "1VVn2UGHVdYw0_zMof9R7jGTemBfe8COH",
@@ -13618,13 +14801,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "11aeTOj9rOZ2EVDSbxDleNIHNOzTUcF-F",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11aeTOj9rOZ2EVDSbxDleNIHNOzTUcF-F&v=2",
+    "dimensions": "W 4 × D 2 × H 7 ft",
+    "coverId": "1NSgrgUMz72T3bwGdRu2cQaGdwSWzwb8Y",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NSgrgUMz72T3bwGdRu2cQaGdwSWzwb8Y&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "11aeTOj9rOZ2EVDSbxDleNIHNOzTUcF-F",
@@ -13668,13 +14855,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Complete Pooja Room",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "11aeTOj9rOZ2EVDSbxDleNIHNOzTUcF-F",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=11aeTOj9rOZ2EVDSbxDleNIHNOzTUcF-F&v=2",
+    "dimensions": "W 4 × D 2 × H 7 ft",
+    "coverId": "1NSgrgUMz72T3bwGdRu2cQaGdwSWzwb8Y",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1NSgrgUMz72T3bwGdRu2cQaGdwSWzwb8Y&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "11aeTOj9rOZ2EVDSbxDleNIHNOzTUcF-F",
@@ -13718,13 +14909,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Nasik",
     "structureType": "Freestanding Unit",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 3.7 × D 1.8 × H 5.3 ft",
     "coverId": "10CHQfiV_XyQX72dfLeLVI22Ok0pLtBZV",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10CHQfiV_XyQX72dfLeLVI22Ok0pLtBZV&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "10CHQfiV_XyQX72dfLeLVI22Ok0pLtBZV",
@@ -13778,13 +14973,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Nasik",
     "structureType": "Freestanding Unit",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 3.7 × D 1.8 × H 5.3 ft",
     "coverId": "10CHQfiV_XyQX72dfLeLVI22Ok0pLtBZV",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=10CHQfiV_XyQX72dfLeLVI22Ok0pLtBZV&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "10CHQfiV_XyQX72dfLeLVI22Ok0pLtBZV",
@@ -13838,13 +15037,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Tirupattur",
     "structureType": "Freestanding Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1nmhShywX29wqZWDueaQYhnN2rzLkuH0P",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nmhShywX29wqZWDueaQYhnN2rzLkuH0P&v=2",
+    "dimensions": "W 2.8 × D 1.7 × H 6.7 ft",
+    "coverId": "1Svc9WTq1Da5odPnuXduE4mZy2vG-3erF",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Svc9WTq1Da5odPnuXduE4mZy2vG-3erF&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "1nmhShywX29wqZWDueaQYhnN2rzLkuH0P",
@@ -13888,13 +15091,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Tirupattur",
     "structureType": "Freestanding Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1nmhShywX29wqZWDueaQYhnN2rzLkuH0P",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1nmhShywX29wqZWDueaQYhnN2rzLkuH0P&v=2",
+    "dimensions": "W 2.8 × D 1.7 × H 6.7 ft",
+    "coverId": "1Svc9WTq1Da5odPnuXduE4mZy2vG-3erF",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1Svc9WTq1Da5odPnuXduE4mZy2vG-3erF&v=2",
+    "coverName": "3.jpg",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 3,
     "imageCount": 3,
     "videoCount": 0,
     "totalMediaCount": 3,
+    "accessError": null,
     "media": [
       {
         "id": "1nmhShywX29wqZWDueaQYhnN2rzLkuH0P",
@@ -13938,13 +15145,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1wBG9160wtdmiX-eDNdL5oV1qmjTtZ1-c",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wBG9160wtdmiX-eDNdL5oV1qmjTtZ1-c&v=2",
+    "dimensions": "W 5.9 × D 2 × H 6.9 ft",
+    "coverId": "1YBy8WJJlq1rBh0S8GghLpXhumMn4sUad",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YBy8WJJlq1rBh0S8GghLpXhumMn4sUad&v=2",
+    "coverName": "08.png",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1wBG9160wtdmiX-eDNdL5oV1qmjTtZ1-c",
@@ -14038,13 +15249,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Chennai",
     "structureType": "Wall Unit",
     "designDetail": "Moderate",
-    "dimensions": "",
-    "coverId": "1wBG9160wtdmiX-eDNdL5oV1qmjTtZ1-c",
-    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1wBG9160wtdmiX-eDNdL5oV1qmjTtZ1-c&v=2",
+    "dimensions": "W 5.9 × D 2 × H 6.9 ft",
+    "coverId": "1YBy8WJJlq1rBh0S8GghLpXhumMn4sUad",
+    "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1YBy8WJJlq1rBh0S8GghLpXhumMn4sUad&v=2",
+    "coverName": "08.png",
     "hasDedicatedOverview": false,
+    "priority": 2,
+    "photoCount": 8,
     "imageCount": 8,
     "videoCount": 0,
     "totalMediaCount": 8,
+    "accessError": null,
     "media": [
       {
         "id": "1wBG9160wtdmiX-eDNdL5oV1qmjTtZ1-c",
@@ -14138,13 +15353,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Unit",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 2.5 × D 1.7 × H 8.8 ft",
     "coverId": "16kgYCXGgn1drM6Grt8O_Fm0fUweguZ-E",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16kgYCXGgn1drM6Grt8O_Fm0fUweguZ-E&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "16kgYCXGgn1drM6Grt8O_Fm0fUweguZ-E",
@@ -14198,13 +15417,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Unit",
     "designDetail": "Minimal",
-    "dimensions": "",
+    "dimensions": "W 2.5 × D 1.7 × H 8.8 ft",
     "coverId": "16kgYCXGgn1drM6Grt8O_Fm0fUweguZ-E",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=16kgYCXGgn1drM6Grt8O_Fm0fUweguZ-E&v=2",
+    "coverName": "overview.jpg",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 4,
     "imageCount": 4,
     "videoCount": 0,
     "totalMediaCount": 4,
+    "accessError": null,
     "media": [
       {
         "id": "16kgYCXGgn1drM6Grt8O_Fm0fUweguZ-E",
@@ -14258,13 +15481,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 4.5 × D 5.1 × H 8.8 ft",
     "coverId": "1FgecywHgQseftMUApybXuN6WkngkOfkt",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FgecywHgQseftMUApybXuN6WkngkOfkt&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1FgecywHgQseftMUApybXuN6WkngkOfkt",
@@ -14368,13 +15595,17 @@ export const PROJECT_COVER_MAP: Record<string, FolderCoverSeed> = {
     "location": "Bengaluru",
     "structureType": "Freestanding Enclosure",
     "designDetail": "Heavy",
-    "dimensions": "",
+    "dimensions": "W 4.5 × D 5.1 × H 8.8 ft",
     "coverId": "1FgecywHgQseftMUApybXuN6WkngkOfkt",
     "coverUrl": "https://svvayam-project-explorer-api.ringed-thief.workers.dev/api/portfolio/image?fileId=1FgecywHgQseftMUApybXuN6WkngkOfkt&v=2",
+    "coverName": "overview.avif",
     "hasDedicatedOverview": true,
+    "priority": 1,
+    "photoCount": 9,
     "imageCount": 9,
     "videoCount": 0,
     "totalMediaCount": 9,
+    "accessError": null,
     "media": [
       {
         "id": "1FgecywHgQseftMUApybXuN6WkngkOfkt",

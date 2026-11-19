@@ -52,11 +52,12 @@ function hydrateCatalogProjects(projects: ClientProject[], _apiBase: string): Cl
     let overviewImg = p.overviewImg;
 
     if (priority === 1) {
-      if (!heroImg && seed.coverUrl) heroImg = seed.coverUrl;
-      overviewImg = heroImg || seed.coverUrl || null;
-      if (!heroImg && overviewImg) heroImg = overviewImg;
+      // Priority 1: Overview image
+      overviewImg = seed.coverUrl || heroImg || null;
+      heroImg = overviewImg || '';
     } else if (priority === 2) {
-      if (!heroImg && seed.coverUrl) heroImg = seed.coverUrl;
+      // Priority 2: LAST image in established natural filename/gallery order
+      heroImg = seed.coverUrl || heroImg || '';
       overviewImg = null;
     } else {
       // Priority 3: no photos, heroImg empty to show clean placeholder
@@ -72,7 +73,7 @@ function hydrateCatalogProjects(projects: ClientProject[], _apiBase: string): Cl
       priority,
       hasDedicatedOverview,
       hasOverview: hasDedicatedOverview,
-      heroImg: priority === 3 ? '' : (heroImg || (images.length > 0 ? images[0] : '')),
+      heroImg: priority === 3 ? '' : heroImg,
       overviewImg,
       images,
       media: seed.media || [],
